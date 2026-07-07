@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="104" viewBox="0 0 360 104" role="img" aria-labelledby="title desc">
+  <title id="title">Michi Line logo concept</title>
+  <desc id="desc">A minimal purple path mark with a goal dot, paired with the Yomeru wordmark.</desc>
+  <path d="M16 72c16-31 34-42 54-44" fill="none" stroke="#6750A4" stroke-width="9" stroke-linecap="round"/>
+  <path d="M57 24l14 4-10 12" fill="none" stroke="#6750A4" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="17" cy="72" r="6" fill="#FFC107"/>
+  <circle cx="43" cy="46" r="4" fill="#6750A4" opacity=".32"/>
+  <text x="94" y="48" fill="#1C1B1F" font-family="'Noto Serif JP','Noto Serif SC',serif" font-size="30" font-weight="650" letter-spacing="0">読める</text>
+  <text x="96" y="72" fill="#625B71" font-family="'Noto Sans SC','Noto Sans JP',sans-serif" font-size="14" font-weight="500" letter-spacing="0">読む · 調べる · 進む</text>
+</svg>

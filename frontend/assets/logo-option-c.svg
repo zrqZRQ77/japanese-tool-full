@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="104" viewBox="0 0 360 104" role="img" aria-labelledby="title desc">
+  <title id="title">Logo option C - Study Route</title>
+  <desc id="desc">A restrained purple logo with a folded page, path arrow, and Yomeru wordmark for reading, research, and application workflows.</desc>
+  <rect x="8" y="20" width="64" height="64" rx="8" fill="#EADDFF"/>
+  <path d="M28 30h20l12 12v32H28V30Z" fill="#FFFBFE" stroke="#6750A4" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M48 30v13h12" fill="none" stroke="#6750A4" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M24 62c8-10 18 8 28-2" fill="none" stroke="#6750A4" stroke-width="3" stroke-linecap="round"/>
+  <path d="M51 55l7 5-7 5" fill="none" stroke="#6750A4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="26" cy="62" r="3" fill="#FFC107"/>
+  <circle cx="40" cy="60" r="2.5" fill="#6750A4" opacity=".72"/>
+  <text x="92" y="48" fill="#1C1B1F" font-family="'Noto Serif JP','Noto Serif SC',serif" font-size="30" font-weight="650" letter-spacing="0">読める</text>
+  <text x="94" y="72" fill="#625B71" font-family="'Noto Sans SC','Noto Sans JP',sans-serif" font-size="14" font-weight="500" letter-spacing="0">読む · 調べる · 出願する</text>
+</svg>

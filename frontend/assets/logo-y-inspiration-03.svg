@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">Y inspiration 03 geometric gate</title>
+  <desc id="desc">A geometric Y mark formed by two equal upper arms and an open lower gate.</desc>
+  <rect x="1" y="1" width="358" height="238" rx="8" fill="#FFFBFE" stroke="#CAC4D0"/>
+  <path d="M112 64l68 66 68-66" fill="none" stroke="#6750A4" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M152 190h56M180 132v58" fill="none" stroke="#6750A4" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

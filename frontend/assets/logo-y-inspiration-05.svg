@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">Y inspiration 05 enclosed path</title>
+  <desc id="desc">A balanced Y mark inside a restrained rounded frame, emphasizing the silhouette of the path.</desc>
+  <rect x="1" y="1" width="358" height="238" rx="8" fill="#FFFBFE" stroke="#CAC4D0"/>
+  <rect x="118" y="44" width="124" height="152" rx="34" fill="none" stroke="#EADDFF" stroke-width="14"/>
+  <path d="M128 72l52 58 52-58M180 130v62" fill="none" stroke="#6750A4" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

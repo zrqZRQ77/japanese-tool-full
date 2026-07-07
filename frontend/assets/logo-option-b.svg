@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="104" viewBox="0 0 360 104" role="img" aria-labelledby="title desc">
+  <title id="title">Logo option B - Campus Gate</title>
+  <desc id="desc">A purple logo combining a campus gate, a folded page, and the Yomeru wordmark for reading and admissions information.</desc>
+  <rect x="8" y="20" width="64" height="64" rx="8" fill="#F7F2FA"/>
+  <path d="M22 38h36" stroke="#6750A4" stroke-width="4" stroke-linecap="round"/>
+  <path d="M26 38v30M54 38v30" stroke="#6750A4" stroke-width="4" stroke-linecap="round"/>
+  <path d="M20 68h40" stroke="#6750A4" stroke-width="4" stroke-linecap="round"/>
+  <path d="M34 29h12l10 9H24l10-9Z" fill="#EADDFF" stroke="#6750A4" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M36 47h8c5 0 8 3 8 8v13H36V47Z" fill="#FFFBFE" stroke="#6750A4" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 47v9h8" fill="none" stroke="#6750A4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="28" cy="58" r="3" fill="#FFC107"/>
+  <text x="92" y="48" fill="#1C1B1F" font-family="'Noto Serif JP','Noto Serif SC',serif" font-size="30" font-weight="650" letter-spacing="0">読める</text>
+  <text x="94" y="72" fill="#625B71" font-family="'Noto Sans SC','Noto Sans JP',sans-serif" font-size="14" font-weight="500" letter-spacing="0">读懂日语，也读懂升学信息</text>
+</svg>

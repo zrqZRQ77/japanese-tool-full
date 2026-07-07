@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "audit:ui": "node tools/ui-audit.mjs",
+    "check": "node tools/check.mjs",
+    "bump-cache": "node tools/bump-cache.mjs",
+    "visual:snapshot": "node tools/visual-snapshot.mjs",
+    "visual:prune": "node tools/prune-visual-snapshots.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.45.0"
+  }
+}

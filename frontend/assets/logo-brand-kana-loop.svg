@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="104" viewBox="0 0 360 104" role="img" aria-labelledby="title desc">
+  <title id="title">Kana Loop brand logo</title>
+  <desc id="desc">A minimal kana-inspired loop mark for Yomeru, paired with the Yomeru wordmark.</desc>
+  <path d="M58 25c-14 2-27 10-35 22-9 13-6 27 7 32 12 5 27-2 31-14 4-14-8-27-25-25" fill="none" stroke="#6750A4" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M29 25h37" fill="none" stroke="#6750A4" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="30" cy="79" r="6" fill="#FFC107"/>
+  <text x="94" y="48" fill="#1C1B1F" font-family="'Noto Serif JP','Noto Serif SC',serif" font-size="30" font-weight="650" letter-spacing="0">読める</text>
+  <text x="96" y="72" fill="#625B71" font-family="'Noto Sans SC','Noto Sans JP',sans-serif" font-size="14" font-weight="500" letter-spacing="0">ことばから未来へ</text>
+</svg>

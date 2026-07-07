@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">Y inspiration 04 folded line</title>
+  <desc id="desc">A folded single-line Y mark with a distinctive central turn and equal arms.</desc>
+  <rect x="1" y="1" width="358" height="238" rx="8" fill="#FFFBFE" stroke="#CAC4D0"/>
+  <path d="M108 76h34c16 0 28 9 38 28 10-19 22-28 38-28h34M180 104v86" fill="none" stroke="#6750A4" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

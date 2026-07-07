@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="104" viewBox="0 0 360 104" role="img" aria-labelledby="title desc">
+  <title id="title">Open Gate logo concept</title>
+  <desc id="desc">A minimal purple open gate mark for language learning and admissions information, paired with the Yomeru wordmark.</desc>
+  <path d="M18 76V44c0-15 10-26 24-26s24 11 24 26v32" fill="none" stroke="#6750A4" stroke-width="8" stroke-linecap="round"/>
+  <path d="M31 58h22" fill="none" stroke="#6750A4" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="42" cy="76" r="6" fill="#FFC107"/>
+  <text x="94" y="48" fill="#1C1B1F" font-family="'Noto Serif JP','Noto Serif SC',serif" font-size="30" font-weight="650" letter-spacing="0">読める</text>
+  <text x="96" y="72" fill="#625B71" font-family="'Noto Sans SC','Noto Sans JP',sans-serif" font-size="14" font-weight="500" letter-spacing="0">日本への入口をひらく</text>
+</svg>

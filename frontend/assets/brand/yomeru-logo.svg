@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="104" viewBox="0 0 360 104" role="img" aria-labelledby="title desc">
+  <title id="title">Yomeru logo</title>
+  <desc id="desc">The Yomeru Y-Route mark paired with the Yomeru wordmark.</desc>
+  <path d="M50 82V55" fill="none" stroke="#6750A4" stroke-width="8.5" stroke-linecap="round"/>
+  <path d="M50 55 30 35" fill="none" stroke="#6750A4" stroke-width="8.5" stroke-linecap="round"/>
+  <path d="M50 55 72 32" fill="none" stroke="#6750A4" stroke-width="8.5" stroke-linecap="round"/>
+  <circle cx="50" cy="55" r="5.2" fill="#6750A4"/>
+  <text x="112" y="48" fill="#1C1B1F" font-family="'Noto Serif JP','Noto Serif SC',serif" font-size="30" font-weight="650" letter-spacing="0">読める</text>
+  <text x="114" y="72" fill="#625B71" font-family="'Noto Sans SC','Noto Sans JP',sans-serif" font-size="14" font-weight="500" letter-spacing="0">読む道をひらく</text>
+</svg>

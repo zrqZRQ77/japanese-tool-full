@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="104" height="104" viewBox="0 0 104 104" role="img" aria-labelledby="title">
+  <title id="title">Y Path mark</title>
+  <path d="M25 24l27 29 27-29" fill="none" stroke="#6750A4" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M52 53v31" fill="none" stroke="#6750A4" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="52" cy="84" r="7" fill="#FFC107"/>
+  <circle cx="52" cy="53" r="6" fill="#FFFBFE" stroke="#6750A4" stroke-width="4"/>
+</svg>

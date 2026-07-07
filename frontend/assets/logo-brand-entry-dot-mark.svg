@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="104" height="104" viewBox="0 0 104 104" role="img" aria-labelledby="title">
+  <title id="title">Entry Dot mark</title>
+  <path d="M76 28H45c-17 0-28 10-28 24s11 24 28 24h31" fill="none" stroke="#6750A4" stroke-width="10" stroke-linecap="round"/>
+  <path d="M41 52h39" fill="none" stroke="#6750A4" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="41" cy="52" r="7" fill="#FFC107"/>
+  <circle cx="81" cy="52" r="5" fill="#6750A4"/>
+</svg>

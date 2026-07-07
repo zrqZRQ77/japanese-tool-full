@@ -1,0 +1,10 @@
+audit-screenshots/**/*.png
+audit-screenshots/**/*.json
+node_modules/
+npm-debug.log*
+*.log
+tmp/
+pdfs/
+*.png
+*.html
+.DS_Store

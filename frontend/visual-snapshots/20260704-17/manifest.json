@@ -1,0 +1,80 @@
+{
+  "version": "20260704-17",
+  "createdAt": "2026-07-04T12:24:03.251Z",
+  "ok": true,
+  "mode": "in-app-browser-localhost-clicked-navigation-and-search",
+  "retention": "keep latest two visual-snapshots versions",
+  "screenshots": [
+    {
+      "page": "首页",
+      "file": "01-home.png",
+      "state": {
+        "view": "reading",
+        "firstVisit": true
+      }
+    },
+    {
+      "page": "阅读页",
+      "file": "02-reading.png",
+      "state": {
+        "view": "reading",
+        "firstVisit": false
+      }
+    },
+    {
+      "page": "生词本",
+      "file": "03-vocab.png",
+      "state": {
+        "view": "vocab"
+      }
+    },
+    {
+      "page": "语法本",
+      "file": "04-grammar.png",
+      "state": {
+        "view": "grammar"
+      }
+    },
+    {
+      "page": "练习页",
+      "file": "05-practice.png",
+      "state": {
+        "view": "retell"
+      }
+    },
+    {
+      "page": "资料页",
+      "file": "06-discover.png",
+      "state": {
+        "view": "discover"
+      }
+    },
+    {
+      "page": "水平测试",
+      "file": "07-test.png",
+      "state": {
+        "firstVisit": false,
+        "title": "水平测试 · 読める",
+        "view": "test"
+      }
+    },
+    {
+      "page": "学习历史",
+      "file": "08-history.png",
+      "state": {
+        "firstVisit": false,
+        "title": "学习历史 · 読める",
+        "view": "history"
+      }
+    },
+    {
+      "page": "设置与帮助",
+      "file": "09-settings.png",
+      "state": {
+        "firstVisit": false,
+        "title": "阅读工作台 · 読める",
+        "view": "settings"
+      }
+    }
+  ]
+}

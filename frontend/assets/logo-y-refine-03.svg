@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">Y refine 03 folded route</title>
+  <desc id="desc">A refined folded Y line with equal branch lengths and a distinctive central turn.</desc>
+  <rect x="1" y="1" width="358" height="238" rx="8" fill="#FFFBFE" stroke="#CAC4D0"/>
+  <path d="M106 78h42c13 0 23 8 32 28 9-20 19-28 32-28h42" fill="none" stroke="#6750A4" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M180 106v84" fill="none" stroke="#6750A4" stroke-width="15" stroke-linecap="round"/>
+</svg>
