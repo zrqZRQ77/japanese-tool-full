@@ -4,6 +4,7 @@
     "check": "node tools/check.mjs",
     "bump-cache": "node tools/bump-cache.mjs",
     "visual:snapshot": "node tools/visual-snapshot.mjs",
+    "visual:snapshot:states": "node tools/visual-snapshot-states.mjs",
     "visual:prune": "node tools/prune-visual-snapshots.mjs"
   },
   "devDependencies": {

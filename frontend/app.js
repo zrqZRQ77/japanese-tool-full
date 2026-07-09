@@ -89,33 +89,133 @@ function toggleSidebar(forceExpanded) {
   setSidebarCollapsed(nextCollapsed);
 }
 
+const READING_DISPLAY_DEFAULTS = {
+  base: 22,
+  ruby: 12,
+  rubyGap: 0.16,
+  lineHeight: 2.0
+};
+
+const READING_DISPLAY_PRESETS = {
+  compact: {base: 18, ruby: 9, rubyGap: 0.12, lineHeight: 1.6},
+  standard: {base: 20, ruby: 10, rubyGap: 0.14, lineHeight: 1.8},
+  comfortable: READING_DISPLAY_DEFAULTS,
+  large: {base: 26, ruby: 14, rubyGap: 0.18, lineHeight: 2.2}
+};
+
+let readingDisplayBeforeOpen = null;
+
+function getReadingDisplayValues(){
+  return {
+    base: Number(document.getElementById('readingFontSizeInput')?.value || safeStorage.getItem('reading_font_size') || READING_DISPLAY_DEFAULTS.base),
+    ruby: Number(document.getElementById('rubyFontSizeInput')?.value || safeStorage.getItem('reading_ruby_font_size') || READING_DISPLAY_DEFAULTS.ruby),
+    rubyGap: Number(document.getElementById('readingRubyGapInput')?.value || safeStorage.getItem('reading_ruby_gap') || READING_DISPLAY_DEFAULTS.rubyGap),
+    lineHeight: Number(document.getElementById('readingLineHeightInput')?.value || safeStorage.getItem('reading_line_height') || READING_DISPLAY_DEFAULTS.lineHeight)
+  };
+}
+
+function normalizeReadingDisplayValues(values = {}){
+  return {
+    base: Math.min(40, Math.max(12, Number(values.base) || READING_DISPLAY_DEFAULTS.base)),
+    ruby: Math.min(24, Math.max(8, Number(values.ruby) || READING_DISPLAY_DEFAULTS.ruby)),
+    rubyGap: Math.min(0.32, Math.max(0.06, Number(values.rubyGap) || READING_DISPLAY_DEFAULTS.rubyGap)),
+    lineHeight: Math.min(2.4, Math.max(1.2, Number(values.lineHeight) || READING_DISPLAY_DEFAULTS.lineHeight))
+  };
+}
+
+function setReadingDisplayInputs(values){
+  const normalized = normalizeReadingDisplayValues(values);
+  const baseInput = document.getElementById('readingFontSizeInput');
+  const rubyInput = document.getElementById('rubyFontSizeInput');
+  const rubyGapInput = document.getElementById('readingRubyGapInput');
+  const lineHeightInput = document.getElementById('readingLineHeightInput');
+  if(baseInput) baseInput.value = String(normalized.base);
+  if(rubyInput) rubyInput.value = String(normalized.ruby);
+  if(rubyGapInput) rubyGapInput.value = normalized.rubyGap.toFixed(2);
+  if(lineHeightInput) lineHeightInput.value = normalized.lineHeight.toFixed(1);
+  updateReadingDisplayLabels(normalized);
+  updateReadingDisplayPreview(normalized);
+  updateReadingDisplayPresetState(normalized);
+}
+
+function updateReadingDisplayLabels(values = getReadingDisplayValues()){
+  const normalized = normalizeReadingDisplayValues(values);
+  const baseCurrent = document.getElementById('readingFontSizeCurrent');
+  const rubyCurrent = document.getElementById('rubyFontSizeCurrent');
+  const rubyGapCurrent = document.getElementById('readingRubyGapCurrent');
+  const lineHeightCurrent = document.getElementById('readingLineHeightCurrent');
+  if(baseCurrent) baseCurrent.textContent = String(normalized.base);
+  if(rubyCurrent) rubyCurrent.textContent = String(normalized.ruby);
+  if(rubyGapCurrent) rubyGapCurrent.textContent = normalized.rubyGap.toFixed(2);
+  if(lineHeightCurrent) lineHeightCurrent.textContent = normalized.lineHeight.toFixed(1);
+}
+
+function updateReadingDisplayPreview(values = getReadingDisplayValues()){
+  const normalized = normalizeReadingDisplayValues(values);
+  const preview = document.getElementById('readingDisplayPreview');
+  if(!preview) return;
+  preview.style.setProperty('--preview-base-font', `${normalized.base}px`);
+  preview.style.setProperty('--preview-ruby-font', `${normalized.ruby}px`);
+  preview.style.setProperty('--preview-ruby-gap', `${normalized.rubyGap}em`);
+  preview.style.setProperty('--preview-line-height', normalized.lineHeight.toFixed(1));
+}
+
+function updateReadingDisplayPresetState(values = getReadingDisplayValues()){
+  const normalized = normalizeReadingDisplayValues(values);
+  document.querySelectorAll('.reading-display-preset-grid button').forEach(button=>{
+    const preset = READING_DISPLAY_PRESETS[button.dataset.preset];
+    const selected = preset
+      && normalized.base === preset.base
+      && normalized.ruby === preset.ruby
+      && Math.abs(normalized.rubyGap - preset.rubyGap) < 0.001
+      && Math.abs(normalized.lineHeight - preset.lineHeight) < 0.001;
+    button.classList.toggle('is-selected', Boolean(selected));
+  });
+}
+
+function setReadingDisplayCss(values){
+  const normalized = normalizeReadingDisplayValues(values);
+  document.documentElement.style.setProperty('--reading-base-font', `${normalized.base}px`);
+  document.documentElement.style.setProperty('--reading-ruby-font', `${normalized.ruby}px`);
+  document.documentElement.style.setProperty('--reading-ruby-gap', `${normalized.rubyGap}em`);
+  document.documentElement.style.setProperty('--reading-line-height', normalized.lineHeight.toFixed(1));
+  setReadingDisplayInputs(normalized);
+}
+
+function persistReadingDisplayValues(values){
+  const normalized = normalizeReadingDisplayValues(values);
+  safeStorage.setItem('reading_font_size', String(normalized.base));
+  safeStorage.setItem('reading_ruby_font_size', String(normalized.ruby));
+  safeStorage.setItem('reading_ruby_gap', normalized.rubyGap.toFixed(2));
+  safeStorage.setItem('reading_line_height', normalized.lineHeight.toFixed(1));
+}
+
 function applyReadingFontSize(baseSize, rubySize){
   const base = Math.min(40, Math.max(12, Number(baseSize) || 20));
   const ruby = Math.min(24, Math.max(8, Number(rubySize) || 10));
-  document.documentElement.style.setProperty('--reading-base-font', `${base}px`);
-  document.documentElement.style.setProperty('--reading-ruby-font', `${ruby}px`);
-  const baseInput = document.getElementById('readingFontSizeInput');
-  const rubyInput = document.getElementById('rubyFontSizeInput');
-  if(baseInput) baseInput.value = String(base);
-  if(rubyInput) rubyInput.value = String(ruby);
-  const baseCurrent = document.getElementById('readingFontSizeCurrent');
-  const rubyCurrent = document.getElementById('rubyFontSizeCurrent');
-  if(baseCurrent) baseCurrent.textContent = String(base);
-  if(rubyCurrent) rubyCurrent.textContent = String(ruby);
+  const current = getReadingDisplayValues();
+  setReadingDisplayCss({...current, base, ruby});
 }
 
 function updateReadingFontSize(){
   const base = Number(document.getElementById('readingFontSizeInput')?.value || 20);
   const ruby = Number(document.getElementById('rubyFontSizeInput')?.value || 10);
-  applyReadingFontSize(base, ruby);
-  safeStorage.setItem('reading_font_size', String(base));
-  safeStorage.setItem('reading_ruby_font_size', String(ruby));
+  const current = {...getReadingDisplayValues(), base, ruby};
+  setReadingDisplayCss(current);
+  persistReadingDisplayValues(current);
+}
+
+function updateReadingDisplayDraft(){
+  const values = getReadingDisplayValues();
+  updateReadingDisplayLabels(values);
+  updateReadingDisplayPreview(values);
+  updateReadingDisplayPresetState(values);
 }
 
 function setReadingFontSize(kind, value, button){
   const input = document.getElementById(kind === 'ruby' ? 'rubyFontSizeInput' : 'readingFontSizeInput');
   if(input) input.value = String(value);
-  updateReadingFontSize();
+  updateReadingDisplayDraft();
 }
 
 function stepReadingFontSize(kind, direction){
@@ -133,22 +233,59 @@ function applyReadingLineHeight(value){
   const current = document.getElementById('readingLineHeightCurrent');
   if(input) input.value = normalized;
   if(current) current.textContent = normalized;
+  updateReadingDisplayPreview({...getReadingDisplayValues(), lineHeight});
+  updateReadingDisplayPresetState({...getReadingDisplayValues(), lineHeight});
 }
 
 function stepReadingLineHeight(direction){
   const input = document.getElementById('readingLineHeightInput');
   const current = Number(input?.value || 1.8);
   const next = current + (Number(direction) || 0) * 0.1;
-  applyReadingLineHeight(next);
-  safeStorage.setItem('reading_line_height', document.getElementById('readingLineHeightInput')?.value || '1.8');
+  if(input) input.value = next.toFixed(1);
+  updateReadingDisplayDraft();
 }
 
 function initReadingFontSize(){
-  applyReadingFontSize(
-    safeStorage.getItem('reading_font_size') || 20,
-    safeStorage.getItem('reading_ruby_font_size') || 10
-  );
-  applyReadingLineHeight(safeStorage.getItem('reading_line_height') || 1.8);
+  setReadingDisplayCss({
+    base: safeStorage.getItem('reading_font_size') || READING_DISPLAY_DEFAULTS.base,
+    ruby: safeStorage.getItem('reading_ruby_font_size') || READING_DISPLAY_DEFAULTS.ruby,
+    rubyGap: safeStorage.getItem('reading_ruby_gap') || READING_DISPLAY_DEFAULTS.rubyGap,
+    lineHeight: safeStorage.getItem('reading_line_height') || READING_DISPLAY_DEFAULTS.lineHeight
+  });
+}
+
+function openReadingDisplaySettings(){
+  const modal = document.getElementById('readingDisplayModal');
+  readingDisplayBeforeOpen = getReadingDisplayValues();
+  setReadingDisplayInputs(readingDisplayBeforeOpen);
+  setDialogVisibility(modal, true, document.getElementById('readingFontSizeInput'));
+  document.getElementById('readingFontSettingsButton')?.classList.add('is-active');
+}
+
+function closeReadingDisplaySettings(){
+  if(readingDisplayBeforeOpen) setReadingDisplayInputs(readingDisplayBeforeOpen);
+  setDialogVisibility(document.getElementById('readingDisplayModal'), false);
+  document.getElementById('readingFontSettingsButton')?.classList.remove('is-active');
+  readingDisplayBeforeOpen = null;
+}
+
+function applyReadingDisplayPreset(name){
+  const preset = READING_DISPLAY_PRESETS[name];
+  if(!preset) return;
+  setReadingDisplayInputs(preset);
+}
+
+function resetReadingDisplaySettings(){
+  setReadingDisplayInputs(READING_DISPLAY_DEFAULTS);
+}
+
+function applyReadingDisplaySettings(){
+  const values = getReadingDisplayValues();
+  setReadingDisplayCss(values);
+  persistReadingDisplayValues(values);
+  setDialogVisibility(document.getElementById('readingDisplayModal'), false);
+  document.getElementById('readingFontSettingsButton')?.classList.remove('is-active');
+  readingDisplayBeforeOpen = null;
 }
 
 function toggleParagraphTranslation(){
@@ -169,15 +306,19 @@ function toggleReaderSmartSegmentation(){
 function toggleReadingInsights(){
   const button = document.getElementById('readingAnalysisButton');
   if(!button) return;
-  const levelLabel = button.dataset.analysisLevel || '';
-  if(!levelLabel){
-    button.textContent = '分析';
-    button.classList.remove('is-active');
+  const state = button.dataset.analysisState || '';
+  if(state === 'loading') return;
+  if(state === 'ready') return;
+  if(LAST_READING_ANALYSIS){
+    scheduleReadingDifficultyAnalysis(LAST_READING_ANALYSIS, 0);
     return;
   }
-  const showLevel = !button.classList.contains('is-active');
-  button.textContent = showLevel ? levelLabel : '分析';
-  button.classList.toggle('is-active', showLevel);
+  if(CURRENT_ARTICLE_TEXT.trim()){
+    setReadingDifficultyButtonState('error');
+    showToast('还没有可用的难度结果，请重新导入或稍后再试。', 'warning');
+    return;
+  }
+  setReadingDifficultyButtonState('idle');
 }
 
 function speakCurrentReading(trigger){
@@ -329,7 +470,7 @@ function setDialogVisibility(dialog, isOpen, focusTarget){
 }
 
 function activeDialogRoot(){
-  return ['deleteConfirmModal', 'retellPermissionModal', 'importPreviewModal', 'exportModal', 'menuPanel']
+  return ['deleteConfirmModal', 'retellPermissionModal', 'readingDisplayModal', 'importPreviewModal', 'exportModal', 'menuPanel']
     .map(id => document.getElementById(id))
     .find(el => el?.classList.contains('active')) || null;
 }
@@ -357,6 +498,8 @@ function closeTopLayer(){
   if(deleteModal?.classList.contains('active')){ closeDeleteConfirm(); return true; }
   const retellModal = document.getElementById('retellPermissionModal');
   if(retellModal?.classList.contains('active')){ closeRetellPermissionModal(); return true; }
+  const readingDisplayModal = document.getElementById('readingDisplayModal');
+  if(readingDisplayModal?.classList.contains('active')){ closeReadingDisplaySettings(); return true; }
   const importModal = document.getElementById('importPreviewModal');
   if(importModal?.classList.contains('active')){ closeImportPreview(); return true; }
   const exportModal = document.getElementById('exportModal');
@@ -366,9 +509,49 @@ function closeTopLayer(){
   return false;
 }
 
+function ensureDeleteConfirmModal(){
+  let modal = document.getElementById('deleteConfirmModal');
+  if(modal) return modal;
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+    <div class="delete-confirm-modal" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="deleteConfirmTitle" inert>
+      <div class="delete-confirm-dialog">
+        <div class="delete-confirm-head">
+          <span class="delete-confirm-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 8v5"></path><path d="M12 16.5h.01"></path><path d="M10.3 4.6 2.8 18a1.6 1.6 0 0 0 1.4 2.4h15.6a1.6 1.6 0 0 0 1.4-2.4L13.7 4.6a1.9 1.9 0 0 0-3.4 0Z"></path></svg>
+          </span>
+          <div>
+            <span class="module-kicker" id="deleteConfirmKicker">操作确认</span>
+            <strong id="deleteConfirmTitle">确认操作？</strong>
+          </div>
+          <button class="delete-confirm-close" type="button" onclick="closeDeleteConfirm()" aria-label="关闭确认窗口">×</button>
+        </div>
+        <div class="delete-confirm-body">
+          <p id="deleteConfirmMessage">请确认后继续。</p>
+          <div class="delete-confirm-target is-hidden" id="deleteConfirmTarget"></div>
+        </div>
+        <div class="delete-confirm-actions">
+          <button class="btn-secondary delete-confirm-cancel" id="deleteConfirmCancel" type="button" onclick="closeDeleteConfirm()">取消</button>
+          <button class="btn-primary delete-confirm-submit" id="deleteConfirmSubmit" type="button" onclick="runDeleteConfirm()">确认</button>
+        </div>
+      </div>
+    </div>
+  `.trim();
+  modal = wrapper.firstElementChild;
+  if(!(modal instanceof HTMLElement)) return null;
+  modal.addEventListener('click', event=>{
+    if(event.target === event.currentTarget) closeDeleteConfirm();
+  });
+  document.body.appendChild(modal);
+  return modal;
+}
+
 function confirmDeletion(options, action){
-  const modal = document.getElementById('deleteConfirmModal');
-  if(!modal || typeof action !== 'function') return;
+  const modal = ensureDeleteConfirmModal();
+  if(!modal || typeof action !== 'function'){
+    showToast('确认窗口没有加载，请刷新后重试。', 'error');
+    return;
+  }
   const settings = typeof options === 'string' ? {message:options} : (options || {});
   const title = document.getElementById('deleteConfirmTitle');
   const message = document.getElementById('deleteConfirmMessage');
@@ -377,7 +560,7 @@ function confirmDeletion(options, action){
   const kicker = document.getElementById('deleteConfirmKicker');
   if(title) title.textContent = settings.title || '确认删除？';
   if(message) message.textContent = settings.message || '删除后将无法撤销，请确认后继续。';
-  if(kicker) kicker.textContent = settings.kicker || (settings.intent === 'neutral' ? '操作确认' : '删除确认');
+  if(kicker) kicker.textContent = Object.prototype.hasOwnProperty.call(settings, 'kicker') ? settings.kicker : (settings.intent === 'neutral' ? '操作确认' : '删除确认');
   if(target){
     target.textContent = settings.target || '';
     target.classList.toggle('is-hidden', !settings.target);
@@ -444,9 +627,15 @@ function syncVocabPanelData() {
   });
   const primaryAction = document.getElementById('vocabPrimaryAction');
   if(primaryAction){
-    primaryAction.textContent = !vocab.length
-      ? '去阅读并收藏'
-      : '开始闪卡';
+    const label = !vocab.length ? '去阅读并收藏' : '闪卡复习';
+    primaryAction.innerHTML = `
+      <span class="vocab-primary-action-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M6 3.5h9.5l2.5 5v12H6v-17Z"></path><path d="M15.5 3.5v5H18"></path><path d="M9.2 13.2h5.6"></path><path d="M12 10.4V16"></path></svg>
+      </span>
+      <span>${label}</span>
+    `;
+    primaryAction.setAttribute('aria-label', label);
+    primaryAction.dataset.tooltip = label;
     primaryAction.classList.toggle('btn-primary', !vocab.length || dueCount > 0);
     primaryAction.classList.toggle('btn-secondary', vocab.length > 0 && dueCount === 0);
   }
@@ -906,6 +1095,7 @@ let CURRENT_ARTICLE_URL = '';
 let CURRENT_ARTICLE_PRACTICE_KEY = '';
 let SHOW_PARAGRAPH_TRANSLATION = false;
 let READING_QUIZ_ITEMS = [];
+let READING_QUIZ_CURRENT_INDEX = 0;
 let READING_QUIZ_ATTEMPT_RECORDED = false;
 let READING_QUIZ_HAS_RESULT = false;
 let READING_QUIZ_HISTORY = loadReadingQuizHistory();
@@ -915,6 +1105,7 @@ let RETELL_MEDIA_RECORDER = null;
 let RETELL_AUDIO_CHUNKS = [];
 let RETELL_AUDIO_URL = null;
 let RETELL_PERMISSION_TRIGGER = null;
+let RETELL_SPEAKING = false;
 
 let KUROMOJI_TOKENIZER = null;
 let KUROMOJI_LOADING = null;
@@ -1420,7 +1611,7 @@ function dailyTaskState(){
     {
       type:'practice',
       title:goals.practiceTarget <= 0 ? '练习今日休息' : goals.practiceTarget > 1 ? `完成 ${goals.practiceTarget} 次练习` : '完成一次练习',
-      detail:goals.practiceTarget <= 0 ? '今天不安排练习任务' : hasEnoughPractice ? `已做 ${exerciseCount}/${goals.practiceTarget} 次` : `已做 ${exerciseCount}/${goals.practiceTarget}，文章理解或基础句型`,
+      detail:goals.practiceTarget <= 0 ? '今天不安排练习任务' : hasEnoughPractice ? `已做 ${exerciseCount}/${goals.practiceTarget} 次` : `已做 ${exerciseCount}/${goals.practiceTarget}，文章理解或句型打字`,
       done:hasEnoughPractice,
       action:'去练习'
     }
@@ -1460,7 +1651,7 @@ function guidedPathSteps(){
     {
       type:'practice',
       title:'做一次练习',
-      detail:(vocabPracticeCount + exerciseCount) ? '今天已经开始练习' : '文章理解、生词或基础句型任选一种',
+      detail:(vocabPracticeCount + exerciseCount) ? '今天已经开始练习' : '文章理解、生词或句型打字任选一种',
       done:(vocabPracticeCount + exerciseCount) > 0,
       action:'去练习'
     },
@@ -1535,7 +1726,7 @@ const GLOBAL_SEARCH_ITEMS = [
   {label:'复习到期词', detail:'打开闪卡复习', keywords:'复习 闪卡 到期 生词', action:()=>startReview()},
   {label:'做文章理解练习', detail:'选择题和复述', keywords:'练习 文章 理解 选择题 复述', action:()=>focusPracticeModule('quiz')},
   {label:'练生词', detail:'打开生词本闪卡复习', keywords:'练习 生词 自测 闪卡', action:()=>switchWorkspace('vocab')},
-  {label:'练基础句型', detail:'N5-N4 打字题', keywords:'练习 句型 打字 N5 N4', action:()=>focusPracticeModule('typing')},
+  {label:'句型打字', detail:'按题库练习日语输出', keywords:'练习 句型 打字 输出', action:()=>focusPracticeModule('typing')},
   {label:'找阅读材料', detail:'按等级查看推荐来源', keywords:'找材料 来源 下一篇', action:()=>switchWorkspace('discover')},
   {label:'水平测试', detail:'3 分钟定位阅读等级', keywords:'水平 测试 等级 JLPT', action:()=>switchWorkspace('test')},
   {label:'学习历史', detail:'查看最近文章和 7 天进度', keywords:'历史 记录 进度 七天', action:()=>switchWorkspace('history')},
@@ -1672,25 +1863,25 @@ function readingQueueFallbackTitle(url){
   }
 }
 
-function setReadingQueueStatus(message, type = ''){
-  const target = document.getElementById('readingQueueStatus');
+function setReadingQueueStatus(message, type = '', targetId = 'readingQueueStatus'){
+  const target = document.getElementById(targetId);
   if(!target) return;
   target.textContent = message;
   target.className = `reading-queue-status ${type}`.trim();
 }
 
-function addReadingQueueItem(event){
+function addReadingQueueItem(event, titleId = 'readingQueueTitleInput', urlId = 'readingQueueUrlInput', statusId = 'readingQueueStatus'){
   event?.preventDefault();
-  const titleInput = document.getElementById('readingQueueTitleInput');
-  const urlInput = document.getElementById('readingQueueUrlInput');
+  const titleInput = document.getElementById(titleId);
+  const urlInput = document.getElementById(urlId);
   const url = readingQueueUrl(urlInput?.value);
   if(!url){
-    setReadingQueueStatus('请输入以 http:// 或 https:// 开头的有效文章链接。', 'error');
+    setReadingQueueStatus('请输入以 http:// 或 https:// 开头的有效文章链接。', 'error', statusId);
     urlInput?.focus();
     return;
   }
   if(READING_QUEUE.some(item => item.url === url)){
-    setReadingQueueStatus('这篇文章已经在阅读清单里。', 'error');
+    setReadingQueueStatus('这篇文章已经在阅读清单里。', 'error', statusId);
     return;
   }
   READING_QUEUE.unshift({
@@ -1704,7 +1895,7 @@ function addReadingQueueItem(event){
   saveReadingQueue();
   if(titleInput) titleInput.value = '';
   if(urlInput) urlInput.value = '';
-  setReadingQueueStatus('已加入阅读清单。', 'ok');
+  setReadingQueueStatus('已加入阅读清单。', 'ok', statusId);
   renderReadingQueue();
   renderDailyPlan();
 }
@@ -1720,6 +1911,11 @@ function renderReadingQueue(){
   const unreadCount = sorted.filter(item => item.status !== 'read').length;
   const readCount = sorted.length - unreadCount;
   count.textContent = `${unreadCount} 篇未读`;
+  const panel = document.getElementById('readingQueuePanel');
+  if(panel){
+    panel.classList.toggle('is-empty', !sorted.length);
+    panel.classList.toggle('has-items', Boolean(sorted.length));
+  }
   const savedStat = document.getElementById('resourceSavedCount');
   const unreadStat = document.getElementById('resourceUnreadCount');
   const readStat = document.getElementById('resourceReadCount');
@@ -1729,15 +1925,7 @@ function renderReadingQueue(){
   if(readStat) readStat.textContent = String(readCount);
   if(sourceStat) sourceStat.textContent = String(READING_SOURCES.length);
   if(!sorted.length){
-    list.innerHTML = `
-      <div class="reading-queue-empty discover-empty-card">
-        <span aria-hidden="true"></span>
-        <div>
-          <h3>还没有收藏的文章</h3>
-          <p>粘贴任意日语文章链接，加入清单后可随时回来继续阅读 —— 或者直接从下方「分级阅读」「精选来源」中挑一篇开始</p>
-        </div>
-      </div>
-    `;
+    list.innerHTML = '';
     return;
   }
   list.innerHTML = sorted.map(item => `
@@ -1818,9 +2006,9 @@ function markActiveReadingQueueRead(){
   renderReadingQueue();
 }
 
-const SOURCE_LEVEL_FILTERS = ['N5', 'N4', 'N3', 'N2', 'N1'];
-let ACTIVE_SOURCE_LEVEL = 'N5';
-const SOURCE_TYPE_FILTERS = ['全部', '新闻', '生活', '旅行', '文化', '文学'];
+const SOURCE_LEVEL_FILTERS = ['全部', 'N5', 'N4', 'N3', 'N2', 'N1'];
+let ACTIVE_SOURCE_LEVEL = '全部';
+const SOURCE_TYPE_FILTERS = ['全部', '新闻', '生活', '旅行', '美食', '故事', '商业', '文化', '科技'];
 let ACTIVE_SOURCE_TYPE = '全部';
 const GRADED_LEVEL_FILTERS = ['全部', 'N5', 'N4', 'N3', 'N2', 'N1'];
 const GRADED_TOPIC_FILTERS = ['全部', '新闻', '科技', '生活', '旅行', '美食', '商业'];
@@ -1898,86 +2086,108 @@ const GRADED_READING_MATERIALS = [
 
 const READING_SOURCES = [
   {
-    level:'N5-N4',
-    title:'NHK NEWS WEB EASY',
-    url:'https://www3.nhk.or.jp/news/easy/',
-    type:'简明新闻',
-    category:'新闻',
-    note:'真实新闻改写成较短句子，通常有假名和音频，适合从入门过渡到独立阅读。',
-    traits:['短新闻', '假名多', '每日更新']
-  },
-  {
+    id:'watanoc',
     level:'N5-N3',
-    title:'つながるひろがる 日本語でのくらし',
-    url:'https://tsunagarujp.bunka.go.jp/',
-    type:'生活日语',
-    category:'生活',
-    note:'围绕日本生活场景组织内容，句子更实用，适合积累日常表达和固定搭配。',
-    traits:['生活场景', '表达基础', '适合精读']
-  },
-  {
-    level:'N4-N3',
-    title:'やさしい日本語ニュース',
-    url:'https://www3.nhk.or.jp/news/easy/',
-    type:'稳定新闻练习',
+    title:'Watanoc わたのC',
+    url:'https://watanoc.com/',
+    domain:'watanoc.com',
+    type:'やさしい日本語',
     category:'新闻',
-    note:'题材覆盖社会、天气、文化和校园生活，适合每天选一篇做阅读理解。',
-    traits:['题材稳定', '信息清楚', '适合复述']
+    note:'免费的やさしい日本语新闻/生活杂志，文章标题直接标注 N5/N4/N3 等级，汉字全部配假名。',
+    traits:['新闻', '生活', '不定期更新'],
+    icon:'W'
   },
   {
-    level:'N3-N2',
-    title:'MATCHA 日本語',
-    url:'https://matcha-jp.com/jp',
+    id:'nhk-world',
+    level:'N3-N1',
+    title:'NHK WORLD-JAPAN',
+    url:'https://www3.nhk.or.jp/nhkworld/',
+    domain:'nhk.or.jp',
+    type:'多语言新闻',
+    category:'新闻',
+    note:'NHK 面向海外发布的多语言新闻站点，可让日语原文与其他语言版本对照阅读。',
+    traits:['新闻', '商业', '每日更新'],
+    caution:'NHK NEWS WEB EASY 自 2025 年起改为付费服务，不建议再作为免费入口推荐。',
+    icon:'N'
+  },
+  {
+    id:'matcha-easy',
+    level:'N5-N3',
+    title:'MATCHA やさしい日本语版',
+    url:'https://matcha-jp.com/easy/',
+    domain:'matcha-jp.com',
     type:'旅行文化',
     category:'旅行',
-    note:'旅游、文化和城市介绍较多，词汇生活化，适合练习较长段落和说明文。',
-    traits:['文化主题', '段落更长', '生活词汇']
+    note:'面向访日外国人的やさしい日本语版，覆盖饮品、街区、观光路线和日常小知识。',
+    traits:['旅行', '美食', '持续更新'],
+    icon:'旅'
   },
   {
-    level:'N2-N1',
-    title:'Nippon.com 日本語',
-    url:'https://www.nippon.com/ja/',
-    type:'社会文化',
-    category:'文化',
-    note:'社会、历史、文化评论更多，句式和信息密度更高，适合进阶阅读。',
-    traits:['信息密度高', '抽象词多', '适合泛读']
+    id:'yomujp',
+    level:'N6-N1',
+    title:'日本语多读道场 Yomujp',
+    url:'https://yomujp.com/',
+    domain:'yomujp.com',
+    type:'多读文章',
+    category:'生活',
+    note:'按 JLPT 等级分类的多读文章站，题材涵盖地理、饮食、动植物、文化历史和汉字部首。',
+    traits:['生活', '科技', '近乎每周更新'],
+    caution:'站内部分深度内容为付费订阅，阅读时需区分免费/付费文章。',
+    icon:'読'
+  },
+  {
+    id:'tadoku',
+    level:'N5-N3',
+    title:'たどく Tadoku 分级读物库',
+    url:'https://tadoku.org/japanese/en/graded-readers-en/',
+    domain:'tadoku.org',
+    type:'分级读物',
+    category:'故事',
+    note:'专为多读法设计的分级绘本/故事库，配图丰富，部分附朗读音频。',
+    traits:['故事', '生活', '定期新增'],
+    caution:'部分书目为纸质出版物链接，线上可读内容和购买链接需分开处理。',
+    icon:'本'
   },
   {
     level:'N1',
-    title:'青空文庫',
-    url:'https://www.aozora.gr.jp/',
-    type:'文学作品',
-    category:'文学',
-    note:'公开版权文学作品，词汇和句式跨度大，适合高阶读者做长期阅读。',
-    traits:['文学文本', '旧式表达', '长篇阅读']
+    id:'toyokeizai',
+    title:'东洋经济 Online',
+    url:'https://toyokeizai.net/',
+    domain:'toyokeizai.net',
+    type:'财经媒体',
+    category:'商业',
+    note:'覆盖企业动态、产业分析、宏观经济报道，用词专业正式，适合 N1 水平学习者泛读。',
+    traits:['商业', '每日更新', '高难度'],
+    caution:'存在广告拦截检测机制和部分付费内容，建议先作为外链入口，不强求站内全文抓取。',
+    icon:'経'
   }
 ];
 
 const SOURCE_RECOMMENDATIONS = {
   'N5': [
-    {title:'今天选 1 篇 NHK Easy 短新闻', source:'NHK NEWS WEB EASY', detail:'优先选标题看得懂、篇幅短的新闻，读完后做选择题。', url:'https://www3.nhk.or.jp/news/easy/'},
-    {title:'生活场景：学校・买东西・医院', source:'つながるひろがる', detail:'适合把常用动词和礼貌体整理进生词本。', url:'https://tsunagarujp.bunka.go.jp/'},
-    {title:'天气或季节类短文', source:'やさしい日本語ニュース', detail:'词汇重复率高，适合第一次建立阅读节奏。', url:'https://www3.nhk.or.jp/news/easy/'}
+    {title:'今天选 1 篇 Watanoc 短文', source:'Watanoc わたのC', detail:'优先选标题标注 N5/N4 的文章，读完后做选择题。', url:'https://watanoc.com/'},
+    {title:'读一篇 Tadoku 入门故事', source:'たどく Tadoku', detail:'图片和上下文多，适合不查太多词也能读完一篇。', url:'https://tadoku.org/japanese/en/graded-readers-en/'},
+    {title:'旅行生活短文', source:'MATCHA やさしい日本语版', detail:'看饮食、地点、交通类文章，词汇更贴近日常。', url:'https://matcha-jp.com/easy/'}
   ],
   'N4': [
-    {title:'NHK Easy 社会生活新闻', source:'NHK NEWS WEB EASY', detail:'句子不太长，但信息量比入门短文更完整。', url:'https://www3.nhk.or.jp/news/easy/'},
-    {title:'日本生活专题', source:'つながるひろがる', detail:'适合练习“原因、建议、说明”这类常见表达。', url:'https://tsunagarujp.bunka.go.jp/'},
-    {title:'MATCHA 简短旅行文章', source:'MATCHA', detail:'看地点、交通、饮食类文章，词汇更贴近日常。', url:'https://matcha-jp.com/jp'}
+    {title:'Watanoc 生活新闻', source:'Watanoc わたのC', detail:'句子不太长，但信息量比入门短文更完整。', url:'https://watanoc.com/category/japan-news'},
+    {title:'Yomujp 生活专题', source:'日本语多读道场 Yomujp', detail:'适合练习“原因、建议、说明”这类常见表达。', url:'https://yomujp.com/'},
+    {title:'MATCHA 简短旅行文章', source:'MATCHA やさしい日本语版', detail:'看地点、交通、饮食类文章，词汇更贴近日常。', url:'https://matcha-jp.com/easy/'}
   ],
   'N3': [
-    {title:'MATCHA 城市/文化介绍', source:'MATCHA', detail:'段落更长，适合训练抓主旨和段落结构。', url:'https://matcha-jp.com/jp'},
-    {title:'Nippon.com 轻专题', source:'Nippon.com', detail:'先选文化类，难度通常比评论类更友好。', url:'https://www.nippon.com/ja/'},
-    {title:'新闻专题精读', source:'NHK Easy / 普通新闻', detail:'同一主题连续读 2–3 篇，训练主题词复现。', url:'https://www3.nhk.or.jp/news/easy/'}
+    {title:'MATCHA 城市/文化介绍', source:'MATCHA やさしい日本语版', detail:'段落更长，适合训练抓主旨和段落结构。', url:'https://matcha-jp.com/easy/'},
+    {title:'Yomujp 文化类文章', source:'日本语多读道场 Yomujp', detail:'先选生活文化类，难度通常比评论类更友好。', url:'https://yomujp.com/'},
+    {title:'新闻专题精读', source:'Watanoc / NHK WORLD-JAPAN', detail:'同一主题连续读 2–3 篇，训练主题词复现。', url:'https://watanoc.com/'}
   ],
   'N2': [
-    {title:'Nippon.com 社会文化文章', source:'Nippon.com', detail:'适合积累抽象名词、连接表达和评论语气。', url:'https://www.nippon.com/ja/'},
-    {title:'MATCHA 深度文化文章', source:'MATCHA', detail:'从轻主题过渡到长句说明文，压力较小。', url:'https://matcha-jp.com/jp'},
-    {title:'青空文庫短篇开头', source:'青空文庫', detail:'先读开头 3–5 段，不必一口气读完整篇。', url:'https://www.aozora.gr.jp/'}
+    {title:'NHK WORLD-JAPAN 新闻', source:'NHK WORLD-JAPAN', detail:'适合积累抽象名词、连接表达和正式报道语气。', url:'https://www3.nhk.or.jp/nhkworld/'},
+    {title:'Yomujp 深度文化文章', source:'日本语多读道场 Yomujp', detail:'从熟悉主题过渡到长句说明文，压力较小。', url:'https://yomujp.com/'},
+    {title:'商业新闻入门', source:'NHK WORLD-JAPAN', detail:'先选经济相关短报道，不必一口气读完整专题。', url:'https://www3.nhk.or.jp/nhkworld/'}
   ],
   'N1': [
-    {title:'青空文庫短篇文学', source:'青空文庫', detail:'适合训练复杂句、旧词和文学叙述节奏。', url:'https://www.aozora.gr.jp/'},
-    {title:'Nippon.com 评论/访谈', source:'Nippon.com', detail:'信息密度高，适合做复述和观点整理。', url:'https://www.nippon.com/ja/'},
-    {title:'同主题多来源对读', source:'进阶泛读', detail:'选择一个社会主题，连续读新闻、评论、文化介绍。', url:'https://www.nippon.com/ja/'}
+    {title:'东洋经济产业报道', source:'东洋经济 Online', detail:'适合训练专业词汇、抽象句和正式评论语气。', url:'https://toyokeizai.net/'},
+    {title:'NHK WORLD-JAPAN 经济报道', source:'NHK WORLD-JAPAN', detail:'信息密度高，适合做复述和观点整理。', url:'https://www3.nhk.or.jp/nhkworld/'},
+    {title:'同主题多来源对读', source:'进阶泛读', detail:'选择一个社会主题，连续读新闻、评论、文化介绍。', url:'https://www3.nhk.or.jp/nhkworld/'}
   ]
 };
 
@@ -2058,7 +2268,7 @@ async function loadSample(useGuidedTour = false){
     document.getElementById('inputText').value = FALLBACK_SAMPLE_TEXT;
   }
   await renderText();
-  setImportStatus('示例文章已生成。先点击正文里的高亮词，再加入生词本。', 'ok');
+  setImportStatus('');
   if(useGuidedTour) renderSampleFlow();
 }
 
@@ -2336,10 +2546,34 @@ function setPostAnalysisActionsVisible(visible){
 }
 
 function detailEmptyHtml(){
-  return `<div class="detail-empty detail-empty-smart">
-    <b>点击词语查看详解</b>
-    <span>读音、释义和收藏按钮会显示在这里。</span>
-  </div>`;
+  return defaultDetailExampleHtml();
+}
+
+function setReadingDetailCollapsed(collapsed){
+  document.body.classList.toggle('reading-detail-collapsed', !!collapsed);
+  const toggle = document.getElementById('readingDetailToggleBtn');
+  if(toggle){
+    const isOpen = !collapsed;
+    toggle.classList.toggle('is-active', isOpen);
+    toggle.setAttribute('aria-pressed', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? '隐藏详解' : '显示详解');
+    toggle.dataset.tooltip = isOpen ? '隐藏详解' : '显示详解';
+  }
+}
+
+function setReadingDetailVisible(visible){
+  setReadingDetailCollapsed(!visible);
+}
+
+function toggleReadingDetailPanel(){
+  setReadingDetailCollapsed(!document.body.classList.contains('reading-detail-collapsed'));
+}
+
+function resetReadingDetailPanel(){
+  const detailArea = document.getElementById('detailArea');
+  if(detailArea) detailArea.innerHTML = detailEmptyHtml();
+  setDetailHeadActions();
+  setReadingDetailCollapsed(false);
 }
 
 function updatePostReadingMilestone(){
@@ -3405,6 +3639,7 @@ async function renderText(){
     refreshRetellAdvice();
     setPostAnalysisActionsVisible(false);
     setReadingReady(false);
+    resetReadingDetailPanel();
     return;
   }
 
@@ -3413,6 +3648,7 @@ async function renderText(){
   refreshRetellAdvice();
   setPostAnalysisActionsVisible(true);
   setReadingReady(true);
+  resetReadingDetailPanel();
   renderSampleFlow();
 
   // 显示阅读辅助状态
@@ -3630,31 +3866,73 @@ function readingActionAdvice(summary, level){
   return '难度比较顺，适合快速阅读后做一次基础练习。';
 }
 
+let LAST_READING_ANALYSIS = null;
+let READING_DIFFICULTY_TIMER = null;
+
+function setReadingDifficultyButtonState(state, levelLabel = ''){
+  const button = document.getElementById('readingAnalysisButton');
+  if(!button) return;
+  button.dataset.analysisState = state || 'idle';
+  button.dataset.analysisLevel = levelLabel || '';
+  button.classList.toggle('is-active', state === 'ready');
+  button.classList.toggle('is-loading', state === 'loading');
+  button.setAttribute('aria-busy', String(state === 'loading'));
+  if(state === 'loading'){
+    button.textContent = '分析中…';
+    button.dataset.tooltip = '正在判断文章难度';
+    button.setAttribute('aria-label', '正在判断文章难度');
+  }else if(state === 'ready' && levelLabel){
+    button.textContent = levelLabel;
+    button.dataset.tooltip = `文章难度：${levelLabel}`;
+    button.setAttribute('aria-label', `文章难度：${levelLabel}`);
+  }else if(state === 'error'){
+    button.textContent = '点击分析';
+    button.dataset.tooltip = '重新判断文章难度';
+    button.setAttribute('aria-label', '重新判断文章难度');
+  }else{
+    button.textContent = '难度';
+    button.dataset.tooltip = '文章难度';
+    button.setAttribute('aria-label', '文章难度');
+  }
+}
+
+function scheduleReadingDifficultyAnalysis(summary, delay = 180){
+  LAST_READING_ANALYSIS = summary || null;
+  clearTimeout(READING_DIFFICULTY_TIMER);
+  if(!summary){
+    setReadingDifficultyButtonState('idle');
+    return;
+  }
+  setReadingDifficultyButtonState('loading');
+  READING_DIFFICULTY_TIMER = setTimeout(()=>{
+    try{
+      const level = estimateReadingLevel(summary);
+      setReadingDifficultyButtonState('ready', `${level.level}水平`);
+    }catch(error){
+      console.warn('难度分析失败', error);
+      setReadingDifficultyButtonState('error');
+    }
+  }, delay);
+}
+
 function renderReadingAnalysis(summary){
   const card = document.getElementById('readingAnalysisCard');
   const button = document.getElementById('readingAnalysisButton');
   if(!summary){
+    LAST_READING_ANALYSIS = null;
+    clearTimeout(READING_DIFFICULTY_TIMER);
     if(card){
       card.style.display = 'none';
       card.innerHTML = '';
     }
-    if(button){
-      button.textContent = '分析';
-      button.dataset.analysisLevel = '';
-      button.classList.remove('is-active');
-    }
+    setReadingDifficultyButtonState('idle');
     return;
   }
-  const level = estimateReadingLevel(summary);
   if(card){
     card.style.display = 'none';
     card.innerHTML = '';
   }
-  if(button){
-    button.dataset.analysisLevel = `${level.level}水平`;
-    button.textContent = '分析';
-    button.classList.remove('is-active');
-  }
+  if(button) scheduleReadingDifficultyAnalysis(summary);
 }
 
 function collectRubyUnits(){
@@ -3847,7 +4125,7 @@ function syncExportOptions(){
 async function runExport(){
   const format = selectedExportFormat();
   const layout = selectedExportLayout();
-  setExportBusy(true, '正在下载，请稍候……');
+  setExportBusy(true, '');
   try{
     await new Promise(resolve=>setTimeout(resolve, 30));
     if(format === 'png'){
@@ -3855,11 +4133,10 @@ async function runExport(){
     } else {
       await downloadRubyPptx(layout);
     }
-    setExportBusy(false, '下载已开始。');
+    setExportBusy(false, '');
   }catch(error){
-    const message = error?.message || '导出失败。';
-    setExportBusy(false, `${message} 请确认已经分析文本；如果导出库加载失败，请联网刷新后重试。`);
-    showToast('导出失败，请查看导出面板提示。', 'error');
+    setExportBusy(false, error?.message || '导出失败');
+    showToast('导出失败', 'error');
   }finally{
     setTimeout(()=>setExportBusy(false, ''), 1800);
   }
@@ -3871,7 +4148,7 @@ function setExportBusy(isBusy, message){
   if(status) status.textContent = message || '';
   if(button){
     button.disabled = isBusy;
-    button.textContent = isBusy ? '处理中……' : '下载';
+    button.textContent = isBusy ? '下载中' : '下载';
   }
 }
 
@@ -4587,6 +4864,10 @@ function selectReadingWord(el){
   document.querySelectorAll('.w.active').forEach(n=>n.classList.remove('active', 'is-just-selected'));
   if(!el) return;
   el.classList.add('active', 'is-just-selected');
+  el.setAttribute('aria-current', 'true');
+  document.querySelectorAll('.w[aria-current="true"]').forEach(node=>{
+    if(node !== el) node.removeAttribute('aria-current');
+  });
   clearTimeout(el._readingSelectTimer);
   el._readingSelectTimer = setTimeout(()=>el.classList.remove('is-just-selected'), 260);
 }
@@ -4679,6 +4960,21 @@ function detailDefinitionHtml(meaning, id = ''){
   return `<div class="detail-definition"><span>释义</span><div class="detail-meaning"${idAttr}>${meaning}</div></div>`;
 }
 
+function defaultDetailExampleHtml(){
+  const word = '食べる';
+  const reading = 'たべる';
+  const meaning = '吃';
+  return `
+    <div class="detail-box detail-example-box">
+      <div class="detail-example-kicker">示例详解</div>
+      <p class="detail-example-note">点击正文中的词语后，这里会显示真实详解。</p>
+      ${detailWordHeaderHtml(word, `addCustomToVocab('${word}', '${reading}', '${meaning}', 'N5', '动词')`, `speakEncodedJapanese('${encodeURIComponent(word)}', this, false)`)}
+      ${detailMetaHtml(word, reading, 'N5', '动词')}
+      ${detailDefinitionHtml(escapeHtml(meaning))}
+    </div>
+  `;
+}
+
 function setDetailHeadActions(html = ''){
   const target = document.getElementById('detailHeadActions');
   if(target) target.innerHTML = html;
@@ -4691,9 +4987,10 @@ function showDetail(word, el){
   const info = DICT[word];
   if(!info) return;
   const area = document.getElementById('detailArea');
+  setReadingDetailVisible(true);
   setDetailHeadActions();
   area.innerHTML = `
-    <div class="detail-box">
+    <div class="detail-box detail-selected-box">
       ${detailWordHeaderHtml(word, `addToVocab('${word}')`, `speakEncodedJapanese('${encodeURIComponent(word)}', this, false)`)}
       ${detailMetaHtml(word, info.reading, LEVEL_LABEL[info.level], info.pos)}
       ${detailDefinitionHtml(escapeHtml(info.meaning))}
@@ -4711,9 +5008,10 @@ function showTokenDetail(tokenId, el){
   const { surface, info } = token;
   const needsLookup = info.source === 'kuromoji';
   const area = document.getElementById('detailArea');
+  setReadingDetailVisible(true);
   setDetailHeadActions();
   area.innerHTML = `
-    <div class="detail-box">
+    <div class="detail-box detail-selected-box">
       ${detailWordHeaderHtml(surface, `addTokenToVocab(${tokenId})`, `speakEncodedJapanese('${encodeURIComponent(surface)}', this, false)`)}
       ${detailMetaHtml(surface, info.reading, LEVEL_LABEL[info.level], info.pos, token)}
       ${detailDefinitionHtml(needsLookup ? '正在查询词典……' : escapeHtml(info.meaning), `tokenMeaning-${tokenId}`)}
@@ -4762,6 +5060,7 @@ function showFootnoteDetail(id){
   const note = footnoteForId(id);
   if(!note) return;
   const area = document.getElementById('detailArea');
+  setReadingDetailVisible(true);
   setDetailHeadActions(detailIconActions(`addEncodedTextToVocab('${encodeURIComponent(note.text || '')}', 'PDF 脚注')`, `speakEncodedJapanese('${encodeURIComponent(note.text || '')}', this, false)`));
   area.innerHTML = `
     <div class="detail-box">
@@ -4813,6 +5112,7 @@ async function lookupSelectedText(){
 function showSelectedTextDetail(text){
   const area = document.getElementById('detailArea');
   if(!area) return;
+  setReadingDetailVisible(true);
   const local = DICT[text];
   const analysis = local
     ? `<b>${escapeHtml(local.reading)}</b> · ${escapeHtml(local.pos)}<br>${escapeHtml(local.meaning)}`
@@ -5100,7 +5400,7 @@ function checkTypingAnswer(){
     addPracticeReviewItem({
       key:reviewKey,
       type:'typing',
-      title:prompt.grammar || '基础句型打字',
+      title:prompt.grammar || '句型打字',
       prompt:prompt.cn || '',
       answer:prompt.ja || '',
       note:`最近正确率 ${score}%`,
@@ -5164,6 +5464,7 @@ function articlePracticeKey(text){
 function resetArticlePracticeState(nextKey = articlePracticeKey(CURRENT_ARTICLE_TEXT)){
   CURRENT_ARTICLE_PRACTICE_KEY = nextKey;
   READING_QUIZ_ITEMS = [];
+  READING_QUIZ_CURRENT_INDEX = 0;
   READING_QUIZ_ATTEMPT_RECORDED = false;
   READING_QUIZ_HAS_RESULT = false;
   const output = document.getElementById('clozeOutput');
@@ -5172,6 +5473,8 @@ function resetArticlePracticeState(nextKey = articlePracticeKey(CURRENT_ARTICLE_
   if(score) score.textContent = '';
   const retellResult = document.getElementById('retellResult');
   if(retellResult) retellResult.innerHTML = '';
+  setRetellActivityState('idle');
+  setRetellSourceDisplay(false);
 }
 
 function refreshRetellAdvice(){
@@ -5183,9 +5486,26 @@ function refreshRetellAdvice(){
     retellLock.classList.toggle('unlocked', hasText);
   }
   if(retellSource){
-    retellSource.textContent = hasText ? CURRENT_ARTICLE_TEXT.trim() : '';
+    setRetellSourceDisplay(false);
   }
   refreshPracticeStatus();
+}
+
+function setRetellActivityState(state = 'idle'){
+  const card = document.querySelector('.retell-practice-card');
+  if(!card) return;
+  card.dataset.retellState = state;
+}
+
+function setRetellSourceDisplay(full = false){
+  const retellSource = document.getElementById('retellSourceText');
+  if(!retellSource) return;
+  const text = CURRENT_ARTICLE_TEXT.trim();
+  if(!text){
+    retellSource.textContent = '私は毎朝七時に起きます……';
+    return;
+  }
+  retellSource.textContent = full ? text : shortenPracticeText(text, 52);
 }
 
 function refreshPracticeStatus(){
@@ -5221,13 +5541,7 @@ function focusPracticeModule(type){
   if(ACTIVE_PRACTICE_MODULE === 'retell') articlePracticeMode = 'retell';
   switchWorkspace('retell');
   renderPracticeModuleVisibility();
-  const targetId = {
-    quiz:'articlePracticeModule',
-    retell:'articlePracticeModule',
-    typing:'typingPracticeModule'
-  }[ACTIVE_PRACTICE_MODULE];
-  const target = document.getElementById(targetId);
-  target?.scrollIntoView({ behavior:'smooth', block:'start' });
+  document.querySelector('.retell-section')?.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 function currentArticlePracticeTitle(){
@@ -5240,7 +5554,6 @@ function currentArticlePracticeTitle(){
 function updateReadingQuizFlowState(){
   const hasText = !!CURRENT_ARTICLE_TEXT.trim();
   const start = document.getElementById('readingQuizStart');
-  const actions = document.getElementById('readingQuizAnswerActions');
   const output = document.getElementById('clozeOutput');
   const score = document.getElementById('clozeScore');
   const hasQuiz = READING_QUIZ_ITEMS.length > 0;
@@ -5258,19 +5571,14 @@ function updateReadingQuizFlowState(){
     start.innerHTML = hasText
       ? `
         ${icon}
-        <p class="empty-title">选择题尚未生成</p>
-        <p class="empty-sub">当前文章已关联，可以开始生成理解题</p>
         <button class="btn-primary" type="button" onclick="generateReadingQuiz()">生成选择题</button>
       `
       : `
         ${icon}
-        <p class="empty-title">选择题尚未解锁</p>
-        <p class="empty-sub">完成一篇文章的阅读分析后即可开始</p>
-        <button class="btn-secondary btn-disabled" type="button" onclick="switchWorkspace('reading')">去阅读页完成分析</button>
+        <button class="btn-secondary btn-disabled" type="button" onclick="switchWorkspace('reading')">需要先完成阅读</button>
       `;
   }
   start?.classList.toggle('is-hidden', hasQuiz);
-  actions?.classList.toggle('is-hidden', !hasText || !hasQuiz);
   output?.classList.toggle('is-hidden', !hasQuiz);
   if(!hasText){
     if(output) output.innerHTML = '<span class="quiz-empty-message">先读一篇文章。这里会根据刚读过的内容生成选择题。</span>';
@@ -5324,18 +5632,13 @@ function updatePracticeHeaderForActiveModule(){
   if(articleKicker) articleKicker.textContent = '文章理解';
   if(articleTitle) articleTitle.textContent = ACTIVE_PRACTICE_MODULE === 'retell' ? '复述练习' : '选择题练习';
   if(articleDesc){
-    articleDesc.textContent = ACTIVE_PRACTICE_MODULE === 'retell'
-      ? '复述练习会使用同一篇文章。先朗读原文熟悉内容，再尝试用自己的话复述。'
-      : '在阅读页完成文章分析后，这里会自动生成基于文章内容的选择题。';
+    articleDesc.textContent = '';
   }
   if(articleLock){
     articleLock.textContent = hasText ? '已解锁' : '需要先完成阅读';
     articleLock.classList.toggle('unlocked', hasText);
   }
-  if(retellSource){
-    const text = CURRENT_ARTICLE_TEXT.trim();
-    retellSource.textContent = text ? shortenPracticeText(text, 36) : '私は毎朝七時に起きます……';
-  }
+  if(retellSource) setRetellSourceDisplay(false);
 }
 
 function setArticlePracticeMode(mode){
@@ -5516,24 +5819,128 @@ function dictionaryReadingOptions(correctWord, correctReading){
   ]);
 }
 
-function readingQuizHtml(){
+function clampReadingQuizIndex(index = READING_QUIZ_CURRENT_INDEX){
+  if(!READING_QUIZ_ITEMS.length) return 0;
+  return Math.max(0, Math.min(index, READING_QUIZ_ITEMS.length - 1));
+}
+
+function readingQuizScoreText(){
+  if(!READING_QUIZ_ITEMS.length) return '';
+  if(READING_QUIZ_HAS_RESULT){
+    const correct = READING_QUIZ_ITEMS.filter(item => item.options[item.selectedIndex]?.correct).length;
+    return `共 ${READING_QUIZ_ITEMS.length} 题 · 答对 ${correct} 题`;
+  }
+  const answered = READING_QUIZ_ITEMS.filter(item => Number.isInteger(item.selectedIndex) && item.selectedIndex >= 0).length;
+  return answered ? `已作答 ${answered} / ${READING_QUIZ_ITEMS.length}` : '';
+}
+
+function readingQuizReviewHtml(item){
   return `
-    <div class="reading-quiz-list">
-      ${READING_QUIZ_ITEMS.map((item, itemIndex) => `
+    <div class="reading-quiz-result-options">
+      ${item.options.map((option, optionIndex) => {
+        const isSelected = optionIndex === item.selectedIndex;
+        const isCorrect = !!option.correct;
+        const label = isSelected && isCorrect
+          ? '你的选择 · 正确'
+          : isSelected
+            ? '你的选择'
+            : isCorrect
+              ? '正确答案'
+              : '';
+        return `
+          <div class="reading-quiz-result-option${isSelected ? ' is-user-choice' : ''}${isCorrect ? ' is-answer' : ''}${isSelected && !isCorrect ? ' is-wrong-choice' : ''}">
+            <span>${escapeHtml(option.text)}</span>
+            ${label ? `<strong>${label}</strong>` : ''}
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function readingQuizResultsHtml(){
+  const correctCount = READING_QUIZ_ITEMS.filter(item => item.options[item.selectedIndex]?.correct).length;
+  return `
+    <div class="reading-quiz-results">
+      <div class="reading-quiz-results-head">
+        <span>结果</span>
+        <strong>${correctCount} / ${READING_QUIZ_ITEMS.length}</strong>
+      </div>
+      <div class="reading-quiz-result-list">
+        ${READING_QUIZ_ITEMS.map((item, index) => `
+          <article class="reading-quiz-result-card ${item.options[item.selectedIndex]?.correct ? 'is-correct' : 'is-wrong'}">
+            <p class="reading-quiz-result-prompt">${index + 1}. ${escapeHtml(item.prompt)}</p>
+            ${readingQuizReviewHtml(item)}
+          </article>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function readingQuizHtml(){
+  if(!READING_QUIZ_ITEMS.length) return '';
+  if(READING_QUIZ_HAS_RESULT) return readingQuizResultsHtml();
+  READING_QUIZ_CURRENT_INDEX = clampReadingQuizIndex();
+  const item = READING_QUIZ_ITEMS[READING_QUIZ_CURRENT_INDEX];
+  const itemIndex = READING_QUIZ_CURRENT_INDEX;
+  const hasSelection = Number.isInteger(item.selectedIndex) && item.selectedIndex >= 0;
+  const progress = Math.round(((itemIndex + 1) / READING_QUIZ_ITEMS.length) * 100);
+  return `
+    <div class="reading-quiz-shell">
+      <div class="reading-quiz-progress" aria-label="选择题进度">
+        <span>${itemIndex + 1} / ${READING_QUIZ_ITEMS.length}</span>
+        <div><i style="width:${progress}%"></i></div>
+      </div>
+      <div class="reading-quiz-list">
         <article class="reading-quiz-question" data-reading-quiz-id="${item.id}">
-          <p class="reading-quiz-prompt">${itemIndex + 1}. ${escapeHtml(item.prompt)}</p>
+          <p class="reading-quiz-prompt">${escapeHtml(item.prompt)}</p>
           <div class="reading-quiz-options">
             ${item.options.map((option, optionIndex) => `
-              <label class="reading-quiz-option">
-                <input type="radio" name="readingQuiz-${item.id}" value="${optionIndex}">
+              <label class="reading-quiz-option${optionIndex === item.selectedIndex ? ' is-selected' : ''}">
+                <input type="radio" name="readingQuiz-${item.id}" value="${optionIndex}" ${optionIndex === item.selectedIndex ? 'checked' : ''} onchange="selectReadingQuizOption('${escapeHtml(item.id)}', ${optionIndex})">
                 <span>${escapeHtml(option.text)}</span>
               </label>
             `).join('')}
           </div>
         </article>
-      `).join('')}
+      </div>
+      <div class="reading-quiz-card-actions">
+        <button class="btn-secondary" type="button" onclick="prevReadingQuizQuestion()" ${itemIndex === 0 ? 'disabled' : ''}>上一题</button>
+        <button class="btn-primary" type="button" onclick="checkReadingQuiz()">提交答案</button>
+        <button class="btn-secondary" type="button" onclick="nextReadingQuizQuestion()" ${itemIndex >= READING_QUIZ_ITEMS.length - 1 ? 'disabled' : ''}>下一题</button>
+      </div>
     </div>
   `;
+}
+
+function renderReadingQuiz(){
+  const out = document.getElementById('clozeOutput');
+  if(out) out.innerHTML = readingQuizHtml();
+  const score = document.getElementById('clozeScore');
+  if(score) score.textContent = readingQuizScoreText();
+  updateReadingQuizFlowState();
+}
+
+function selectReadingQuizOption(itemId, optionIndex){
+  const item = READING_QUIZ_ITEMS.find(quizItem => quizItem.id === itemId);
+  if(!item) return;
+  item.selectedIndex = optionIndex;
+  renderReadingQuiz();
+}
+
+function setReadingQuizQuestion(index){
+  if(!READING_QUIZ_ITEMS.length) return;
+  READING_QUIZ_CURRENT_INDEX = clampReadingQuizIndex(index);
+  renderReadingQuiz();
+}
+
+function prevReadingQuizQuestion(){
+  setReadingQuizQuestion(READING_QUIZ_CURRENT_INDEX - 1);
+}
+
+function nextReadingQuizQuestion(){
+  setReadingQuizQuestion(READING_QUIZ_CURRENT_INDEX + 1);
 }
 
 function generateReadingQuiz(){
@@ -5589,73 +5996,63 @@ function generateReadingQuiz(){
     });
   }
 
+  READING_QUIZ_ITEMS = READING_QUIZ_ITEMS.map(item => ({
+    ...item,
+    selectedIndex:-1,
+    checked:false
+  }));
+  READING_QUIZ_CURRENT_INDEX = 0;
   out.innerHTML = readingQuizHtml();
   CURRENT_ARTICLE_PRACTICE_KEY = articlePracticeKey(text);
-  document.getElementById('clozeScore').textContent = `共 ${READING_QUIZ_ITEMS.length} 题`;
+  document.getElementById('clozeScore').textContent = '';
   updateReadingQuizFlowState();
 }
 
 function checkReadingQuiz(){
   if(!READING_QUIZ_ITEMS.length) return;
-  if(READING_QUIZ_HAS_RESULT){
-    showToast('这套题已经记录过一次成绩。', 'info');
+  const unansweredIndex = READING_QUIZ_ITEMS.findIndex(item => !Number.isInteger(item.selectedIndex) || item.selectedIndex < 0);
+  if(unansweredIndex >= 0){
+    READING_QUIZ_CURRENT_INDEX = unansweredIndex;
+    renderReadingQuiz();
+    showToast('还有题目没有作答。', 'warning');
+    return;
   }
-  let correct = 0;
-  let answered = 0;
-  const wrongItems = [];
   READING_QUIZ_ITEMS.forEach(item=>{
-    const checked = document.querySelector(`input[name="readingQuiz-${item.id}"]:checked`);
-    const selectedIndex = checked ? Number(checked.value) : -1;
-    const selected = item.options[selectedIndex];
-    const ok = !!selected?.correct;
-    if(checked) answered += 1;
-    document.querySelectorAll(`input[name="readingQuiz-${item.id}"]`).forEach((input, optionIndex)=>{
-      const label = input.closest('.reading-quiz-option');
-      const option = item.options[optionIndex];
-      label?.classList.toggle('is-correct', !!option.correct);
-      label?.classList.toggle('is-wrong', optionIndex === selectedIndex && !option.correct);
-    });
-    if(ok) correct += 1;
-    else wrongItems.push(item);
+    item.checked = true;
+    const ok = !!item.options[item.selectedIndex]?.correct;
+    if(ok){
+      resolvePracticeReview(`quiz:${item.id}:${item.prompt}`);
+    } else {
+      addPracticeReviewItem({
+        key:`quiz:${item.id}:${item.prompt}`,
+        type:'quiz',
+        title:'読解問題',
+        prompt:item.prompt,
+        answer:item.answerText,
+        note:'もう一度この問題を練習しましょう'
+      });
+    }
   });
-  const unanswered = READING_QUIZ_ITEMS.length - answered;
-  document.getElementById('clozeScore').textContent = `共 ${READING_QUIZ_ITEMS.length} 题 · 答对 ${correct} 题${unanswered ? ` · ${unanswered} 题未选` : ''}`;
-  if(!READING_QUIZ_HAS_RESULT) recordPracticeResult('quiz', { correct, total: READING_QUIZ_ITEMS.length });
+  READING_QUIZ_HAS_RESULT = true;
   if(!READING_QUIZ_ATTEMPT_RECORDED){
+    const correct = READING_QUIZ_ITEMS.filter(item => item.options[item.selectedIndex]?.correct).length;
+    recordPracticeResult('quiz', { correct, total: READING_QUIZ_ITEMS.length });
     recordReadingQuizAttempt(correct, READING_QUIZ_ITEMS.length);
     READING_QUIZ_ATTEMPT_RECORDED = true;
   }
-  READING_QUIZ_HAS_RESULT = true;
-  wrongItems.forEach(item=>{
-    addPracticeReviewItem({
-      key:`quiz:${item.id}:${item.prompt}`,
-      type:'quiz',
-      title:'読解問題',
-      prompt:item.prompt,
-      answer:item.answerText,
-      note:'もう一度この問題を練習しましょう'
-    });
-  });
-  if(!wrongItems.length){
-    READING_QUIZ_ITEMS.forEach(item=>resolvePracticeReview(`quiz:${item.id}:${item.prompt}`));
-  }
-  updateReadingQuizFlowState();
+  renderReadingQuiz();
 }
 
 function revealReadingQuiz(){
   if(!READING_QUIZ_ITEMS.length) return;
   READING_QUIZ_ITEMS.forEach(item=>{
-    document.querySelectorAll(`input[name="readingQuiz-${item.id}"]`).forEach((input, optionIndex)=>{
-      const label = input.closest('.reading-quiz-option');
-      const isCorrect = !!item.options[optionIndex]?.correct;
-      label?.classList.toggle('is-correct', isCorrect);
-      label?.classList.remove('is-wrong');
-      if(isCorrect) input.checked = true;
-    });
+    const correctIndex = item.options.findIndex(option => option.correct);
+    item.selectedIndex = correctIndex;
+    item.checked = true;
   });
   document.getElementById('clozeScore').textContent = `共 ${READING_QUIZ_ITEMS.length} 题 · 已显示正确答案`;
   READING_QUIZ_HAS_RESULT = true;
-  updateReadingQuizFlowState();
+  renderReadingQuiz();
 }
 
 function generateCloze(){ generateReadingQuiz(); }
@@ -5664,11 +6061,110 @@ function revealCloze(){ revealReadingQuiz(); }
 
 // ---------------- 输出：口语复述（对照原文自查，不做自动判分） ----------------
 function speakOriginalForRetell(){
-  if(!CURRENT_ARTICLE_TEXT.trim()){
+  const text = CURRENT_ARTICLE_TEXT.trim();
+  if(!text){
     showToast('请先在「阅读」标签里分析一段文本。', 'warning');
     return;
   }
-  speakJapanese(CURRENT_ARTICLE_TEXT);
+  if(!('speechSynthesis' in window)){
+    showToast('当前浏览器不支持发音功能。', 'warning');
+    return;
+  }
+  if(RETELL_SPEAKING && window.speechSynthesis.speaking && !window.speechSynthesis.paused){
+    pauseRetellReading();
+    return;
+  }
+  if(RETELL_SPEAKING && window.speechSynthesis.paused){
+    resumeRetellReading();
+    return;
+  }
+
+  stopTts();
+  setRetellActivityState('reading');
+  setRetellSourceDisplay(true);
+  renderRetellReadingControls();
+
+  const button = document.getElementById('retellReadBtn');
+  const utterance = new SpeechSynthesisUtterance(text.replace(/\s+/g, ' '));
+  utterance.lang = 'ja-JP';
+  utterance.rate = 0.88;
+  utterance.pitch = 0.98;
+  const jaVoice = chooseJapaneseVoice();
+  if(jaVoice) utterance.voice = jaVoice;
+  utterance.onstart = ()=>{
+    RETELL_SPEAKING = true;
+    button?.classList.add('is-speaking');
+    if(button) button.textContent = '暂停朗读';
+    updateRetellPauseButton('暂停朗读');
+  };
+  utterance.onend = finishRetellReading;
+  utterance.onerror = finishRetellReading;
+  window.speechSynthesis.speak(utterance);
+}
+
+function renderRetellReadingControls(){
+  const resultBox = document.getElementById('retellResult');
+  if(!resultBox) return;
+  resultBox.innerHTML = `
+    <div class="retell-reading-panel">
+      <div class="retell-reading-head">
+        <span>朗读中</span>
+        <div class="retell-reading-actions">
+          <button class="btn-secondary" id="retellTtsPauseBtn" type="button" onclick="toggleRetellReadingPause()">暂停朗读</button>
+          <button class="btn-secondary" type="button" onclick="stopRetellReading()">停止</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function updateRetellPauseButton(label){
+  const button = document.getElementById('retellTtsPauseBtn');
+  if(button) button.textContent = label;
+}
+
+function pauseRetellReading(){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.pause();
+  const button = document.getElementById('retellReadBtn');
+  if(button) button.textContent = '继续朗读';
+  updateRetellPauseButton('继续朗读');
+}
+
+function resumeRetellReading(){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.resume();
+  const button = document.getElementById('retellReadBtn');
+  if(button) button.textContent = '暂停朗读';
+  updateRetellPauseButton('暂停朗读');
+}
+
+function toggleRetellReadingPause(){
+  if(!('speechSynthesis' in window)) return;
+  if(window.speechSynthesis.paused) resumeRetellReading();
+  else pauseRetellReading();
+}
+
+function stopRetellReading(){
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  finishRetellReading();
+}
+
+function finishRetellReading(){
+  RETELL_SPEAKING = false;
+  const button = document.getElementById('retellReadBtn');
+  if(button){
+    button.textContent = '朗读原文';
+    button.classList.remove('is-speaking');
+  }
+  setRetellActivityState('idle');
+  setRetellSourceDisplay(false);
+  const panel = document.querySelector('#retellResult .retell-reading-panel');
+  if(panel) panel.remove();
+  if(!document.getElementById('retellResult')?.textContent.trim()){
+    const resultBox = document.getElementById('retellResult');
+    if(resultBox) resultBox.innerHTML = '';
+  }
 }
 
 function startManualRetell(){
@@ -5678,11 +6174,28 @@ function startManualRetell(){
   }
   const resultBox = document.getElementById('retellResult');
   if(!resultBox) return;
-  resultBox.innerHTML = `
-    <textarea id="retellManualInput" class="typing-input retell-manual-input" placeholder="看完原文后，用自己的话打字复述……" aria-label="打字复述"></textarea>
-    <div class="btnrow"><button class="btn-primary" onclick="showRetellComparison(document.getElementById('retellManualInput').value)">对照原文</button></div>
-  `;
+  stopRetellReading();
+  setRetellActivityState('manual');
+  setRetellSourceDisplay(true);
+  resultBox.innerHTML = retellFallbackInputHtml('用自己的话打字复述。', '看完原文后，用自己的话打字复述……');
   document.getElementById('retellManualInput')?.focus();
+}
+
+function retellFallbackInputHtml(message, placeholder = '用自己的话打字复述……'){
+  return `
+    <div class="retell-fallback-panel">
+      <div class="retell-fallback-head">
+        <span aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"></path><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path><path d="M8 21h8"></path></svg>
+        </span>
+        <strong>${escapeHtml(message)}</strong>
+      </div>
+      <textarea id="retellManualInput" class="typing-input retell-manual-input" placeholder="${escapeHtml(placeholder)}" aria-label="打字复述"></textarea>
+      <div class="btnrow">
+        <button class="btn-primary" onclick="showRetellComparison(document.getElementById('retellManualInput').value)">对照原文</button>
+      </div>
+    </div>
+  `;
 }
 
 function toggleRetellRecording(){
@@ -5735,15 +6248,15 @@ async function startRetellRecording(){
     showToast('请先在「阅读」标签里分析一段文本。', 'warning');
     return;
   }
+  stopRetellReading();
+  setRetellActivityState('recording');
+  setRetellSourceDisplay(true);
   const resultBox = document.getElementById('retellResult');
   const btn = document.getElementById('retellRecordBtn');
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR){
-    resultBox.innerHTML = `
-      <div class="typing-score" style="color:var(--trap);">当前浏览器不支持语音识别。可以先用打字复述完成练习。</div>
-      <textarea id="retellManualInput" class="typing-input" placeholder="凭记忆打字复述刚才读到的内容……" style="margin-top:10px;"></textarea>
-      <div class="btnrow"><button class="btn-primary" onclick="showRetellComparison(document.getElementById('retellManualInput').value)">对照原文</button></div>
-    `;
+    setRetellActivityState('manual');
+    resultBox.innerHTML = retellFallbackInputHtml('当前浏览器不支持语音识别，可以打字复述。', '凭记忆打字复述刚才读到的内容……');
     return;
   }
 
@@ -5766,11 +6279,8 @@ async function startRetellRecording(){
     }catch(error){
       RETELL_MEDIA_RECORDER = null;
       console.warn('无法录制可回放的音频,只保留语音转写文字。', error);
-      resultBox.innerHTML = `
-        <div class="typing-score" style="color:var(--trap);">没有拿到麦克风权限。可以在浏览器地址栏允许麦克风后重试，或直接打字复述。</div>
-        <textarea id="retellManualInput" class="typing-input" placeholder="用自己的话打字复述……" style="margin-top:10px;"></textarea>
-        <div class="btnrow"><button class="btn-primary" onclick="showRetellComparison(document.getElementById('retellManualInput').value)">对照原文</button></div>
-      `;
+      setRetellActivityState('manual');
+      resultBox.innerHTML = retellFallbackInputHtml('没有拿到麦克风权限，可以打字复述。');
       return;
     }
   }
@@ -5794,11 +6304,8 @@ async function startRetellRecording(){
     `;
   };
   RETELL_RECOGNITION.onerror = (event)=>{
-    resultBox.innerHTML = `
-      <div class="typing-score" style="color:var(--trap);">语音识别没有成功，可以重试，或直接打字复述。</div>
-      <textarea id="retellManualInput" class="typing-input" placeholder="用自己的话打字复述……" style="margin-top:10px;"></textarea>
-      <div class="btnrow"><button class="btn-primary" onclick="showRetellComparison(document.getElementById('retellManualInput').value)">对照原文</button></div>
-    `;
+    setRetellActivityState('manual');
+    resultBox.innerHTML = retellFallbackInputHtml('语音识别没有成功，可以打字复述。');
     RETELL_RECORDING = false;
     if(btn){ btn.textContent = '开始录音复述'; btn.classList.remove('is-recording'); }
     if(RETELL_MEDIA_RECORDER?.state === 'recording') RETELL_MEDIA_RECORDER.stop();
@@ -5824,9 +6331,13 @@ function stopRetellRecording(){
 function showRetellComparison(transcript){
   const clean = String(transcript || '').trim();
   const resultBox = document.getElementById('retellResult');
+  setRetellActivityState('result');
+  setRetellSourceDisplay(false);
   resultBox.innerHTML = `
-    <div class="typing-score">复述完成 —— 左右对照原文，自己检查内容是否完整、有没有说错的地方</div>
-    <div id="retellAudioSlot" style="margin-top:8px;"></div>
+    <div class="retell-result-head">
+      <span>对照</span>
+      <div id="retellAudioSlot"></div>
+    </div>
     <div class="retell-compare">
       <div>
         <div class="typing-meta"><span class="typing-chip">原文</span></div>
@@ -5845,7 +6356,7 @@ function renderRetellAudioSlot(){
   const slot = document.getElementById('retellAudioSlot');
   if(!slot) return;
   slot.innerHTML = RETELL_AUDIO_URL
-    ? `<audio controls src="${RETELL_AUDIO_URL}" style="width:100%;"></audio>`
+    ? `<audio controls src="${RETELL_AUDIO_URL}"></audio>`
     : (RETELL_MEDIA_RECORDER ? '<span class="lookup-status">处理录音中……</span>' : '');
 }
 
@@ -6011,7 +6522,7 @@ function vocabMeaningTone(vocabItem){
 
 function filteredVocabForPage(){
   const keyword = (document.getElementById('vocabSearchInput')?.value || '').trim().toLowerCase();
-  const statusFilter = document.getElementById('vocabStatusFilter')?.value || 'all';
+  const statusFilter = ['all', 'weak', 'unsure', 'practiced'].includes(VOCAB_FILTER) ? VOCAB_FILTER : 'all';
   const jlptFilter = VOCAB_JLPT_FILTER || 'all';
   const sourceFilter = document.getElementById('vocabSourceFilter')?.value || 'all';
   const now = Date.now();
@@ -6028,6 +6539,7 @@ function filteredVocabForPage(){
 
 function setVocabFilter(filter){
   VOCAB_FILTER = ['all', 'due', 'weak', 'unsure', 'practiced'].includes(filter) ? filter : 'all';
+  syncVocabHeaderFilters();
   document.querySelectorAll('.vocab-filter-tab').forEach(button=>{
     button.classList.toggle('active', button.dataset.filter === VOCAB_FILTER);
   });
@@ -6036,6 +6548,7 @@ function setVocabFilter(filter){
 
 function setVocabJlptFilter(level){
   VOCAB_JLPT_FILTER = ['all', 'N5', 'N4', 'N3', 'N2', 'N1'].includes(level) ? level : 'all';
+  syncVocabHeaderFilters();
   document.querySelectorAll('.vocab-level-filter').forEach(button=>{
     button.classList.toggle('active', button.dataset.level === VOCAB_JLPT_FILTER);
   });
@@ -6047,11 +6560,41 @@ function clearVocabFilters(){
   VOCAB_JLPT_FILTER = 'all';
   const search = document.getElementById('vocabSearchInput');
   if(search) search.value = '';
-  const status = document.getElementById('vocabStatusFilter');
-  if(status) status.value = 'all';
   const source = document.getElementById('vocabSourceFilter');
   if(source) source.value = 'all';
   renderVocab();
+}
+
+function closeVocabFilterMenu(control){
+  const menu = control instanceof HTMLElement ? control.closest('.vocab-filter-menu') : null;
+  if(menu instanceof HTMLDetailsElement) menu.open = false;
+}
+
+function closeVocabManagementMenu(control){
+  const menu = control instanceof HTMLElement ? control.closest('.vocab-management-menu') : null;
+  if(menu instanceof HTMLDetailsElement) menu.open = false;
+}
+
+function closeOpenVocabMenus(exceptTarget = null){
+  document.querySelectorAll('.vocab-filter-menu[open], .vocab-management-menu[open]').forEach(menu=>{
+    if(exceptTarget instanceof Node && menu.contains(exceptTarget)) return;
+    if(menu instanceof HTMLDetailsElement) menu.open = false;
+  });
+}
+
+function syncVocabHeaderFilters(){
+  const statusValue = ['all', 'weak', 'unsure', 'practiced'].includes(VOCAB_FILTER) ? VOCAB_FILTER : 'all';
+  const jlptValue = VOCAB_JLPT_FILTER || 'all';
+  document.querySelectorAll('.vocab-filter-menu-options [data-status]').forEach(button=>{
+    const active = button.dataset.status === statusValue;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  document.querySelectorAll('.vocab-filter-menu-options [data-level]').forEach(button=>{
+    const active = button.dataset.level === jlptValue;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
 }
 
 function renderVocabFilterSummary(filteredCount){
@@ -6174,6 +6717,7 @@ function renderVocab(){
   const summaryCount = document.getElementById('vocabListSummaryCount');
   if(summaryCount) summaryCount.textContent = `${vocabData.length} 词`;
   const filteredPageVocab = filteredVocabForPage();
+  syncVocabHeaderFilters();
   renderVocabFilterSummary(filteredPageVocab.length);
   document.querySelectorAll('.vocab-filter-tab').forEach(button=>{
     button.classList.toggle('active', button.dataset.filter === VOCAB_FILTER);
@@ -6227,15 +6771,9 @@ function updateDueCount(){
   if(dueEl) dueEl.textContent = due;
   const total = document.getElementById('totalVocabCount');
   if(total) total.textContent = vocabData.length;
-  const allTool = document.getElementById('vocabAllTool');
-  if(allTool){
-    const label = `复习全部已收藏词，共 ${vocabData.length} 个`;
-    allTool.setAttribute('aria-label', label);
-    allTool.dataset.tooltip = label;
-  }
   const dueTool = document.getElementById('vocabDueTool');
   if(dueTool){
-    const label = `开始闪卡复习，共 ${vocabData.length} 个词`;
+    const label = `闪卡复习，共 ${vocabData.length} 个词`;
     dueTool.setAttribute('aria-label', label);
     dueTool.dataset.tooltip = label;
   }
@@ -6295,6 +6833,17 @@ function exportVocabCsv() {
     showToast('生词本是空的，先添加几个词再导出。', 'warning');
     return;
   }
+  confirmDeletion({
+    intent:'neutral',
+    kicker:'',
+    title:'是否导出生词本？',
+    message:'把当前生词本导出为 CSV 文件，适合用 Excel 或表格工具打开。',
+    target:`下载单词数量：${vocabData.length} 个词`,
+    confirmLabel:'导出'
+  }, exportVocabCsvFile);
+}
+
+function exportVocabCsvFile() {
   // 添加 BOM 头 \uFEFF，防止 Excel 打开时出现中文乱码。
   let csvContent = "\uFEFF";
   csvContent += "单词,假名,释义,词性,等级,来源,来源链接,复习状态,下次复习时间\n";
@@ -6363,6 +6912,7 @@ function exportLearningBackup(){
     interfaceLanguage:safeStorage.getItem('interface_language') || 'zh',
     readingFontSize:safeStorage.getItem('reading_font_size') || '20',
     readingRubyFontSize:safeStorage.getItem('reading_ruby_font_size') || '10',
+    readingRubyGap:safeStorage.getItem('reading_ruby_gap') || '0.16',
     readingLineHeight:safeStorage.getItem('reading_line_height') || '1.8'
   };
   downloadTextFile(`dokedo-backup-${todayStamp()}.json`, JSON.stringify(backup, null, 2), 'application/json;charset=utf-8;');
@@ -6412,6 +6962,7 @@ async function importLearningBackup(file){
     if(data.interfaceLanguage) setInterfaceLanguage(data.interfaceLanguage, true);
     if(data.readingFontSize) safeStorage.setItem('reading_font_size', data.readingFontSize);
     if(data.readingRubyFontSize) safeStorage.setItem('reading_ruby_font_size', data.readingRubyFontSize);
+    if(data.readingRubyGap) safeStorage.setItem('reading_ruby_gap', data.readingRubyGap);
     if(data.readingLineHeight) safeStorage.setItem('reading_line_height', data.readingLineHeight);
     initReadingFontSize();
     await saveVocab();
@@ -6446,7 +6997,15 @@ function backupData(){
 }
 
 function restoreData(){
-  document.getElementById('backupFileInput')?.click();
+  confirmDeletion({
+    kicker:'恢复确认',
+    title:'恢复备份？',
+    message:'选择备份文件后，当前设备上的生词本、语法本和阅读记录会被备份内容覆盖。',
+    target:'建议先备份当前数据，再继续恢复。',
+    confirmLabel:'选择文件'
+  }, ()=>{
+    document.getElementById('backupFileInput')?.click();
+  });
 }
 
 function clearHistory(){
@@ -6472,11 +7031,7 @@ function clearAllVocab() {
     renderVocab();
     renderVocabPractice();
     document.querySelectorAll('.w.active').forEach(el => el.classList.remove('active'));
-    const detailArea = document.getElementById('detailArea');
-    if(detailArea) {
-      detailArea.innerHTML = detailEmptyHtml();
-    }
-    setDetailHeadActions();
+    resetReadingDetailPanel();
   });
 }
 
@@ -6817,6 +7372,10 @@ function saveCurrentArticleToHistory(){
 function renderReadingHistory(){
   renderLearningProgress();
   renderHistoryDashboard();
+  renderHistorySummary();
+  renderHistoryCalendar();
+  renderHistorySuggestions();
+  renderHistoryActivityList();
   renderReadingQuizHistory();
   renderHistoryWeakList();
   renderHistoryLevelEstimate();
@@ -6844,6 +7403,177 @@ function renderReadingHistory(){
       </div>
     </article>
   `).join('');
+}
+
+function historyWeekArticleCount(){
+  return READING_HISTORY.filter(item => {
+    const date = new Date(item.date);
+    return !Number.isNaN(date.getTime()) && Date.now() - date.getTime() <= 7 * 24 * 60 * 60 * 1000;
+  }).length;
+}
+
+function historyQuizRate(){
+  const answered = READING_QUIZ_HISTORY.reduce((sum, item) => sum + Number(item.total || 0), 0);
+  const correct = READING_QUIZ_HISTORY.reduce((sum, item) => sum + Number(item.correct || 0), 0);
+  return answered ? Math.round(correct / answered * 100) : null;
+}
+
+function historyDueVocabCount(){
+  return getAllVocab().filter(item => isDue(item)).length;
+}
+
+function historyLevelValue(){
+  const level = (safeStorage.getItem('reading_level_result') || '').split('｜')[0] || '';
+  return level || (getAllVocab().length >= 120 ? 'N3' : getAllVocab().length >= 50 ? 'N4' : '');
+}
+
+function renderHistorySummary(){
+  const text = document.getElementById('historySummaryText');
+  const stats = document.getElementById('historySummaryStats');
+  const title = document.getElementById('historyPageTitle');
+  const subtitle = document.getElementById('historyPageSubtitle');
+  const cta = document.getElementById('historyPrimaryAction');
+  const activeDays = recentActivityDays(7).filter(day => day.total > 0).length;
+  const weekArticles = historyWeekArticleCount();
+  const vocabTotal = getAllVocab().length;
+  const quizRate = historyQuizRate();
+  const rateLabel = quizRate === null ? '暂无正确率' : `正确率 ${quizRate}%`;
+  if(title) title.textContent = '学习历史';
+  if(subtitle) subtitle.textContent = '记录你的阅读、练习和复习进度。';
+  if(text) text.textContent = `${activeDays} 天打卡 · ${weekArticles} 篇阅读 · ${vocabTotal} 个生词 · ${rateLabel}`;
+  if(stats){
+    stats.innerHTML = `
+      <div><b>${learningActivityStreak()}</b><small>连续天数</small></div>
+      <div><b>${READING_HISTORY.length}</b><small>已读文章</small></div>
+      <div><b>${quizRate === null ? '—' : `${quizRate}%`}</b><small>练习表现</small></div>
+    `;
+  }
+  if(cta) cta.textContent = historyPrimaryActionLabel();
+}
+
+function renderHistoryCalendar(){
+  const grid = document.getElementById('historyCalendarGrid');
+  const foot = document.getElementById('historyCalendarFoot');
+  const days = recentActivityDays(30);
+  const todayKey = localDateKey(new Date());
+  if(grid){
+    const firstDate = new Date(`${days[0]?.date || todayKey}T12:00:00`);
+    const leadingBlanks = Number.isNaN(firstDate.getTime()) ? 0 : firstDate.getDay();
+    const blanks = Array.from({length:leadingBlanks}, () => '<span class="history-calendar-empty" aria-hidden="true"></span>');
+    const dayButtons = days.map(day => {
+      const readingCount = READING_HISTORY.filter(item => localDateKey(item.date) === day.date).length;
+      const practice = PRACTICE_HISTORY.find(item => item.date === day.date);
+      const practiceCount = Number(practice?.total || 0);
+      const date = new Date(`${day.date}T12:00:00`);
+      const label = `${date.getMonth() + 1}月${date.getDate()}日`;
+      const details = [];
+      if(readingCount) details.push(`阅读 ${readingCount} 篇`);
+      if(practiceCount) details.push(`练习 ${practiceCount} 次`);
+      const title = `${label}，${details.length ? details.join('，') : '未学习'}`;
+      const className = `${heatClassForActivity(day.total)}${day.date === todayKey ? ' is-today' : ''}`.trim();
+      return `<button class="${className}" type="button" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"><span>${day.date === todayKey ? '今天' : date.getDate()}</span></button>`;
+    });
+    grid.innerHTML = blanks.concat(dayButtons).join('');
+  }
+  if(foot){
+    const currentWeek = recentActivityDays(7).filter(day => day.total > 0).length;
+    const previousWeek = recentActivityDays(14).slice(0, 7).filter(day => day.total > 0).length;
+    const delta = currentWeek - previousWeek;
+    const deltaText = delta === 0 ? '和上周持平' : delta > 0 ? `比上周多 ${delta} 天` : `比上周少 ${Math.abs(delta)} 天`;
+    foot.innerHTML = `
+      <span>本周学习 ${currentWeek} 天</span>
+      <span>${deltaText}</span>
+      <span class="history-calendar-legend"><i></i>未学习</span>
+      <span class="history-calendar-legend active"><i></i>已学习</span>
+    `;
+  }
+}
+
+function historyPrimaryActionLabel(){
+  if(!historyLevelValue()) return '开始水平测试';
+  if(!READING_HISTORY.some(item => isDateToday(item.date))) return '开始今日阅读';
+  if(historyDueVocabCount() > 0) return '复习到期生词';
+  const todayPractice = PRACTICE_HISTORY.find(item => item.date === practiceDateKey());
+  if(!todayPractice || Number(todayPractice.total || 0) === 0) return '做一次练习';
+  return '找下一篇材料';
+}
+
+function openHistoryPrimaryAction(){
+  if(!historyLevelValue()){
+    switchWorkspace('test');
+    return;
+  }
+  if(!READING_HISTORY.some(item => isDateToday(item.date))){
+    switchWorkspace('reading');
+    return;
+  }
+  if(historyDueVocabCount() > 0){
+    startReview();
+    return;
+  }
+  const todayPractice = PRACTICE_HISTORY.find(item => item.date === practiceDateKey());
+  if(!todayPractice || Number(todayPractice.total || 0) === 0){
+    focusPracticeModule('quiz');
+    return;
+  }
+  switchWorkspace('discover');
+}
+
+function renderHistorySuggestions(){
+  const target = document.getElementById('historySuggestionList');
+  if(!target) return;
+  const level = historyLevelValue();
+  const due = historyDueVocabCount();
+  const todayRead = READING_HISTORY.some(item => isDateToday(item.date));
+  const todayPractice = PRACTICE_HISTORY.find(item => item.date === practiceDateKey());
+  const practicedToday = todayPractice && Number(todayPractice.total || 0) > 0;
+  const items = [];
+  if(!level){
+    items.push({priority:true, icon:'測', title:'完成 3 分钟水平测试', detail:'测试后会显示更适合你的阅读等级和材料建议。', action:"switchWorkspace('test')", label:'开始测试'});
+  }
+  if(!todayRead){
+    items.push({priority:!!level, icon:'読', title:`继续读一篇 ${level || '入门'} 文章`, detail:'完成后会更新阅读天数，并生成可复习词汇。', action:"switchWorkspace('reading')", label:'去阅读'});
+  }
+  if(due > 0){
+    items.push({priority:!items.length, icon:'単', title:`复习 ${due} 个到期生词`, detail:'', action:'startReview()', label:'去复习'});
+  }
+  if(!practicedToday){
+    items.push({priority:!items.length, icon:'練', title:'做一次文章理解练习', detail:'完成几次练习后，正确率和薄弱项会自动出现。', action:"focusPracticeModule('quiz')", label:'去练习'});
+  }
+  if(items.length < 3){
+    items.push({priority:false, icon:'材', title:'找一篇新的阅读材料', detail:'', action:"switchWorkspace('discover')", label:'找材料'});
+  }
+  target.innerHTML = items.slice(0, 3).map(item => `
+    <article class="history-task-row ${item.priority ? 'priority' : ''}">
+      <div class="history-task-icon">${escapeHtml(item.icon)}</div>
+      <div>
+        <strong>${escapeHtml(item.title)}</strong>
+        ${item.detail ? `<p>${escapeHtml(item.detail)}</p>` : ''}
+      </div>
+      <button type="button" onclick="${item.action}">${escapeHtml(item.label)}</button>
+    </article>
+  `).join('');
+}
+
+function renderHistoryActivityList(){
+  const list = document.getElementById('historyActivityList');
+  if(!list) return;
+  const items = [];
+  const latestReading = READING_HISTORY[0];
+  if(latestReading){
+    items.push({time:isDateToday(latestReading.date) ? '今天' : new Date(latestReading.date).toLocaleDateString('zh-CN'), text:`阅读了《${latestReading.title || '日语文章'}》`});
+  }else{
+    items.push({time:'待开始', text:'还没有阅读记录'});
+  }
+  const weekArticles = historyWeekArticleCount();
+  items.push({time:'本周', text:`新增阅读记录 ${weekArticles} 篇`});
+  const latestQuiz = READING_QUIZ_HISTORY[0];
+  if(latestQuiz){
+    items.push({time:'练习', text:`最近阅读理解 ${Number(latestQuiz.correct || 0)} / ${Number(latestQuiz.total || 0)}`});
+  }else{
+    items.push({time:'待完成', text:'还没有练习正确率'});
+  }
+  list.innerHTML = items.map(item => `<li><b>${escapeHtml(item.time)}</b><span>${escapeHtml(item.text)}</span></li>`).join('');
 }
 
 function renderHistoryDashboard(){
@@ -7024,9 +7754,21 @@ function clearReadingHistory(){
   });
 }
 
+function sourceLevelTokens(sourceLevel){
+  const levels = String(sourceLevel || '').match(/N[1-6]/g) || [];
+  if(levels.length < 2 || !String(sourceLevel || '').includes('-')) return levels;
+  const order = ['N6', 'N5', 'N4', 'N3', 'N2', 'N1'];
+  const start = order.indexOf(levels[0]);
+  const end = order.indexOf(levels[1]);
+  if(start < 0 || end < 0) return levels;
+  const from = Math.min(start, end);
+  const to = Math.max(start, end);
+  return order.slice(from, to + 1);
+}
+
 function sourceLevelMatches(filter, sourceLevel){
-  if(!filter) return true;
-  return String(sourceLevel || '').split('-').includes(filter);
+  if(!filter || filter === '全部') return true;
+  return sourceLevelTokens(sourceLevel).includes(filter);
 }
 
 function sourceTypeMatches(filter, source){
@@ -7050,6 +7792,12 @@ function setGradedTopicFilter(topic){
   renderGradedReadingMaterials();
 }
 
+function applyGradedQuickFilter(level, topic){
+  ACTIVE_GRADED_LEVEL = GRADED_LEVEL_FILTERS.includes(level) ? level : '全部';
+  ACTIVE_GRADED_TOPIC = GRADED_TOPIC_FILTERS.includes(topic) ? topic : '全部';
+  renderGradedReadingMaterials();
+}
+
 function clearDiscoverFilters(){
   ACTIVE_GRADED_LEVEL = '全部';
   ACTIVE_GRADED_TOPIC = '全部';
@@ -7057,9 +7805,13 @@ function clearDiscoverFilters(){
 }
 
 function clearSourceFilters(){
-  ACTIVE_SOURCE_LEVEL = 'N5';
+  ACTIVE_SOURCE_LEVEL = '全部';
   ACTIVE_SOURCE_TYPE = '全部';
   renderSourceDirectory();
+}
+
+function gradedMaterialDisplayTitle(title){
+  return String(title || '').split('——')[0].trim();
 }
 
 function materialLevelClass(level){
@@ -7086,23 +7838,33 @@ function renderGradedReadingMaterials(){
   const total = document.getElementById('gradedMaterialTotal');
   if(total) total.textContent = '32';
   if(levelTarget){
-    levelTarget.innerHTML = GRADED_LEVEL_FILTERS.map(level => `
-      <button type="button" class="${ACTIVE_GRADED_LEVEL === level ? 'active' : ''}" onclick="setGradedLevelFilter('${level}')">${level}</button>
-    `).join('');
+    levelTarget.innerHTML = `
+      <select class="discover-filter-select" aria-label="筛选等级" onchange="setGradedLevelFilter(this.value)">
+        <option value="全部" ${ACTIVE_GRADED_LEVEL === '全部' ? 'selected' : ''}>难度等级</option>
+        ${GRADED_LEVEL_FILTERS.map(level => `
+          ${level === '全部' ? '' : `<option value="${escapeHtml(level)}" ${ACTIVE_GRADED_LEVEL === level ? 'selected' : ''}>${escapeHtml(level)}</option>`}
+        `).join('')}
+      </select>
+    `;
   }
   if(topicTarget){
-    topicTarget.innerHTML = GRADED_TOPIC_FILTERS.map(topic => `
-      <button type="button" class="${ACTIVE_GRADED_TOPIC === topic ? 'active' : ''}" onclick="setGradedTopicFilter('${topic}')">${topic}</button>
-    `).join('');
+    topicTarget.innerHTML = `
+      <select class="discover-filter-select" aria-label="筛选题材" onchange="setGradedTopicFilter(this.value)">
+        <option value="全部" ${ACTIVE_GRADED_TOPIC === '全部' ? 'selected' : ''}>题材分类</option>
+        ${GRADED_TOPIC_FILTERS.map(topic => `
+          ${topic === '全部' ? '' : `<option value="${escapeHtml(topic)}" ${ACTIVE_GRADED_TOPIC === topic ? 'selected' : ''}>${escapeHtml(topic)}</option>`}
+        `).join('')}
+      </select>
+    `;
   }
   if(quickTarget){
     quickTarget.innerHTML = [
-      ['N5', '生活入门'],
-      ['N4', '新闻速览'],
-      ['N3', '旅行会话'],
-      ['N2', '商业资讯']
-    ].map(([level, label]) => `
-      <button type="button" onclick="setGradedLevelFilter('${level}')"><span></span>${level} · ${label}</button>
+      ['N5', '生活', '生活入门'],
+      ['N4', '新闻', '新闻速览'],
+      ['N3', '旅行', '旅行会话'],
+      ['N2', '商业', '商业资讯']
+    ].map(([level, topic, label]) => `
+      <button type="button" class="${ACTIVE_GRADED_LEVEL === level && ACTIVE_GRADED_TOPIC === topic ? 'active' : ''}" onclick="applyGradedQuickFilter('${level}', '${topic}')" aria-pressed="${ACTIVE_GRADED_LEVEL === level && ACTIVE_GRADED_TOPIC === topic ? 'true' : 'false'}"><span></span>${level} · ${label}</button>
     `).join('');
   }
   if(!grid) return;
@@ -7110,18 +7872,11 @@ function renderGradedReadingMaterials(){
   grid.innerHTML = items.length ? items.map(material => `
     <article class="graded-material-card" onclick="loadGradedReadingMaterial('${material.id}')" tabindex="0" role="button" aria-label="阅读 ${escapeHtml(material.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadGradedReadingMaterial('${material.id}')}">
       <div class="graded-card-top">
-        <div class="graded-card-tags">
-          <span class="material-level ${materialLevelClass(material.level)}">${escapeHtml(material.level)}</span>
-          <span class="material-topic ${materialTopicClass(material.topic)}">${escapeHtml(material.topic)}</span>
-        </div>
-        <button type="button" class="graded-card-check" aria-label="选择 ${escapeHtml(material.title)}" onclick="event.stopPropagation();loadGradedReadingMaterial('${material.id}')"></button>
+        <span class="material-level ${materialLevelClass(material.level)}">${escapeHtml(material.level)}</span>
+        <span class="material-topic ${materialTopicClass(material.topic)}">${escapeHtml(material.topic)}类</span>
+        <span>${material.minutes} 分钟</span>
       </div>
-      <h3>${escapeHtml(material.title)}</h3>
-      <p>${escapeHtml(material.excerpt)}</p>
-      <div class="graded-card-meta">
-        <span>约 ${material.minutes} 分钟 · ${material.words} 词</span>
-        <i style="--progress:${Number(material.progress || 0)}%"></i>
-      </div>
+      <h3>${escapeHtml(gradedMaterialDisplayTitle(material.title))}</h3>
     </article>
   `).join('') : '<div class="source-empty-state">暂时没有匹配素材。换一个等级或题材试试。</div>';
 }
@@ -7140,7 +7895,7 @@ function loadGradedReadingMaterial(id){
 
 function recommendedSourceForLevel(source, recommended){
   if(!recommended) return false;
-  return source.level.includes(recommended) || recommended.includes(source.level.split('-')[0]);
+  return sourceLevelMatches(recommended, source.level);
 }
 
 function sourceIconSvg(){
@@ -7200,7 +7955,7 @@ function renderSourceTypeTabs(){
 }
 
 function setSourceLevelFilter(level){
-  ACTIVE_SOURCE_LEVEL = SOURCE_LEVEL_FILTERS.includes(level) ? level : 'N5';
+  ACTIVE_SOURCE_LEVEL = SOURCE_LEVEL_FILTERS.includes(level) ? level : '全部';
   renderSourceDirectory();
 }
 
@@ -7237,37 +7992,30 @@ function renderSourceDirectory(){
   renderGradedReadingMaterials();
   renderSourceLevelTabs();
   renderSourceTypeTabs();
+  const visibleSources = READING_SOURCES.filter(source => !source.caution);
   const externalTotal = document.getElementById('externalSourceTotal');
-  if(externalTotal) externalTotal.textContent = '18';
+  if(externalTotal) externalTotal.textContent = String(visibleSources.length);
   const recommended = (safeStorage.getItem('reading_level_result') || '').split('｜')[0] || '';
-  const sources = READING_SOURCES.slice(0, 4);
+  const sources = visibleSources.filter(source => sourceLevelMatches(ACTIVE_SOURCE_LEVEL, source.level) && sourceTypeMatches(ACTIVE_SOURCE_TYPE, source));
   target.innerHTML = sources.length ? sources.map(source => `
-    <article class="source-directory-item ${recommendedSourceForLevel(source, recommended) ? 'recommended' : ''}">
-      <button class="source-directory-icon ${source.category === '新闻' ? 'is-red' : source.category === '生活' ? 'is-purple' : source.category === '旅行' ? 'is-orange' : 'is-green'}" onclick="openRecommendedSource('${source.url}')" aria-label="打开 ${escapeHtml(source.title)}">
-        ${escapeHtml(source.title.includes('NHK') ? 'N' : source.category === '生活' ? '読' : source.category === '旅行' ? '旅' : '経')}
-      </button>
-      <div class="source-directory-copy">
-        <div class="source-directory-title-row">
-          <h3>${escapeHtml(source.title)}</h3>
-        </div>
-        <small>${escapeHtml(readingQueueFallbackTitle(source.url))}</small>
-        <p>${escapeHtml(source.note)}</p>
-        <div class="source-traits">
-          <span>${escapeHtml(source.level)}</span>
-          <span>${escapeHtml(source.category)}</span>
-          <em>${escapeHtml((source.traits || [source.type])[0] || source.type)}</em>
-        </div>
+    <article class="source-directory-item ${recommendedSourceForLevel(source, recommended) ? 'recommended' : ''}" onclick="openRecommendedSource('${source.url}')" tabindex="0" role="link" aria-label="访问 ${escapeHtml(source.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecommendedSource('${source.url}')}">
+      <div class="source-directory-icon ${source.category === '新闻' ? 'is-red' : source.category === '生活' ? 'is-purple' : source.category === '旅行' ? 'is-orange' : 'is-green'}" aria-hidden="true">
+        ${escapeHtml(source.icon || (source.title.includes('NHK') ? 'N' : source.category === '生活' ? '読' : source.category === '旅行' ? '旅' : '経'))}
       </div>
-      <button class="source-visit-button" onclick="openRecommendedSource('${source.url}')">访问 ↗</button>
+      <div class="source-directory-copy">
+        <h3>${escapeHtml(source.title)}</h3>
+        <p>${escapeHtml(source.level)} · ${escapeHtml(source.category)} / ${escapeHtml((source.traits || [source.type]).slice(0, 2).join(' / ') || source.type)}</p>
+      </div>
     </article>
   `).join('') : '<div class="source-empty-state">这个等级暂时没有对应类型。可以换一个类型，或使用当前等级示例开始阅读。</div>';
   renderSourceRecommendations();
 }
 
 function loadSourceQuickRead(){
-  const source = READING_SOURCES.find(item => sourceLevelMatches(ACTIVE_SOURCE_LEVEL, item.level) && sourceTypeMatches(ACTIVE_SOURCE_TYPE, item))
-    || READING_SOURCES.find(item => sourceLevelMatches(ACTIVE_SOURCE_LEVEL, item.level))
-    || READING_SOURCES[0];
+  const visibleSources = READING_SOURCES.filter(item => !item.caution);
+  const source = visibleSources.find(item => sourceLevelMatches(ACTIVE_SOURCE_LEVEL, item.level) && sourceTypeMatches(ACTIVE_SOURCE_TYPE, item))
+    || visibleSources.find(item => sourceLevelMatches(ACTIVE_SOURCE_LEVEL, item.level))
+    || visibleSources[0];
   const title = source?.title || '推荐资料';
   const level = ACTIVE_SOURCE_LEVEL || 'N5';
   const text = level === 'N5'
@@ -7775,6 +8523,9 @@ async function initializeApp(){
   document.getElementById('retellPermissionModal')?.addEventListener('click', event=>{
     if(event.target === event.currentTarget) closeRetellPermissionModal();
   });
+  document.getElementById('readingDisplayModal')?.addEventListener('click', event=>{
+    if(event.target === event.currentTarget) closeReadingDisplaySettings();
+  });
   document.getElementById('deleteConfirmModal')?.addEventListener('click', event=>{
     if(event.target === event.currentTarget) closeDeleteConfirm();
   });
@@ -7782,6 +8533,7 @@ async function initializeApp(){
   document.getElementById('output')?.addEventListener('mouseup', handleReadingSelection);
   document.getElementById('output')?.addEventListener('keyup', handleReadingSelection);
   document.addEventListener('mousedown', event=>{
+    closeOpenVocabMenus(event.target);
     const tools = document.getElementById('selectionTools');
     const output = document.getElementById('output');
     const search = document.querySelector('.global-search');
@@ -7803,6 +8555,7 @@ async function initializeApp(){
     }
     if(event.key === 'Escape'){
       if(closeTopLayer()) return;
+      closeOpenVocabMenus();
       dismissSampleFlow();
       hideTtsControlMenu();
     }

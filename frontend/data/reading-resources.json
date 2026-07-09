@@ -1,0 +1,145 @@
+{
+  "_说明": "日语分级阅读资源库 - 按题材分类,可直接映射到资料页「精选站外来源」卡片字段（name / domain / url / level / topics / description / update_frequency / caution）",
+  "_最后核实日期": "2026-07-05",
+  "categories": [
+
+    {
+      "category_id": "news",
+      "category_name": "新闻时事",
+      "category_name_en": "News & Current Affairs",
+      "sites": [
+        {
+          "name": "Watanoc わたのC",
+          "domain": "watanoc.com",
+          "url": "https://watanoc.com/",
+          "level": "N5-N3",
+          "topics": ["新闻", "生活"],
+          "description": "免费的やさしい日本语新闻/生活杂志,文章标题直接标注N5/N4/N3等级,汉字全部配假名,适合替代已收费的NHK NEWS WEB EASY。",
+          "update_frequency": "不定期更新",
+          "content_entry_points": [
+            "https://watanoc.com/category/japan-news （日本新闻分类页）",
+            "https://watanoc.com/category/simplejapanese （简单日语分类页）",
+            "https://watanoc.com/tag/n5 （N5标签页）",
+            "https://watanoc.com/tag/n4 （N4标签页）"
+          ],
+          "caution": null
+        },
+        {
+          "name": "NHK WORLD-JAPAN",
+          "domain": "nhk.or.jp (world)",
+          "url": "https://www3.nhk.or.jp/nhkworld/",
+          "level": "N3-N1",
+          "topics": ["新闻", "商业"],
+          "description": "NHK面向海外发布的多语言新闻站点,保持免费,可让日语原文与其他语言版本对照阅读,适合做中日对照功能。",
+          "update_frequency": "每日更新",
+          "content_entry_points": [],
+          "caution": "注意：NHK NEWS WEB EASY（news.web.nhk / news/easy）自2025年起改为付费服务，需NHK受信料缴费用户才能访问，不建议再作为免费入口推荐"
+        }
+      ]
+    },
+
+    {
+      "category_id": "life_culture_travel",
+      "category_name": "生活文化・旅行美食",
+      "category_name_en": "Life, Culture, Travel & Food",
+      "sites": [
+        {
+          "name": "MATCHA やさしい日本语版",
+          "domain": "matcha-jp.com",
+          "url": "https://matcha-jp.com/easy/",
+          "level": "N5-N3",
+          "topics": ["旅行", "美食", "生活"],
+          "description": "面向访日外国人的观光媒体，专门制作了やさしい日本语版，内容覆盖日本饮品、街区、观光路线、日常小知识，汉字全部标注假名，是少见的专做易读版的旅行文化站点。",
+          "update_frequency": "持续更新",
+          "content_entry_points": [
+            "https://matcha-jp.com/easy/ （やさしい日本语首页）"
+          ],
+          "caution": null
+        },
+        {
+          "name": "日本语多读道场 Yomujp",
+          "domain": "yomujp.com",
+          "url": "https://yomujp.com/",
+          "level": "N6-N1",
+          "topics": ["生活", "科技", "商业"],
+          "description": "按JLPT等级(N6~N1)分类的多读文章站，题材涵盖日本地理、饮食、动植物、文化历史、汉字部首讲解等，每篇明确标注等级，持续更新，免费内容占比较高（部分内容需付费）。",
+          "update_frequency": "近乎每周更新",
+          "content_entry_points": [
+            "https://yomujp.com/en/ （英文版入口，含等级筛选）"
+          ],
+          "caution": "站内部分深度内容为付费订阅，抓取时需区分免费/付费文章"
+        }
+      ]
+    },
+
+    {
+      "category_id": "graded_stories",
+      "category_name": "故事读物・多读",
+      "category_name_en": "Graded Readers & Extensive Reading",
+      "sites": [
+        {
+          "name": "たどく Tadoku 分级读物库",
+          "domain": "tadoku.org",
+          "url": "https://tadoku.org/japanese/en/graded-readers-en/",
+          "level": "N5-N3 (对应Level 0-3)",
+          "topics": ["故事", "生活"],
+          "description": "专为多读法设计的分级绘本/故事库，配图丰富，学习者可不依赖词典阅读，部分附朗读音频，适合作为N5-N4阶段的基础读物入口。",
+          "update_frequency": "定期新增书目",
+          "content_entry_points": [],
+          "caution": "部分书目为纸质出版物链接（如にほんごよむよむ文库），线上可读内容和购买链接需分开处理"
+        },
+        {
+          "name": "日本语多读道场 Yomujp（复用）",
+          "domain": "yomujp.com",
+          "url": "https://yomujp.com/",
+          "level": "N6-N1",
+          "topics": ["故事", "生活", "科技"],
+          "description": "同「生活文化」分类下的站点，虚构短篇故事与文化类内容并存，可作为两个题材分类共用的同一数据源，减少重复抓取配置。",
+          "update_frequency": "近乎每周更新",
+          "content_entry_points": [],
+          "caution": null
+        }
+      ]
+    },
+
+    {
+      "category_id": "business_economy",
+      "category_name": "商业经济",
+      "category_name_en": "Business & Economy",
+      "sites": [
+        {
+          "name": "NHK WORLD-JAPAN 经济版块（复用）",
+          "domain": "nhk.or.jp (world)",
+          "url": "https://www3.nhk.or.jp/nhkworld/",
+          "level": "N2-N1",
+          "topics": ["商业", "新闻"],
+          "description": "同「新闻时事」分类下的站点，经济相关报道可单独筛选，免费、多语言对照，适合N2-N1泛读，暂无需额外接入新数据源。",
+          "update_frequency": "每日更新",
+          "content_entry_points": [],
+          "caution": null
+        },
+        {
+          "name": "东洋经济 Online",
+          "domain": "toyokeizai.net",
+          "url": "https://toyokeizai.net/",
+          "level": "N1",
+          "topics": ["商业"],
+          "description": "覆盖企业动态、产业分析、宏观经济报道的财经媒体，用词专业正式，仅适合N1水平学习者泛读，且部分文章有内容拦截检测或付费墙限制。",
+          "update_frequency": "每日更新",
+          "content_entry_points": [],
+          "caution": "存在广告拦截检测机制和部分付费内容，抓取前需人工核实文章是否可完整访问；建议此方向优先级放低，先以「精选站外来源」形式提供入口链接，不强求站内全文抓取"
+        }
+      ]
+    }
+
+  ],
+
+  "_优先级建议": {
+    "第一阶段": ["graded_stories", "life_culture_travel"],
+    "第一阶段说明": "免费内容多、天然按等级设计、抓取难度低，优先接入以快速填充资料页内容",
+    "第二阶段": ["news"],
+    "第二阶段说明": "Watanoc可直接替代已收费的NHK Easy；NHK WORLD-JAPAN作为多语言对照补充",
+    "第三阶段": ["business_economy"],
+    "第三阶段说明": "专门做易读版的财经站点稀缺，内容难度天然偏高，建议先以外链入口形式提供，不强求分级改写或全文抓取"
+  }
+}

@@ -1,0 +1,10 @@
+body[data-view="discover"] #gradedLevelFilters select,
+body[data-view="discover"] #gradedTopicFilters select {
+  width: auto !important;
+  min-width: 88px !important;
+  max-width: 132px;
+  padding-left: 14px !important;
+  padding-right: 34px !important;
+  text-align: center;
+  text-align-last: center;
+}
