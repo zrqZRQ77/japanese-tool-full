@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yomeru Design System v2</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260710-06">
+  <link rel="stylesheet" href="design-system.css?v=20260710-06">
+  <link rel="stylesheet" href="typography.css?v=20260710-06">
+  <style>
+    :root {
+      --ds-primary: #6750A4;
+      --ds-on-primary: #FFFFFF;
+      --ds-primary-container: #EADDFF;
+      --ds-on-primary-container: #21005D;
+      --ds-secondary: #625B71;
+      --ds-secondary-container: #E8DEF8;
+      --ds-bg: #F8F7FB;
+      --ds-surface: #FFFFFF;
+      --ds-surface-low: #F7F2FA;
+      --ds-surface-mid: #F3EDF7;
+      --ds-surface-high: #ECE6F0;
+      --ds-text: #1C1B1F;
+      --ds-text-soft: #49454F;
+      --ds-muted: #6D6875;
+      --ds-line: #D9D3DF;
+      --ds-warning: #8A4B00;
+      --ds-warning-bg: #FFDDBA;
+      --ds-error: #BA1A1A;
+      --ds-error-bg: #FFDAD6;
+      --ds-success: #2E6B47;
+      --ds-success-bg: #D9F2E3;
+      --ds-radius-control: 10px;
+      --ds-radius-card: 16px;
+      --ds-shadow-float: 0 18px 50px rgba(45, 34, 69, .12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--ds-bg);
+      color: var(--ds-text);
+      font-family: var(--type-font-ui-zh);
+      font-size: var(--type-size-body);
+      line-height: var(--type-line-body);
+    }
+
+    button,
+    input,
+    textarea,
+    select { font: inherit; }
+
+    button { cursor: pointer; }
+
+    .ds-shell {
+      display: grid;
+      grid-template-columns: 236px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .ds-nav {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 20px;
+      border-right: 1px solid var(--ds-line);
+      background: rgba(255, 255, 255, .88);
+      backdrop-filter: blur(18px);
+      overflow-y: auto;
+    }
+
+    .ds-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .ds-brand img {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    .ds-brand strong {
+      display: block;
+      font-size: var(--type-size-emphasis);
+      line-height: var(--type-line-compact);
+    }
+
+    .ds-brand small {
+      display: block;
+      color: var(--ds-muted);
+      font-size: var(--type-size-caption);
+    }
+
+    .ds-nav-group {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+
+    .ds-nav-label {
+      padding: 0 10px;
+      color: var(--ds-muted);
+      font-size: var(--type-size-caption);
+      font-weight: var(--type-weight-semibold);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .ds-nav a {
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 9px;
+      color: var(--ds-text-soft);
+      font-size: var(--type-size-control);
+      font-weight: var(--type-weight-medium);
+      text-decoration: none;
+    }
+
+    .ds-nav a:hover,
+    .ds-nav a:focus-visible {
+      background: var(--ds-primary-container);
+      color: var(--ds-on-primary-container);
+      outline: none;
+    }
+
+    .ds-main {
+      width: min(1240px, calc(100vw - 236px));
+      padding: 48px clamp(24px, 5vw, 72px) 96px;
+    }
+
+    .ds-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 28px;
+      align-items: end;
+      padding-bottom: 34px;
+      border-bottom: 1px solid var(--ds-line);
+    }
+
+    .ds-kicker {
+      margin-bottom: 10px;
+      color: var(--ds-primary);
+      font-size: var(--type-size-caption);
+      font-weight: var(--type-weight-bold);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .ds-hero h1 {
+      margin: 0;
+      font-size: clamp(var(--type-size-display), 4vw, var(--type-size-hero-large));
+      font-weight: var(--type-weight-semibold);
+      line-height: 1.12;
+      letter-spacing: -.02em;
+    }
+
+    .ds-hero p {
+      max-width: 760px;
+      margin: 14px 0 0;
+      color: var(--ds-text-soft);
+      font-size: var(--type-size-body-large);
+      line-height: var(--type-line-body);
+    }
+
+    .ds-version {
+      min-width: 160px;
+      padding: 14px 16px;
+      border: 1px solid var(--ds-line);
+      border-radius: 12px;
+      background: var(--ds-surface);
+      color: var(--ds-text-soft);
+      font-size: var(--type-size-meta);
+    }
+
+    .ds-version strong {
+      display: block;
+      color: var(--ds-text);
+      font-size: var(--type-size-emphasis);
+    }
+
+    .ds-section {
+      scroll-margin-top: 24px;
+      padding-top: 56px;
+    }
+
+    .ds-section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 20px;
+    }
+
+    .ds-section-head h2 {
+      margin: 0;
+      font-size: var(--type-size-page-title);
+      font-weight: var(--type-weight-semibold);
+      line-height: var(--type-line-compact);
+    }
+
+    .ds-section-head p {
+      max-width: 620px;
+      margin: 0;
+      color: var(--ds-muted);
+      font-size: var(--type-size-control);
+    }
+
+    .ds-card {
+      border: 1px solid var(--ds-line);
+      border-radius: var(--ds-radius-card);
+      background: var(--ds-surface);
+    }
+
+    .ds-card-pad { padding: 24px; }
+
+    .ds-grid-2,
+    .ds-grid-3,
+    .ds-grid-4,
+    .ds-grid-6 {
+      display: grid;
+      gap: 16px;
+    }
+
+    .ds-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ds-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .ds-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .ds-grid-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+    .ds-swatch {
+      min-height: 148px;
+      display: grid;
+      align-content: end;
+      padding: 14px;
+      border: 1px solid rgba(28, 27, 31, .12);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .ds-swatch strong,
+    .ds-swatch span {
+      display: block;
+      line-height: 1.35;
+    }
+
+    .ds-swatch strong { font-size: var(--type-size-control); }
+
+    .ds-swatch span {
+      margin-top: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: var(--type-size-micro);
+      opacity: .75;
+    }
+
+    .ds-type-card {
+      min-height: 188px;
+      display: grid;
+      align-content: space-between;
+      gap: 22px;
+      padding: 24px;
+    }
+
+    .ds-type-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--ds-muted);
+      font-size: var(--type-size-caption);
+    }
+
+    .ds-type-sample-ui-zh {
+      font-family: var(--type-font-ui-zh);
+      font-size: var(--type-size-feature-title);
+      line-height: 1.45;
+    }
+
+    .ds-type-sample-ui-ja {
+      font-family: var(--type-font-ui-ja);
+      font-size: var(--type-size-feature-title);
+      line-height: 1.45;
+    }
+
+    .ds-type-sample-content-ja {
+      font-family: var(--type-font-content-ja);
+      font-size: var(--type-size-feature-title);
+      line-height: 1.8;
+    }
+
+    .ds-scale-row {
+      display: grid;
+      grid-template-columns: 140px 72px minmax(0, 1fr);
+      gap: 16px;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 1px solid #ECE8F0;
+    }
+
+    .ds-scale-row:last-child { border-bottom: 0; }
+
+    .ds-token {
+      color: var(--ds-muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: var(--type-size-caption);
+    }
+
+    .ds-size {
+      color: var(--ds-muted);
+      font-size: var(--type-size-caption);
+    }
+
+    .ds-button-row,
+    .ds-chip-row,
+    .ds-toolbar,
+    .ds-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ds-btn {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: var(--ds-radius-control);
+      font-family: var(--type-font-ui-zh);
+      font-size: var(--type-size-control);
+      font-weight: var(--type-weight-semibold);
+      line-height: var(--type-line-ui);
+    }
+
+    .ds-btn-primary {
+      background: var(--ds-primary);
+      color: var(--ds-on-primary);
+    }
+
+    .ds-btn-secondary {
+      border-color: var(--ds-line);
+      background: var(--ds-surface);
+      color: var(--ds-text);
+    }
+
+    .ds-btn-tonal {
+      background: var(--ds-primary-container);
+      color: var(--ds-on-primary-container);
+    }
+
+    .ds-btn-text {
+      min-height: 40px;
+      padding: 0 10px;
+      background: transparent;
+      color: var(--ds-primary);
+    }
+
+    .ds-btn-danger {
+      border-color: rgba(186, 26, 26, .24);
+      background: var(--ds-error-bg);
+      color: var(--ds-error);
+    }
+
+    .ds-btn:hover { filter: brightness(.985); }
+
+    .ds-btn:focus-visible,
+    .ds-icon-btn:focus-visible,
+    .ds-input:focus,
+    .ds-select:focus,
+    .ds-textarea:focus {
+      outline: 3px solid rgba(103, 80, 164, .18);
+      outline-offset: 2px;
+    }
+
+    .ds-icon-btn {
+      width: 44px;
+      height: 44px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--ds-line);
+      border-radius: var(--ds-radius-control);
+      background: var(--ds-surface);
+      color: var(--ds-text-soft);
+      font-size: var(--type-size-subtitle);
+    }
+
+    .ds-icon-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .ds-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .ds-field label {
+      color: var(--ds-text-soft);
+      font-size: var(--type-size-meta);
+      font-weight: var(--type-weight-semibold);
+    }
+
+    .ds-input,
+    .ds-select,
+    .ds-textarea {
+      width: 100%;
+      border: 1px solid var(--ds-line);
+      border-radius: var(--ds-radius-control);
+      background: var(--ds-surface);
+      color: var(--ds-text);
+      font-family: var(--type-font-ui-zh);
+      font-size: var(--type-size-control);
+    }
+
+    .ds-input,
+    .ds-select {
+      min-height: 46px;
+      padding: 0 13px;
+    }
+
+    .ds-textarea {
+      min-height: 126px;
+      padding: 13px;
+      resize: vertical;
+      line-height: var(--type-line-body);
+    }
+
+    .ds-help {
+      color: var(--ds-muted);
+      font-size: var(--type-size-caption);
+    }
+
+    .ds-chip {
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-size: var(--type-size-caption);
+      font-weight: var(--type-weight-semibold);
+    }
+
+    .ds-chip-brand { background: var(--ds-primary-container); color: var(--ds-primary); }
+    .ds-chip-grammar { background: #FFD8E4; color: #7D5260; }
+    .ds-chip-warning { background: var(--ds-warning-bg); color: var(--ds-warning); }
+    .ds-chip-error { background: var(--ds-error-bg); color: var(--ds-error); }
+    .ds-chip-success { background: var(--ds-success-bg); color: var(--ds-success); }
+    .ds-chip-neutral { background: var(--ds-surface-mid); color: var(--ds-text-soft); }
+
+    .ds-segmented {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--ds-line);
+      border-radius: 12px;
+      background: var(--ds-surface-low);
+    }
+
+    .ds-segmented button {
+      min-height: 36px;
+      padding: 0 13px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ds-text-soft);
+      font-size: var(--type-size-control);
+      font-weight: var(--type-weight-medium);
+    }
+
+    .ds-segmented button.is-active {
+      background: var(--ds-primary-container);
+      color: var(--ds-on-primary-container);
+    }
+
+    .ds-detail-panel {
+      padding: 24px;
+      background: #F9F5FF;
+    }
+
+    .ds-detail-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .ds-detail-word-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .ds-detail-word {
+      font-family: var(--type-font-content-ja);
+      font-size: var(--type-size-display);
+      font-weight: var(--type-weight-semibold);
+      line-height: 1.2;
+    }
+
+    .ds-detail-reading {
+      margin-top: 12px;
+      color: var(--ds-primary);
+      font-family: var(--type-font-content-ja);
+      font-size: var(--type-size-subtitle);
+    }
+
+    .ds-detail-definition {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(103, 80, 164, .14);
+    }
+
+    .ds-detail-definition span {
+      color: var(--ds-muted);
+      font-size: var(--type-size-meta);
+      font-weight: var(--type-weight-semibold);
+    }
+
+    .ds-detail-definition p {
+      margin: 8px 0 0;
+      font-family: var(--type-font-ui-zh);
+      font-size: var(--type-size-subtitle);
+    }
+
+    .ds-list-workbench { overflow: hidden; }
+
+    .ds-workbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 12px;
+      padding: 20px;
+      border-bottom: 1px solid var(--ds-line);
+      background: var(--ds-surface-low);
+    }
+
+    .ds-list-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 20px;
+      border-bottom: 1px solid #ECE8F0;
+      color: var(--ds-muted);
+      font-size: var(--type-size-meta);
+    }
+
+    .ds-list-head,
+    .ds-list-row {
+      display: grid;
+      grid-template-columns: minmax(150px, .9fr) minmax(240px, 1.7fr) 130px 92px;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .ds-list-head {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--ds-line);
+      color: var(--ds-muted);
+      font-size: var(--type-size-caption);
+      font-weight: var(--type-weight-semibold);
+    }
+
+    .ds-list-row {
+      min-height: 86px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #ECE8F0;
+    }
+
+    .ds-list-row:last-child { border-bottom: 0; }
+
+    .ds-list-word strong {
+      display: block;
+      font-family: var(--type-font-content-ja);
+      font-size: var(--type-size-subtitle);
+    }
+
+    .ds-list-word small,
+    .ds-list-desc small {
+      color: var(--ds-muted);
+      font-size: var(--type-size-caption);
+    }
+
+    .ds-list-desc span { display: block; }
+
+    .ds-row-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    .ds-row-action {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ds-muted);
+      font-size: var(--type-size-control);
+    }
+
+    .ds-reading-composite {
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr) 290px;
+      min-height: 650px;
+      overflow: hidden;
+    }
+
+    .ds-demo-sidebar {
+      padding: 18px 12px;
+      border-right: 1px solid var(--ds-line);
+      background: var(--ds-surface-low);
+    }
+
+    .ds-demo-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px 18px;
+      font-weight: var(--type-weight-semibold);
+    }
+
+    .ds-demo-logo img { width: 30px; height: 30px; }
+
+    .ds-demo-nav {
+      display: grid;
+      gap: 6px;
+    }
+
+    .ds-demo-nav div {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border-radius: 9px;
+      color: var(--ds-text-soft);
+      font-size: var(--type-size-control);
+    }
+
+    .ds-demo-nav div.is-active {
+      background: var(--ds-primary-container);
+      color: var(--ds-on-primary-container);
+      font-weight: var(--type-weight-semibold);
+    }
+
+    .ds-reader {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: 18px;
+      background: var(--ds-bg);
+    }
+
+    .ds-toolbar {
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding: 6px;
+      border: 1px solid var(--ds-line);
+      border-radius: 12px;
+      background: var(--ds-surface);
+    }
+
+    .ds-tool-group { display: flex; gap: 5px; }
+
+    .ds-tool {
+      min-width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ds-text-soft);
+      font-size: var(--type-size-control);
+      font-weight: var(--type-weight-semibold);
+    }
+
+    .ds-tool.is-active {
+      background: var(--ds-primary-container);
+      color: var(--ds-on-primary-container);
+    }
+
+    .ds-reading-paper {
+      padding: 32px;
+      border: 1px solid var(--ds-line);
+      border-radius: 14px;
+      background: var(--ds-surface);
+      font-family: var(--type-font-content-ja);
+      font-size: var(--type-size-reading);
+      line-height: var(--type-line-reading);
+    }
+
+    .ds-reading-paper p { margin: 0 0 24px; }
+    .ds-reading-paper p:last-child { margin-bottom: 0; }
+
+    .ds-reading-paper ruby {
+      padding: 2px 4px;
+      border-radius: 6px;
+      background: rgba(103, 80, 164, .08);
+    }
+
+    .ds-reading-paper rt {
+      color: var(--ds-primary);
+      font-size: var(--type-size-ruby);
+    }
+
+    .ds-translation {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #ECE8F0;
+      color: var(--ds-text-soft);
+      font-family: var(--type-font-ui-zh);
+      font-size: var(--type-size-body);
+      line-height: var(--type-line-body);
+    }
+
+    .ds-demo-detail {
+      padding: 18px;
+      border-left: 1px solid var(--ds-line);
+      background: #F9F5FF;
+    }
+
+    .ds-empty {
+      min-height: 180px;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .ds-empty div { max-width: 360px; }
+
+    .ds-empty p {
+      margin: 0 0 14px;
+      color: var(--ds-text-soft);
+    }
+
+    .ds-flash-stage {
+      padding: 22px;
+    }
+
+    .ds-flash-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      color: var(--ds-muted);
+      font-size: var(--type-size-meta);
+    }
+
+    .ds-flash-card {
+      min-height: 300px;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      border: 1px solid var(--ds-line);
+      border-radius: 14px;
+      background: var(--ds-surface);
+      text-align: center;
+    }
+
+    .ds-flash-word {
+      font-family: var(--type-font-content-ja);
+      font-size: var(--type-size-hero-large);
+      line-height: 1.25;
+    }
+
+    .ds-flash-hint {
+      margin-top: 10px;
+      color: var(--ds-muted);
+      font-size: var(--type-size-meta);
+    }
+
+    .ds-flash-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .ds-do-dont {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .ds-example {
+      padding: 22px;
+    }
+
+    .ds-example h3 {
+      margin: 0 0 12px;
+      font-size: var(--type-size-subtitle);
+    }
+
+    .ds-example ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--ds-text-soft);
+    }
+
+    .ds-example.is-do { border-top: 4px solid var(--ds-success); }
+    .ds-example.is-dont { border-top: 4px solid var(--ds-error); }
+
+    .ds-code-note {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #25222B;
+      color: #F7F2FA;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: var(--type-size-caption);
+      overflow-x: auto;
+    }
+
+    @media (max-width: 1100px) {
+      .ds-grid-6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .ds-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ds-reading-composite { grid-template-columns: 160px minmax(0, 1fr); }
+      .ds-demo-detail {
+        grid-column: 1 / -1;
+        border-top: 1px solid var(--ds-line);
+        border-left: 0;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .ds-shell { grid-template-columns: 1fr; }
+      .ds-nav { display: none; }
+      .ds-main {
+        width: 100%;
+        padding: 28px 18px 72px;
+      }
+      .ds-hero { grid-template-columns: 1fr; }
+      .ds-version { width: fit-content; }
+      .ds-grid-2,
+      .ds-grid-3,
+      .ds-grid-4,
+      .ds-grid-6 { grid-template-columns: 1fr; }
+      .ds-section-head { align-items: start; flex-direction: column; }
+      .ds-reading-composite { grid-template-columns: 1fr; }
+      .ds-demo-sidebar { display: none; }
+      .ds-demo-detail { grid-column: auto; }
+      .ds-workbar { grid-template-columns: 1fr; }
+      .ds-list-head { display: none; }
+      .ds-list-row {
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+      }
+      .ds-list-desc { grid-column: 1 / -1; }
+      .ds-row-actions { grid-row: 1; grid-column: 2; }
+      .ds-flash-actions,
+      .ds-do-dont { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ds-shell">
+    <aside class="ds-nav" aria-label="设计系统目录">
+      <div class="ds-brand">
+        <img src="assets/brand/yomeru-mark.svg" alt="">
+        <div>
+          <strong>Yomeru</strong>
+          <small>Design System v2</small>
+        </div>
+      </div>
+      <div class="ds-nav-group">
+        <span class="ds-nav-label">Foundation</span>
+        <a href="#principles">设计原则</a>
+        <a href="#colors">颜色</a>
+        <a href="#typography">字体与字号</a>
+        <a href="#spacing">间距与形状</a>
+      </div>
+      <div class="ds-nav-group">
+        <span class="ds-nav-label">Components</span>
+        <a href="#buttons">按钮</a>
+        <a href="#forms">表单</a>
+        <a href="#states">标签与状态</a>
+        <a href="#detail">详情面板</a>
+        <a href="#list">列表工作台</a>
+      </div>
+      <div class="ds-nav-group">
+        <span class="ds-nav-label">Patterns</span>
+        <a href="#reading">阅读工作台</a>
+        <a href="#flashcard">闪卡舞台</a>
+        <a href="#empty">空状态</a>
+        <a href="#rules">使用规则</a>
+      </div>
+    </aside>
+
+    <main class="ds-main">
+      <header class="ds-hero">
+        <div>
+          <div class="ds-kicker">Yomeru design language</div>
+          <h1>安静、清晰、适合长期学习的日语阅读工作台</h1>
+          <p>这份页面把正式网站中的颜色、中文与日文字体、字号、按钮、表单、状态、详情、列表和组合模式放在同一个视觉环境中，作为后续设计与开发的统一参考。</p>
+        </div>
+        <div class="ds-version">
+          <strong>v2 · 2026.07</strong>
+          Typography 20260710-06
+        </div>
+      </header>
+
+      <section class="ds-section" id="principles">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">01 · Principles</div>
+            <h2>设计原则</h2>
+          </div>
+          <p>阅读内容是主角。紫色只用于主行动和当前状态；结构主要依靠留白、边框和 surface，而不是大色块与重阴影。</p>
+        </div>
+        <div class="ds-grid-4">
+          <article class="ds-card ds-card-pad">
+            <span class="ds-chip ds-chip-brand">内容优先</span>
+            <h3>正文比工具更醒目</h3>
+            <p>工具栏、筛选和状态只提供支持，不与阅读内容争夺注意力。</p>
+          </article>
+          <article class="ds-card ds-card-pad">
+            <span class="ds-chip ds-chip-neutral">单一主行动</span>
+            <h3>一个流程一个主按钮</h3>
+            <p>辅助动作使用次按钮或文字按钮，避免同屏多个深紫按钮。</p>
+          </article>
+          <article class="ds-card ds-card-pad">
+            <span class="ds-chip ds-chip-success">稳定层级</span>
+            <h3>边框与留白优先</h3>
+            <p>普通卡片不漂浮，hover 不上移，不用强阴影制造噪音。</p>
+          </article>
+          <article class="ds-card ds-card-pad">
+            <span class="ds-chip ds-chip-warning">语义颜色</span>
+            <h3>颜色必须有含义</h3>
+            <p>待复习使用 warning，真实错误才使用 error，状态同时显示文字。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="ds-section" id="colors">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">02 · Color</div>
+            <h2>颜色系统</h2>
+          </div>
+          <p>紫色用于品牌、主行动、选中和焦点。正文与大面积背景保持中性，学习状态使用独立语义色。</p>
+        </div>
+        <div class="ds-grid-6">
+          <div class="ds-swatch" style="background:#6750A4;color:#fff"><strong>Primary</strong><span>#6750A4</span></div>
+          <div class="ds-swatch" style="background:#EADDFF;color:#21005D"><strong>Primary container</strong><span>#EADDFF</span></div>
+          <div class="ds-swatch" style="background:#625B71;color:#fff"><strong>Secondary</strong><span>#625B71</span></div>
+          <div class="ds-swatch" style="background:#FFFBFE;color:#1C1B1F"><strong>Background</strong><span>#FFFBFE</span></div>
+          <div class="ds-swatch" style="background:#F7F2FA;color:#1C1B1F"><strong>Surface low</strong><span>#F7F2FA</span></div>
+          <div class="ds-swatch" style="background:#1C1B1F;color:#fff"><strong>Main text</strong><span>#1C1B1F</span></div>
+        </div>
+        <div class="ds-grid-4" style="margin-top:16px">
+          <div class="ds-swatch" style="background:#FFDDBA;color:#8A4B00"><strong>Warning</strong><span>#8A4B00 / #FFDDBA</span></div>
+          <div class="ds-swatch" style="background:#FFDAD6;color:#BA1A1A"><strong>Error</strong><span>#BA1A1A / #FFDAD6</span></div>
+          <div class="ds-swatch" style="background:#D9F2E3;color:#2E6B47"><strong>Success</strong><span>#2E6B47 / #D9F2E3</span></div>
+          <div class="ds-swatch" style="background:#FFD8E4;color:#7D5260"><strong>Grammar</strong><span>#7D5260 / #FFD8E4</span></div>
+        </div>
+      </section>
+
+      <section class="ds-section" id="typography">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">03 · Typography</div>
+            <h2>中文、日文与学习内容</h2>
+          </div>
+          <p>中文 UI 和日文小控件使用无衬线体；日语阅读正文、词语详情与语法例句使用明朝体。</p>
+        </div>
+        <div class="ds-grid-3">
+          <article class="ds-card ds-type-card">
+            <div class="ds-type-label"><span>中文界面</span><code>--type-font-ui-zh</code></div>
+            <div class="ds-type-sample-ui-zh">开始阅读<br>保存到生词本</div>
+          </article>
+          <article class="ds-card ds-type-card">
+            <div class="ds-type-label"><span>日文界面控件</span><code>--type-font-ui-ja</code></div>
+            <div class="ds-type-sample-ui-ja">表示設定<br>単語を保存</div>
+          </article>
+          <article class="ds-card ds-type-card">
+            <div class="ds-type-label"><span>日语学习内容</span><code>--type-font-content-ja</code></div>
+            <div class="ds-type-sample-content-ja">毎朝、学校へ行きます。</div>
+          </article>
+        </div>
+        <div class="ds-card ds-card-pad" style="margin-top:16px">
+          <div class="ds-scale-row"><span class="ds-token">caption</span><span class="ds-size">12px</span><span style="font-size:var(--type-size-caption)">标签、元信息、角标</span></div>
+          <div class="ds-scale-row"><span class="ds-token">control</span><span class="ds-size">14px</span><span style="font-size:var(--type-size-control)">按钮、输入框、筛选控件</span></div>
+          <div class="ds-scale-row"><span class="ds-token">body</span><span class="ds-size">15px</span><span style="font-size:var(--type-size-body)">UI 正文与卡片说明文字</span></div>
+          <div class="ds-scale-row"><span class="ds-token">subtitle</span><span class="ds-size">18px</span><span style="font-size:var(--type-size-subtitle)">卡片标题与面板标题</span></div>
+          <div class="ds-scale-row"><span class="ds-token">reading</span><span class="ds-size">20px</span><span style="font-family:var(--type-font-content-ja);font-size:var(--type-size-reading)">図書館で日本語を勉強します。</span></div>
+          <div class="ds-scale-row"><span class="ds-token">page title</span><span class="ds-size">28px</span><span style="font-size:var(--type-size-page-title)">生词本</span></div>
+          <div class="ds-scale-row"><span class="ds-token">hero</span><span class="ds-size">36px</span><span style="font-size:var(--type-size-hero);line-height:1.2">読める · 日语阅读辅助</span></div>
+        </div>
+      </section>
+
+      <section class="ds-section" id="spacing">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">04 · Space & Shape</div>
+            <h2>间距、圆角与层级</h2>
+          </div>
+          <p>基础节奏为 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64。卡片通过边框和留白建立层级，阴影只用于浮层。</p>
+        </div>
+        <div class="ds-grid-2">
+          <article class="ds-card ds-card-pad">
+            <h3>间距阶梯</h3>
+            <div style="display:grid;gap:12px;margin-top:18px">
+              <div style="display:flex;align-items:center;gap:12px"><span class="ds-token">8px</span><span style="width:8px;height:18px;background:var(--ds-primary)"></span></div>
+              <div style="display:flex;align-items:center;gap:12px"><span class="ds-token">16px</span><span style="width:16px;height:18px;background:var(--ds-primary)"></span></div>
+              <div style="display:flex;align-items:center;gap:12px"><span class="ds-token">24px</span><span style="width:24px;height:18px;background:var(--ds-primary)"></span></div>
+              <div style="display:flex;align-items:center;gap:12px"><span class="ds-token">32px</span><span style="width:32px;height:18px;background:var(--ds-primary)"></span></div>
+              <div style="display:flex;align-items:center;gap:12px"><span class="ds-token">48px</span><span style="width:48px;height:18px;background:var(--ds-primary)"></span></div>
+            </div>
+          </article>
+          <article class="ds-card ds-card-pad">
+            <h3>形状语言</h3>
+            <div class="ds-grid-3" style="margin-top:18px">
+              <div style="height:96px;border:1px solid var(--ds-line);border-radius:6px;background:var(--ds-surface-low);display:grid;place-items:center">标签 6</div>
+              <div style="height:96px;border:1px solid var(--ds-line);border-radius:10px;background:var(--ds-surface-low);display:grid;place-items:center">控件 10</div>
+              <div style="height:96px;border:1px solid var(--ds-line);border-radius:16px;background:var(--ds-surface-low);display:grid;place-items:center">面板 16</div>
+            </div>
+            <p class="ds-help" style="margin-top:16px">普通面板无重阴影；弹窗和浮层才使用柔和投影。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="ds-section" id="buttons">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">05 · Buttons</div>
+            <h2>按钮系统</h2>
+          </div>
+          <p>每个流程只允许一个主按钮。辅助动作使用次按钮、浅紫 tonal 或文字按钮。</p>
+        </div>
+        <div class="ds-card ds-card-pad">
+          <div class="ds-button-row">
+            <button class="ds-btn ds-btn-primary" type="button">开始阅读</button>
+            <button class="ds-btn ds-btn-secondary" type="button">上传文件</button>
+            <button class="ds-btn ds-btn-tonal" type="button">加入生词本</button>
+            <button class="ds-btn ds-btn-text" type="button">使用示例</button>
+            <button class="ds-btn ds-btn-danger" type="button">清空记录</button>
+            <button class="ds-icon-btn" type="button" aria-label="朗读">
+              <svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Z"></path><path d="M16 8a6 6 0 0 1 0 8"></path></svg>
+            </button>
+            <button class="ds-icon-btn" type="button" aria-label="收藏">
+              <svg viewBox="0 0 24 24"><path d="M6 3.5h12v17l-6-3.8-6 3.8v-17Z"></path><path d="M12 7v6M9 10h6"></path></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section" id="forms">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">06 · Forms</div>
+            <h2>输入与表单</h2>
+          </div>
+          <p>输入控件统一 14px、轻边框和紫色 focus ring。大输入区保持纸面感。</p>
+        </div>
+        <div class="ds-grid-2">
+          <article class="ds-card ds-card-pad" style="display:grid;gap:16px">
+            <div class="ds-field">
+              <label for="spec-search">搜索生词</label>
+              <input class="ds-input" id="spec-search" value="学校" type="search">
+              <span class="ds-help">可搜索单词、读音和释义</span>
+            </div>
+            <div class="ds-field">
+              <label for="spec-level">JLPT 等级</label>
+              <select class="ds-select" id="spec-level"><option>全部等级</option><option>N5</option><option>N4</option></select>
+            </div>
+          </article>
+          <article class="ds-card ds-card-pad" style="display:grid;gap:16px">
+            <div class="ds-field">
+              <label for="spec-text">导入日语正文</label>
+              <textarea class="ds-textarea" id="spec-text">私は毎朝七時に起きます。朝ごはんを食べてから、学校に行きます。</textarea>
+            </div>
+            <div class="ds-actions" style="justify-content:space-between">
+              <button class="ds-btn ds-btn-text" type="button">上传文件</button>
+              <button class="ds-btn ds-btn-primary" type="button">开始阅读</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="ds-section" id="states">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">07 · States</div>
+            <h2>标签、状态与筛选</h2>
+          </div>
+          <p>标签只表达分类和状态；状态必须有文字，不只依赖颜色。</p>
+        </div>
+        <div class="ds-card ds-card-pad" style="display:grid;gap:22px">
+          <div class="ds-chip-row">
+            <span class="ds-chip ds-chip-brand">N5</span>
+            <span class="ds-chip ds-chip-brand">已收藏</span>
+            <span class="ds-chip ds-chip-grammar">语法提示</span>
+            <span class="ds-chip ds-chip-warning">待复习</span>
+            <span class="ds-chip ds-chip-error">没记住</span>
+            <span class="ds-chip ds-chip-success">已掌握</span>
+            <span class="ds-chip ds-chip-neutral">名词</span>
+          </div>
+          <div class="ds-segmented" role="group" aria-label="筛选状态">
+            <button class="is-active" type="button">全部</button>
+            <button type="button">N5</button>
+            <button type="button">N4</button>
+            <button type="button">待复习</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section" id="detail">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">08 · Detail panel</div>
+            <h2>词语详情面板</h2>
+          </div>
+          <p>词语、读音、标签、释义和操作构成固定层级。详情面板不再使用左侧装饰竖线。</p>
+        </div>
+        <div class="ds-grid-2">
+          <article class="ds-card ds-detail-panel">
+            <div class="ds-detail-head">
+              <span class="ds-chip ds-chip-brand">详解</span>
+              <button class="ds-icon-btn" type="button" aria-label="收起">−</button>
+            </div>
+            <div class="ds-detail-word-row">
+              <div>
+                <div class="ds-detail-word">学校</div>
+                <div class="ds-detail-reading">がっこう</div>
+              </div>
+              <div class="ds-actions">
+                <button class="ds-icon-btn" type="button" aria-label="朗读">
+                  <svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Z"></path><path d="M16 8a6 6 0 0 1 0 8"></path></svg>
+                </button>
+                <button class="ds-icon-btn" type="button" aria-label="加入生词本">
+                  <svg viewBox="0 0 24 24"><path d="M6 3.5h12v17l-6-3.8-6 3.8v-17Z"></path><path d="M12 7v6M9 10h6"></path></svg>
+                </button>
+              </div>
+            </div>
+            <div class="ds-chip-row" style="margin-top:14px">
+              <span class="ds-chip ds-chip-brand">N5</span>
+              <span class="ds-chip ds-chip-neutral">名词</span>
+            </div>
+            <div class="ds-detail-definition"><span>释义</span><p>学校</p></div>
+          </article>
+          <article class="ds-card ds-card-pad">
+            <h3>结构规则</h3>
+            <ol style="margin:14px 0 0;padding-left:22px;color:var(--ds-text-soft)">
+              <li>顶部只放短标签和收起按钮。</li>
+              <li>词语使用日语明朝体，释义使用中文 UI 字体。</li>
+              <li>朗读和收藏使用同尺寸图标按钮。</li>
+              <li>JLPT 与词性标签保持低强调。</li>
+              <li>不增加左侧紫色竖线或其他装饰。</li>
+            </ol>
+          </article>
+        </div>
+      </section>
+
+      <section class="ds-section" id="list">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">09 · List workbench</div>
+            <h2>生词本列表工作台</h2>
+          </div>
+          <p>搜索、状态、表头和列表属于同一工作流，通过分割线组织，不做卡片套卡片。</p>
+        </div>
+        <div class="ds-card ds-list-workbench">
+          <div class="ds-workbar">
+            <input class="ds-input" value="図書館" type="search" aria-label="搜索生词">
+            <button class="ds-btn ds-btn-primary" type="button">闪卡复习</button>
+          </div>
+          <div class="ds-list-meta"><span>当前筛选：全部</span><strong>找到 3 个生词</strong></div>
+          <div class="ds-list-head"><span>词汇 / 读音</span><span>释义</span><span>熟悉程度</span><span>操作</span></div>
+          <div class="ds-list-row">
+            <div class="ds-list-word"><strong>図書館</strong><small>としょかん · N5</small></div>
+            <div class="ds-list-desc"><span>图书馆；阅读、学习或查资料的地方。</span><small>来自阅读文章</small></div>
+            <span class="ds-chip ds-chip-warning">有点犹豫</span>
+            <div class="ds-row-actions"><button class="ds-row-action" type="button">朗</button><button class="ds-row-action" type="button">删</button></div>
+          </div>
+          <div class="ds-list-row">
+            <div class="ds-list-word"><strong>予定</strong><small>よてい · N4</small></div>
+            <div class="ds-list-desc"><span>计划、安排、预定。</span><small>手动收藏</small></div>
+            <span class="ds-chip ds-chip-success">已掌握</span>
+            <div class="ds-row-actions"><button class="ds-row-action" type="button">朗</button><button class="ds-row-action" type="button">删</button></div>
+          </div>
+          <div class="ds-list-row">
+            <div class="ds-list-word"><strong>注文</strong><small>ちゅうもん · N4</small></div>
+            <div class="ds-list-desc"><span>点餐、订购、下单。</span><small>来自阅读文章</small></div>
+            <span class="ds-chip ds-chip-error">没记住</span>
+            <div class="ds-row-actions"><button class="ds-row-action" type="button">朗</button><button class="ds-row-action" type="button">删</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section" id="reading">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">10 · Composite pattern</div>
+            <h2>阅读工作台组合</h2>
+          </div>
+          <p>导航、工具栏、正文和详情使用同一种 surface 与边框语言，正文仍然是视觉中心。</p>
+        </div>
+        <div class="ds-card ds-reading-composite">
+          <aside class="ds-demo-sidebar">
+            <div class="ds-demo-logo"><img src="assets/brand/yomeru-mark.svg" alt=""><span>読める</span></div>
+            <div class="ds-demo-nav">
+              <div class="is-active">阅读</div><div>生词本</div><div>语法本</div><div>练习</div><div>资料</div><div>学习历史</div>
+            </div>
+          </aside>
+          <section class="ds-reader">
+            <div class="ds-toolbar">
+              <div class="ds-tool-group"><button class="ds-tool is-active" type="button">あ</button><button class="ds-tool" type="button">译</button><button class="ds-tool" type="button">字</button></div>
+              <div class="ds-tool-group"><button class="ds-tool" type="button">难度</button><button class="ds-tool is-active" type="button">详解</button></div>
+            </div>
+            <article class="ds-reading-paper">
+              <p><ruby>私<rt>わたし</rt></ruby>は<ruby>毎朝<rt>まいあさ</rt></ruby>七時に起きます。朝ごはんを食べてから、<ruby>学校<rt>がっこう</rt></ruby>に行きます。</p>
+              <p>今日は友達と一緒に図書館で日本語を勉強します。</p>
+              <div class="ds-translation">我每天早上七点起床。吃完早饭以后去学校。今天和朋友一起在图书馆学习日语。</div>
+            </article>
+          </section>
+          <aside class="ds-demo-detail">
+            <div class="ds-detail-head"><span class="ds-chip ds-chip-brand">详解</span><button class="ds-icon-btn" type="button" aria-label="收起">−</button></div>
+            <div class="ds-detail-word">学校</div>
+            <div class="ds-detail-reading">がっこう</div>
+            <div class="ds-chip-row" style="margin-top:14px"><span class="ds-chip ds-chip-brand">N5</span><span class="ds-chip ds-chip-neutral">名词</span></div>
+            <div class="ds-detail-definition"><span>释义</span><p>学校</p></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="ds-section" id="flashcard">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">11 · Focus mode</div>
+            <h2>闪卡舞台</h2>
+          </div>
+          <p>进入复习后隐藏列表和管理区，一屏只保留进度、单张学习卡和评分动作。</p>
+        </div>
+        <div class="ds-card ds-flash-stage">
+          <div class="ds-flash-head"><span>3 / 10</span><button class="ds-btn ds-btn-text" type="button">退出复习</button></div>
+          <div class="ds-flash-card"><div><div class="ds-flash-word">予定</div><div class="ds-flash-hint">点击查看释义</div></div></div>
+          <div class="ds-flash-actions"><button class="ds-btn ds-btn-danger" type="button">没记住</button><button class="ds-btn ds-btn-secondary" type="button">有点犹豫</button><button class="ds-btn ds-btn-tonal" type="button">记住了</button></div>
+        </div>
+      </section>
+
+      <section class="ds-section" id="empty">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">12 · Empty state</div>
+            <h2>空状态</h2>
+          </div>
+          <p>一句短说明和一个自然下一步，不放插画、教程式长文或多个按钮。</p>
+        </div>
+        <div class="ds-card ds-empty"><div><p>还没有收藏的词。</p><button class="ds-btn ds-btn-secondary" type="button">去阅读</button></div></div>
+      </section>
+
+      <section class="ds-section" id="rules">
+        <div class="ds-section-head">
+          <div>
+            <div class="ds-kicker">13 · Do & Don't</div>
+            <h2>组合规则</h2>
+          </div>
+          <p>单个组件好看并不等于整体和谐；最终判断标准是所有组件是否像同一个产品。</p>
+        </div>
+        <div class="ds-do-dont">
+          <article class="ds-card ds-example is-do"><h3>应该这样做</h3><ul><li>一个流程只突出一个主行动</li><li>使用固定字号和颜色 token</li><li>用分割线和留白组织列表</li><li>阅读正文使用日语明朝体</li><li>辅助工具保持安静</li></ul></article>
+          <article class="ds-card ds-example is-dont"><h3>不要这样做</h3><ul><li>同屏放多个深紫主按钮</li><li>临时新增颜色和字号</li><li>卡片外再套一张大卡片</li><li>给普通 hover 加浮动和强阴影</li><li>在详情卡加入装饰竖线</li></ul></article>
+        </div>
+        <div class="ds-code-note">正式 CSS 顺序：styles.css → design-system.css → grammar-layout.css → typography.css</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll('.ds-segmented button').forEach(button => {
+      button.addEventListener('click', () => {
+        button.parentElement.querySelectorAll('button').forEach(item => item.classList.remove('is-active'));
+        button.classList.add('is-active');
+      });
+    });
+  </script>
+</body>
+</html>

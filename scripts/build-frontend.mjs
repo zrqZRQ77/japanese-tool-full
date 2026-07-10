@@ -11,6 +11,7 @@ const DIST_DIR = resolve(ROOT_DIR, 'dist');
 
 const FILES = [
   'index.html',
+  'yomeru-ui-kit.html',
   'app.js',
   'config.js',
   'styles.css',
