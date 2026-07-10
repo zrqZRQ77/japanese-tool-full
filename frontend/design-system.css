@@ -14379,75 +14379,112 @@ body[data-view="discover"] .discover-panel-link {
 }
 
 
-/* Hero import guidance */
-body.first-visit .hero-import-head {
-  display: grid;
-  gap: 4px;
-  margin-bottom: 12px;
+/* Hero import menus */
+body.first-visit .hero-input {
+  overflow: visible;
 }
 
-body.first-visit .hero-import-title-row {
+body.first-visit .hero-menu-details {
+  position: relative;
+  display: inline-block;
+}
+
+body.first-visit .hero-menu-details > summary {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text-soft);
+  font-family: var(--type-font-ui-zh);
+  font-size: var(--type-size-control);
+  font-weight: var(--type-weight-medium);
+  line-height: var(--type-line-ui);
+  list-style: none;
+  cursor: pointer;
+}
+
+body.first-visit .hero-menu-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+body.first-visit .hero-menu-details > summary:hover,
+body.first-visit .hero-menu-details > summary:focus-visible,
+body.first-visit .hero-menu-details[open] > summary {
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--color-primary);
+  outline: none;
+}
+
+body.first-visit .hero-menu-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 40;
+  width: 220px;
+  padding: 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 10px;
+  background: var(--md-sys-color-surface);
+  box-shadow: 0 12px 30px rgba(32, 23, 53, .12);
+}
+
+body.first-visit .hero-more-menu .hero-menu-popover {
+  width: 170px;
+}
+
+body.first-visit .hero-menu-item {
+  width: 100%;
+  min-height: 42px;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-body.first-visit .hero-import-title-row strong {
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
   color: var(--color-text);
-  font-size: var(--type-size-emphasis);
-  font-weight: var(--type-weight-semibold);
-  line-height: var(--type-line-compact);
+  font-family: var(--type-font-ui-zh);
+  font-size: var(--type-size-control);
+  font-weight: var(--type-weight-medium);
+  line-height: var(--type-line-ui);
+  text-align: left;
+  cursor: pointer;
 }
 
-body.first-visit .hero-import-head p,
-body.first-visit .hero-pdf-note {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: var(--type-size-meta);
-  line-height: var(--type-line-body);
+body.first-visit .hero-menu-item:hover,
+body.first-visit .hero-menu-item:focus-visible {
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--color-primary);
+  outline: none;
 }
 
-body.first-visit .hero-recommend-pill,
 body.first-visit .hero-beta-pill {
-  min-height: 22px;
+  min-height: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 8px;
+  padding: 1px 7px;
+  border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 999px;
-  font-size: var(--type-size-caption);
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: var(--type-size-micro);
   font-weight: var(--type-weight-semibold);
   line-height: var(--type-line-ui);
 }
 
-body.first-visit .hero-recommend-pill {
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
-}
-
-body.first-visit .hero-beta-pill {
-  border: 1px solid var(--md-sys-color-outline-variant);
-  background: var(--md-sys-color-surface-container-low);
-  color: var(--md-sys-color-on-surface-variant);
-}
-
-body.first-visit .hero-pdf-action {
-  gap: 6px;
-}
-
-body.first-visit .hero-pdf-note {
-  margin-top: 6px;
-  max-width: 720px;
-}
-
 @media (max-width: 640px) {
-  body.first-visit .hero-import-head {
-    margin-bottom: 10px;
+  body.first-visit .hero-menu-popover {
+    width: min(220px, calc(100vw - 36px));
   }
 
-  body.first-visit .hero-pdf-note {
-    margin-top: 10px;
+  body.first-visit .hero-more-menu .hero-menu-popover {
+    width: min(170px, calc(100vw - 36px));
   }
 }
 

@@ -342,6 +342,18 @@ function updateHeroStartState(){
   button.setAttribute('aria-disabled', hasContent ? 'false' : 'true');
 }
 
+function closeOtherHeroMenus(currentMenu = null){
+  document.querySelectorAll('.hero-menu-details[open]').forEach(menu=>{
+    if(menu !== currentMenu) menu.removeAttribute('open');
+  });
+}
+
+document.addEventListener('click', event=>{
+  document.querySelectorAll('.hero-menu-details[open]').forEach(menu=>{
+    if(!menu.contains(event.target)) menu.removeAttribute('open');
+  });
+});
+
 function focusHeroLinkInput(){
   const input = document.getElementById('heroInputText');
   if(!input) return;
@@ -3354,7 +3366,7 @@ async function extractLocalDocumentFile(file, extension){
 
 async function extractUploadedFile(file){
   await ensureLearningData();
-  const resetFileInputs = ()=>document.querySelectorAll('#documentFileInput,#heroFileInput').forEach(node=>{ node.value = ''; });
+  const resetFileInputs = ()=>document.querySelectorAll('#documentFileInput,#heroWordInput,#heroPdfInput').forEach(node=>{ node.value = ''; });
   if(!file) return;
 
   // 基本验证
@@ -3370,7 +3382,7 @@ async function extractUploadedFile(file){
   const extension = (file.name.match(/\.[^.]+$/)?.[0] || '').toLowerCase();
   const limits = {'.pdf':20 * 1024 * 1024, '.docx':10 * 1024 * 1024, '.txt':2 * 1024 * 1024, '.html':5 * 1024 * 1024, '.htm':5 * 1024 * 1024};
   if(!limits[extension]){
-    setImportStatus('PDF 上传目前处于 Beta，仅适合可以选择、复制文字的文件。扫描件、图片型 PDF 和复杂排版可能无法正确提取文字。', 'error');
+    setImportStatus('目前支持 Word（DOCX）和文本型 PDF。旧版 DOC、图片、扫描件和其他格式暂不支持。', 'error');
     showToast('不支持的文件格式', 'error');
     resetFileInputs();
     return;
@@ -3423,7 +3435,10 @@ async function extractUploadedFile(file){
       }
       const paidCheck = reserveMeteredFeature('serverFileExtract');
       if(!paidCheck.ok){
-        setImportStatus(`${error.message || 'PDF 解析失败。'} 建议复制 PDF 中的日语文字后直接粘贴，这是最快、最稳定的方式。扫描件、图片型 PDF 和复杂排版暂不保证结果。`, 'error');
+        const fallbackMessage = extension === '.docx'
+          ? `${error.message || 'Word 解析失败。'} 建议确认文件为 DOCX，或复制正文后直接粘贴。Word 中的图片文字和复杂文本框暂不支持。`
+          : `${error.message || 'PDF 解析失败。'} 建议复制 PDF 中的文字后直接粘贴。扫描件、图片型 PDF 和复杂排版暂不保证结果。`;
+        setImportStatus(fallbackMessage, 'error');
         showToast('本地解析失败，可使用 Pro 服务器解析兜底', 'warning');
         resetFileInputs();
         return;
