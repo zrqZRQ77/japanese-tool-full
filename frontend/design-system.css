@@ -14379,6 +14379,78 @@ body[data-view="discover"] .discover-panel-link {
 }
 
 
+/* Hero import guidance */
+body.first-visit .hero-import-head {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+body.first-visit .hero-import-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+body.first-visit .hero-import-title-row strong {
+  color: var(--color-text);
+  font-size: var(--type-size-emphasis);
+  font-weight: var(--type-weight-semibold);
+  line-height: var(--type-line-compact);
+}
+
+body.first-visit .hero-import-head p,
+body.first-visit .hero-pdf-note {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--type-size-meta);
+  line-height: var(--type-line-body);
+}
+
+body.first-visit .hero-recommend-pill,
+body.first-visit .hero-beta-pill {
+  min-height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: var(--type-size-caption);
+  font-weight: var(--type-weight-semibold);
+  line-height: var(--type-line-ui);
+}
+
+body.first-visit .hero-recommend-pill {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+body.first-visit .hero-beta-pill {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+body.first-visit .hero-pdf-action {
+  gap: 6px;
+}
+
+body.first-visit .hero-pdf-note {
+  margin-top: 6px;
+  max-width: 720px;
+}
+
+@media (max-width: 640px) {
+  body.first-visit .hero-import-head {
+    margin-bottom: 10px;
+  }
+
+  body.first-visit .hero-pdf-note {
+    margin-top: 10px;
+  }
+}
+
 /* TTS settings controls */
 body[data-view="settings"] .settings-tts-controls {
   display: flex;

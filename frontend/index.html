@@ -9,10 +9,10 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260710-07">
-<link rel="stylesheet" href="design-system.css?v=20260710-07">
-<link rel="stylesheet" href="grammar-layout.css?v=20260710-07">
-<link rel="stylesheet" href="typography.css?v=20260710-07">
+<link rel="stylesheet" href="styles.css?v=20260710-08">
+<link rel="stylesheet" href="design-system.css?v=20260710-08">
+<link rel="stylesheet" href="grammar-layout.css?v=20260710-08">
+<link rel="stylesheet" href="typography.css?v=20260710-08">
 <script defer src="config.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
@@ -34,11 +34,19 @@
       </div>
 
       <div class="hero-input">
-        <textarea id="heroInputText" placeholder="粘贴日语正文、网页链接，或上传资料开始阅读" aria-label="日语文本或文章链接"></textarea>
+        <div class="hero-import-head">
+          <div class="hero-import-title-row">
+            <strong>粘贴日语文本</strong>
+            <span class="hero-recommend-pill">推荐</span>
+          </div>
+          <p>最快、最稳定的导入方式，适合大多数文章。</p>
+        </div>
+        <textarea id="heroInputText" placeholder="在这里粘贴日语正文" aria-label="粘贴日语文本"></textarea>
         <div class="hero-actions">
           <div class="hero-secondary-actions">
-            <button class="btn-secondary btn--text hero-text-action" type="button" onclick="document.getElementById('heroFileInput').click()">
-              <span>上传文件</span>
+            <button class="btn-secondary btn--text hero-text-action hero-pdf-action" type="button" onclick="document.getElementById('heroFileInput').click()">
+              <span>上传 PDF</span>
+              <span class="hero-beta-pill">Beta</span>
             </button>
             <button class="btn-secondary btn--text hero-text-action" type="button" onclick="focusHeroLinkInput()">
               <span>导入链接</span>
@@ -55,12 +63,13 @@
             <span>开始阅读</span>
           </button>
         </div>
+        <p class="hero-pdf-note">PDF 仅适合可以选择、复制文字的文件。扫描件、图片型 PDF 和复杂排版，可能无法正确提取文字。</p>
         <div class="hero-guide-prompt is-hidden" id="heroGuidePrompt">
           <span>第一次使用，需要我带你走一遍吗？</span>
           <button class="btn-primary btn--small" type="button" onclick="startGuidedSampleFromHero()">需要引导</button>
           <button class="btn-secondary btn--small" type="button" onclick="dismissHeroGuidePrompt()">不用了</button>
         </div>
-        <input id="heroFileInput" type="file" accept=".pdf,.docx,.txt,.html,.htm,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/html" hidden onchange="extractUploadedFile(this.files[0])">
+        <input id="heroFileInput" type="file" accept=".pdf,application/pdf" hidden onchange="extractUploadedFile(this.files[0])">
       </div>
     </div>
 
@@ -1206,6 +1215,6 @@
   </div>
 </div>
 
-<script src="app.js?v=20260710-07"></script>
+<script src="app.js?v=20260710-08"></script>
 </body>
 </html>

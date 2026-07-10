@@ -2501,7 +2501,7 @@ function normalizeArticleUrl(value){
 async function analyzeSourceInput(){
   const value = sourceInputValue();
   if(!value){
-    setImportStatus('请先粘贴日语原文，或上传 TXT / HTML / 文本型 PDF / Word。文章链接自动提取属于 Pro 增强。', 'error');
+    setImportStatus('请先粘贴日语文本；这是最快、最稳定的导入方式。也可以上传可选择、复制文字的 PDF（Beta）。', 'error');
     document.getElementById('inputText')?.focus();
     return;
   }
@@ -3370,7 +3370,7 @@ async function extractUploadedFile(file){
   const extension = (file.name.match(/\.[^.]+$/)?.[0] || '').toLowerCase();
   const limits = {'.pdf':20 * 1024 * 1024, '.docx':10 * 1024 * 1024, '.txt':2 * 1024 * 1024, '.html':5 * 1024 * 1024, '.htm':5 * 1024 * 1024};
   if(!limits[extension]){
-    setImportStatus('目前支持 PDF、Word（DOCX）、TXT 和 HTML 文件。', 'error');
+    setImportStatus('PDF 上传目前处于 Beta，仅适合可以选择、复制文字的文件。扫描件、图片型 PDF 和复杂排版可能无法正确提取文字。', 'error');
     showToast('不支持的文件格式', 'error');
     resetFileInputs();
     return;
@@ -3423,7 +3423,7 @@ async function extractUploadedFile(file){
       }
       const paidCheck = reserveMeteredFeature('serverFileExtract');
       if(!paidCheck.ok){
-        setImportStatus(`${error.message || '本地解析失败。'} ${paidCheck.message} 当前可尝试文本型 PDF、DOCX、TXT、HTML，扫描图片版需要后续 OCR 或 Pro 服务器解析。`, 'error');
+        setImportStatus(`${error.message || 'PDF 解析失败。'} 建议复制 PDF 中的日语文字后直接粘贴，这是最快、最稳定的方式。扫描件、图片型 PDF 和复杂排版暂不保证结果。`, 'error');
         showToast('本地解析失败，可使用 Pro 服务器解析兜底', 'warning');
         resetFileInputs();
         return;
@@ -3477,7 +3477,7 @@ async function extractUploadedFile(file){
     openImportPreview(text, {title:file.name, type:result.data.type, cleanupMode, footnotes:result.data.footnotes || [], layoutWarnings:result.data.layoutWarnings || []});
     showToast('文件读取成功', 'success');
   }catch(error){
-    setImportStatus(`${error.message || '文件提取失败。'} 下一步可以试试：确认文件不是扫描图片版；PDF 可切换「普通资料 / 网页文章」后重新上传。`, 'error');
+    setImportStatus(`${error.message || 'PDF 提取失败。'} 建议确认文字可以被选择和复制，或直接复制日语正文后粘贴。扫描件、图片型 PDF 和复杂排版暂不保证结果。`, 'error');
     showToast('文件处理失败，请查看提示', 'error');
   }finally{
     resetFileInputs();
