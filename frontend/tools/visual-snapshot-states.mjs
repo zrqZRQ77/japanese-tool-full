@@ -36,6 +36,8 @@ function cacheVersion(indexHtml) {
   const versions = [
     indexHtml.match(/styles\.css\?v=([^"']+)/)?.[1],
     indexHtml.match(/design-system\.css\?v=([^"']+)/)?.[1],
+    indexHtml.match(/grammar-layout\.css\?v=([^"']+)/)?.[1],
+    indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1],
     indexHtml.match(/app\.js\?v=([^"']+)/)?.[1]
   ].filter(Boolean);
   const unique = [...new Set(versions)];

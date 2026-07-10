@@ -1,0 +1,200 @@
+/* Canonical typography system.
+   Chinese UI follows the homepage action labels.
+   Japanese learning content follows the grammar-example Mincho style. */
+
+:root {
+  /* Font roles */
+  --type-font-ui-zh: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --type-font-ui-ja: 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
+  --type-font-content-ja: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', 'MS Mincho', serif;
+
+  /* Font-size scale */
+  --type-size-ruby: 10px;
+  --type-size-micro: 11px;
+  --type-size-caption: 12px;
+  --type-size-meta: 13px;
+  --type-size-control: 14px;
+  --type-size-body: 15px;
+  --type-size-emphasis: 16px;
+  --type-size-body-large: 17px;
+  --type-size-subtitle: 18px;
+  --type-size-lead: 19px;
+  --type-size-section-title: 20px;
+  --type-size-section-title-large: 21px;
+  --type-size-feature-title: 24px;
+  --type-size-feature-title-large: 26px;
+  --type-size-page-title: 28px;
+  --type-size-display: 32px;
+  --type-size-hero: 36px;
+  --type-size-hero-wide: 38px;
+  --type-size-hero-large: 44px;
+  --type-size-hero-max: 56px;
+  --type-size-reading: var(--type-size-section-title);
+
+  /* Precision steps retained for existing responsive compositions. */
+  --type-size-step-09: 9px;
+  --type-size-step-10-5: 10.5px;
+  --type-size-step-11-5: 11.5px;
+  --type-size-step-12-5: 12.5px;
+  --type-size-step-13-5: 13.5px;
+  --type-size-step-14-5: 14.5px;
+  --type-size-step-15-5: 15.5px;
+  --type-size-step-22: 22px;
+  --type-size-step-23: 23px;
+  --type-size-step-25: 25px;
+  --type-size-step-29: 29px;
+  --type-size-step-30: 30px;
+  --type-size-step-31: 31px;
+  --type-size-step-34: 34px;
+  --type-size-step-40: 40px;
+  --type-size-step-42: 42px;
+  --type-size-step-48: 48px;
+  --type-size-step-52: 52px;
+  --type-size-step-58: 58px;
+  --type-size-step-62: 62px;
+  --type-size-step-64: 64px;
+  --type-size-step-68: 68px;
+  --type-size-step-72: 72px;
+
+  /* Line-height scale */
+  --type-line-compact: 1.3;
+  --type-line-ui: 1.5;
+  --type-line-body: 1.7;
+  --type-line-reading: 2;
+
+  /* Weight scale */
+  --type-weight-regular: 400;
+  --type-weight-medium: 500;
+  --type-weight-semibold: 600;
+  --type-weight-bold: 700;
+
+  /* Compatibility aliases for existing components */
+  --font-ui: var(--type-font-ui-zh);
+  --font-display: var(--type-font-ui-zh);
+  --font-ja: var(--type-font-content-ja);
+  --font-reading: var(--type-font-content-ja);
+  --text-xs: var(--type-size-caption);
+  --text-sm: var(--type-size-meta);
+  --text-md: var(--type-size-body);
+  --text-lg: var(--type-size-subtitle);
+  --text-reading: var(--type-size-reading);
+  --text-ruby: var(--type-size-ruby);
+  --reading-base-font: var(--type-size-reading);
+  --reading-ruby-font: var(--type-size-ruby);
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--type-font-ui-zh);
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: var(--type-size-control);
+  line-height: var(--type-line-ui);
+}
+
+body {
+  font-size: var(--type-size-body);
+  line-height: var(--type-line-body);
+}
+
+/* Keep the Chinese UI tone that is already used by the homepage actions. */
+.hero-text-action,
+.nav-item,
+.btn-primary,
+.btn-secondary,
+.sidebar-utility-button,
+.settings-action-item,
+.grammar-filter-options button,
+.grammar-add-trigger {
+  font-family: var(--type-font-ui-zh) !important;
+}
+
+.hero-text-action {
+  font-size: var(--type-size-control) !important;
+  font-weight: var(--type-weight-medium) !important;
+}
+
+/* Japanese study content uses the Mincho face seen in common grammar examples. */
+#output,
+#output ruby,
+.detail-word,
+.detail-reading-text,
+.gpoint-title,
+.gpoint-example,
+.gpoint-examples,
+.grammar-book-card h3,
+.grammar-book-example,
+.typing-answer,
+.typing-list,
+.retell-sentence-row,
+[lang='ja'] .japanese-content {
+  font-family: var(--type-font-content-ja) !important;
+}
+
+.gpoint-title,
+.grammar-book-card h3 {
+  font-size: var(--type-size-body) !important;
+  font-weight: var(--type-weight-semibold) !important;
+  line-height: var(--type-line-ui) !important;
+}
+
+.gpoint-example,
+.gpoint-examples,
+.grammar-book-example {
+  font-size: var(--type-size-body) !important;
+  line-height: var(--type-line-body) !important;
+}
+
+/* Japanese UI controls remain sans-serif for small-size legibility. */
+html[lang='ja'] button,
+html[lang='ja'] input,
+html[lang='ja'] select,
+html[lang='ja'] textarea,
+html[lang='ja'] .nav-item,
+html[lang='ja'] .sidebar-utility-button {
+  font-family: var(--type-font-ui-ja) !important;
+}
+
+#output {
+  font-size: var(--reading-base-font);
+  line-height: var(--type-line-reading);
+}
+
+#output rt {
+  font-size: var(--reading-ruby-font);
+}
+
+h1,
+.page-title {
+  font-size: var(--type-size-page-title);
+  line-height: var(--type-line-compact);
+}
+
+h2,
+.section-title,
+.grammar-panel-head h2 {
+  font-size: var(--type-size-section-title);
+  line-height: var(--type-line-compact);
+}
+
+h3,
+.card-title {
+  font-size: var(--type-size-subtitle);
+  line-height: var(--type-line-compact);
+}
+
+.module-kicker,
+.tag,
+.badge,
+small {
+  font-size: var(--type-size-caption);
+  line-height: var(--type-line-ui);
+}

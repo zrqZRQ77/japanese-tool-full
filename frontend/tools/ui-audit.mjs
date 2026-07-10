@@ -150,7 +150,8 @@ async function runAudit() {
     issues: [],
     console: [],
     screenshots: [],
-    viewportChecks: []
+    viewportChecks: [],
+    trace: null
   };
 
   const executablePath = await findBrowserExecutable();
@@ -160,6 +161,7 @@ async function runAudit() {
     ...(executablePath ? { executablePath } : {})
   });
   const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+  await context.tracing.start({ screenshots: true, snapshots: true, sources: true });
   const page = await context.newPage();
 
   page.on('console', message => {
@@ -233,6 +235,8 @@ async function runAudit() {
         output: textOf('#output'),
         detail: textOf('#detailArea'),
         vocab: textOf('#vocabListPage') || textOf('#vocabEmptyPage'),
+        grammar: textOf('#grammarBookList'),
+        grammarCount: textOf('#grammarBookCount'),
         flash: textOf('#flashArea'),
         typing: textOf('#typingResult') || textOf('#typingPromptCn'),
         history: textOf('#historyStatsGrid'),
@@ -272,8 +276,10 @@ async function runAudit() {
 
   await step('vocab page and flashcard', async () => {
     await page.locator('button.nav-vocab').click();
-    await page.locator('#vocabDueTool').click();
-    await page.locator('#flashArea .flash-stage').click();
+    await page.locator('#vocabPrimaryAction').click();
+    const flashStage = page.locator('#flashArea .flash-stage');
+    await flashStage.waitFor({ state: 'visible', timeout: 3000 });
+    await flashStage.click();
     await screenshot('04-flashcard');
     return state('state: flashcard');
   });
@@ -303,6 +309,64 @@ async function runAudit() {
     return state('state: delete confirm');
   });
 
+  await step('grammar add and persistence', async () => {
+    const cancelButton = page.locator('#deleteConfirmCancel');
+    if (await cancelButton.isVisible().catch(() => false)) await cancelButton.click();
+    await page.locator('button[data-view="grammar"]').click();
+    await page.locator('.grammar-add-trigger').click();
+    await page.locator('#grammarCustomTitle').fill('〜てから');
+    await page.locator('#grammarCustomLevel').selectOption('N4');
+    await page.locator('#grammarCustomNote').fill('动作完成后，再进行下一步。');
+    await page.locator('#grammarAddPanel button[onclick="addCustomGrammarNote()"]').click();
+    await page.locator('#grammarBookList .grammar-book-card').filter({ hasText: '〜てから' }).waitFor({ state: 'visible', timeout: 3000 });
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('reading_grammar_book') || '[]'));
+    if (!Array.isArray(saved) || !saved.some(item => item.title === '〜てから')) throw new Error('Grammar note was not saved to localStorage.');
+    const practiceHistory = await page.evaluate(() => JSON.parse(localStorage.getItem('reading_practice_history') || '[]'));
+    if (!Array.isArray(practiceHistory) || !practiceHistory.some(item => Number(item.total || 0) > 0)) throw new Error('Grammar activity was not added to learning history.');
+    await screenshot('08-grammar-saved');
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => {
+      window.enterReadingFromHero?.();
+      window.switchWorkspace?.('grammar');
+    });
+    await page.locator('#grammarBookList .grammar-book-card').filter({ hasText: '〜てから' }).waitFor({ state: 'visible', timeout: 3000 });
+    return state('state: grammar persisted');
+  });
+
+  await step('grammar delete icon and delete flow', async () => {
+    const deleteButton = page.locator('#grammarBookList button[onclick^="removeGrammarNote"]').first();
+    await deleteButton.waitFor({ state: 'visible', timeout: 3000 });
+    const geometry = await deleteButton.evaluate(element => {
+      const rect = element.getBoundingClientRect();
+      const before = getComputedStyle(element, '::before');
+      const after = getComputedStyle(element, '::after');
+      return {
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+        scrollWidth: element.scrollWidth,
+        scrollHeight: element.scrollHeight,
+        beforeDisplay: before.display,
+        beforeWidth: parseFloat(before.width),
+        beforeHeight: parseFloat(before.height),
+        afterDisplay: after.display
+      };
+    });
+    if (geometry.width < 32 || geometry.width > 44 || geometry.height < 32 || geometry.height > 44) throw new Error(`Grammar delete button has unexpected size: ${geometry.width}x${geometry.height}.`);
+    if (geometry.scrollWidth > geometry.width + 1 || geometry.scrollHeight > geometry.height + 1) throw new Error('Grammar delete icon overflows its button.');
+    if (geometry.beforeDisplay === 'none' || geometry.beforeWidth < 14 || geometry.beforeHeight < 14) throw new Error('Grammar delete icon is not rendered at the expected size.');
+    if (geometry.afterDisplay !== 'none') throw new Error('Grammar delete button renders an unexpected secondary icon.');
+    await deleteButton.hover();
+    await screenshot('09-grammar-delete-icon');
+    await deleteButton.click();
+    await page.locator('#deleteConfirmModal.active').waitFor({ state: 'visible', timeout: 3000 });
+    await screenshot('10-grammar-delete-confirm');
+    await page.locator('#deleteConfirmSubmit').click();
+    await page.locator('#grammarBookList .grammar-book-card').filter({ hasText: '〜てから' }).waitFor({ state: 'detached', timeout: 3000 });
+    const savedAfterDelete = await page.evaluate(() => JSON.parse(localStorage.getItem('reading_grammar_book') || '[]'));
+    if (savedAfterDelete.some(item => item.title === '〜てから')) throw new Error('Grammar note remained in localStorage after deletion.');
+    return state('state: grammar deleted');
+  });
+
   for (const viewport of VIEWPORTS) {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
@@ -320,12 +384,13 @@ async function runAudit() {
     }
   }
 
-  await browser.close();
-  if (server) server.close();
-
   const appLogs = report.console.filter(entry => {
     const text = entry.text || '';
-    return !text.includes('fonts.googleapis.com') && !text.includes('fonts.gstatic.com');
+    const isOptionalFontRequest = text.includes('fonts.googleapis.com') || text.includes('fonts.gstatic.com');
+    const isOptionalKuromojiRequest = text.includes('cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/');
+    const isExpectedTokenizerFallback = text.includes('kuromoji 加载失败,已退回内置词库')
+      || text.includes('kuromoji 初始化失败,已退回内置词库');
+    return !isOptionalFontRequest && !isOptionalKuromojiRequest && !isExpectedTokenizerFallback;
   });
   const failedSteps = report.steps.filter(item => item.ok === false);
   const summary = {
@@ -334,6 +399,16 @@ async function runAudit() {
     issues: report.issues.length,
     consoleWarningsOrErrors: appLogs.length
   };
+
+  if (!summary.ok) {
+    const tracePath = join(outputDir, 'ui-audit-trace.zip');
+    await context.tracing.stop({ path: tracePath });
+    report.trace = tracePath;
+  } else {
+    await context.tracing.stop();
+  }
+  await browser.close();
+  if (server) server.close();
 
   const reportJsonPath = join(outputDir, 'ui-audit-report.json');
   const reportMdPath = join(outputDir, 'ui-audit-report.md');

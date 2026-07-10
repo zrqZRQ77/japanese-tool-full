@@ -144,7 +144,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-ui);
-  font-size: 14px;
+  font-size: var(--type-size-control);
   line-height: 1.55;
 }
 
@@ -503,7 +503,7 @@ body.first-visit .hero-actions .btn-primary.btn--large:hover {
   min-height: 32px;
   padding: 0 13px;
   margin: 0;
-  font-size: 12px;
+  font-size: var(--type-size-caption);
   font-weight: 650;
   align-items: center;
   justify-content: center;
@@ -614,7 +614,6 @@ body.first-visit .hero-actions .btn-primary.btn--large:hover {
 .vocab-page-review .flash-stage,
 .flash-face,
 .flash-empty,
-.history-chart-card,
 .history-practice-summary,
 .settings-page-card,
 .source-directory-item,
@@ -776,7 +775,7 @@ body.first-visit .hero-brand {
 body.first-visit .hero-title {
   color: var(--color-text) !important;
   font-family: var(--font-display) !important;
-  font-size: 32px !important;
+  font-size: var(--type-size-display) !important;
   font-weight: 600 !important;
   line-height: 1.25 !important;
 }
@@ -826,7 +825,7 @@ body.first-visit .hero-input textarea {
   padding: var(--space-4) !important;
   border-color: var(--md-sys-color-outline-variant) !important;
   background: var(--md-sys-color-surface-container-lowest) !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   line-height: 1.75 !important;
 }
 
@@ -889,7 +888,7 @@ body.first-visit .hero-demo-reader {
 body.first-visit .hero-demo-reader p,
 body.first-visit .hero-demo-flashcard p,
 body.first-visit .hero-demo-practice > span {
-  font-size: 19px !important;
+  font-size: var(--type-size-lead) !important;
   line-height: 1.75 !important;
 }
 
@@ -915,7 +914,7 @@ body.first-visit .hero-flow-copy::before {
 body.first-visit .hero-flow-copy h2 {
   padding-left: var(--space-3);
   color: var(--color-text) !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   line-height: 1.35 !important;
 }
 
@@ -933,7 +932,7 @@ body.first-visit .hero-card-options {
 
 body.first-visit .hero-card-options span {
   min-height: 52px !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
 }
 
 body.first-visit .hero-demo-practice div {
@@ -944,7 +943,7 @@ body.first-visit .hero-demo-practice div {
 body.first-visit .hero-demo-practice .hero-practice-answer,
 body.first-visit .hero-demo-practice .hero-practice-result {
   min-height: 44px !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
 }
 
 @media (max-width: 860px) {
@@ -999,7 +998,7 @@ body.first-visit .hero-demo-practice .hero-practice-result {
   }
 
   .reading-output {
-    font-size: 18px;
+    font-size: var(--type-size-subtitle);
   }
 }
 
@@ -1235,7 +1234,7 @@ summary:focus-visible,
   padding: 0 10px;
   border-radius: var(--radius-md) !important;
   color: var(--color-text-soft);
-  font-size: 14px;
+  font-size: var(--type-size-control);
   font-weight: 520;
   transition: background-color .16s ease, color .16s ease;
 }
@@ -1350,8 +1349,7 @@ body[data-view="settings"] .settings-section {
 .source-recommendation-card,
 .settings-page-card,
 .onboarding-banner,
-.reading-analysis-card,
-.history-chart-card {
+.reading-analysis-card {
   border-color: var(--color-border) !important;
   border-radius: var(--radius-lg) !important;
   background: var(--color-paper) !important;
@@ -1361,8 +1359,7 @@ body[data-view="settings"] .settings-section {
 .card-pad,
 .source-dropzone,
 .settings-page-card,
-.reading-analysis-card,
-.history-chart-card {
+.reading-analysis-card {
   padding: clamp(18px, 2.4vw, 28px);
 }
 
@@ -1633,7 +1630,7 @@ body.first-visit .hero-brand {
 
 body.first-visit .hero-title {
   max-width: 760px;
-  font-size: clamp(32px, 5vw, 56px) !important;
+  font-size: clamp(var(--type-size-display), 5vw, var(--type-size-hero-max)) !important;
   line-height: 1.08 !important;
   letter-spacing: 0 !important;
 }
@@ -1646,7 +1643,7 @@ body.first-visit .hero-subtitle {
   max-width: 620px;
   margin: 14px 0 0 !important;
   color: var(--color-text-soft) !important;
-  font-size: clamp(16px, 2vw, 19px) !important;
+  font-size: clamp(var(--type-size-emphasis), 2vw, var(--type-size-lead)) !important;
   line-height: 1.72 !important;
 }
 
@@ -1669,7 +1666,7 @@ body.first-visit .hero-input textarea {
   min-height: clamp(178px, 25vh, 260px) !important;
   padding: 18px !important;
   background: #FFFFFF !important;
-  font-size: clamp(17px, 2vw, 20px) !important;
+  font-size: clamp(var(--type-size-body-large), 2vw, var(--type-size-section-title)) !important;
   line-height: 1.72 !important;
 }
 
@@ -1743,7 +1740,7 @@ body.first-visit .hero-demo-reader p,
 body.first-visit .hero-demo-flashcard p,
 body.first-visit .hero-demo-practice > span {
   color: var(--color-text) !important;
-  font-size: clamp(17px, 2vw, 21px) !important;
+  font-size: clamp(var(--type-size-body-large), 2vw, var(--type-size-section-title-large)) !important;
 }
 
 body.first-visit .hero-flow-copy {
@@ -1760,7 +1757,7 @@ body.first-visit .hero-flow-copy h2 {
   padding-left: 0;
   color: var(--color-text) !important;
   font-family: var(--font-ui) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 750 !important;
 }
 
@@ -1979,7 +1976,7 @@ body.first-visit .hero-title {
   margin: 0;
   max-width: none;
   color: var(--md-sys-color-on-surface) !important;
-  font-size: clamp(32px, 3.25vw, 44px) !important;
+  font-size: clamp(var(--type-size-display), 3.25vw, var(--type-size-hero-large)) !important;
   line-height: 1.16 !important;
   letter-spacing: 0 !important;
 }
@@ -2033,7 +2030,7 @@ body.first-visit .hero-subtitle {
   max-width: 640px;
   margin: var(--space-3) auto 0 !important;
   color: var(--md-sys-color-on-surface-variant) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   line-height: 1.7 !important;
 }
 
@@ -2064,7 +2061,7 @@ body.first-visit .hero-input textarea {
   border-radius: var(--radius-md) !important;
   background: var(--md-sys-color-surface-container-lowest) !important;
   color: var(--md-sys-color-on-surface) !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   line-height: 1.68 !important;
 }
 
@@ -2110,7 +2107,7 @@ body.first-visit .hero-text-action {
   border-radius: 0 !important;
   background: transparent !important;
   color: var(--md-sys-color-primary) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 750 !important;
 }
 
@@ -2135,7 +2132,7 @@ body.first-visit .hero-actions .btn-primary.btn--large {
   border-radius: var(--radius-md) !important;
   background: var(--md-sys-color-primary) !important;
   color: var(--md-sys-color-on-primary) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 750 !important;
   box-shadow: none !important;
 }
@@ -2159,7 +2156,7 @@ body.first-visit .hero-flow-intro {
 body.first-visit .hero-flow-intro p {
   margin: 0;
   color: var(--md-sys-color-on-surface);
-  font-size: 16px;
+  font-size: var(--type-size-emphasis);
   font-weight: 750;
   line-height: 1.45;
 }
@@ -2227,7 +2224,7 @@ body.first-visit .hero-demo-lookup p,
 body.first-visit .hero-demo-practice > span {
   margin: 0;
   color: var(--md-sys-color-on-surface) !important;
-  font-size: clamp(17px, 1.55vw, 19px) !important;
+  font-size: clamp(var(--type-size-body-large), 1.55vw, var(--type-size-lead)) !important;
   font-weight: 500 !important;
   line-height: 1.8 !important;
   text-align: center;
@@ -2259,7 +2256,7 @@ body.first-visit .hero-demo-token span {
 body.first-visit .hero-demo-token small {
   display: block;
   color: var(--md-sys-color-primary) !important;
-  font-size: 11px !important;
+  font-size: var(--type-size-micro) !important;
   font-weight: 700 !important;
   line-height: 1 !important;
   white-space: nowrap;
@@ -2291,7 +2288,7 @@ body.first-visit .hero-demo-lookup > span {
   padding-top: 16px;
   border-top: 1px solid var(--md-sys-color-outline-variant);
   color: var(--md-sys-color-on-surface-variant);
-  font-size: 15px;
+  font-size: var(--type-size-body);
   line-height: 1.6;
   text-align: center;
 }
@@ -2320,7 +2317,7 @@ body.first-visit .hero-vocab-head {
 body.first-visit .hero-vocab-entry strong {
   color: var(--md-sys-color-on-surface);
   font-family: var(--font-reading);
-  font-size: 20px;
+  font-size: var(--type-size-section-title);
   line-height: 1.25;
 }
 
@@ -2356,7 +2353,7 @@ body.first-visit .hero-card-options span {
   min-height: 48px !important;
   border: 1px solid transparent !important;
   border-radius: var(--radius-md) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 750 !important;
 }
 
@@ -2387,7 +2384,7 @@ body.first-visit .hero-demo-practice .hero-practice-result {
   place-items: center;
   padding: 0 var(--space-2) !important;
   border-radius: var(--radius-md) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
 }
 
 body.first-visit .hero-demo-practice .hero-practice-answer {
@@ -2430,7 +2427,7 @@ body.first-visit .hero-flashcard-status {
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
   color: rgba(73, 69, 79, .7);
-  font-size: 11px;
+  font-size: var(--type-size-micro);
   font-weight: 700;
 }
 
@@ -2452,13 +2449,13 @@ body.first-visit .hero-flashcard-main {
 body.first-visit .hero-flashcard-main strong {
   color: var(--md-sys-color-on-surface);
   font-family: var(--font-reading);
-  font-size: 36px;
+  font-size: var(--type-size-hero);
   line-height: 1.15;
 }
 
 body.first-visit .hero-flashcard-main span {
   color: var(--md-sys-color-on-surface-variant);
-  font-size: 15px;
+  font-size: var(--type-size-body);
   font-weight: 650;
   line-height: 1.45;
 }
@@ -2477,7 +2474,7 @@ body.first-visit .hero-flashcard-face + .hero-flashcard-face {
 
 body.first-visit .hero-flashcard-face small {
   color: rgba(73, 69, 79, .58);
-  font-size: 10px;
+  font-size: var(--type-size-ruby);
   font-weight: 600;
   letter-spacing: 0;
 }
@@ -2485,13 +2482,13 @@ body.first-visit .hero-flashcard-face small {
 body.first-visit .hero-flashcard-face strong {
   color: var(--md-sys-color-on-surface);
   font-family: var(--font-reading);
-  font-size: 26px;
+  font-size: var(--type-size-feature-title-large);
   line-height: 1.25;
 }
 
 body.first-visit .hero-flashcard-face span {
   color: var(--md-sys-color-on-primary-container);
-  font-size: 16px;
+  font-size: var(--type-size-emphasis);
   font-weight: 650;
 }
 
@@ -2515,7 +2512,7 @@ body.first-visit .hero-flashcard-actions span {
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: var(--radius-sm);
   color: var(--md-sys-color-on-surface-variant);
-  font-size: 12px;
+  font-size: var(--type-size-caption);
   font-weight: 750;
 }
 
@@ -2546,7 +2543,7 @@ body.first-visit .hero-flow-copy h2 {
   padding: 0;
   color: var(--md-sys-color-on-surface) !important;
   font-family: var(--font-ui) !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   font-weight: 750 !important;
   line-height: 1.35 !important;
 }
@@ -2574,11 +2571,11 @@ body.first-visit .hero-flow-copy p {
   }
 
   body.first-visit .hero-title {
-    font-size: clamp(28px, 8.2vw, 36px) !important;
+    font-size: clamp(var(--type-size-page-title), 8.2vw, var(--type-size-hero)) !important;
   }
 
   body.first-visit .hero-subtitle {
-    font-size: 15px !important;
+    font-size: var(--type-size-body) !important;
   }
 
   body.first-visit .hero-input {
@@ -2594,7 +2591,7 @@ body.first-visit .hero-flow-copy p {
   body.first-visit .hero-input textarea {
     min-height: 168px !important;
     padding: var(--space-5) !important;
-    font-size: 16px !important;
+    font-size: var(--type-size-emphasis) !important;
   }
 
   body.first-visit .hero-actions {
@@ -2987,7 +2984,7 @@ body[data-view="grammar"] .grammar-lookup-head {
 
 body[data-view="grammar"] .grammar-lookup-head h1 {
   color: var(--color-text) !important;
-  font-size: 24px !important;
+  font-size: var(--type-size-feature-title) !important;
   font-weight: 650 !important;
 }
 
@@ -3059,7 +3056,7 @@ body[data-view="grammar"] .grammar-book-panel h2,
 body[data-view="grammar"] .grammar-capture-panel h2 {
   margin: 0;
   color: var(--color-text) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 650 !important;
 }
 
@@ -3275,7 +3272,7 @@ body[data-view="grammar"] .grammar-empty {
 .workspace-page-head h2 {
   margin: 0;
   color: var(--color-text);
-  font-size: 24px;
+  font-size: var(--type-size-feature-title);
   line-height: 1.25;
   font-weight: 650;
   letter-spacing: 0;
@@ -3376,7 +3373,7 @@ body[data-view="retell"] .practice-module-head {
 
 body[data-view="retell"] .practice-module-head h3 {
   color: var(--color-text) !important;
-  font-size: 19px !important;
+  font-size: var(--type-size-lead) !important;
   font-weight: 650;
 }
 
@@ -3548,7 +3545,7 @@ body[data-view="discover"] .source-open-btn {
 body[data-view="discover"] .source-directory-item h3,
 body[data-view="discover"] .source-recommendation-card h3 {
   color: var(--color-text) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 650;
 }
 
@@ -3583,110 +3580,6 @@ body[data-view="history"] {
   --history-border: var(--color-border);
 }
 
-body[data-view="history"] .history-data-center {
-  display: grid;
-  gap: var(--space-5);
-  color: var(--color-text) !important;
-  font-family: var(--font-ui) !important;
-}
-
-body[data-view="history"] .history-stats-grid,
-body[data-view="history"] .history-charts-grid,
-body[data-view="history"] .history-diag-grid {
-  gap: var(--space-4) !important;
-  margin: 0 !important;
-}
-
-body[data-view="history"] .history-stat-card,
-body[data-view="history"] .history-chart-card {
-  border: 1px solid var(--color-border) !important;
-  border-radius: var(--radius-lg) !important;
-  background: var(--color-paper) !important;
-  box-shadow: none !important;
-}
-
-body[data-view="history"] .history-stat-card {
-  padding: var(--space-4) !important;
-}
-
-body[data-view="history"] .history-chart-card {
-  padding: var(--space-5) !important;
-}
-
-body[data-view="history"] .history-chart-card h3 {
-  margin-bottom: var(--space-4) !important;
-  color: var(--color-text) !important;
-  font-size: 16px !important;
-  font-weight: 650;
-}
-
-body[data-view="history"] .history-stat-title,
-body[data-view="history"] .history-stat-sub,
-body[data-view="history"] .history-bar-labels,
-body[data-view="history"] .history-error-list li span:last-child,
-body[data-view="history"] #historyLevelAdvice {
-  color: var(--color-text-soft) !important;
-}
-
-body[data-view="history"] .history-stat-value {
-  color: var(--color-primary) !important;
-  font-size: 30px !important;
-  font-weight: 650;
-}
-
-body[data-view="history"] .history-heat-box {
-  border-radius: var(--radius-xs) !important;
-  background: var(--md-sys-color-surface-container-high) !important;
-}
-
-body[data-view="history"] .history-heat-box.heat-1 {
-  background: rgba(103, 80, 164, .18) !important;
-}
-
-body[data-view="history"] .history-heat-box.heat-2 {
-  background: rgba(103, 80, 164, .34) !important;
-}
-
-body[data-view="history"] .history-heat-box.heat-3 {
-  background: rgba(103, 80, 164, .56) !important;
-}
-
-body[data-view="history"] .history-heat-box.heat-4 {
-  background: var(--color-primary) !important;
-}
-
-body[data-view="history"] .history-bar-chart {
-  border-bottom-color: var(--color-border) !important;
-}
-
-body[data-view="history"] .history-bar {
-  border-radius: var(--radius-xs) var(--radius-xs) 0 0 !important;
-  background: var(--color-primary-soft) !important;
-}
-
-body[data-view="history"] .history-bar:hover,
-body[data-view="history"] .history-bar.is-strong {
-  background: var(--color-primary) !important;
-}
-
-body[data-view="history"] .history-error-list li {
-  border-bottom-color: var(--color-border) !important;
-  color: var(--color-text) !important;
-}
-
-body[data-view="history"] .history-level-badge {
-  border: 1px solid rgba(103, 80, 164, .22);
-  border-radius: var(--radius-lg) !important;
-  background: var(--color-primary-soft) !important;
-  color: var(--color-primary) !important;
-  font-weight: 650;
-}
-
-body[data-view="history"] .history-chart-card h3[id="historyWeakTitle"]::first-letter,
-body[data-view="history"] .history-chart-card h3[id="historyLevelTitle"]::first-letter {
-  color: inherit;
-}
-
 body[data-view="settings"] .settings-page-panel {
   display: grid;
   gap: var(--space-5);
@@ -3695,7 +3588,7 @@ body[data-view="settings"] .settings-page-panel {
 body[data-view="settings"] .settings-page-head h2 {
   margin: var(--space-1) 0 0;
   color: var(--color-text) !important;
-  font-size: 24px !important;
+  font-size: var(--type-size-feature-title) !important;
   font-weight: 650;
 }
 
@@ -3718,7 +3611,7 @@ body[data-view="settings"] .settings-page-card {
 
 body[data-view="settings"] .settings-page-card h3 {
   color: var(--color-text) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 650;
 }
 
@@ -3764,20 +3657,14 @@ body[data-view="settings"] .settings-action-button:focus-visible span {
 @media (max-width: 980px) {
   body[data-view="retell"] .typing-grid,
   body[data-view="discover"] .discover-sources,
-  body[data-view="history"] .history-charts-grid,
-  body[data-view="history"] .history-diag-grid,
   body[data-view="settings"] .settings-page-grid {
     grid-template-columns: 1fr !important;
-  }
-
-  body[data-view="history"] .history-stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
 @media (max-width: 680px) {
   .workspace-page-head h2 {
-    font-size: 22px;
+    font-size: var(--type-size-step-22);
   }
 
   body[data-view="retell"] .practice-start-row,
@@ -3791,13 +3678,8 @@ body[data-view="settings"] .settings-action-button:focus-visible span {
 
   body[data-view="retell"] .practice-module,
   body[data-view="discover"] .source-directory-panel,
-  body[data-view="history"] .history-chart-card,
   body[data-view="settings"] .settings-page-card {
     padding: var(--space-4) !important;
-  }
-
-  body[data-view="history"] .history-stats-grid {
-    grid-template-columns: 1fr !important;
   }
 }
 
@@ -3975,7 +3857,7 @@ body[data-view="discover"] .card-title,
 body[data-view="test"] .card-title,
 body[data-view="history"] .card-title,
 body[data-view="settings"] .card-title {
-  font-size: clamp(26px, 3vw, 36px) !important;
+  font-size: clamp(var(--type-size-feature-title-large), 3vw, var(--type-size-hero)) !important;
   color: #202124 !important;
 }
 
@@ -4013,7 +3895,6 @@ body[data-view="discover"] .reading-queue-section,
 body[data-view="discover"] .source-directory-panel,
 body[data-view="test"] .test-section > .card-pad,
 body[data-view="history"] .progressive-panel,
-body[data-view="history"] .history-chart-card,
 body[data-view="settings"] .settings-page-card {
   border: 1px solid #DADDE3 !important;
   border-radius: var(--radius-lg) !important;
@@ -4142,7 +4023,7 @@ body[data-view="vocab"] .vocab-row {
 
 body[data-view="vocab"] .vocab-word-main {
   color: #202124 !important;
-  font-size: 19px !important;
+  font-size: var(--type-size-lead) !important;
   font-weight: 650 !important;
   line-height: 1.25 !important;
 }
@@ -4160,7 +4041,7 @@ body[data-view="vocab"] .vocab-level-chip {
   border: 1px solid #E1E3E8 !important;
   background: #F8F9FA !important;
   color: var(--color-text-muted) !important;
-  font-size: 11px !important;
+  font-size: var(--type-size-micro) !important;
   font-weight: 650 !important;
 }
 
@@ -4170,7 +4051,7 @@ body[data-view="vocab"] .vocab-cell-meaning {
 
 body[data-view="vocab"] .vocab-reading {
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
 }
 
@@ -4180,7 +4061,7 @@ body[data-view="vocab"] .vocab-page-list .vocab-meaning {
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   color: var(--color-text) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.55 !important;
   white-space: normal !important;
 }
@@ -4192,7 +4073,7 @@ body[data-view="vocab"] .vocab-source-inline {
   min-width: 0 !important;
   margin-top: 4px !important;
   color: var(--color-text-muted) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
 }
 
 body[data-view="vocab"] .vocab-source-title {
@@ -4201,14 +4082,14 @@ body[data-view="vocab"] .vocab-source-title {
   border: 0 !important;
   background: transparent !important;
   color: var(--color-text-muted) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 500 !important;
 }
 
 body[data-view="vocab"] .vocab-source-kind {
   display: inline !important;
   color: var(--color-text-muted) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
 }
 
 body[data-view="vocab"] .vocab-cell-source {
@@ -4234,7 +4115,7 @@ body[data-view="vocab"] .vocab-mastery {
   border: 0 !important;
   background: transparent !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 500 !important;
 }
 
@@ -4248,7 +4129,7 @@ body[data-view="vocab"] .vocab-mastery i {
 body[data-view="vocab"] .vocab-cell-mastery small {
   display: block !important;
   color: var(--color-text-muted) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
 }
 
 body[data-view="vocab"] .vocab-row-actions {
@@ -4326,7 +4207,7 @@ body[data-view="vocab"] .vocab-flash-actions {
 body[data-view="vocab"] .vocab-flash-copy h2 {
   margin: 0 0 8px !important;
   color: var(--vocab-purple-dark) !important;
-  font-size: clamp(28px, 2.3vw, 34px) !important;
+  font-size: clamp(var(--type-size-page-title), 2.3vw, var(--type-size-step-34)) !important;
   line-height: 1.1 !important;
   font-weight: 800 !important;
   letter-spacing: 0 !important;
@@ -4335,7 +4216,7 @@ body[data-view="vocab"] .vocab-flash-copy h2 {
 body[data-view="vocab"] .vocab-flash-copy p {
   margin: 0 !important;
   color: #4F4A53 !important;
-  font-size: clamp(19px, 1.7vw, 24px) !important;
+  font-size: clamp(var(--type-size-lead), 1.7vw, var(--type-size-feature-title)) !important;
   line-height: 1.3 !important;
   font-weight: 650 !important;
 }
@@ -4372,7 +4253,7 @@ body[data-view="vocab"] #vocabPrimaryAction {
   border-radius: 16px !important;
   background: var(--vocab-purple) !important;
   color: #FFFFFF !important;
-  font-size: 28px !important;
+  font-size: var(--type-size-page-title) !important;
   font-weight: 800 !important;
   box-shadow: none !important;
 }
@@ -4388,7 +4269,7 @@ body[data-view="vocab"] .vocab-more-button {
   border-radius: 12px !important;
   background: #FFFFFF !important;
   color: #64615F !important;
-  font-size: 24px !important;
+  font-size: var(--type-size-feature-title) !important;
   font-weight: 900 !important;
   letter-spacing: 2px !important;
 }
@@ -4421,7 +4302,7 @@ body[data-view="vocab"] .vocab-search-input {
   border: 0 !important;
   background: transparent !important;
   color: #1D1D1B !important;
-  font-size: 23px !important;
+  font-size: var(--type-size-step-23) !important;
   font-weight: 650 !important;
   outline: none !important;
   box-shadow: none !important;
@@ -4452,7 +4333,7 @@ body[data-view="vocab"] .vocab-icon-tool {
   border-radius: 14px !important;
   background: #FFFFFF !important;
   color: #161614 !important;
-  font-size: 25px !important;
+  font-size: var(--type-size-step-25) !important;
   font-weight: 750 !important;
   box-shadow: none !important;
 }
@@ -4529,7 +4410,7 @@ body[data-view="vocab"] .vocab-filter-summary {
   gap: 20px !important;
   margin: 0 0 28px !important;
   color: #76736E !important;
-  font-size: 25px !important;
+  font-size: var(--type-size-step-25) !important;
   font-weight: 650 !important;
 }
 
@@ -4585,7 +4466,7 @@ body[data-view="vocab"] #vocabClearFilters {
   border-radius: 14px !important;
   background: #FFFFFF !important;
   color: #5F5B56 !important;
-  font-size: 22px !important;
+  font-size: var(--type-size-step-22) !important;
   font-weight: 650 !important;
 }
 
@@ -4615,7 +4496,7 @@ body[data-view="vocab"] .vocab-table-head {
   padding: 0 32px !important;
   border-bottom: 1px solid #E1E0DC !important;
   color: #85817B !important;
-  font-size: 24px !important;
+  font-size: var(--type-size-feature-title) !important;
   font-weight: 760 !important;
 }
 
@@ -4654,7 +4535,7 @@ body[data-view="vocab"] .vocab-cell-word {
 body[data-view="vocab"] .vocab-word-main {
   color: #050505 !important;
   font-family: var(--font-ja) !important;
-  font-size: 29px !important;
+  font-size: var(--type-size-step-29) !important;
   font-weight: 850 !important;
   line-height: 1.08 !important;
 }
@@ -4662,7 +4543,7 @@ body[data-view="vocab"] .vocab-word-main {
 body[data-view="vocab"] .vocab-reading {
   color: #52504D !important;
   font-family: var(--font-ja) !important;
-  font-size: 23px !important;
+  font-size: var(--type-size-step-23) !important;
   font-weight: 650 !important;
   line-height: 1.16 !important;
 }
@@ -4678,7 +4559,7 @@ body[data-view="vocab"] .vocab-page-list .vocab-meaning {
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   color: #1E1D1B !important;
-  font-size: 24px !important;
+  font-size: var(--type-size-feature-title) !important;
   font-weight: 700 !important;
   line-height: 1.35 !important;
 }
@@ -4704,7 +4585,7 @@ body[data-view="vocab"] .vocab-mastery {
   padding: 0 18px !important;
   border: 0 !important;
   border-radius: 999px !important;
-  font-size: 24px !important;
+  font-size: var(--type-size-feature-title) !important;
   font-weight: 800 !important;
   line-height: 1 !important;
 }
@@ -4717,7 +4598,7 @@ body[data-view="vocab"] .vocab-level-chip {
 body[data-view="vocab"] .vocab-level-chip.muted {
   background: #EFEDEA !important;
   color: #706C66 !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
 }
 
 body[data-view="vocab"] .vocab-mastery.weak {
@@ -4780,7 +4661,7 @@ body[data-view="vocab"] .vocab-action-button:focus-visible {
 body[data-view="vocab"] .vocab-empty {
   padding: 42px 24px !important;
   color: #76736E !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
 }
 
 body[data-view="vocab"] .vocab-page-review {
@@ -4809,7 +4690,7 @@ body[data-view="vocab"] .vocab-page-review {
   body[data-view="vocab"] #vocabPrimaryAction {
     flex: 1 1 auto !important;
     min-height: 58px !important;
-    font-size: 22px !important;
+    font-size: var(--type-size-step-22) !important;
   }
 
   body[data-view="vocab"] .vocab-workbar {
@@ -4833,7 +4714,7 @@ body[data-view="vocab"] .vocab-page-review {
     width: 100% !important;
     min-height: 54px !important;
     padding-inline: 14px !important;
-    font-size: 18px !important;
+    font-size: var(--type-size-subtitle) !important;
   }
 
   body[data-view="vocab"] .vocab-icon-tool {
@@ -4844,14 +4725,14 @@ body[data-view="vocab"] .vocab-page-review {
   body[data-view="vocab"] .vocab-filter-summary {
     align-items: flex-start !important;
     flex-direction: column !important;
-    font-size: 18px !important;
+    font-size: var(--type-size-subtitle) !important;
   }
 
   body[data-view="vocab"] .vocab-filter-chip,
   body[data-view="vocab"] #vocabClearFilters {
     min-height: 36px !important;
     padding-inline: 14px !important;
-    font-size: 16px !important;
+    font-size: var(--type-size-emphasis) !important;
   }
 
   body[data-view="vocab"] .vocab-table-head {
@@ -4866,14 +4747,14 @@ body[data-view="vocab"] .vocab-page-review {
   }
 
   body[data-view="vocab"] .vocab-word-main {
-    font-size: 25px !important;
+    font-size: var(--type-size-step-25) !important;
   }
 
   body[data-view="vocab"] .vocab-reading,
   body[data-view="vocab"] .vocab-page-list .vocab-meaning,
   body[data-view="vocab"] .vocab-level-chip,
   body[data-view="vocab"] .vocab-mastery {
-    font-size: 18px !important;
+    font-size: var(--type-size-subtitle) !important;
   }
 
   body[data-view="vocab"] .vocab-row-actions {
@@ -4924,12 +4805,12 @@ body[data-view="vocab"] .vocab-search-shell svg {
 
 body[data-view="vocab"] .vocab-flash-copy h2 {
   margin-bottom: 4px !important;
-  font-size: 21px !important;
+  font-size: var(--type-size-section-title-large) !important;
   line-height: 1.2 !important;
 }
 
 body[data-view="vocab"] .vocab-flash-copy p {
-  font-size: 14.5px !important;
+  font-size: var(--type-size-step-14-5) !important;
   line-height: 1.45 !important;
 }
 
@@ -4938,7 +4819,7 @@ body[data-view="vocab"] #vocabPrimaryAction {
   min-height: 44px !important;
   padding: 0 18px !important;
   border-radius: 10px !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 750 !important;
 }
 
@@ -4947,7 +4828,7 @@ body[data-view="vocab"] .vocab-more-button {
   height: 40px !important;
   margin-left: -6px !important;
   border-radius: 10px !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   letter-spacing: 1px !important;
 }
 
@@ -4970,7 +4851,7 @@ body[data-view="vocab"] .vocab-search-shell {
 
 body[data-view="vocab"] .vocab-search-input {
   min-height: 42px !important;
-  font-size: 14.5px !important;
+  font-size: var(--type-size-step-14-5) !important;
   font-weight: 600 !important;
 }
 
@@ -4989,7 +4870,7 @@ body[data-view="vocab"] .vocab-filter-group {
 
 body[data-view="vocab"] .vocab-filter-label {
   color: var(--color-text-muted) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 700 !important;
   white-space: nowrap !important;
 }
@@ -5010,7 +4891,7 @@ body[data-view="vocab"] .vocab-level-filter {
   border-radius: 10px !important;
   background: #FFFFFF !important;
   color: var(--color-text) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 650 !important;
   box-shadow: none !important;
 }
@@ -5051,7 +4932,7 @@ body[data-view="vocab"] .vocab-icon-tool {
 
 body[data-view="vocab"] .vocab-filter-summary {
   margin-bottom: 14px !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="vocab"] .vocab-active-filters,
@@ -5064,7 +4945,7 @@ body[data-view="vocab"] #vocabClearFilters {
   min-height: 28px !important;
   padding: 0 11px !important;
   border-radius: 999px !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="vocab"] .vocab-page-list {
@@ -5080,7 +4961,7 @@ body[data-view="vocab"] .vocab-page-list .vocab-table-row {
 body[data-view="vocab"] .vocab-table-head {
   min-height: 48px !important;
   padding: 0 20px !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 700 !important;
 }
 
@@ -5096,7 +4977,7 @@ body[data-view="vocab"] .vocab-cell-word {
 body[data-view="vocab"] .vocab-word-main {
   color: #171715 !important;
   font-family: var(--font-ja) !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   font-weight: 760 !important;
   line-height: 1.2 !important;
 }
@@ -5107,18 +4988,18 @@ body[data-view="vocab"] ruby.vocab-word-main {
 
 body[data-view="vocab"] .vocab-word-main rt {
   color: var(--color-text-soft) !important;
-  font-size: 10.5px !important;
+  font-size: var(--type-size-step-10-5) !important;
   font-weight: 600 !important;
   line-height: 1.1 !important;
 }
 
 body[data-view="vocab"] .vocab-reading {
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 600 !important;
 }
 
 body[data-view="vocab"] .vocab-page-list .vocab-meaning {
-  font-size: 14.5px !important;
+  font-size: var(--type-size-step-14-5) !important;
   font-weight: 600 !important;
   line-height: 1.45 !important;
 }
@@ -5127,12 +5008,12 @@ body[data-view="vocab"] .vocab-level-chip,
 body[data-view="vocab"] .vocab-mastery {
   min-height: 26px !important;
   padding: 0 10px !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 750 !important;
 }
 
 body[data-view="vocab"] .vocab-level-chip.muted {
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
 }
 
 body[data-view="vocab"] .vocab-row-actions {
@@ -5173,7 +5054,7 @@ body[data-view="vocab"] .vocab-action-button svg {
   }
 
   body[data-view="vocab"] .vocab-flash-copy h2 {
-    font-size: 19px !important;
+    font-size: var(--type-size-lead) !important;
   }
 
   body[data-view="vocab"] .vocab-filter-group {
@@ -5191,7 +5072,7 @@ body[data-view="vocab"] .vocab-action-button svg {
   body[data-view="vocab"] .vocab-level-filter {
     width: 100% !important;
     min-height: 36px !important;
-    font-size: 13px !important;
+    font-size: var(--type-size-meta) !important;
   }
 
   body[data-view="vocab"] .vocab-filter-summary {
@@ -5463,7 +5344,7 @@ body[data-view="reading"].has-reading .learning-path-disclosure {
 
 body[data-view="reading"] .daily-plan-eyebrow {
   color: #4B4851 !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 650 !important;
 }
 
@@ -5471,7 +5352,7 @@ body[data-view="reading"] .daily-plan h2 {
   margin: 4px 0 4px !important;
   color: #202124 !important;
   font-family: var(--font-ui) !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   font-weight: 650 !important;
 }
 
@@ -5546,7 +5427,7 @@ body[data-view="reading"] .reader-tool-details > summary.reader-tool {
   color: #202124 !important;
   box-shadow: none !important;
   font-family: var(--font-ui) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 750 !important;
   line-height: 1 !important;
 }
@@ -5565,7 +5446,7 @@ body[data-view="reading"] .reader-tool-wide {
   padding-inline: 14px !important;
   background: transparent !important;
   color: #202124 !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
 }
 
 body[data-view="reading"] .reader-tool-wide:hover,
@@ -5641,7 +5522,7 @@ body[data-view="reading"] .font-size-row {
 
 body[data-view="reading"] .font-size-row-label {
   color: #4B4851 !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
 }
 
@@ -5670,7 +5551,7 @@ body[data-view="reading"] .font-size-stepper input[type="range"] {
 body[data-view="reading"] .reading-hint {
   margin: 0 0 8px !important;
   color: #4B4851 !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="reading"] .reading-output {
@@ -5680,7 +5561,7 @@ body[data-view="reading"] .reading-output {
   border-radius: 6px !important;
   background: #FFFFFF !important;
   color: #202124 !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   line-height: 2.05 !important;
   box-shadow: none !important;
 }
@@ -5806,7 +5687,7 @@ body[data-view="vocab"] .vocab-review-progress {
   border-radius: 4px !important;
   background: transparent !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
 }
 
@@ -5868,7 +5749,7 @@ body[data-view="vocab"] .flash-back {
 
 body[data-view="vocab"] .vocab-page-review .flash-word {
   color: #202124 !important;
-  font-size: clamp(44px, 5vw, 64px) !important;
+  font-size: clamp(var(--type-size-hero-large), 5vw, var(--type-size-step-64)) !important;
   font-weight: 650 !important;
   letter-spacing: 0 !important;
 }
@@ -5876,14 +5757,14 @@ body[data-view="vocab"] .vocab-page-review .flash-word {
 body[data-view="vocab"] .vocab-page-review .flash-reading {
   margin-top: 14px !important;
   color: var(--color-text-soft) !important;
-  font-size: 22px !important;
+  font-size: var(--type-size-step-22) !important;
   font-weight: 650 !important;
 }
 
 body[data-view="vocab"] .vocab-page-review .flash-meaning {
   margin-top: 14px !important;
   color: var(--color-text) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 500 !important;
   line-height: 1.65 !important;
 }
@@ -5891,7 +5772,7 @@ body[data-view="vocab"] .vocab-page-review .flash-meaning {
 body[data-view="vocab"] .vocab-page-review .flash-tap-hint {
   bottom: 24px !important;
   color: var(--color-text-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="vocab"] .vocab-page-review .rate-row {
@@ -5953,7 +5834,7 @@ body[data-view="vocab"] .vocab-page-review .rate-easy:focus-visible {
 
 body[data-view="vocab"] .flash-empty {
   color: var(--color-text-soft) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   line-height: 1.7 !important;
 }
 
@@ -5991,7 +5872,7 @@ body[data-view="retell"] .practice-start-row button {
   border-radius: 0 !important;
   background: #FFFFFF !important;
   color: #202124 !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 650 !important;
   box-shadow: none !important;
 }
@@ -6028,7 +5909,7 @@ body[data-view="retell"] #typingPracticeModule .practice-module-head {
 
 body[data-view="retell"] #typingPracticeModule .module-kicker {
   color: #4B4851 !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
 }
 
@@ -6036,7 +5917,7 @@ body[data-view="retell"] #typingPracticeModule .practice-module-head h3 {
   margin: 6px 0 0 !important;
   color: #202124 !important;
   font-family: var(--font-display) !important;
-  font-size: 24px !important;
+  font-size: var(--type-size-feature-title) !important;
   font-weight: 650 !important;
 }
 
@@ -6092,7 +5973,7 @@ body[data-view="retell"] #typingPracticeModule .typing-chip {
   border-radius: 4px !important;
   background: #EADDFF !important;
   color: #5B4295 !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
 }
 
@@ -6100,14 +5981,14 @@ body[data-view="retell"] #typingPracticeModule .typing-cn {
   margin: 0 !important;
   color: #202124 !important;
   font-family: var(--font-display) !important;
-  font-size: 19px !important;
+  font-size: var(--type-size-lead) !important;
   font-weight: 650 !important;
   line-height: 1.5 !important;
 }
 
 body[data-view="retell"] #typingPracticeModule .typing-answer {
   color: #4B4851 !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="retell"] #typingPracticeModule .typing-input {
@@ -6119,7 +6000,7 @@ body[data-view="retell"] #typingPracticeModule .typing-input {
   background: #FFFEFB !important;
   color: #202124 !important;
   font-family: var(--font-reading) !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   line-height: 1.65 !important;
   box-shadow: none !important;
 }
@@ -6179,7 +6060,7 @@ body[data-view="retell"] #typingPracticeModule .typing-side-head button {
   border: 0 !important;
   background: transparent !important;
   color: #4B4851 !important;
-  font-size: 24px !important;
+  font-size: var(--type-size-feature-title) !important;
   line-height: 1 !important;
 }
 
@@ -6216,13 +6097,13 @@ body[data-view="retell"] #typingPracticeModule .typing-list button.active {
 }
 
 body[data-view="retell"] #typingPracticeModule .typing-list button b {
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 750 !important;
 }
 
 body[data-view="retell"] #typingPracticeModule .typing-list button span {
   color: #202124 !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 650 !important;
 }
 
@@ -6238,7 +6119,7 @@ body.first-visit .hero-input textarea {
   background: rgba(103, 80, 164, .035) !important;
   color: #202124 !important;
   font-family: var(--font-ui) !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   line-height: 1.65 !important;
 }
 
@@ -6270,7 +6151,7 @@ body.first-visit .hero-text-action:focus-visible {
   border-color: transparent !important;
   color: #202124 !important;
   font-family: var(--font-ui) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 650 !important;
   box-shadow: none !important;
 }
@@ -6285,7 +6166,7 @@ body.first-visit .hero-actions .btn-primary.btn--large,
 body.first-visit .hero-actions .btn-primary.btn--large:hover,
 body.first-visit .hero-actions .btn-primary.btn--large:focus-visible {
   font-family: var(--font-ui) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 700 !important;
   box-shadow: none !important;
 }
@@ -6294,7 +6175,7 @@ body.first-visit .hero-text-action .pro-pill {
   border-color: rgba(103, 80, 164, .28) !important;
   background: transparent !important;
   color: var(--color-primary) !important;
-  font-size: 10px !important;
+  font-size: var(--type-size-ruby) !important;
   font-weight: 700 !important;
 }
 
@@ -6306,7 +6187,7 @@ body.first-visit .hero-flow-intro {
 
 body.first-visit .hero-flow-intro p {
   color: #202124 !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 750 !important;
 }
 
@@ -6392,7 +6273,7 @@ body[data-view="settings"] .settings-page-card {
   }
 
   body[data-view="vocab"] .vocab-page-review .flash-word {
-    font-size: clamp(38px, 12vw, 52px) !important;
+    font-size: clamp(var(--type-size-hero-wide), 12vw, var(--type-size-step-52)) !important;
   }
 
   body[data-view="vocab"] .vocab-page-review .rate-row {
@@ -6464,7 +6345,7 @@ body[data-view="reading"] .reader-toolbar .reader-tool-details > summary[data-to
   border-radius: 5px !important;
   background: #202124 !important;
   color: #FFFFFF !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 650 !important;
   line-height: 1.2 !important;
   white-space: nowrap !important;
@@ -6500,7 +6381,7 @@ body[data-view="reading"] .next-step-bar .reading-practice-action {
   min-height: 42px !important;
   padding: 0 20px !important;
   border-radius: 8px !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 750 !important;
   box-shadow: none !important;
 }
@@ -6563,202 +6444,6 @@ body[data-view="history"] .history-section > .card-pad {
   padding: 0 !important;
 }
 
-body[data-view="history"] .history-data-center {
-  width: 100% !important;
-  display: block !important;
-  color: var(--history-text-main) !important;
-  font-family: 'PingFang SC', 'Microsoft YaHei', var(--font-ui) !important;
-}
-
-body[data-view="history"] .history-stats-grid {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: 20px !important;
-  margin: 0 0 30px !important;
-}
-
-body[data-view="history"] .history-charts-grid {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 20px !important;
-  margin: 0 0 30px !important;
-}
-
-body[data-view="history"] .history-diag-grid {
-  display: grid !important;
-  grid-template-columns: 2fr 1fr !important;
-  gap: 20px !important;
-  margin: 0 !important;
-}
-
-body[data-view="history"] .history-stat-card,
-body[data-view="history"] .history-chart-card {
-  border: 0 !important;
-  border-radius: 12px !important;
-  background: #FFFFFF !important;
-  box-shadow: 0 4px 12px rgba(103, 80, 164, .05) !important;
-}
-
-body[data-view="history"] .history-stat-card {
-  padding: 24px !important;
-  border-top: 4px solid var(--history-avocado-main) !important;
-}
-
-body[data-view="history"] .history-chart-card {
-  padding: 24px !important;
-}
-
-body[data-view="history"] .history-stat-title {
-  margin-bottom: 12px !important;
-  color: var(--history-text-sec) !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-}
-
-body[data-view="history"] .history-stat-value {
-  margin-bottom: 8px !important;
-  color: var(--history-avocado-dark) !important;
-  font-size: 32px !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-}
-
-body[data-view="history"] .history-stat-sub {
-  color: #8A8790 !important;
-  font-size: 12px !important;
-  line-height: 1.45 !important;
-}
-
-body[data-view="history"] .history-chart-card h3 {
-  margin: 0 0 20px !important;
-  color: var(--history-text-main) !important;
-  font-size: 16px !important;
-  font-weight: 700 !important;
-  line-height: 1.35 !important;
-}
-
-body[data-view="history"] .history-heatmap {
-  display: grid !important;
-  grid-template-columns: repeat(10, 1fr) !important;
-  gap: 6px !important;
-}
-
-body[data-view="history"] .history-heat-box {
-  aspect-ratio: 1 !important;
-  border-radius: 4px !important;
-  background: #EBEDF0 !important;
-}
-
-body[data-view="history"] .history-heat-box.heat-1 {
-  background: rgba(103, 80, 164, .18) !important;
-}
-
-body[data-view="history"] .history-heat-box.heat-2 {
-  background: rgba(103, 80, 164, .34) !important;
-}
-
-body[data-view="history"] .history-heat-box.heat-3 {
-  background: rgba(103, 80, 164, .58) !important;
-}
-
-body[data-view="history"] .history-heat-box.heat-4 {
-  background: var(--history-avocado-main) !important;
-}
-
-body[data-view="history"] .history-bar-chart {
-  height: 120px !important;
-  display: flex !important;
-  align-items: flex-end !important;
-  gap: 15px !important;
-  padding-bottom: 10px !important;
-  border-bottom: 1px solid var(--history-border) !important;
-}
-
-body[data-view="history"] .history-bar {
-  flex: 1 !important;
-  min-height: 4px !important;
-  border-radius: 4px 4px 0 0 !important;
-  background: var(--history-avocado-light) !important;
-}
-
-body[data-view="history"] .history-bar:hover,
-body[data-view="history"] .history-bar.is-strong {
-  background: var(--history-avocado-main) !important;
-}
-
-body[data-view="history"] .history-bar-labels {
-  display: flex !important;
-  justify-content: space-between !important;
-  margin-top: 10px !important;
-  color: var(--history-text-sec) !important;
-  font-size: 12px !important;
-}
-
-body[data-view="history"] .history-error-list {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-body[data-view="history"] .history-error-list li {
-  display: flex !important;
-  justify-content: space-between !important;
-  gap: 18px !important;
-  padding: 12px 0 !important;
-  border-bottom: 1px dashed var(--history-border) !important;
-  color: var(--history-text-main) !important;
-  font-size: 14px !important;
-}
-
-body[data-view="history"] .history-error-list li:last-child {
-  border-bottom: 0 !important;
-}
-
-body[data-view="history"] .history-error-list li span:last-child {
-  flex: 0 0 auto !important;
-  color: var(--history-text-sec) !important;
-}
-
-body[data-view="history"] .history-level-badge {
-  margin-bottom: 15px !important;
-  padding: 20px !important;
-  border: 0 !important;
-  border-radius: 8px !important;
-  background: var(--history-avocado-light) !important;
-  color: var(--history-avocado-dark) !important;
-  font-size: 24px !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-}
-
-body[data-view="history"] #historyLevelAdvice {
-  margin: 0 !important;
-  color: var(--history-text-sec) !important;
-  font-size: 13px !important;
-  line-height: 1.5 !important;
-}
-
-@media (max-width: 960px) {
-  body[data-view="history"] .history-stats-grid,
-  body[data-view="history"] .history-charts-grid,
-  body[data-view="history"] .history-diag-grid {
-    grid-template-columns: 1fr 1fr !important;
-  }
-}
-
-@media (max-width: 680px) {
-  body[data-view="history"] .history-stats-grid,
-  body[data-view="history"] .history-charts-grid,
-  body[data-view="history"] .history-diag-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  body[data-view="history"] .history-error-list li {
-    display: grid !important;
-    gap: 4px !important;
-  }
-}
-
 /* Practice page: adapt the three provided tab mockups to the app shell. */
 body[data-view="retell"] {
   --practice-surface: #FFFFFF;
@@ -6805,14 +6490,14 @@ body[data-view="retell"] .practice-hero .tag {
   border: 0 !important;
   background: transparent !important;
   color: var(--practice-text-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 500 !important;
 }
 
 body[data-view="retell"] .practice-hero h2 {
   margin: 0 !important;
   color: var(--practice-text) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 500 !important;
   line-height: 1.35 !important;
 }
@@ -6821,7 +6506,7 @@ body[data-view="retell"] .practice-hero p {
   max-width: 580px !important;
   margin: 8px 0 0 !important;
   color: var(--practice-text-secondary) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.7 !important;
 }
 
@@ -6844,7 +6529,7 @@ body[data-view="retell"] .module-lock {
   border-radius: 999px !important;
   background: #F4F3EE !important;
   color: var(--practice-text-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 500 !important;
   white-space: nowrap !important;
 }
@@ -6878,7 +6563,7 @@ body[data-view="retell"] .practice-start-row button {
   border-radius: 0 !important;
   background: transparent !important;
   color: var(--practice-text-secondary) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 500 !important;
   box-shadow: none !important;
 }
@@ -6933,14 +6618,14 @@ body[data-view="retell"] .practice-module-head .module-kicker {
   display: block !important;
   margin: 0 0 4px !important;
   color: var(--practice-text-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 500 !important;
 }
 
 body[data-view="retell"] .practice-module-head h3 {
   margin: 0 !important;
   color: var(--practice-text) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 500 !important;
   line-height: 1.35 !important;
 }
@@ -6948,7 +6633,7 @@ body[data-view="retell"] .practice-module-head h3 {
 body[data-view="retell"] .lookup-status {
   margin: 0 0 18px !important;
   color: var(--practice-text-secondary) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.7 !important;
 }
 
@@ -6968,7 +6653,7 @@ body[data-view="retell"] .vocab-practice-empty p,
 body[data-view="retell"] .reading-quiz-start p {
   margin: 0 0 20px !important;
   color: var(--practice-text-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="retell"] .practice-mode-tabs {
@@ -6990,7 +6675,7 @@ body[data-view="retell"] .practice-mode-tab {
   border-radius: 0 !important;
   background: transparent !important;
   color: var(--practice-text-secondary) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 500 !important;
 }
 
@@ -7038,7 +6723,7 @@ body[data-view="retell"] .article-practice-panel .section-header {
 
 body[data-view="retell"] .article-practice-panel .section-title {
   color: var(--practice-text) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 600 !important;
 }
 
@@ -7060,21 +6745,21 @@ body[data-view="retell"] .typing-chip {
   border-radius: 999px !important;
   background: var(--practice-blue-bg) !important;
   color: var(--practice-blue-text) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 500 !important;
 }
 
 body[data-view="retell"] .typing-cn {
   margin: 0 0 12px !important;
   color: var(--practice-text) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 500 !important;
   line-height: 1.45 !important;
 }
 
 body[data-view="retell"] .typing-answer {
   color: var(--practice-text-secondary) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.6 !important;
 }
 
@@ -7085,7 +6770,7 @@ body[data-view="retell"] .typing-input {
   border-radius: 8px !important;
   background: var(--practice-surface) !important;
   color: var(--practice-text) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-family: inherit !important;
   resize: vertical !important;
   box-shadow: none !important;
@@ -7098,7 +6783,7 @@ body[data-view="retell"] .typing-side {
 body[data-view="retell"] .typing-side-head {
   margin: 0 0 16px !important;
   color: var(--practice-text) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 600 !important;
 }
 
@@ -7110,7 +6795,7 @@ body[data-view="retell"] .typing-side-head > span {
   border-radius: 999px !important;
   background: var(--practice-purple-bg) !important;
   color: var(--practice-purple-text) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 500 !important;
 }
 
@@ -7155,7 +6840,7 @@ body[data-view="retell"] .vocab-practice-empty .btn-primary {
   min-height: 36px !important;
   padding: 8px 16px !important;
   border-radius: 8px !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 500 !important;
   box-shadow: none !important;
 }
@@ -7288,9 +6973,7 @@ body[data-view="retell"] .retell-section > .card-pad {
 }
 
 body[data-view="retell"] .practice-utility-panel,
-body[data-view="retell"] .vocab-practice-module,
-body[data-view="retell"] .practice-mode-tabs,
-body[data-view="retell"] .article-practice-panel .section-header {
+body[data-view="retell"] .vocab-practice-module {
   display: none !important;
 }
 
@@ -7317,7 +7000,7 @@ body[data-view="retell"] .practice-start-row button {
   border-radius: 0 !important;
   background: transparent !important;
   color: var(--practice-ink-soft) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 400 !important;
   line-height: 20px !important;
   box-shadow: none !important;
@@ -7345,7 +7028,8 @@ body[data-view="retell"] .practice-page-head {
 }
 
 body[data-view="retell"] .practice-module {
-  display: none !important;
+  display: grid !important;
+  gap: 18px !important;
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
@@ -7355,11 +7039,15 @@ body[data-view="retell"] .practice-module {
 }
 
 body[data-view="retell"] .practice-module.is-active {
-  display: block !important;
+  display: grid !important;
+}
+
+body[data-view="retell"] #typingPracticeModule:not(.is-active) {
+  display: none !important;
 }
 
 body[data-view="retell"] .practice-module-head {
-  display: none !important;
+  display: flex !important;
   align-items: flex-start !important;
   justify-content: flex-start !important;
   gap: 12px !important;
@@ -7377,7 +7065,7 @@ body[data-view="retell"] .practice-module-head .module-kicker {
   display: block !important;
   margin: 0 0 4px !important;
   color: var(--practice-ink-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 400 !important;
   line-height: 18px !important;
 }
@@ -7385,7 +7073,7 @@ body[data-view="retell"] .practice-module-head .module-kicker {
 body[data-view="retell"] .practice-module-head h3 {
   margin: 0 !important;
   color: var(--practice-ink) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 500 !important;
   line-height: 1.35 !important;
   letter-spacing: 0 !important;
@@ -7401,7 +7089,7 @@ body[data-view="retell"] .module-lock {
   border-radius: 999px !important;
   background: var(--practice-surface-1) !important;
   color: var(--practice-ink-muted) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 400 !important;
   line-height: 16px !important;
   white-space: nowrap !important;
@@ -7414,10 +7102,10 @@ body[data-view="retell"] .module-lock.unlocked {
 }
 
 body[data-view="retell"] .lookup-status {
-  display: none !important;
+  display: block !important;
   margin: 0 !important;
   color: var(--practice-ink-soft) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.7 !important;
 }
 
@@ -7438,6 +7126,47 @@ body[data-view="retell"] .article-practice-panel {
 
 body[data-view="retell"] .article-practice-panel.active {
   display: block !important;
+}
+
+body[data-view="retell"] .practice-mode-tabs {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0 !important;
+  width: fit-content !important;
+  margin: 0 0 16px !important;
+  overflow: hidden !important;
+  border: 0.5px solid var(--practice-hairline) !important;
+  border-radius: 8px !important;
+  background: var(--practice-surface-2) !important;
+}
+
+body[data-view="retell"] .practice-mode-tab {
+  min-height: 38px !important;
+  padding: 8px 22px !important;
+  border: 0 !important;
+  border-left: 0.5px solid var(--practice-hairline) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--practice-ink-soft) !important;
+  font-size: var(--type-size-control) !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+}
+
+body[data-view="retell"] .practice-mode-tab:first-child {
+  border-left: 0 !important;
+}
+
+body[data-view="retell"] .practice-mode-tab.active {
+  background: var(--practice-pro-bg) !important;
+  color: var(--practice-pro-ink) !important;
+  font-weight: 500 !important;
+}
+
+body[data-view="retell"] .article-practice-panel .section-header {
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 0 12px !important;
 }
 
 body[data-view="retell"] .article-practice-empty,
@@ -7461,7 +7190,7 @@ body[data-view="retell"] .empty-icon {
   display: inline-block !important;
   margin: 0 0 12px !important;
   color: var(--practice-ink-muted) !important;
-  font-size: 28px !important;
+  font-size: var(--type-size-page-title) !important;
   line-height: 1 !important;
 }
 
@@ -7482,7 +7211,7 @@ body[data-view="retell"] .empty-title,
 body[data-view="retell"] .article-practice-empty .empty-title {
   margin: 0 0 6px !important;
   color: var(--practice-ink) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 500 !important;
   line-height: 1.45 !important;
 }
@@ -7492,7 +7221,7 @@ body[data-view="retell"] .article-practice-empty .empty-sub {
   max-width: 420px !important;
   margin: 0 0 20px !important;
   color: var(--practice-ink-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   line-height: 1.5 !important;
 }
 
@@ -7533,7 +7262,7 @@ body[data-view="retell"] .reading-quiz-progress {
   align-items: center !important;
   gap: 12px !important;
   color: var(--practice-ink-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 500 !important;
   line-height: 1 !important;
 }
@@ -7569,7 +7298,7 @@ body[data-view="retell"] .reading-quiz-question {
 body[data-view="retell"] .reading-quiz-prompt {
   margin: 0 0 18px !important;
   color: var(--practice-ink) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 500 !important;
   line-height: 1.55 !important;
 }
@@ -7589,7 +7318,7 @@ body[data-view="retell"] .reading-quiz-option {
   border-radius: 8px !important;
   background: var(--practice-surface-2) !important;
   color: var(--practice-ink) !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   line-height: 1.55 !important;
 }
 
@@ -7636,13 +7365,13 @@ body[data-view="retell"] .reading-quiz-results-head {
   justify-content: space-between !important;
   gap: 12px !important;
   color: var(--practice-ink-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 500 !important;
 }
 
 body[data-view="retell"] .reading-quiz-results-head strong {
   color: var(--practice-ink) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 600 !important;
   line-height: 1.2 !important;
 }
@@ -7666,7 +7395,7 @@ body[data-view="retell"] .reading-quiz-result-card.is-wrong {
 body[data-view="retell"] .reading-quiz-result-prompt {
   margin: 0 0 14px !important;
   color: var(--practice-ink) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 500 !important;
   line-height: 1.6 !important;
 }
@@ -7692,7 +7421,7 @@ body[data-view="retell"] .reading-quiz-result-option {
 body[data-view="retell"] .reading-quiz-result-option > span {
   min-width: 0 !important;
   color: var(--practice-ink) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 400 !important;
   line-height: 1.55 !important;
 }
@@ -7705,7 +7434,7 @@ body[data-view="retell"] .reading-quiz-result-option strong {
   border-radius: 999px !important;
   background: rgba(103, 80, 164, 0.12) !important;
   color: var(--practice-pro-ink) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 600 !important;
   line-height: 16px !important;
   white-space: nowrap !important;
@@ -7742,7 +7471,7 @@ body[data-view="retell"] .reading-quiz-card-actions button {
   min-height: 38px !important;
   padding: 8px 16px !important;
   border-radius: 8px !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 500 !important;
 }
 
@@ -7791,7 +7520,7 @@ body[data-view="retell"] .retell-card-label {
   gap: 8px !important;
   margin: 0 !important;
   color: var(--practice-ink) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 600 !important;
   line-height: 1 !important;
 }
@@ -7824,7 +7553,7 @@ body[data-view="retell"] .retell-sentence-row {
 body[data-view="retell"] .retell-sentence-row p {
   margin: 0 !important;
   color: var(--practice-ink) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 500 !important;
   line-height: 1.6 !important;
   text-align: left !important;
@@ -7866,7 +7595,7 @@ body[data-view="retell"] .retell-steps span {
   border-radius: 999px !important;
   background: transparent !important;
   color: var(--practice-ink) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 500 !important;
   line-height: 20px !important;
 }
@@ -7889,7 +7618,7 @@ body[data-view="retell"] .retell-steps b {
   border-radius: 999px !important;
   background: var(--practice-pro-bg) !important;
   color: var(--practice-pro-ink) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 700 !important;
   line-height: 1 !important;
 }
@@ -7914,7 +7643,7 @@ body[data-view="retell"] .retell-practice-card > .btnrow {
 body[data-view="retell"] .retell-practice-card > .btnrow button {
   min-width: 150px !important;
   min-height: 48px !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 600 !important;
 }
 
@@ -7966,7 +7695,7 @@ body[data-view="retell"] .typing-chip {
   border-radius: 999px !important;
   background: var(--practice-accent-bg) !important;
   color: var(--practice-accent-ink) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 500 !important;
   line-height: 16px !important;
 }
@@ -7981,14 +7710,14 @@ body[data-view="retell"] .typing-meta .typing-chip:nth-child(3) {
   padding: 0 !important;
   background: transparent !important;
   color: var(--practice-ink-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 400 !important;
 }
 
 body[data-view="retell"] .typing-cn {
   margin: 0 0 12px !important;
   color: var(--practice-ink) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 500 !important;
   line-height: 1.45 !important;
 }
@@ -7996,7 +7725,7 @@ body[data-view="retell"] .typing-cn {
 body[data-view="retell"] .typing-answer {
   margin: 0 0 24px !important;
   color: var(--practice-ink-soft) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.6 !important;
 }
 
@@ -8010,7 +7739,7 @@ body[data-view="retell"] .typing-input {
   background: #FFFEFB !important;
   color: var(--practice-ink) !important;
   font-family: inherit !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   line-height: 1.5 !important;
   resize: none !important;
   box-shadow: none !important;
@@ -8036,7 +7765,7 @@ body[data-view="retell"] .article-practice-empty button {
   border-radius: 8px !important;
   background: var(--practice-surface-2) !important;
   color: var(--practice-ink) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 400 !important;
   line-height: 20px !important;
   box-shadow: none !important;
@@ -8067,7 +7796,7 @@ body[data-view="retell"] .typing-side-head > span {
   border-radius: 999px !important;
   background: var(--practice-pro-bg) !important;
   color: var(--practice-pro-ink) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 500 !important;
   line-height: 16px !important;
 }
@@ -8112,7 +7841,7 @@ body[data-view="retell"] .typing-list button b {
   display: block !important;
   margin: 0 !important;
   color: var(--practice-ink) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 400 !important;
   line-height: 1.45 !important;
 }
@@ -8121,14 +7850,14 @@ body[data-view="retell"] .typing-list button span {
   display: block !important;
   margin: 2px 0 0 !important;
   color: var(--practice-ink-muted) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   line-height: 1.45 !important;
 }
 
 body[data-view="retell"] .typing-result,
 body[data-view="retell"] .typing-score {
   color: var(--practice-ink-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   line-height: 1.6 !important;
 }
 
@@ -8182,7 +7911,7 @@ body[data-view="retell"] .retell-fallback-head svg {
 
 body[data-view="retell"] .retell-fallback-head strong {
   color: var(--practice-ink) !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   font-weight: 600 !important;
   line-height: 1.5 !important;
 }
@@ -8211,7 +7940,7 @@ body[data-view="retell"] #retellResult .recording-indicator {
   border-radius: 12px !important;
   background: var(--practice-surface-2) !important;
   color: var(--practice-ink) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 500 !important;
 }
 
@@ -8231,7 +7960,7 @@ body[data-view="retell"] #retellResult .retell-compare > div {
 
 body[data-view="retell"] #retellResult .typing-diff {
   color: var(--practice-ink) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   line-height: 1.8 !important;
 }
 
@@ -8286,7 +8015,7 @@ body[data-view="retell"] .retell-practice-card[data-retell-state="reading"] .ret
 body[data-view="retell"] .retell-practice-card[data-retell-state="recording"] .retell-sentence-row p,
 body[data-view="retell"] .retell-practice-card[data-retell-state="manual"] .retell-sentence-row p,
 body[data-view="retell"] .retell-practice-card[data-retell-state="result"] .retell-sentence-row p {
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   line-height: 1.8 !important;
 }
 
@@ -8323,7 +8052,7 @@ body[data-view="retell"] .retell-result-head > span {
   border-radius: 999px !important;
   background: var(--practice-pro-bg) !important;
   color: var(--practice-pro-ink) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
 }
 
@@ -8337,7 +8066,7 @@ body[data-view="retell"] .retell-reading-actions {
 body[data-view="retell"] .retell-reading-actions button {
   min-height: 34px !important;
   padding: 7px 12px !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="retell"] .retell-result-head {
@@ -8363,7 +8092,7 @@ body[data-view="retell"] #retellAudioSlot audio {
 
 body[data-view="retell"] #retellAudioSlot .lookup-status {
   margin: 0 !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   white-space: nowrap !important;
 }
 
@@ -8432,7 +8161,7 @@ body[data-view="retell"] #retellAudioSlot .lookup-status {
   }
 
   body[data-view="retell"] .retell-sentence-row p {
-    font-size: 17px !important;
+    font-size: var(--type-size-body-large) !important;
   }
 
   body[data-view="retell"] .retell-steps {
@@ -8508,7 +8237,7 @@ body[data-view="discover"] .discover-panel-head {
 body[data-view="discover"] .discover-panel-head h3 {
   margin: 0 !important;
   color: var(--color-text) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 750 !important;
   line-height: 1.35 !important;
 }
@@ -8516,14 +8245,14 @@ body[data-view="discover"] .discover-panel-head h3 {
 body[data-view="discover"] .discover-panel-desc {
   margin: 4px 0 0 !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   line-height: 1.55 !important;
 }
 
 body[data-view="discover"] .discover-panel-meta {
   flex: none !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="discover"] .discover-panel-link {
@@ -8531,7 +8260,7 @@ body[data-view="discover"] .discover-panel-link {
   border: 0 !important;
   background: transparent !important;
   color: var(--color-primary) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 700 !important;
   box-shadow: none !important;
   cursor: pointer !important;
@@ -8577,14 +8306,14 @@ body[data-view="discover"] .discover-empty-card > span {
 body[data-view="discover"] .discover-empty-card h3 {
   margin: 0 0 6px !important;
   color: var(--color-text) !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   font-weight: 750 !important;
 }
 
 body[data-view="discover"] .discover-empty-card p {
   margin: 0 !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   line-height: 1.6 !important;
 }
 
@@ -8603,7 +8332,7 @@ body[data-view="discover"] .reading-queue-form input {
   border-radius: var(--radius-md) !important;
   background: var(--color-bg) !important;
   color: var(--color-text) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   box-shadow: none !important;
 }
 
@@ -8617,7 +8346,7 @@ body[data-view="discover"] .reading-queue-status,
 body[data-view="discover"] .reading-queue-status {
   margin-top: var(--space-2) !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="discover"] .reading-queue-status.ok,
@@ -8647,7 +8376,7 @@ body[data-view="discover"] .discover-filter-row {
 body[data-view="discover"] .discover-filter-row > span {
   flex: 0 0 34px !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
 }
 
@@ -8665,7 +8394,7 @@ body[data-view="discover"] .discover-filter-options button {
   border-radius: var(--radius-pill) !important;
   background: var(--color-paper) !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 600 !important;
   box-shadow: none !important;
   cursor: pointer !important;
@@ -8691,7 +8420,7 @@ body[data-view="discover"] .discover-quick-tags button {
   border-radius: var(--radius-pill) !important;
   background: transparent !important;
   color: var(--color-text-soft) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 650 !important;
   box-shadow: none !important;
   cursor: pointer !important;
@@ -8761,7 +8490,7 @@ body[data-view="discover"] .source-traits em {
   min-height: 22px !important;
   padding: 2px var(--space-2) !important;
   border-radius: var(--radius-sm) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 700 !important;
   font-style: normal !important;
 }
@@ -8792,7 +8521,7 @@ body[data-view="discover"] .graded-card-check {
 body[data-view="discover"] .graded-material-card h3 {
   margin: 0 !important;
   color: var(--color-text) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 750 !important;
   line-height: 1.45 !important;
 }
@@ -8801,7 +8530,7 @@ body[data-view="discover"] .graded-material-card p {
   min-height: 44px !important;
   margin: 0 !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   line-height: 1.6 !important;
 }
 
@@ -8809,7 +8538,7 @@ body[data-view="discover"] .graded-card-meta {
   padding-top: var(--space-3) !important;
   border-top: 1px solid var(--color-border) !important;
   color: var(--color-text-soft) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
 }
 
 body[data-view="discover"] .graded-card-meta i {
@@ -8851,7 +8580,7 @@ body[data-view="discover"] .source-directory-icon.is-green {
   border-radius: var(--radius-md) !important;
   background: var(--color-primary) !important;
   color: #FFFFFF !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   font-weight: 800 !important;
   box-shadow: none !important;
   cursor: pointer !important;
@@ -8860,7 +8589,7 @@ body[data-view="discover"] .source-directory-icon.is-green {
 body[data-view="discover"] .source-directory-title-row h3 {
   margin: 0 !important;
   color: var(--color-text) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 750 !important;
   line-height: 1.35 !important;
 }
@@ -8869,13 +8598,13 @@ body[data-view="discover"] .source-directory-copy small {
   display: block !important;
   margin-top: 2px !important;
   color: var(--color-text-soft) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
 }
 
 body[data-view="discover"] .source-directory-copy p {
   margin: var(--space-2) 0 !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   line-height: 1.6 !important;
 }
 
@@ -8883,7 +8612,7 @@ body[data-view="discover"] .resource-alert {
   margin-bottom: var(--space-2) !important;
   padding: var(--space-2) var(--space-3) !important;
   border-radius: var(--radius-sm) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   line-height: 1.55 !important;
 }
 
@@ -8907,7 +8636,7 @@ body[data-view="discover"] .source-visit-button {
   border-radius: var(--radius-sm) !important;
   background: var(--color-paper) !important;
   color: var(--color-text) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
   box-shadow: none !important;
   cursor: pointer !important;
@@ -8922,7 +8651,7 @@ body[data-view="discover"] .source-visit-button:focus-visible {
 body[data-view="discover"] .source-empty-state {
   padding: var(--space-5) !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   text-align: center !important;
 }
 
@@ -9003,7 +8732,7 @@ body[data-view="discover"] .quick-add-panel .discover-panel-head {
 }
 
 body[data-view="discover"] .quick-add-panel .discover-panel-head h3 {
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
 }
 
 body[data-view="discover"] .quick-add-panel .discover-panel-meta {
@@ -9084,7 +8813,7 @@ body[data-view="discover"] .discover-filter-row {
 body[data-view="discover"] .discover-filter-row > span {
   margin: 0 2px 0 0 !important;
   color: var(--color-text) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 760 !important;
 }
 
@@ -9101,7 +8830,7 @@ body[data-view="discover"] .discover-filter-select {
   background: #FFFFFF !important;
   color: var(--color-text) !important;
   font: inherit !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 700 !important;
   box-shadow: none !important;
   cursor: pointer !important;
@@ -9155,7 +8884,7 @@ body[data-view="discover"] .graded-card-top > span {
   border-radius: var(--radius-pill) !important;
   background: var(--color-paper) !important;
   color: var(--color-text-soft) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 750 !important;
 }
 
@@ -9172,7 +8901,7 @@ body[data-view="discover"] .graded-card-top .material-topic {
 
 body[data-view="discover"] .graded-material-card h3 {
   margin: 0 !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   line-height: 1.42 !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
@@ -9213,7 +8942,7 @@ body[data-view="discover"] .source-directory-icon.is-green {
   width: 36px !important;
   height: 36px !important;
   border-radius: 10px !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
 }
 
 body[data-view="discover"] .source-directory-copy {
@@ -9222,7 +8951,7 @@ body[data-view="discover"] .source-directory-copy {
 
 body[data-view="discover"] .source-directory-copy h3 {
   margin: 0 !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 760 !important;
 }
 
@@ -9323,7 +9052,7 @@ body[data-view="settings"] .settings-section > .card-pad {
 body[data-view="settings"] .settings-page-head h1 {
   margin: 0 0 8px !important;
   color: var(--settings-text) !important;
-  font-size: 34px !important;
+  font-size: var(--type-size-step-34) !important;
   font-weight: 850 !important;
   line-height: 1.15 !important;
   letter-spacing: 0 !important;
@@ -9332,7 +9061,7 @@ body[data-view="settings"] .settings-page-head h1 {
 body[data-view="settings"] .settings-page-head p {
   margin: 0 !important;
   color: var(--settings-muted) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   line-height: 1.5 !important;
 }
 
@@ -9357,7 +9086,7 @@ body[data-view="settings"] .settings-kicker {
   display: block !important;
   margin: 0 0 20px !important;
   color: var(--settings-purple) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 800 !important;
   line-height: 1.2 !important;
 }
@@ -9366,7 +9095,7 @@ body[data-view="settings"] .settings-language-panel h2,
 body[data-view="settings"] .settings-page-card h2 {
   margin: 0 !important;
   color: var(--settings-text) !important;
-  font-size: 22px !important;
+  font-size: var(--type-size-step-22) !important;
   font-weight: 850 !important;
   line-height: 1.3 !important;
   letter-spacing: 0 !important;
@@ -9384,7 +9113,7 @@ body[data-view="settings"] .settings-language-select::after {
   right: 16px;
   color: #7E7B95;
   pointer-events: none;
-  font-size: 13px;
+  font-size: var(--type-size-meta);
 }
 
 body[data-view="settings"] .settings-language-select select {
@@ -9395,7 +9124,7 @@ body[data-view="settings"] .settings-language-select select {
   border-radius: 13px !important;
   background: #FFFFFF !important;
   color: var(--settings-text) !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 800 !important;
   appearance: none !important;
   box-shadow: none !important;
@@ -9424,7 +9153,7 @@ body[data-view="settings"] .settings-action-stack p {
   max-width: 420px !important;
   margin: 0 !important;
   color: var(--settings-muted) !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   line-height: 1.65 !important;
 }
 
@@ -9433,7 +9162,7 @@ body[data-view="settings"] .settings-secondary-action {
   min-height: 56px !important;
   padding: 0 26px !important;
   border-radius: 13px !important;
-  font-size: 17px !important;
+  font-size: var(--type-size-body-large) !important;
   font-weight: 850 !important;
   box-shadow: none !important;
 }
@@ -9479,7 +9208,7 @@ body[data-view="settings"] .settings-quota-head {
 body[data-view="settings"] .settings-quota-head h3 {
   margin: 0 !important;
   color: var(--settings-text) !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   font-weight: 850 !important;
   line-height: 1.3 !important;
 }
@@ -9493,7 +9222,7 @@ body[data-view="settings"] .settings-quota-head span {
   border-radius: 999px !important;
   background: var(--settings-warning-bg) !important;
   color: var(--settings-warning) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 850 !important;
   white-space: nowrap !important;
 }
@@ -9516,14 +9245,14 @@ body[data-view="settings"] .settings-quota-value {
   margin-top: -17px !important;
   text-align: right !important;
   color: var(--settings-muted) !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   font-weight: 850 !important;
 }
 
 body[data-view="settings"] .settings-quota-card p {
   margin: 14px 0 0 !important;
   color: var(--settings-muted) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   line-height: 1.55 !important;
 }
 
@@ -9691,7 +9420,7 @@ body[data-view="vocab"] .flash-front {
 body[data-view="vocab"] .vocab-page-review .flash-word {
   max-width: 100% !important;
   color: #202124 !important;
-  font-size: clamp(42px, 6vw, 72px) !important;
+  font-size: clamp(var(--type-size-step-42), 6vw, var(--type-size-step-72)) !important;
   font-weight: 750 !important;
   line-height: 1.05 !important;
   letter-spacing: 0 !important;
@@ -9716,7 +9445,7 @@ body[data-view="vocab"] .vocab-page-review .flash-meaning {
 body[data-view="vocab"] .vocab-page-review .flash-reading {
   align-self: end !important;
   color: #5F6368 !important;
-  font-size: clamp(22px, 2.5vw, 30px) !important;
+  font-size: clamp(var(--type-size-step-22), 2.5vw, var(--type-size-step-30)) !important;
   font-weight: 650 !important;
   line-height: 1.35 !important;
 }
@@ -9725,7 +9454,7 @@ body[data-view="vocab"] .vocab-page-review .flash-meaning {
   align-self: start !important;
   margin-top: 12px !important;
   color: #202124 !important;
-  font-size: clamp(17px, 1.8vw, 22px) !important;
+  font-size: clamp(var(--type-size-body-large), 1.8vw, var(--type-size-step-22)) !important;
   font-weight: 500 !important;
   line-height: 1.65 !important;
   overflow-wrap: anywhere !important;
@@ -9735,7 +9464,7 @@ body[data-view="vocab"] .vocab-page-review .flash-tap-hint {
   position: static !important;
   margin-top: 18px !important;
   color: #8A8D95 !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="vocab"] .vocab-page-review .rate-row {
@@ -9757,7 +9486,7 @@ body[data-view="vocab"] .vocab-page-review .rate-btn {
   border: 1px solid #DADDE3 !important;
   border-radius: 10px !important;
   background: #FFFFFF !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   font-weight: 700 !important;
   line-height: 1.2 !important;
   white-space: nowrap !important;
@@ -10016,7 +9745,7 @@ body[data-view="vocab"] .flash-card-surface-front .flash-main-word {
 body[data-view="vocab"] .flash-main-word {
   max-width: 100% !important;
   color: #202124 !important;
-  font-size: clamp(52px, 5vw, 72px) !important;
+  font-size: clamp(var(--type-size-step-52), 5vw, var(--type-size-step-72)) !important;
   font-weight: 750 !important;
   line-height: 1.05 !important;
   letter-spacing: 0 !important;
@@ -10029,7 +9758,7 @@ body[data-view="vocab"] .flash-main-hint {
   align-self: start !important;
   margin-top: 24px !important;
   color: #8A8D95 !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 500 !important;
   line-height: 1.4 !important;
 }
@@ -10066,13 +9795,13 @@ body[data-view="vocab"] .flash-card-detail-group {
 }
 
 body[data-view="vocab"] .flash-card-surface-back .flash-main-word {
-  font-size: clamp(44px, 4.6vw, 64px) !important;
+  font-size: clamp(var(--type-size-hero-large), 4.6vw, var(--type-size-step-64)) !important;
   line-height: 1.08 !important;
 }
 
 body[data-view="vocab"] .flash-main-reading {
   color: #5F6368 !important;
-  font-size: clamp(20px, 2vw, 26px) !important;
+  font-size: clamp(var(--type-size-section-title), 2vw, var(--type-size-feature-title-large)) !important;
   font-weight: 650 !important;
   line-height: 1.35 !important;
   letter-spacing: 0 !important;
@@ -10082,7 +9811,7 @@ body[data-view="vocab"] .flash-main-reading {
 
 body[data-view="vocab"] .flash-main-meaning {
   color: #202124 !important;
-  font-size: clamp(16px, 1.5vw, 19px) !important;
+  font-size: clamp(var(--type-size-emphasis), 1.5vw, var(--type-size-lead)) !important;
   font-weight: 500 !important;
   line-height: 1.5 !important;
   text-align: center !important;
@@ -10108,7 +9837,7 @@ body[data-view="vocab"] .flash-rating-row .rate-btn {
   padding: 0 14px !important;
   border-radius: 10px !important;
   background: #FFFFFF !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   font-weight: 700 !important;
   line-height: 1.2 !important;
   white-space: nowrap !important;
@@ -10177,7 +9906,7 @@ body[data-view="reading"] .source-help {
   padding: 0 !important;
   background: transparent !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   line-height: 1.5 !important;
 }
 
@@ -10205,7 +9934,7 @@ body[data-view="reading"] .reading-source-options .pdf-mode-field {
   gap: 8px !important;
   margin: 0 !important;
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 500 !important;
   line-height: 1.4 !important;
 }
@@ -10222,7 +9951,7 @@ body[data-view="reading"] .reading-source-options select {
   border-radius: 8px !important;
   background-color: #FFFFFF !important;
   color: var(--color-text) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   box-shadow: none !important;
 }
 
@@ -10241,7 +9970,7 @@ body[data-view="reading"] .reading-source-suggestions {
 
 body[data-view="reading"] .reading-source-label {
   color: var(--color-text-soft) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 600 !important;
   white-space: nowrap !important;
 }
@@ -10276,14 +10005,14 @@ body[data-view="reading"] .reading-source-suggestions .source-card:focus-visible
 
 body[data-view="reading"] .reading-source-suggestions .source-card b {
   color: var(--color-text) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
   line-height: 1.2 !important;
 }
 
 body[data-view="reading"] .reading-source-suggestions .source-card span {
   color: var(--color-text-soft) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   line-height: 1.2 !important;
   white-space: nowrap !important;
 }
@@ -10332,7 +10061,7 @@ body[data-view="settings"] .settings-language-select select,
   background-size: 14px 14px !important;
   color: var(--color-text) !important;
   font-family: var(--font-ui) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 650 !important;
   line-height: 1.3 !important;
   box-shadow: none !important;
@@ -10392,7 +10121,7 @@ body[data-view="settings"] .settings-language-select::after {
 
 body[data-view="settings"] .settings-language-select select {
   min-width: 104px !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 650 !important;
 }
 
@@ -10447,7 +10176,7 @@ body[data-view="vocab"] .vocab-table-filter {
   justify-content: center !important;
   min-width: 0 !important;
   color: var(--color-text-muted) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 700 !important;
   line-height: 1.1 !important;
 }
@@ -10464,7 +10193,7 @@ body[data-view="vocab"] .vocab-table-filter-trigger {
   border-radius: 10px !important;
   background-color: #FFFFFF !important;
   color: var(--color-text) !important;
-  font-size: 13.5px !important;
+  font-size: var(--type-size-step-13-5) !important;
   font-weight: 750 !important;
   line-height: 1 !important;
   box-shadow: none !important;
@@ -10524,7 +10253,7 @@ body[data-view="vocab"] .vocab-filter-menu-options button {
   background: transparent !important;
   color: var(--color-text) !important;
   font: inherit !important;
-  font-size: 13.5px !important;
+  font-size: var(--type-size-step-13-5) !important;
   font-weight: 650 !important;
   text-align: left !important;
   white-space: nowrap !important;
@@ -10602,7 +10331,7 @@ body[data-view="reading"] .detail-panel-toggle {
   border-radius: 8px !important;
   background: #FFFFFF !important;
   color: var(--color-text-soft) !important;
-  font-size: 18px !important;
+  font-size: var(--type-size-subtitle) !important;
   font-weight: 650 !important;
   line-height: 1 !important;
   cursor: pointer !important;
@@ -10622,11 +10351,11 @@ body[data-view="reading"] .detail-empty-smart {
 
 body[data-view="reading"] .detail-empty-smart .detail-word {
   margin: 0 !important;
-  font-size: 30px !important;
+  font-size: var(--type-size-step-30) !important;
 }
 
 body[data-view="reading"] .detail-empty-smart .detail-reading {
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
 }
 
 body[data-view="reading"] .detail-empty-smart .detail-definition {
@@ -10656,7 +10385,7 @@ body[data-view="vocab"] #vocabPrimaryAction {
   gap: 8px !important;
   padding: 0 16px !important;
   border-radius: 12px !important;
-  font-size: 14.5px !important;
+  font-size: var(--type-size-step-14-5) !important;
   font-weight: 750 !important;
   white-space: nowrap !important;
 }
@@ -10697,7 +10426,7 @@ body[data-view="vocab"] .vocab-management-trigger {
   border-radius: 12px !important;
   background: #FFFFFF !important;
   color: var(--color-text) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 700 !important;
   line-height: 1 !important;
   cursor: pointer !important;
@@ -10756,7 +10485,7 @@ body[data-view="vocab"] .vocab-management-options button {
   background: transparent !important;
   color: var(--color-text) !important;
   font: inherit !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 650 !important;
   text-align: left !important;
   cursor: pointer !important;
@@ -10796,7 +10525,7 @@ body[data-view="vocab"] .vocab-icon-tool[data-tooltip]::after {
   border-radius: 8px !important;
   background: #201F25 !important;
   color: #FFFFFF !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 650 !important;
   line-height: 1.2 !important;
   white-space: nowrap !important;
@@ -10874,7 +10603,7 @@ body[data-view="vocab"] .vocab-section-page > .card-pad {
 }
 
 .delete-confirm-modal.is-neutral .delete-confirm-head strong {
-  font-size: 25px !important;
+  font-size: var(--type-size-step-25) !important;
   line-height: 1.25 !important;
 }
 
@@ -10884,7 +10613,7 @@ body[data-view="vocab"] .vocab-section-page > .card-pad {
 
 .delete-confirm-modal.is-neutral .delete-confirm-body p {
   max-width: 430px !important;
-  font-size: 15.5px !important;
+  font-size: var(--type-size-step-15-5) !important;
   line-height: 1.75 !important;
 }
 
@@ -10893,7 +10622,7 @@ body[data-view="vocab"] .vocab-section-page > .card-pad {
   padding: 14px 18px !important;
   border-left-color: var(--color-primary) !important;
   background: #F8F8F6 !important;
-  font-size: 16px !important;
+  font-size: var(--type-size-emphasis) !important;
   font-weight: 750 !important;
 }
 
@@ -10923,7 +10652,7 @@ body[data-view="vocab"] .vocab-section-page > .card-pad {
   margin: 0 0 6px !important;
   color: var(--color-text-soft) !important;
   font-family: var(--font-ui) !important;
-  font-size: 12.5px !important;
+  font-size: var(--type-size-step-12-5) !important;
   font-weight: 650 !important;
   line-height: 1.25 !important;
 }
@@ -10934,7 +10663,7 @@ body[data-view="vocab"] .vocab-section-page > .card-pad {
   min-height: 38px !important;
   padding: 0 34px 0 12px !important;
   border-radius: 10px !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 650 !important;
   background-position: right 13px center !important;
 }
@@ -10954,7 +10683,7 @@ body[data-view="vocab"] .vocab-section-page > .card-pad {
   min-width: 0 !important;
   color: var(--color-text-soft) !important;
   font-family: var(--font-ui) !important;
-  font-size: 12.5px !important;
+  font-size: var(--type-size-step-12-5) !important;
   font-weight: 650 !important;
   line-height: 1.25 !important;
 }
@@ -10970,7 +10699,7 @@ body[data-view="vocab"] .vocab-section-page > .card-pad {
   background: #FFFFFF !important;
   color: var(--color-text) !important;
   font-family: var(--font-ui) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 650 !important;
   line-height: 1.2 !important;
   box-shadow: none !important;
@@ -11170,13 +10899,13 @@ body[data-view="settings"] .settings-language-panel {
 
 body[data-view="settings"] .settings-kicker {
   margin-bottom: 8px !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 750 !important;
 }
 
 body[data-view="settings"] .settings-language-panel h2,
 body[data-view="settings"] .settings-page-card h2 {
-  font-size: 19px !important;
+  font-size: var(--type-size-lead) !important;
   font-weight: 780 !important;
 }
 
@@ -11219,7 +10948,7 @@ body[data-view="settings"] .settings-action-item strong {
   display: block !important;
   margin-bottom: 5px !important;
   color: var(--settings-text) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 780 !important;
   line-height: 1.35 !important;
 }
@@ -11229,7 +10958,7 @@ body[data-view="settings"] .settings-action-stack p,
 body[data-view="settings"] .settings-support-panel p {
   max-width: none !important;
   color: var(--settings-muted) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.55 !important;
 }
 
@@ -11238,7 +10967,7 @@ body[data-view="settings"] .settings-secondary-action {
   min-height: 42px !important;
   padding: 0 18px !important;
   border-radius: 10px !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 750 !important;
   white-space: nowrap !important;
 }
@@ -11283,19 +11012,19 @@ body[data-view="settings"] .settings-quota-head {
 }
 
 body[data-view="settings"] .settings-quota-head h3 {
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 780 !important;
 }
 
 body[data-view="settings"] .settings-quota-head span {
   min-height: 26px !important;
   padding: 0 10px !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 750 !important;
 }
 
 body[data-view="settings"] .settings-quota-value {
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 @media (max-width: 1100px) {
@@ -11327,7 +11056,785 @@ body[data-view="settings"] .settings-secondary-action {
   }
 }
 
-/* Settings page: list-first layout based on the settings redesign preview. */
+/* Grammar book MVP contract: user-saved grammar notes first; examples are secondary. */
+html body[data-view="grammar"] .grammar-section {
+  max-width: 1120px !important;
+  margin: 0 auto !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-section > .card-pad {
+  display: grid !important;
+  gap: 20px !important;
+  padding: 0 !important;
+}
+
+html body[data-view="grammar"] .grammar-workbar {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  padding: 16px !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-search-shell {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  padding: 0 16px !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 999px !important;
+  background: var(--md-sys-color-surface-container-low) !important;
+}
+
+html body[data-view="grammar"] .grammar-search-shell svg {
+  width: 18px !important;
+  height: 18px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.8 !important;
+}
+
+html body[data-view="grammar"] .grammar-search {
+  width: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--md-sys-color-on-surface) !important;
+  font-size: var(--type-size-control) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-book-count {
+  flex: 0 0 auto !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
+}
+
+html body[data-view="grammar"] .grammar-filter-summary,
+html body[data-view="grammar"] .grammar-save-panel,
+html body[data-view="grammar"] .grammar-book-panel,
+html body[data-view="grammar"] .grammar-example-panel {
+  padding: 18px 20px !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-filter-summary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+}
+
+html body[data-view="grammar"] .grammar-filter-options {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+html body[data-view="grammar"] .grammar-filter-options button {
+  min-height: 34px !important;
+  padding: 0 14px !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 999px !important;
+  background: var(--md-sys-color-surface) !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 650 !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-filter-options button.is-active {
+  color: var(--md-sys-color-primary) !important;
+  background: var(--md-sys-color-primary-container) !important;
+  border-color: rgba(103, 80, 164, 0.22) !important;
+}
+
+html body[data-view="grammar"] .grammar-save-head,
+html body[data-view="grammar"] .grammar-panel-head {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin: 0 0 18px !important;
+  padding-bottom: 14px !important;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant) !important;
+}
+
+html body[data-view="grammar"] .grammar-save-summary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  cursor: pointer !important;
+  color: var(--md-sys-color-on-surface) !important;
+  font-size: var(--type-size-control) !important;
+  font-weight: 700 !important;
+  list-style: none !important;
+}
+
+html body[data-view="grammar"] .grammar-save-summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body[data-view="grammar"] .grammar-save-summary small {
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-size: var(--type-size-caption) !important;
+  font-weight: 500 !important;
+}
+
+html body[data-view="grammar"] .grammar-save-panel[open] .grammar-save-form,
+html body[data-view="grammar"] .grammar-example-panel[open] .grammar-grid {
+  margin-top: 16px !important;
+}
+
+html body[data-view="grammar"] .grammar-save-head h3,
+html body[data-view="grammar"] .grammar-panel-head h3 {
+  margin: 4px 0 0 !important;
+  color: var(--md-sys-color-on-surface) !important;
+  font-family: var(--font-display) !important;
+  font-size: var(--type-size-section-title) !important;
+  line-height: 1.35 !important;
+}
+
+html body[data-view="grammar"] .grammar-save-note {
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-size: var(--type-size-meta) !important;
+  line-height: 1.6 !important;
+}
+
+html body[data-view="grammar"] .grammar-save-form {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 140px auto !important;
+  gap: 12px !important;
+  align-items: start !important;
+}
+
+html body[data-view="grammar"] .grammar-save-form textarea {
+  grid-column: 1 / -1 !important;
+  min-height: 92px !important;
+  resize: vertical !important;
+}
+
+html body[data-view="grammar"] .grammar-save-form input,
+html body[data-view="grammar"] .grammar-save-form select,
+html body[data-view="grammar"] .grammar-save-form textarea {
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: var(--md-sys-color-surface-container-low) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  font-size: var(--type-size-control) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-book-list {
+  display: grid !important;
+  gap: 12px !important;
+}
+
+html body[data-view="grammar"] .grammar-book-card,
+html body[data-view="grammar"] .gpoint,
+html body[data-view="grammar"] .grammar-empty {
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: var(--md-sys-color-surface) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-book-card {
+  padding: 18px !important;
+}
+
+html body[data-view="grammar"] .grammar-empty {
+  min-height: 132px !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 24px !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+  text-align: center !important;
+}
+
+html body[data-view="grammar"] .grammar-grid {
+  display: grid !important;
+  gap: 12px !important;
+}
+
+@media (max-width: 720px) {
+  html body[data-view="grammar"] .grammar-workbar,
+  html body[data-view="grammar"] .grammar-save-head,
+  html body[data-view="grammar"] .grammar-panel-head {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  html body[data-view="grammar"] .grammar-save-form {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Practice page contract: one selected practice mode at a time. */
+html body[data-view="retell"] .retell-section {
+  max-width: 1120px !important;
+  margin: 0 auto !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="retell"] .retell-section > .card-pad {
+  display: grid !important;
+  gap: 24px !important;
+  padding: 0 !important;
+}
+
+html body[data-view="retell"] .practice-page-head {
+  display: flex !important;
+  justify-content: flex-start !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body[data-view="retell"] .practice-start-row {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 300px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: var(--md-sys-color-surface) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="retell"] .practice-start-row button {
+  min-width: 112px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-size: var(--type-size-control) !important;
+  font-weight: 650 !important;
+}
+
+html body[data-view="retell"] .practice-start-row button + button {
+  border-left: 1px solid var(--md-sys-color-outline-variant) !important;
+}
+
+html body[data-view="retell"] .practice-start-row button.is-selected {
+  color: var(--md-sys-color-primary) !important;
+  background: var(--md-sys-color-primary-container) !important;
+}
+
+html body[data-view="retell"] .practice-utility-panel,
+html body[data-view="retell"] #vocabPracticeModule {
+  display: none !important;
+}
+
+html body[data-view="retell"] .practice-module:not(.is-active) {
+  display: none !important;
+}
+
+html body[data-view="retell"] .practice-module.is-active {
+  display: block !important;
+}
+
+html body[data-view="retell"] #articlePracticeModule,
+html body[data-view="retell"] #typingPracticeModule {
+  margin: 0 !important;
+  padding: 24px !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="retell"] .practice-module-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin: 0 0 20px !important;
+  padding: 0 0 16px !important;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant) !important;
+}
+
+html body[data-view="retell"] .practice-module-head h3 {
+  margin: 4px 0 0 !important;
+  color: var(--md-sys-color-on-surface) !important;
+  font-family: var(--font-display) !important;
+  font-size: var(--type-size-step-22) !important;
+  line-height: 1.35 !important;
+}
+
+html body[data-view="retell"] .practice-mode-tabs,
+html body[data-view="retell"] .article-practice-panel > .section-header,
+html body[data-view="retell"] #typingPracticeModule > .practice-module-head,
+html body[data-view="retell"] #typingPracticeModule > .lookup-status {
+  display: none !important;
+}
+
+html body[data-view="retell"] .article-practice-body {
+  display: block !important;
+}
+
+html body[data-view="retell"] .practice-subgrid {
+  display: block !important;
+}
+
+html body[data-view="retell"] .article-practice-panel {
+  display: none !important;
+}
+
+html body[data-view="retell"] .article-practice-panel.active {
+  display: block !important;
+}
+
+html body[data-view="retell"] .article-practice-empty,
+html body[data-view="retell"] .reading-quiz-start {
+  min-height: 220px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: var(--md-sys-color-surface) !important;
+}
+
+html body[data-view="retell"] .retell-practice-card {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 30px !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: var(--md-sys-color-surface) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="retell"] #typingPracticeModule .typing-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 280px !important;
+  gap: 24px !important;
+  align-items: start !important;
+}
+
+html body[data-view="retell"] #typingPracticeModule .typing-grid > div:first-child,
+html body[data-view="retell"] #typingPracticeModule .typing-side {
+  min-width: 0 !important;
+}
+
+html body[data-view="retell"] #typingPracticeModule .typing-prompt,
+html body[data-view="retell"] #typingPracticeModule .typing-input,
+html body[data-view="retell"] #typingPracticeModule .typing-side {
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 920px) {
+  html body[data-view="retell"] #typingPracticeModule .typing-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 720px) {
+  html body[data-view="retell"] .practice-start-row {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  html body[data-view="retell"] .practice-start-row button {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+  }
+
+  html body[data-view="retell"] #articlePracticeModule,
+  html body[data-view="retell"] #typingPracticeModule,
+  html body[data-view="retell"] .retell-practice-card {
+    padding: 18px !important;
+  }
+}
+
+/* Level test entry contract: visible in home, discover, and history without becoming a main nav item. */
+html body .hero-level-test-action {
+  color: var(--md-sys-color-primary) !important;
+}
+
+html body .reading-queue-head-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+html body .reading-queue-level-button {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  color: var(--md-sys-color-primary) !important;
+  border: 1px solid rgba(103, 80, 164, 0.22) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+}
+
+html body .history-level-card {
+  gap: 14px !important;
+  padding: 22px 20px !important;
+}
+
+html body .history-level-test-action {
+  min-height: 40px !important;
+  margin-top: 0 !important;
+  color: var(--md-sys-color-primary) !important;
+  border-color: rgba(103, 80, 164, 0.24) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 720px) {
+  html body .history-level-test-action {
+    width: 100% !important;
+  }
+}
+
+/* Level test page contract: one quiet assessment workbench, not a debug panel. */
+html body[data-view="test"] .test-section {
+  max-width: 960px !important;
+  margin: 0 auto !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="test"] .test-section > .card-pad {
+  display: block !important;
+  padding: 0 !important;
+}
+
+html body[data-view="test"] .level-test-shell {
+  display: grid !important;
+  gap: 0 !important;
+}
+
+html body[data-view="test"] .level-test-hero {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+  padding: 30px 32px !important;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant) !important;
+}
+
+html body[data-view="test"] .level-test-copy {
+  max-width: 620px !important;
+}
+
+html body[data-view="test"] .level-test-copy h2 {
+  margin: 6px 0 8px !important;
+  color: var(--md-sys-color-on-surface) !important;
+  font-family: var(--font-display) !important;
+  font-size: var(--type-size-page-title) !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.03em !important;
+}
+
+html body[data-view="test"] .level-test-copy p {
+  margin: 0 !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-size: var(--type-size-control) !important;
+  line-height: 1.75 !important;
+}
+
+html body[data-view="test"] .test-primary-actions {
+  display: flex !important;
+  justify-content: flex-end !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-width: 128px !important;
+}
+
+html body[data-view="test"] .test-primary-actions .btn-primary,
+html body[data-view="test"] .level-test-actions .btn-primary,
+html body[data-view="test"] .level-test-actions .btn-secondary {
+  min-height: 44px !important;
+  border-radius: 999px !important;
+  font-size: var(--type-size-control) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="test"] .level-test-status-card {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin: 24px 32px 0 !important;
+  padding: 14px 16px !important;
+  border: 1px solid rgba(103, 80, 164, 0.18) !important;
+  border-radius: 12px !important;
+  background: var(--md-sys-color-surface-container-low) !important;
+}
+
+html body[data-view="test"] .level-test-status-card .status-label {
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 600 !important;
+}
+
+html body[data-view="test"] .level-test-status-card .status-value {
+  color: var(--md-sys-color-primary) !important;
+  border: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  font-size: var(--type-size-body) !important;
+  font-weight: 760 !important;
+}
+
+html body[data-view="test"] .level-test-status-card .lookup-status {
+  flex: 1 1 auto !important;
+  margin: 0 0 0 12px !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+}
+
+html body[data-view="test"] .level-test-board {
+  min-height: 160px !important;
+  margin: 24px 32px 0 !important;
+}
+
+html body[data-view="test"] .level-test-board:empty {
+  display: grid !important;
+  place-items: center !important;
+  border: 1px dashed rgba(103, 80, 164, 0.20) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 251, 254, 0.72) !important;
+}
+
+html body[data-view="test"] .level-test-board:empty::before {
+  content: "点击开始测试后，题目会显示在这里。";
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: var(--type-size-control);
+}
+
+html body[data-view="test"] .level-test-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 24px 32px 32px !important;
+}
+
+html body[data-view="test"] #levelScoreActions {
+  margin: 0 !important;
+}
+
+@media (max-width: 720px) {
+  html body[data-view="test"] .test-section {
+    max-width: none !important;
+  }
+
+  html body[data-view="test"] .level-test-hero,
+  html body[data-view="test"] .level-test-actions {
+    align-items: stretch !important;
+    flex-direction: column !important;
+    padding: 22px 20px !important;
+  }
+
+  html body[data-view="test"] .level-test-status-card,
+  html body[data-view="test"] .level-test-board {
+    margin-inline: 20px !important;
+  }
+}
+
+/* Settings page contract: transparent page container + light group cards + row-style setting items.
+   Section titles use a single purple kicker only, such as 偏好设置 / 数据管理 / 帮助说明 / 高级功能.
+   Do not add duplicate large headings below the kicker, marketing status slogans, or nested mini-cards.
+   Settings actions and navigation icons must share consistent size, color, radius, and SVG stroke rules.
+   Dangerous or data-overwriting actions stay visually separated with a light caution treatment. */
+
+html body .app-sidebar .nav-item .nav-icon,
+html body .app-sidebar .sidebar-utility-mark {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  flex: 0 0 30px !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.48) !important;
+}
+
+html body .app-sidebar .nav-item .nav-icon svg,
+html body .app-sidebar .sidebar-utility-mark svg {
+  width: 17px !important;
+  height: 17px !important;
+  color: currentColor !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.8 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+html body .app-sidebar .nav-item .nav-icon svg path,
+html body .app-sidebar .sidebar-utility-mark svg path {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+html body[data-view="settings"] .settings-section {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="settings"] .settings-section > .card-pad,
+html body[data-view="settings"] .settings-section .card-pad {
+  display: grid !important;
+  gap: 20px !important;
+  padding: 0 !important;
+}
+
+html body[data-view="settings"] .settings-layout {
+  gap: 24px !important;
+  align-items: start !important;
+}
+
+html body[data-view="settings"] .settings-main-column,
+html body[data-view="settings"] .settings-side-column {
+  gap: 18px !important;
+}
+
+html body[data-view="settings"] .settings-page-card {
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="settings"] .settings-list-section,
+html body[data-view="settings"] .settings-quota-panel {
+  padding: 22px 24px !important;
+}
+
+html body[data-view="settings"] .settings-section-head {
+  margin: 0 !important;
+  padding: 0 0 14px !important;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant) !important;
+}
+
+html body[data-view="settings"] .settings-section-head h2 {
+  display: none !important;
+}
+
+html body[data-view="settings"] .settings-kicker {
+  color: var(--md-sys-color-primary) !important;
+}
+
+html body[data-view="settings"] .settings-action-item {
+  margin: 0 !important;
+  padding: 16px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="settings"] .settings-action-item + .settings-action-item {
+  border-top: 1px solid var(--md-sys-color-outline-variant) !important;
+}
+
+html body[data-view="settings"] .settings-action-item--caution {
+  margin-top: 6px !important;
+  padding: 14px 16px !important;
+  border: 1px solid rgba(186, 26, 26, 0.18) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 245, 243, 0.82) !important;
+}
+
+html body[data-view="settings"] .settings-action-item--caution strong,
+html body[data-view="settings"] .settings-action-item--caution .settings-secondary-action {
+  color: #7a231f !important;
+}
+
+html body[data-view="settings"] .settings-action-item--caution .settings-secondary-action {
+  border-color: rgba(186, 26, 26, 0.24) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+}
+
+html body[data-view="settings"] .settings-primary-action,
+html body[data-view="settings"] .settings-secondary-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-width: 92px !important;
+  min-height: 44px !important;
+  padding: 0 18px !important;
+  border-radius: 999px !important;
+  font-size: var(--type-size-control) !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+html body[data-view="settings"] .settings-primary-action svg,
+html body[data-view="settings"] .settings-secondary-action svg,
+html body[data-view="settings"] .settings-primary-action img,
+html body[data-view="settings"] .settings-secondary-action img,
+html body[data-view="settings"] .settings-primary-action [class*="icon"],
+html body[data-view="settings"] .settings-secondary-action [class*="icon"] {
+  width: 16px !important;
+  height: 16px !important;
+  flex: 0 0 16px !important;
+  color: currentColor !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+html body[data-view="settings"] .settings-quota-panel {
+  background: rgba(255, 255, 255, 0.84) !important;
+}
+
+html body[data-view="settings"] .settings-quota-list {
+  margin-top: 16px !important;
+}
+
+html body[data-view="settings"] .settings-quota-card,
+html body[data-view="settings"] .settings-pro-note {
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="settings"] .settings-pro-note {
+  border-color: var(--md-sys-color-outline-variant) !important;
+  background: var(--md-sys-color-surface-container-low) !important;
+}
 body[data-view="settings"] .settings-section {
   max-width: 1180px !important;
 }
@@ -11352,7 +11859,7 @@ body[data-view="settings"] .settings-version-panel .settings-kicker {
   display: block !important;
   margin: 0 0 7px !important;
   color: var(--settings-purple) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 800 !important;
   letter-spacing: .04em !important;
 }
@@ -11360,7 +11867,7 @@ body[data-view="settings"] .settings-version-panel .settings-kicker {
 body[data-view="settings"] .settings-page-head h1 {
   margin: 0 !important;
   color: var(--settings-text) !important;
-  font-size: 30px !important;
+  font-size: var(--type-size-step-30) !important;
   font-weight: 820 !important;
   line-height: 1.16 !important;
   letter-spacing: 0 !important;
@@ -11370,7 +11877,7 @@ body[data-view="settings"] .settings-page-head p {
   max-width: 650px !important;
   margin: 9px 0 0 !important;
   color: var(--settings-muted) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.6 !important;
 }
 
@@ -11385,7 +11892,7 @@ body[data-view="settings"] .settings-version-pill {
   border-radius: 999px !important;
   background: #FFFFFF !important;
   color: #69667F !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 750 !important;
   white-space: nowrap !important;
 }
@@ -11426,7 +11933,7 @@ body[data-view="settings"] .settings-section-head h2,
 body[data-view="settings"] .settings-version-panel h2 {
   margin: 0 !important;
   color: var(--settings-text) !important;
-  font-size: 20px !important;
+  font-size: var(--type-size-section-title) !important;
   font-weight: 780 !important;
   line-height: 1.25 !important;
   letter-spacing: 0 !important;
@@ -11461,7 +11968,7 @@ body[data-view="settings"] .settings-action-item strong {
   display: block !important;
   margin: 0 !important;
   color: var(--settings-text) !important;
-  font-size: 15px !important;
+  font-size: var(--type-size-body) !important;
   font-weight: 760 !important;
   line-height: 1.4 !important;
 }
@@ -11471,7 +11978,7 @@ body[data-view="settings"] .settings-version-panel p,
 body[data-view="settings"] .settings-pro-note span {
   margin: 6px 0 0 !important;
   color: var(--settings-muted) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   line-height: 1.55 !important;
 }
 
@@ -11486,7 +11993,7 @@ body[data-view="settings"] .settings-language-select select {
   min-height: 42px !important;
   padding: 0 34px 0 14px !important;
   border-radius: 10px !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 800 !important;
 }
 
@@ -11498,7 +12005,7 @@ body[data-view="settings"] .settings-secondary-action {
   justify-content: center !important;
   padding: 0 18px !important;
   border-radius: 10px !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 800 !important;
   white-space: nowrap !important;
   cursor: pointer !important;
@@ -11534,7 +12041,7 @@ body[data-view="settings"] .settings-quota-head {
 body[data-view="settings"] .settings-quota-head h3 {
   margin: 0 !important;
   color: var(--settings-text) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 760 !important;
   line-height: 1.35 !important;
 }
@@ -11545,7 +12052,7 @@ body[data-view="settings"] .settings-quota-head span {
   border: 0 !important;
   background: transparent !important;
   color: #7F748E !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 800 !important;
 }
 
@@ -11560,7 +12067,7 @@ body[data-view="settings"] .settings-quota-meter {
 body[data-view="settings"] .settings-quota-value {
   margin: 0 !important;
   color: var(--settings-muted) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 800 !important;
   text-align: left !important;
 }
@@ -11577,7 +12084,7 @@ body[data-view="settings"] .settings-pro-note {
 
 body[data-view="settings"] .settings-pro-note b {
   color: #65440A !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
 }
 
 body[data-view="settings"] .settings-version-panel {
@@ -11685,7 +12192,7 @@ body[data-view="settings"] .settings-version-panel p {
     margin: 0 !important;
     padding: 4px 2px !important;
     border-radius: 13px !important;
-    font-size: 10px !important;
+    font-size: var(--type-size-ruby) !important;
     line-height: 1.1 !important;
     white-space: normal !important;
   }
@@ -11701,7 +12208,7 @@ body[data-view="settings"] .settings-version-panel p {
     max-width: 100% !important;
     display: block !important;
     overflow: hidden !important;
-    font-size: 10px !important;
+    font-size: var(--type-size-ruby) !important;
     font-weight: 650 !important;
     text-align: center !important;
     text-overflow: ellipsis !important;
@@ -11742,7 +12249,7 @@ body[data-view="history"] .history-panel-head span {
   display: block !important;
   margin: 0 0 7px !important;
   color: var(--history-avocado-main) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 800 !important;
   letter-spacing: .04em !important;
 }
@@ -11750,7 +12257,7 @@ body[data-view="history"] .history-panel-head span {
 body[data-view="history"] .history-page-head h1 {
   margin: 0 !important;
   color: var(--history-text-main) !important;
-  font-size: 30px !important;
+  font-size: var(--type-size-step-30) !important;
   font-weight: 820 !important;
   line-height: 1.16 !important;
   letter-spacing: 0 !important;
@@ -11761,7 +12268,7 @@ body[data-view="history"] .history-panel-head p {
   max-width: 650px !important;
   margin: 9px 0 0 !important;
   color: var(--history-text-sec) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.6 !important;
 }
 
@@ -11777,7 +12284,7 @@ body[data-view="history"] .history-task-row button {
   border: 1px solid rgba(103, 80, 164, .24) !important;
   background: #FFFFFF !important;
   color: var(--history-avocado-dark) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 800 !important;
   white-space: nowrap !important;
   cursor: pointer !important;
@@ -11820,7 +12327,7 @@ body[data-view="history"] .history-summary-copy {
 
 body[data-view="history"] .history-summary-copy strong {
   color: var(--history-text-main) !important;
-  font-size: 21px !important;
+  font-size: var(--type-size-section-title-large) !important;
   font-weight: 780 !important;
   line-height: 1.35 !important;
   justify-self: center !important;
@@ -11843,13 +12350,13 @@ body[data-view="history"] .history-summary-stats div {
 
 body[data-view="history"] .history-summary-stats b {
   color: var(--history-text-main) !important;
-  font-size: 24px !important;
+  font-size: var(--type-size-feature-title) !important;
   line-height: 1 !important;
 }
 
 body[data-view="history"] .history-summary-stats small {
   color: var(--history-text-sec) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 700 !important;
 }
 
@@ -11886,7 +12393,7 @@ body[data-view="history"] .history-panel-head.compact {
 body[data-view="history"] .history-panel-head h2 {
   margin: 0 !important;
   color: var(--history-text-main) !important;
-  font-size: 22px !important;
+  font-size: var(--type-size-step-22) !important;
   font-weight: 780 !important;
   line-height: 1.25 !important;
 }
@@ -11895,7 +12402,7 @@ body[data-view="history"] #historyCalendarTitle,
 body[data-view="history"] #historySuggestionTitle {
   margin-bottom: 0 !important;
   color: var(--history-avocado-main) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 800 !important;
   line-height: 1.2 !important;
   letter-spacing: .04em !important;
@@ -11915,7 +12422,7 @@ body[data-view="history"] .history-calendar-weekdays {
 
 body[data-view="history"] .history-calendar-weekdays span {
   color: var(--history-text-sec) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   font-weight: 800 !important;
   text-align: center !important;
 }
@@ -11937,7 +12444,7 @@ body[data-view="history"] .history-calendar-grid button {
   background: #ECECF0 !important;
   color: #817B8D !important;
   font: inherit !important;
-  font-size: 11px !important;
+  font-size: var(--type-size-micro) !important;
   font-weight: 800 !important;
   cursor: default !important;
 }
@@ -11973,7 +12480,7 @@ body[data-view="history"] .history-calendar-grid button.is-today {
 }
 
 body[data-view="history"] .history-calendar-grid button.is-today span {
-  font-size: 10px !important;
+  font-size: var(--type-size-ruby) !important;
 }
 
 body[data-view="history"] .history-calendar-foot {
@@ -11985,7 +12492,7 @@ body[data-view="history"] .history-calendar-foot {
   padding-top: 14px !important;
   border-top: 1px solid rgba(111, 96, 130, .14) !important;
   color: var(--history-text-sec) !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 700 !important;
 }
 
@@ -12041,14 +12548,14 @@ body[data-view="history"] .history-task-icon {
 body[data-view="history"] .history-task-row strong {
   display: block !important;
   color: var(--history-text-main) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   line-height: 1.35 !important;
 }
 
 body[data-view="history"] .history-task-row p {
   margin: 5px 0 0 !important;
   color: var(--history-text-sec) !important;
-  font-size: 12px !important;
+  font-size: var(--type-size-caption) !important;
   line-height: 1.45 !important;
 }
 
@@ -12062,19 +12569,18 @@ body[data-view="history"] .history-level-card {
 body[data-view="history"] .history-level-card strong {
   display: block !important;
   color: var(--history-avocado-dark) !important;
-  font-size: 25px !important;
+  font-size: var(--type-size-step-25) !important;
   font-weight: 800 !important;
 }
 
 body[data-view="history"] .history-level-card p {
   margin: 10px 0 16px !important;
   color: #6D5E88 !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   line-height: 1.55 !important;
 }
 
-body[data-view="history"] .history-error-list,
-body[data-view="history"] .history-activity-list {
+body[data-view="history"] .history-error-list {
   display: grid !important;
   gap: 10px !important;
   margin: 0 !important;
@@ -12093,41 +12599,13 @@ body[data-view="history"] .history-error-list li {
 
 body[data-view="history"] .history-error-list li span:first-child {
   color: var(--history-text-main) !important;
-  font-size: 14px !important;
+  font-size: var(--type-size-control) !important;
   font-weight: 760 !important;
 }
 
 body[data-view="history"] .history-error-list li span:last-child {
   color: var(--history-text-sec) !important;
-  font-size: 12px !important;
-}
-
-body[data-view="history"] .history-activity-list li {
-  display: grid !important;
-  grid-template-columns: 56px minmax(0, 1fr) !important;
-  gap: 10px !important;
-  padding-top: 10px !important;
-  border-top: 1px solid rgba(111, 96, 130, .14) !important;
-}
-
-body[data-view="history"] .history-activity-list li:first-child {
-  padding-top: 0 !important;
-  border-top: 0 !important;
-}
-
-body[data-view="history"] .history-activity-list b {
-  color: var(--history-avocado-main) !important;
-  font-size: 13px !important;
-}
-
-body[data-view="history"] .history-activity-list span {
-  color: var(--history-text-sec) !important;
-  font-size: 13px !important;
-  line-height: 1.45 !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
+  font-size: var(--type-size-caption) !important;
 }
 
 @media (max-width: 980px) {
@@ -12156,7 +12634,7 @@ body[data-view="history"] .history-activity-list span {
   }
 
   body[data-view="history"] .history-page-head h1 {
-    font-size: 26px !important;
+    font-size: var(--type-size-feature-title-large) !important;
   }
 
   body[data-view="history"] .history-page-head p,
@@ -12174,7 +12652,7 @@ body[data-view="history"] .history-activity-list span {
   }
 
   body[data-view="history"] .history-summary-copy strong {
-    font-size: 19px !important;
+    font-size: var(--type-size-lead) !important;
   }
 
   body[data-view="history"] .history-summary-stats {
@@ -12191,7 +12669,7 @@ body[data-view="history"] .history-activity-list span {
   body[data-view="history"] .history-calendar-grid button {
     height: 24px !important;
     border-radius: 6px !important;
-    font-size: 10px !important;
+    font-size: var(--type-size-ruby) !important;
   }
 
   body[data-view="history"] .history-calendar-empty {
@@ -12296,7 +12774,7 @@ body[data-view="reading"] .detail-example-kicker {
   border-radius: 999px;
   background: rgba(103, 80, 164, .10);
   color: #5B4295;
-  font-size: 11px;
+  font-size: var(--type-size-micro);
   font-weight: 800;
   line-height: 1.2;
 }
@@ -12304,7 +12782,7 @@ body[data-view="reading"] .detail-example-kicker {
 body[data-view="reading"] .detail-example-note {
   margin: 0;
   color: #6D6875;
-  font-size: 13px;
+  font-size: var(--type-size-meta);
   line-height: 1.55;
 }
 
@@ -12331,7 +12809,1582 @@ body[data-view="reading"].has-reading:not(.is-editing-source) .next-step-bar {
 body[data-view="reading"] .next-step-copy {
   margin-right: auto !important;
   color: #6D6875 !important;
-  font-size: 13px !important;
+  font-size: var(--type-size-meta) !important;
   font-weight: 650 !important;
   line-height: 1.45 !important;
+}
+
+/* ===== Formalized Visual System ===== */
+/* Final page-level rules for the current Dokedo design language. */
+
+/* Discover select sizing. */
+body[data-view="discover"] #gradedLevelFilters select,
+body[data-view="discover"] #gradedTopicFilters select {
+  width: auto !important;
+  min-width: 88px !important;
+  max-width: 132px;
+  padding-left: 14px !important;
+  padding-right: 34px !important;
+  text-align: center;
+  text-align-last: center;
+}
+
+:root {
+  --polish-bg: #fbf9ff;
+  --polish-surface: rgba(255, 255, 255, 0.84);
+  --polish-surface-solid: #ffffff;
+  --polish-surface-soft: rgba(248, 245, 255, 0.68);
+  --polish-ink: #201735;
+  --polish-muted: #746986;
+  --polish-soft: #a196b3;
+  --polish-primary: #63539f;
+  --polish-primary-hover: #57478f;
+  --polish-primary-soft: rgba(123, 92, 255, 0.14);
+  --polish-primary-chip: #eee8ff;
+  --polish-line: rgba(43, 37, 55, 0.13);
+  --polish-line-purple: rgba(123, 92, 255, 0.18);
+  --polish-shadow-card: 0 10px 26px rgba(43, 37, 55, 0.06);
+  --polish-radius-page: 28px;
+  --polish-radius-card: 24px;
+  --polish-radius-panel: 20px;
+  --polish-radius-control: 14px;
+  --polish-radius-pill: 999px;
+  --polish-font-ui: Inter, "Noto Sans SC", "Noto Sans JP", system-ui, sans-serif;
+  --polish-font-display: "Noto Serif SC", "Noto Serif JP", serif;
+  --polish-font-jp: "Noto Serif JP", "Noto Sans JP", serif;
+}
+
+html {
+  background: var(--polish-bg);
+}
+
+body {
+  color: var(--polish-ink);
+  font-family: var(--polish-font-ui);
+  background: var(--polish-bg) !important;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* Shared surfaces */
+.card,
+.daily-plan,
+.learning-path-guide,
+.source-dropzone,
+.reading-source-panel,
+.vocab-page-list,
+.vocab-page-review,
+.practice-module,
+.progressive-panel,
+.discover-panel,
+.history-panel,
+.settings-page-card,
+.export-dialog,
+.delete-confirm-dialog,
+.reading-display-dialog,
+.vocab-panel-slide,
+.menu-panel {
+  color: var(--polish-ink) !important;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: var(--polish-surface) !important;
+  box-shadow: var(--polish-shadow-card) !important;
+}
+
+.card-head,
+.practice-module-head,
+.discover-panel-head,
+.history-panel-head,
+.settings-section-head,
+.vocab-workbar,
+.vocab-filter-summary,
+.reader-toolbar,
+.status-bar,
+.next-step-bar,
+.settings-action-item {
+  border-color: var(--polish-line) !important;
+}
+
+/* Typography */
+.hero-title,
+.hero-flow-copy h2,
+.detail-word,
+.vocab-list strong,
+.grammar-grid h3,
+.practice-module h3,
+.discover-panel h3,
+.history-panel h2,
+.settings-section-head h2,
+.settings-action-item strong,
+.settings-quota-panel h2 {
+  color: var(--polish-ink) !important;
+  letter-spacing: -0.02em;
+}
+
+.detail-word,
+.vocab-list strong,
+.grammar-grid h3,
+.practice-module h3,
+.discover-panel h3,
+.history-panel h2,
+.settings-section-head h2,
+.settings-action-item strong,
+.settings-quota-panel h2,
+.history-summary-copy strong {
+  font-family: var(--polish-font-display) !important;
+}
+
+.detail-definition > span,
+.reading-source-label,
+.vocab-active-filters > span:first-child,
+.discover-panel-desc,
+.history-calendar-foot,
+.settings-action-item p,
+.lookup-status,
+.import-status {
+  color: var(--polish-muted) !important;
+}
+
+/* Main action buttons: one flat color, no gradients */
+body .hero-actions .hero-start-button,
+body .hero-actions .hero-start-button[aria-disabled="true"],
+body .hero-actions .hero-start-button[aria-disabled="false"],
+body .reading-practice-action,
+body .reading-queue-form button.btn-primary,
+body .settings-action-item .settings-primary-action,
+body .settings-primary-action,
+body #vocabPrimaryAction,
+body #learningPathAction,
+body .test-primary-actions button.btn-primary,
+body .export-actions button.btn-primary,
+body .reading-display-actions button.btn-primary,
+body .delete-confirm-submit,
+body button.btn-primary,
+body .btn-primary {
+  min-height: 44px !important;
+  padding: 0 20px !important;
+  color: #ffffff !important;
+  font-size: var(--type-size-step-14-5) !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.01em !important;
+  border: 1px solid var(--polish-primary) !important;
+  border-radius: var(--polish-radius-pill) !important;
+  background: var(--polish-primary) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+body .hero-actions .hero-start-button:hover,
+body .hero-actions .hero-start-button[aria-disabled="true"]:hover,
+body .hero-actions .hero-start-button[aria-disabled="false"]:hover,
+body .reading-practice-action:hover,
+body .reading-queue-form button.btn-primary:hover,
+body .settings-action-item .settings-primary-action:hover,
+body .settings-primary-action:hover,
+body #vocabPrimaryAction:hover,
+body #learningPathAction:hover,
+body .test-primary-actions button.btn-primary:hover,
+body .export-actions button.btn-primary:hover,
+body .reading-display-actions button.btn-primary:hover,
+body .delete-confirm-submit:hover,
+body button.btn-primary:hover,
+body .btn-primary:hover {
+  color: #ffffff !important;
+  border-color: var(--polish-primary-hover) !important;
+  background: var(--polish-primary-hover) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+body .hero-actions .hero-start-button *,
+body .reading-practice-action *,
+body .reading-queue-form button.btn-primary *,
+body .settings-action-item .settings-primary-action *,
+body button.btn-primary *,
+body .btn-primary * {
+  color: #ffffff !important;
+}
+
+/* Secondary buttons, chips, and tools */
+.btn-secondary,
+.settings-secondary-action,
+.hero-text-action,
+.reader-tool,
+.vocab-management-trigger,
+.vocab-table-filter-trigger,
+.vocab-filter-menu-options button,
+.practice-mode-tab,
+.discover-filter-options button,
+.discover-quick-tags button,
+.clean-actions button,
+.reading-display-preset-grid button {
+  color: #514a5f !important;
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-pill) !important;
+  background: rgba(255, 255, 255, 0.70) !important;
+  box-shadow: none !important;
+}
+
+.reader-tool,
+.sidebar-icon-toggle,
+.detail-icon-button,
+.detail-panel-toggle,
+.delete-confirm-close,
+.reading-display-close,
+.btn-icon {
+  border-radius: var(--polish-radius-control) !important;
+}
+
+.reader-tool.is-active,
+.practice-mode-tab.active,
+.discover-filter-options button.active,
+.discover-quick-tags button.active {
+  color: #2b2537 !important;
+  border-color: var(--polish-line-purple) !important;
+  background: var(--polish-primary-soft) !important;
+  box-shadow: none !important;
+}
+
+.tag,
+.pro-pill,
+.detail-badge,
+.settings-account-pill,
+.module-lock,
+.practice-lock-icon,
+.status-value {
+  color: var(--polish-primary) !important;
+  border-color: var(--polish-line-purple) !important;
+  border-radius: var(--polish-radius-pill) !important;
+  background: var(--polish-primary-chip) !important;
+}
+
+.module-kicker,
+.settings-kicker,
+.status-label,
+.vocab-table-filter-trigger,
+.discover-panel-meta,
+.history-panel-head span {
+  color: var(--polish-primary) !important;
+}
+
+body[data-view="discover"] .reading-queue-level-button {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 30px !important;
+  padding: 5px 12px !important;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-pill) !important;
+  background: rgba(255, 255, 255, 0.84) !important;
+  color: var(--polish-primary) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  box-shadow: none !important;
+}
+
+input,
+textarea,
+select,
+.grammar-search,
+.vocab-search-shell,
+.global-search,
+.reading-queue-form input,
+.typing-input,
+.import-preview-summary,
+.export-select-shell,
+.reading-display-row {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-control) !important;
+  background: var(--polish-surface-soft) !important;
+}
+
+/* Sidebar */
+.app-interface {
+  background: var(--polish-bg) !important;
+}
+
+.app-sidebar {
+  border-color: var(--polish-line) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(18px);
+}
+
+.brand-mark,
+.hero-home-mark {
+  border-color: var(--polish-line) !important;
+  border-radius: 17px !important;
+  background: rgba(255, 255, 255, 0.76) !important;
+  box-shadow: none !important;
+}
+
+.nav-item,
+.sidebar-utility-button {
+  color: #514a5f !important;
+  border: 1px solid transparent !important;
+  border-radius: 13px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.nav-item:hover,
+.sidebar-utility-button:hover {
+  color: #2b2537 !important;
+  border-color: rgba(43, 37, 55, 0.12) !important;
+  background: rgba(123, 92, 255, 0.12) !important;
+  box-shadow: none !important;
+}
+
+.nav-item:hover .nav-icon,
+.sidebar-utility-button:hover .sidebar-utility-mark {
+  color: #3d354d !important;
+}
+
+.app-sidebar .sidebar-nav .nav-item.active {
+  color: #2b2537 !important;
+  border-color: var(--polish-line-purple) !important;
+  background: rgba(123, 92, 255, 0.12) !important;
+  box-shadow: none !important;
+}
+
+.app-sidebar .sidebar-nav .nav-item.active .nav-icon,
+.app-sidebar .sidebar-nav .nav-item.active .nav-label {
+  color: #2b2537 !important;
+}
+
+/* Home */
+.hero-intro {
+  background: var(--polish-bg) !important;
+}
+
+.hero-title-text > span {
+  color: var(--polish-primary);
+}
+
+.hero-brand::after {
+  content: "粘贴一篇日语文章，自动变成带假名、释义、生词本和练习的阅读材料。";
+  display: block;
+  max-width: 680px;
+  margin: 14px auto 0;
+  color: var(--polish-muted);
+  font-family: var(--polish-font-ui);
+  font-size: var(--type-size-body);
+  font-weight: 500;
+  line-height: 1.8;
+  letter-spacing: 0;
+}
+
+.hero-input,
+.hero-flow-item {
+  border-color: var(--polish-line-purple) !important;
+  border-radius: var(--polish-radius-page) !important;
+  background: rgba(255, 255, 255, 0.58) !important;
+  box-shadow: none !important;
+}
+
+.hero-input textarea {
+  color: var(--polish-ink) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: rgba(248, 245, 255, 0.56) !important;
+}
+
+.hero-flow {
+  gap: 16px !important;
+}
+
+.hero-flow-item {
+  overflow: hidden;
+}
+
+.hero-flow-item > div:first-child,
+.hero-flow-item .hero-mini-reader,
+.hero-flow-item .hero-mini-lookup,
+.hero-flow-item .hero-mini-vocab,
+.hero-flow-item .hero-mini-flashcard,
+.hero-flow-item .hero-vocab-entry,
+.hero-flow-item .hero-flashcard-card,
+.hero-flow-item .hero-flashcard-shell,
+.hero-flow-item .hero-demo-token,
+.hero-flow-item .hero-flashcard-actions span {
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.hero-flow-item .hero-mini-reader,
+.hero-flow-item .hero-mini-lookup,
+.hero-flow-item .hero-mini-vocab,
+.hero-flow-item .hero-mini-flashcard,
+.hero-flow-item .hero-vocab-entry,
+.hero-flow-item .hero-flashcard-card {
+  padding: 0 !important;
+}
+
+.hero-flow-copy h2 {
+  font-family: var(--polish-font-display) !important;
+}
+
+/* Home feature cards: transparent cards with a quiet outline */
+.hero-flow-item {
+  border: 1px solid rgba(99, 83, 159, 0.22) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.hero-flow-item:hover {
+  border-color: rgba(99, 83, 159, 0.34) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.hero-flow-copy h2 {
+  color: var(--polish-ink) !important;
+}
+
+/* Home feature card color lock: same quiet pale-purple surface for all four cards */
+body.first-visit .hero-flow .hero-flow-item {
+  border: 1.4px solid rgba(99, 83, 159, 0.34) !important;
+  background: rgba(248, 245, 255, 0.56) !important;
+  background-color: rgba(248, 245, 255, 0.56) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body.first-visit .hero-flow .hero-flow-item:hover {
+  border-color: rgba(99, 83, 159, 0.46) !important;
+  background: rgba(248, 245, 255, 0.56) !important;
+  background-color: rgba(248, 245, 255, 0.56) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body.first-visit .hero-flow .hero-flow-item > *,
+body.first-visit .hero-flow .hero-flow-item > div,
+body.first-visit .hero-flow .hero-flow-item .hero-mini-reader,
+body.first-visit .hero-flow .hero-flow-item .hero-mini-lookup,
+body.first-visit .hero-flow .hero-flow-item .hero-mini-vocab,
+body.first-visit .hero-flow .hero-flow-item .hero-mini-flashcard,
+body.first-visit .hero-flow .hero-flow-item .hero-vocab-entry,
+body.first-visit .hero-flow .hero-flow-item .hero-flashcard-card,
+body.first-visit .hero-flow .hero-flow-item .hero-flashcard-shell,
+body.first-visit .hero-flow .hero-flow-item .hero-demo-token,
+body.first-visit .hero-flow .hero-flow-item .hero-flashcard-actions span {
+  border-color: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Reading */
+.reading-workbench {
+  gap: 22px !important;
+}
+
+.reading-main,
+.detail-panel {
+  border-radius: var(--polish-radius-page) !important;
+}
+
+.status-bar {
+  padding-bottom: 14px !important;
+}
+
+.status-bar span {
+  color: var(--polish-primary) !important;
+  font-weight: 800;
+}
+
+.reading-output {
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: var(--polish-surface-solid) !important;
+}
+
+.reading-output ruby {
+  border-radius: 12px;
+  background: rgba(123, 92, 255, 0.07);
+}
+
+.reading-output rt,
+.detail-reading-text {
+  color: var(--polish-primary) !important;
+}
+
+.detail-panel .detail-box,
+.detail-panel .detail-example-box,
+.detail-panel .detail-definition {
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.next-step-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: var(--polish-radius-panel) !important;
+  background: rgba(255, 255, 255, 0.62) !important;
+}
+
+/* Vocab */
+.vocab-section-page .card-pad {
+  display: grid;
+  gap: 16px;
+}
+
+.vocab-workbar,
+.vocab-filter-summary {
+  border-radius: var(--polish-radius-panel) !important;
+  background: rgba(255, 255, 255, 0.66) !important;
+}
+
+.vocab-page-list {
+  overflow: hidden;
+}
+
+.vocab-table-head {
+  color: var(--polish-soft) !important;
+  font-size: var(--type-size-caption) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em;
+}
+
+.vocab-list li,
+.vocab-list article,
+.vocab-empty {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-panel) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+}
+
+.vocab-list strong {
+  color: var(--polish-ink);
+  font-family: var(--polish-font-display);
+}
+
+.vocab-list small,
+.vocab-active-filters,
+.vocab-filter-summary strong {
+  color: var(--polish-primary) !important;
+}
+
+/* Vocab page refinement: make it feel like a personal word library */
+body[data-view="vocab"] .vocab-section-page {
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-view="vocab"] .vocab-section-page > .card-pad {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+body[data-view="vocab"] .vocab-workbar {
+  padding: 14px !important;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  box-shadow: none !important;
+}
+
+body[data-view="vocab"] .vocab-search-shell {
+  min-height: 44px !important;
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-pill) !important;
+  background: rgba(248, 245, 255, 0.58) !important;
+}
+
+body[data-view="vocab"] .vocab-management-trigger,
+body[data-view="vocab"] .vocab-table-filter-trigger,
+body[data-view="vocab"] .vocab-filter-menu-options button,
+body[data-view="vocab"] .vocab-management-options button,
+body[data-view="vocab"] .vocab-clear-filters,
+body[data-view="vocab"] #vocabClearFilters {
+  color: #514a5f !important;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-pill) !important;
+  background: rgba(255, 255, 255, 0.70) !important;
+  box-shadow: none !important;
+}
+
+body[data-view="vocab"] .vocab-filter-summary {
+  padding: 12px 14px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-view="vocab"] .vocab-filter-summary strong,
+body[data-view="vocab"] .vocab-active-filters,
+body[data-view="vocab"] .vocab-active-filters span,
+body[data-view="vocab"] .vocab-active-filters b {
+  color: #514a5f !important;
+}
+
+body[data-view="vocab"] .vocab-page-list {
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+body[data-view="vocab"] .vocab-table-head {
+  padding: 14px 18px !important;
+  color: var(--polish-soft) !important;
+  font-size: var(--type-size-caption) !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.04em !important;
+  border-bottom: 1px solid var(--polish-line) !important;
+  background: rgba(248, 245, 255, 0.42) !important;
+}
+
+body[data-view="vocab"] .vocab-list,
+body[data-view="vocab"] #vocabListPage {
+  display: grid !important;
+  gap: 10px !important;
+  padding: 14px !important;
+}
+
+body[data-view="vocab"] .vocab-list li,
+body[data-view="vocab"] .vocab-list article,
+body[data-view="vocab"] #vocabListPage > * {
+  border: 1px solid rgba(43, 37, 55, 0.10) !important;
+  border-radius: var(--polish-radius-panel) !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: none !important;
+}
+
+body[data-view="vocab"] .vocab-list strong,
+body[data-view="vocab"] #vocabListPage strong {
+  color: var(--polish-ink) !important;
+  font-family: var(--polish-font-display) !important;
+  font-weight: 700 !important;
+}
+
+body[data-view="vocab"] .vocab-list small,
+body[data-view="vocab"] .vocab-list .detail-badge,
+body[data-view="vocab"] #vocabListPage small {
+  color: var(--polish-primary) !important;
+  border-color: var(--polish-line-purple) !important;
+  background: var(--polish-primary-chip) !important;
+}
+
+body[data-view="vocab"] .vocab-empty {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-view="vocab"] .vocab-page-review,
+body[data-view="vocab"] .vocab-review-primary,
+body[data-view="vocab"] .flash-card-host,
+body[data-view="vocab"] .flash-page-placeholder {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  box-shadow: none !important;
+}
+
+/* Grammar */
+.grammar-search {
+  min-height: 52px;
+  padding-inline: 18px !important;
+}
+
+.grammar-grid > *,
+.grammar-card,
+.grammar-grid article {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: var(--polish-shadow-card) !important;
+}
+
+/* Grammar page outer shell: remove the extra large card surface */
+.grammar-section {
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.grammar-section > .card-pad {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Practice */
+.practice-page-head,
+.practice-start-row {
+  margin-bottom: 16px !important;
+}
+
+.practice-start-row .btn-secondary,
+.practice-mode-tab {
+  min-height: 42px;
+}
+
+.practice-module {
+  padding: 22px !important;
+}
+
+.practice-module + .practice-module {
+  margin-top: 18px !important;
+}
+
+.practice-module-head {
+  align-items: flex-start !important;
+  margin-bottom: 14px !important;
+}
+
+.article-practice-empty,
+.reading-quiz-start,
+.retell-practice-card,
+.typing-prompt,
+.vocab-quiz-card,
+.typing-side {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: var(--polish-surface-solid) !important;
+  box-shadow: none !important;
+}
+
+.retell-practice-card {
+  padding: 22px !important;
+}
+
+.retell-steps span,
+.practice-summary-grid > *,
+.practice-review-list > *,
+.typing-list > * {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-panel) !important;
+  background: rgba(255, 255, 255, 0.70) !important;
+}
+
+.typing-grid {
+  gap: 18px !important;
+}
+
+/* Discover */
+.discover-section .card-pad {
+  display: grid;
+  gap: 18px;
+}
+
+.discover-panel {
+  overflow: visible;
+}
+
+.reading-queue-panel {
+  background: rgba(255, 255, 255, 0.84) !important;
+}
+
+.reading-queue-form {
+  gap: 10px !important;
+}
+
+.discover-filter-panel {
+  min-height: 128px;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: var(--polish-surface-soft) !important;
+}
+
+.discover-filter-options,
+.discover-quick-tags {
+  gap: 8px !important;
+}
+
+.discover-filter-options button,
+.discover-quick-tags button {
+  position: relative;
+  min-height: 36px;
+  padding: 0 34px 0 14px !important;
+}
+
+.discover-filter-options button::after,
+.discover-quick-tags button::after {
+  content: "⌄";
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  color: currentColor;
+  opacity: 0.72;
+  font-size: var(--type-size-meta);
+  transform: translateY(-52%);
+}
+
+.discover-filter-options button.active::after,
+.discover-quick-tags button.active::after {
+  content: "✓";
+  opacity: 1;
+}
+
+.graded-material-grid > *,
+.discover-sources > *,
+.source-card,
+.resource-card,
+.graded-material-card {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: rgba(255, 255, 255, 0.76) !important;
+  box-shadow: var(--polish-shadow-card) !important;
+}
+
+/* Discover reading materials refinement: make it feel like a calm reading library */
+body[data-view="discover"] .discover-section {
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .discover-section > .card-pad {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+body[data-view="discover"] .graded-reading-section {
+  display: grid !important;
+  gap: 18px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .graded-reading-section > .discover-panel-head {
+  padding: 0 2px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .graded-reading-section > .discover-panel-head h3,
+body[data-view="discover"] #gradedReadingTitle {
+  color: var(--polish-ink) !important;
+  font-family: var(--polish-font-display) !important;
+  font-size: var(--type-size-feature-title) !important;
+  letter-spacing: -0.02em !important;
+}
+
+body[data-view="discover"] .graded-reading-section .discover-panel-link {
+  min-height: 36px !important;
+  padding: 0 14px !important;
+  color: #514a5f !important;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-pill) !important;
+  background: rgba(255, 255, 255, 0.70) !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .discover-filter-panel {
+  min-height: auto !important;
+  display: grid !important;
+  gap: 12px !important;
+  padding: 14px !important;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: rgba(255, 255, 255, 0.70) !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .discover-filter-row {
+  gap: 10px !important;
+}
+
+body[data-view="discover"] .discover-filter-options,
+body[data-view="discover"] .discover-quick-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+body[data-view="discover"] .discover-filter-options button,
+body[data-view="discover"] .discover-quick-tags button {
+  min-height: 34px !important;
+  padding: 0 14px !important;
+  color: #514a5f !important;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-pill) !important;
+  background: rgba(255, 255, 255, 0.68) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .discover-filter-options button::after,
+body[data-view="discover"] .discover-quick-tags button::after {
+  display: none !important;
+}
+
+body[data-view="discover"] .discover-filter-options button.active,
+body[data-view="discover"] .discover-quick-tags button.active {
+  color: #2b2537 !important;
+  border-color: var(--polish-line-purple) !important;
+  background: rgba(123, 92, 255, 0.12) !important;
+}
+
+body[data-view="discover"] .graded-material-grid {
+  display: grid !important;
+  gap: 14px !important;
+}
+
+body[data-view="discover"] .graded-material-grid > *,
+body[data-view="discover"] .graded-material-card {
+  border: 1px solid var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .graded-material-grid > *:hover,
+body[data-view="discover"] .graded-material-card:hover {
+  border-color: var(--polish-line-purple) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .graded-material-grid h3,
+body[data-view="discover"] .graded-material-card h3 {
+  color: var(--polish-ink) !important;
+  font-family: var(--polish-font-display) !important;
+}
+
+body[data-view="discover"] .graded-material-grid p,
+body[data-view="discover"] .graded-material-card p,
+body[data-view="discover"] .graded-material-grid span,
+body[data-view="discover"] .graded-material-card span {
+  color: var(--polish-muted) !important;
+}
+
+/* History */
+.history-progress-center {
+  gap: 18px !important;
+}
+
+.history-summary-panel {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-page) !important;
+  background: rgba(255, 255, 255, 0.84) !important;
+  box-shadow: var(--polish-shadow-card) !important;
+}
+
+.history-progress-layout {
+  gap: 20px !important;
+}
+
+.history-side-column {
+  gap: 14px !important;
+}
+
+.history-side-column .history-summary-panel {
+  width: 100% !important;
+}
+
+.history-side-column .history-summary-stats {
+  grid-template-columns: 1fr !important;
+}
+
+.history-overview-panel {
+  display: grid !important;
+  gap: 18px !important;
+}
+
+.history-overview-block {
+  display: grid !important;
+  gap: 12px !important;
+}
+
+.history-summary-text-card {
+  min-height: 88px !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 16px !important;
+  text-align: center !important;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  color: var(--polish-ink) !important;
+  font-size: var(--type-size-subtitle) !important;
+  font-weight: 760 !important;
+  line-height: 1.45 !important;
+}
+
+.history-summary-legacy-stats[hidden] {
+  display: none !important;
+}
+
+.history-overview-label {
+  color: var(--polish-primary) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 760 !important;
+}
+
+.history-overview-stats,
+#historySummaryStats {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.history-overview-stats > *,
+#historySummaryStats > * {
+  min-height: 72px !important;
+  display: grid !important;
+  place-items: center !important;
+  text-align: center !important;
+  border: 1px solid var(--polish-line) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+}
+
+#historySummaryStats.history-summary-legacy-stats[hidden] {
+  display: none !important;
+}
+
+.history-side-column .history-level-card {
+  min-height: 104px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 18px !important;
+}
+
+.history-side-column .history-level-card strong {
+  font-size: var(--type-size-page-title) !important;
+}
+
+#historySuggestionList {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+@media (max-width: 720px) {
+  #historySuggestionList {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.history-error-list li,
+.history-task-list > * {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-panel) !important;
+  background: rgba(255, 255, 255, 0.70) !important;
+}
+
+.history-calendar-grid > *,
+.history-calendar-grid button,
+.history-calendar-grid span {
+  border-radius: 14px !important;
+}
+
+/* Settings page rules now live in design-system.css. */
+
+/* Modals and floating panels */
+.export-modal,
+.delete-confirm-modal,
+.reading-display-modal {
+  backdrop-filter: blur(10px);
+}
+
+.export-preview,
+.reading-display-preview,
+.delete-confirm-target,
+.selection-tools,
+.tts-control-menu {
+  border-color: var(--polish-line) !important;
+  border-radius: var(--polish-radius-card) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  box-shadow: var(--polish-shadow-card) !important;
+}
+
+/* Page-level shells: remove redundant outer cards where content already has its own cards */
+body[data-view="grammar"] .app-content .grammar-section.card,
+body[data-view="grammar"] .app-content .grammar-section,
+body[data-view="discover"] .app-content .discover-panel.graded-reading-section,
+body[data-view="discover"] .app-content .graded-reading-section {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="grammar"] .app-content .grammar-section.card > .card-pad,
+body[data-view="grammar"] .app-content .grammar-section > .card-pad,
+body[data-view="discover"] .app-content .discover-panel.graded-reading-section,
+body[data-view="discover"] .app-content .graded-reading-section {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="grammar"] .app-content .grammar-section > .card-pad > .card-head,
+body[data-view="grammar"] .app-content .grammar-section > .card-pad > .grammar-quick-panel,
+body[data-view="grammar"] .app-content .grammar-section > .card-pad > .grammar-history-panel,
+body[data-view="grammar"] .app-content .grammar-section > .card-pad > .grammar-panel,
+body[data-view="grammar"] .app-content .grammar-section > .card-pad > section,
+body[data-view="discover"] .app-content .graded-reading-section > .discover-panel-head {
+  border-color: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Home feature cards color lock: one pale surface and a clearer outline */
+body.first-visit .hero-flow-item,
+body .hero-flow-item {
+  border: 1.5px solid rgba(99, 83, 159, 0.30) !important;
+  background: rgba(248, 245, 255, 0.36) !important;
+  background-color: rgba(248, 245, 255, 0.36) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body.first-visit .hero-flow-item:hover,
+body .hero-flow-item:hover {
+  border-color: rgba(99, 83, 159, 0.44) !important;
+  background: rgba(248, 245, 255, 0.36) !important;
+  background-color: rgba(248, 245, 255, 0.36) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body.first-visit .hero-flow-item > div:first-child,
+body.first-visit .hero-flow-item .hero-mini-reader,
+body.first-visit .hero-flow-item .hero-mini-lookup,
+body.first-visit .hero-flow-item .hero-mini-vocab,
+body.first-visit .hero-flow-item .hero-mini-flashcard,
+body.first-visit .hero-flow-item .hero-vocab-entry,
+body.first-visit .hero-flow-item .hero-flashcard-card,
+body.first-visit .hero-flow-item .hero-flashcard-shell,
+body.first-visit .hero-flow-item .hero-flashcard-actions,
+body.first-visit .hero-flow-item .hero-flashcard-actions span,
+body .hero-flow-item > div:first-child,
+body .hero-flow-item .hero-mini-reader,
+body .hero-flow-item .hero-mini-lookup,
+body .hero-flow-item .hero-mini-vocab,
+body .hero-flow-item .hero-mini-flashcard,
+body .hero-flow-item .hero-vocab-entry,
+body .hero-flow-item .hero-flashcard-card,
+body .hero-flow-item .hero-flashcard-shell,
+body .hero-flow-item .hero-flashcard-actions,
+body .hero-flow-item .hero-flashcard-actions span {
+  border-color: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Home feature inner frames: outline the demo area only, keep labels outside */
+body.first-visit .hero-flow-item > div:first-child,
+body .hero-flow-item > div:first-child {
+  min-height: 150px !important;
+  padding: 22px !important;
+  border: 1.7px solid rgba(99, 83, 159, 0.40) !important;
+  border-radius: 22px !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body.first-visit .hero-flow-item:hover > div:first-child,
+body .hero-flow-item:hover > div:first-child {
+  border-color: rgba(99, 83, 159, 0.52) !important;
+}
+
+body.first-visit .hero-flow-copy,
+body .hero-flow-copy {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Hard cleanup for redundant nested shells on Grammar and Discover */
+body[data-view="grammar"] .grammar-suggestion-panel,
+body[data-view="grammar"] .grammar-suggestion-section,
+body[data-view="grammar"] .grammar-discovery-panel,
+body[data-view="grammar"] .grammar-lookup-shell,
+body[data-view="grammar"] .grammar-grid,
+body[data-view="discover"] .discover-section,
+body[data-view="discover"] .discover-section.card,
+body[data-view="discover"] .discover-section > .card-pad,
+body[data-view="discover"] .graded-reading-section,
+body[data-view="discover"] .discover-panel.graded-reading-section,
+body[data-view="discover"] .graded-reading-section > .discover-panel-head,
+body[data-view="discover"] .graded-reading-section .discover-filter-panel {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="grammar"] .grammar-suggestion-panel,
+body[data-view="grammar"] .grammar-suggestion-section,
+body[data-view="grammar"] .grammar-discovery-panel,
+body[data-view="grammar"] .grammar-lookup-shell,
+body[data-view="discover"] .graded-reading-section,
+body[data-view="discover"] .discover-panel.graded-reading-section {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+body[data-view="discover"] .discover-section > .card-pad {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Mobile */
+@media (max-width: 920px) {
+  .hero-brand::after {
+    padding-inline: 18px;
+  }
+
+  .card,
+  .daily-plan,
+  .learning-path-guide,
+  .source-dropzone,
+  .reading-source-panel,
+  .vocab-page-list,
+  .vocab-page-review,
+  .practice-module,
+  .progressive-panel,
+  .discover-panel,
+  .history-panel,
+  .settings-page-card {
+    border-radius: 20px !important;
+  }
+
+  .discover-filter-panel {
+    min-height: 0;
+  }
+}
+
+/* Discover filter final refinement: restore the middle area as a real panel and make selects feel clickable. */
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel--refined,
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel:has(#gradedLevelFilters) {
+  position: relative !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 16px 14px !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 0 24px !important;
+  padding: 22px 24px 24px !important;
+  border: 1.5px solid rgba(99, 83, 159, 0.28) !important;
+  border-radius: 24px !important;
+  background: rgba(255, 255, 255, 0.76) !important;
+  background-image: linear-gradient(180deg, rgba(252, 250, 255, 0.92), rgba(255, 255, 255, 0.74)) !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel--refined::before,
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel:has(#gradedLevelFilters)::before {
+  content: "筛选阅读素材";
+  flex: 0 0 100%;
+  color: var(--polish-ink, #252033);
+  font-family: var(--polish-font-display, inherit);
+  font-size: var(--type-size-body-large);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-row--refined,
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-row:has(#gradedLevelFilters),
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-row:has(#gradedTopicFilters) {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 10px !important;
+}
+
+body[data-view="discover"] #gradedLevelFilters,
+body[data-view="discover"] #gradedTopicFilters,
+body[data-view="discover"] .discover-select-control {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+body[data-view="discover"] #gradedLevelFilters::after,
+body[data-view="discover"] #gradedTopicFilters::after,
+body[data-view="discover"] .discover-select-control::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 1.8px solid rgba(79, 68, 104, 0.82);
+  border-bottom: 1.8px solid rgba(79, 68, 104, 0.82);
+  pointer-events: none;
+  transform: translateY(-66%) rotate(45deg);
+}
+
+body[data-view="discover"] #gradedLevelFilters select,
+body[data-view="discover"] #gradedTopicFilters select,
+body[data-view="discover"] .discover-filter-select--refined {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: auto !important;
+  min-width: 154px !important;
+  max-width: none !important;
+  height: 46px !important;
+  padding: 0 46px 0 18px !important;
+  color: #2b2537 !important;
+  text-align: left !important;
+  text-align-last: left !important;
+  font-size: var(--type-size-body) !important;
+  font-weight: 700 !important;
+  border: 1.5px solid rgba(99, 83, 159, 0.42) !important;
+  border-radius: 13px !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+body[data-view="discover"] #gradedLevelFilters select:hover,
+body[data-view="discover"] #gradedTopicFilters select:hover,
+body[data-view="discover"] .discover-filter-select--refined:hover,
+body[data-view="discover"] #gradedLevelFilters select:focus,
+body[data-view="discover"] #gradedTopicFilters select:focus,
+body[data-view="discover"] .discover-filter-select--refined:focus {
+  border-color: rgba(99, 83, 159, 0.72) !important;
+  outline: 3px solid rgba(123, 92, 255, 0.12) !important;
+  outline-offset: 2px !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel--refined .discover-quick-tags,
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel:has(#gradedLevelFilters) .discover-quick-tags,
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel--refined .discover-filter-options,
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel:has(#gradedLevelFilters) .discover-filter-options {
+  flex: 1 1 100% !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-top: 2px !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel--refined .discover-quick-tags button,
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel:has(#gradedLevelFilters) .discover-quick-tags button,
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel--refined .discover-filter-options button,
+body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel:has(#gradedLevelFilters) .discover-filter-options button {
+  min-height: 34px !important;
+  padding: 0 15px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(99, 83, 159, 0.22) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+}
+
+@media (max-width: 760px) {
+  body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel--refined,
+  body[data-view="discover"] .app-content .graded-reading-section .discover-filter-panel:has(#gradedLevelFilters) {
+    padding: 18px !important;
+    border-radius: 20px !important;
+  }
+
+  body[data-view="discover"] .app-content .graded-reading-section .discover-filter-row--refined,
+  body[data-view="discover"] .app-content .graded-reading-section .discover-filter-row:has(#gradedLevelFilters),
+  body[data-view="discover"] .app-content .graded-reading-section .discover-filter-row:has(#gradedTopicFilters),
+  body[data-view="discover"] #gradedLevelFilters,
+  body[data-view="discover"] #gradedTopicFilters {
+    width: 100% !important;
+  }
+
+  body[data-view="discover"] #gradedLevelFilters select,
+  body[data-view="discover"] #gradedTopicFilters select,
+  body[data-view="discover"] .discover-filter-select--refined {
+    width: 100% !important;
+  }
+}
+
+/* Discover materials unified card: header, filters, and cards are one content group. */
+body[data-view="discover"] .app-content .graded-reading-section--refined,
+body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) {
+  display: grid !important;
+  gap: 20px !important;
+  width: 100% !important;
+  padding: 28px 30px 30px !important;
+  border: 1.5px solid rgba(99, 83, 159, 0.26) !important;
+  border-radius: 28px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  background-image: linear-gradient(180deg, rgba(253, 251, 255, 0.94), rgba(255, 255, 255, 0.76)) !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section--refined > .discover-panel-head,
+body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) > .discover-panel-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  width: 100% !important;
+  padding: 0 0 2px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section--refined > .discover-filter-panel--refined,
+body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) > .discover-filter-panel {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  margin: -4px 0 2px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section--refined > .discover-filter-panel--refined::before,
+body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) > .discover-filter-panel::before {
+  content: none !important;
+  display: none !important;
+}
+
+body[data-view="discover"] .discover-selects-row {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  width: auto !important;
+}
+
+body[data-view="discover"] .discover-selects-row #gradedLevelFilters,
+body[data-view="discover"] .discover-selects-row #gradedTopicFilters {
+  width: auto !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section--refined .discover-quick-tags,
+body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) .discover-quick-tags,
+body[data-view="discover"] .app-content .graded-reading-section--refined .discover-filter-options,
+body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) .discover-filter-options {
+  display: none !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section--refined .graded-material-grid,
+body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) .graded-material-grid {
+  margin-top: 0 !important;
+}
+
+@media (max-width: 760px) {
+  body[data-view="discover"] .app-content .graded-reading-section--refined,
+  body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) {
+    padding: 22px !important;
+    border-radius: 18px !important;
+  }
+
+  body[data-view="discover"] .discover-selects-row,
+  body[data-view="discover"] .discover-selects-row #gradedLevelFilters,
+  body[data-view="discover"] .discover-selects-row #gradedTopicFilters {
+    width: 100% !important;
+  }
+}
+
+/* Discover final alignment: compact learning-platform radii and internal select arrows. */
+body[data-view="discover"] .discover-selects-row {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  width: auto !important;
+}
+
+body[data-view="discover"] .discover-selects-row #gradedLevelFilters,
+body[data-view="discover"] .discover-selects-row #gradedTopicFilters {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+
+body[data-view="discover"] #gradedLevelFilters::after,
+body[data-view="discover"] #gradedTopicFilters::after,
+body[data-view="discover"] .discover-select-control::after {
+  content: none !important;
+  display: none !important;
+}
+
+body[data-view="discover"] #gradedLevelFilters select,
+body[data-view="discover"] #gradedTopicFilters select,
+body[data-view="discover"] .discover-filter-select--refined {
+  min-width: 142px !important;
+  height: 42px !important;
+  padding: 0 40px 0 16px !important;
+  border-radius: 10px !important;
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%234f4468' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+  background-size: 12px 12px !important;
+}
+
+body[data-view="discover"] .app-content .graded-reading-section--refined,
+body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) {
+  border-radius: 20px !important;
+}
+
+body[data-view="discover"] .graded-material-card,
+body[data-view="discover"] .source-card,
+body[data-view="discover"] .resource-card,
+body[data-view="discover"] .discover-panel,
+body[data-view="discover"] .reading-queue-panel {
+  border-radius: 18px !important;
+}
+
+body[data-view="discover"] .discover-panel-link {
+  border-radius: 12px !important;
+}
+
+@media (max-width: 760px) {
+  body[data-view="discover"] .discover-selects-row {
+    flex-wrap: wrap !important;
+  }
+
+  body[data-view="discover"] .discover-selects-row #gradedLevelFilters,
+  body[data-view="discover"] .discover-selects-row #gradedTopicFilters {
+    width: 100% !important;
+  }
+
+  body[data-view="discover"] .app-content .graded-reading-section--refined,
+  body[data-view="discover"] .app-content .graded-reading-section:has(#gradedLevelFilters) {
+    border-radius: 18px !important;
+  }
 }

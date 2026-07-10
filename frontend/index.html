@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>読める · 日语阅读辅助工具 · 自动标注假名与释义</title>
+<meta name="description" content="粘贴日语文章，自动标注假名和释义，JLPT词汇分级，一键导出Anki牌组，间隔复习系统">
+<meta name="keywords" content="日语学习,日语阅读,JLPT,N5,N4,N3,N2,N1,假名标注,Anki,间隔复习">
+<link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=20260710-05">
+<link rel="stylesheet" href="design-system.css?v=20260710-05">
+<link rel="stylesheet" href="grammar-layout.css?v=20260710-05">
+<link rel="stylesheet" href="typography.css?v=20260710-05">
+<script defer src="config.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+</head>
+<body data-view="reading" class="first-visit">
+<div class="wrap">
+
+  <!-- Hero 首屏 -->
+  <div class="hero-intro" id="heroIntro">
+    <div class="hero-home-nav" aria-label="站点品牌">
+      <span class="hero-home-mark"><img src="assets/brand/yomeru-mark.svg" alt="" aria-hidden="true"></span>
+    </div>
+    <div class="hero-entry">
+      <div class="hero-brand">
+        <h1 class="hero-title">
+          <span class="hero-title-text"><span>読める</span> · 日语阅读辅助</span>
+        </h1>
+      </div>
+
+      <div class="hero-input">
+        <textarea id="heroInputText" placeholder="粘贴日语正文、网页链接，或上传资料开始阅读" aria-label="日语文本或文章链接"></textarea>
+        <div class="hero-actions">
+          <div class="hero-secondary-actions">
+            <button class="btn-secondary btn--text hero-text-action" type="button" onclick="document.getElementById('heroFileInput').click()">
+              <span>上传文件</span>
+            </button>
+            <button class="btn-secondary btn--text hero-text-action" type="button" onclick="focusHeroLinkInput()">
+              <span>导入链接</span>
+              <span class="pro-pill">Pro</span>
+            </button>
+            <button class="btn-secondary btn--text hero-text-action" type="button" onclick="loadSampleFromHero()">
+              <span>使用示例</span>
+            </button>
+            <button class="btn-secondary btn--text hero-text-action hero-level-test-action" type="button" onclick="enterReadingFromHero();switchWorkspace('test')">
+              <span>水平测试</span>
+            </button>
+          </div>
+          <button class="btn-primary btn--large hero-start-button" id="heroStartButton" type="button" onclick="analyzeFromHero()" aria-disabled="true">
+            <span>开始阅读</span>
+          </button>
+        </div>
+        <div class="hero-guide-prompt is-hidden" id="heroGuidePrompt">
+          <span>第一次使用，需要我带你走一遍吗？</span>
+          <button class="btn-primary btn--small" type="button" onclick="startGuidedSampleFromHero()">需要引导</button>
+          <button class="btn-secondary btn--small" type="button" onclick="dismissHeroGuidePrompt()">不用了</button>
+        </div>
+        <input id="heroFileInput" type="file" accept=".pdf,.docx,.txt,.html,.htm,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/html" hidden onchange="extractUploadedFile(this.files[0])">
+      </div>
+    </div>
+
+    <div class="hero-flow-intro">
+      <p>网站特点</p>
+    </div>
+
+    <div class="hero-flow" aria-label="功能预览">
+      <div class="hero-flow-item">
+        <div class="hero-mini-reader hero-demo-reader" id="heroDemoReader">
+          <p>友達と <span class="hero-demo-token"><small>がっこう</small><span>学校</span></span> で本を読みます。</p>
+        </div>
+        <div class="hero-flow-copy">
+          <h2>假名标注</h2>
+        </div>
+      </div>
+      <div class="hero-flow-item">
+        <div class="hero-mini-lookup hero-demo-lookup" role="group" aria-label="句子翻译演示">
+          <p>レストランで注文をします。</p>
+          <span>我在餐厅点餐。</span>
+        </div>
+        <div class="hero-flow-copy">
+          <h2>句子翻译</h2>
+        </div>
+      </div>
+      <div class="hero-flow-item">
+        <div class="hero-mini-vocab hero-demo-vocab" role="group" aria-label="保存生词演示">
+          <div class="hero-vocab-entry">
+            <div class="hero-vocab-head">
+              <strong>学校</strong>
+              <small>N5</small>
+            </div>
+            <span>がっこう · 学校</span>
+            <div class="hero-vocab-meta">
+              <small>名词</small>
+              <small>已加入生词本</small>
+            </div>
+          </div>
+        </div>
+        <div class="hero-flow-copy">
+          <h2>保存生词</h2>
+        </div>
+      </div>
+      <div class="hero-flow-item">
+        <div class="hero-mini-flashcard hero-demo-flashcard" role="group" aria-label="闪卡复习演示">
+          <div class="hero-flashcard-shell">
+            <div class="hero-flashcard-card">
+              <div class="hero-flashcard-status">
+                <span>1 / 8</span>
+                <span>N4</span>
+              </div>
+              <div class="hero-flashcard-main">
+                <strong>注文</strong>
+                <span>ちゅうもん · 点餐、订购</span>
+              </div>
+            </div>
+            <div class="hero-flashcard-actions" aria-hidden="true">
+              <span>模糊</span>
+              <span>认识</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-flow-copy">
+          <h2>闪卡复习</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 应用界面 -->
+  <div class="app-interface" id="appInterface">
+
+    <!-- 左侧边栏 -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-brand">
+        <button class="brand-mini" type="button" onclick="resetToHero()" aria-label="返回首页">
+          <span class="brand-mark"><img src="assets/brand/yomeru-mark.svg" alt="" aria-hidden="true"></span>
+        </button>
+        <button class="sidebar-toggle-button sidebar-icon-toggle" id="collapseSidebarButton" type="button" onclick="toggleSidebar()" aria-label="隐藏左侧目录" aria-expanded="true">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="global-search" role="search">
+        <span class="global-search-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M10.8 18.1a7.3 7.3 0 1 1 0-14.6 7.3 7.3 0 0 1 0 14.6Z"></path><path d="m16.2 16.2 4.3 4.3"></path></svg>
+        </span>
+        <input id="globalSearchInput" type="search" placeholder="" aria-label="搜索" oninput="renderGlobalSearch()" onkeydown="handleGlobalSearchKey(event)" onfocus="renderGlobalSearch()">
+        <div class="global-search-results" id="globalSearchResults" aria-live="polite"></div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="主导航">
+        <button class="nav-item active" data-view="reading" onclick="switchWorkspace('reading')">
+          <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22V5.5Z"></path><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22V5.5Z"></path></svg>
+          </span>
+          <span class="nav-label">阅读</span>
+        </button>
+        <button class="nav-item nav-vocab" data-view="vocab" onclick="switchWorkspace('vocab')">
+          <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-3.8L6 21V3Z"></path><path d="M9 7h6M9 11h6"></path></svg>
+          </span>
+          <span class="nav-label">生词本</span>
+        </button>
+        <button class="nav-item" data-view="grammar" onclick="switchWorkspace('grammar')">
+          <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="M8 8h8M8 12h5M8 16h7"></path></svg>
+          </span>
+          <span class="nav-label">语法本</span>
+        </button>
+        <button class="nav-item" data-view="retell" onclick="switchWorkspace('retell')">
+          <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m4 17 9.8-9.8 3 3L7 20H4v-3Z"></path><path d="m15.5 5.5 1.7-1.7a1.4 1.4 0 0 1 2 0l1 1a1.4 1.4 0 0 1 0 2l-1.7 1.7"></path></svg>
+          </span>
+          <span class="nav-label">练习</span>
+        </button>
+        <button class="nav-item nav-resources" data-view="discover" type="button" onclick="switchWorkspace('discover')">
+          <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v11H3V6Z"></path><path d="M3 10h18"></path></svg>
+          </span>
+          <span class="nav-label">资料</span>
+        </button>
+        <button class="nav-item" data-view="history" type="button" onclick="switchWorkspace('history')">
+          <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+          </span>
+          <span class="nav-label">学习历史</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="sidebar-utility-button" type="button" data-view="settings" onclick="switchWorkspace('settings')" aria-label="打开设置与帮助">
+          <span class="sidebar-utility-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 8.2a3.8 3.8 0 1 1 0 7.6 3.8 3.8 0 0 1 0-7.6Z"></path><path d="M19.4 13.5a7.8 7.8 0 0 0 0-3l2-1.5-2-3.4-2.4 1a8 8 0 0 0-2.6-1.5L14 2.5h-4l-.4 2.6A8 8 0 0 0 7 6.6l-2.4-1-2 3.4 2 1.5a7.8 7.8 0 0 0 0 3l-2 1.5 2 3.4 2.4-1a8 8 0 0 0 2.6 1.5l.4 2.6h4l.4-2.6a8 8 0 0 0 2.6-1.5l2.4 1 2-3.4-2-1.5Z"></path></svg>
+          </span>
+          <span>设置与帮助</span>
+        </button>
+      </div>
+    </aside>
+    <button class="sidebar-restore-button sidebar-icon-toggle" id="restoreSidebarButton" type="button" onclick="toggleSidebar(true)" aria-label="显示左侧目录" aria-expanded="false">
+      <span aria-hidden="true"></span>
+    </button>
+
+    <main class="app-content">
+      <div class="reading-workbench">
+      <section class="daily-plan" aria-label="今日学习进度" aria-hidden="true" hidden style="display:none !important;">
+        <div class="daily-plan-head">
+          <div class="daily-plan-actions">
+            <div class="daily-plan-progress" id="dailyPlanProgress">0 / 4</div>
+            <button class="btn-primary" type="button" id="learningPathAction" onclick="openGuidedStep()">继续下一步</button>
+          </div>
+        </div>
+        <details class="learning-path-disclosure">
+          <summary>查看完整学习路径与目标</summary>
+          <section class="learning-path-guide" aria-labelledby="learningPathTitle">
+            <div class="learning-path-head">
+              <div>
+                <span class="module-kicker">学习路径</span>
+                <h3 id="learningPathTitle">阅读 → 收藏生词 → 练习 → 找下一篇</h3>
+              </div>
+              <button class="btn-secondary daily-goal-toggle" type="button" onclick="toggleLearningGoalSettings()">调整目标</button>
+            </div>
+            <form class="daily-goal-settings is-hidden" id="dailyGoalSettings" onsubmit="saveLearningGoals(event)">
+              <label>阅读
+                <input id="goalReadingTarget" type="number" min="0" max="5" step="1" inputmode="numeric">
+              </label>
+              <label>生词
+                <input id="goalVocabTarget" type="number" min="0" max="50" step="1" inputmode="numeric">
+              </label>
+              <label>练习
+                <input id="goalPracticeTarget" type="number" min="0" max="20" step="1" inputmode="numeric">
+              </label>
+              <label>重点
+                <select id="goalFocus">
+                  <option value="balanced">均衡</option>
+                  <option value="reading">阅读优先</option>
+                  <option value="vocab">生词优先</option>
+                  <option value="practice">练习优先</option>
+                </select>
+              </label>
+              <button class="btn-primary" type="submit">保存目标</button>
+            </form>
+            <div class="learning-path-steps" id="learningPathSteps"></div>
+          </section>
+        </details>
+      </section>
+      <!-- 阅读主界面 -->
+      <section class="card reading-main">
+        <div class="card-pad">
+
+          <!-- 状态条 -->
+          <div class="status-bar" id="statusBar" style="display:none;">
+            <span>✓ 已分析</span>
+            <button class="btn-secondary btn--text" onclick="editSourceText()">更换文章</button>
+            <button class="btn-secondary btn--text" onclick="openExportModal()">导出</button>
+          </div>
+          <div class="reader-toolbar" id="readerToolbar" style="display:none;" aria-label="阅读工具栏">
+            <div class="reader-tool-group">
+              <button class="reader-tool is-active" id="annotationEditBtn" type="button" onclick="toggleAnnotationEditMode()" data-tooltip="编辑词语标注" aria-label="编辑词语标注">词</button>
+              <button class="reader-tool is-active" id="rubyToggleBtn" type="button" onclick="toggleReaderSmartSegmentation()" data-tooltip="显示或隐藏假名" aria-label="显示或隐藏假名">あ</button>
+              <button class="reader-tool" id="translationToggleBtn" type="button" onclick="toggleParagraphTranslation()" data-tooltip="句段翻译" aria-label="句段翻译">译</button>
+              <button class="reader-tool reader-speech-tool" type="button" onclick="speakCurrentReading(this)" data-tooltip="朗读正文" aria-label="朗读正文">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h4l5-4v13l-5-4H4z"></path><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"></path></svg>
+              </button>
+              <button class="reader-tool reader-font-button" id="readingFontSettingsButton" type="button" onclick="openReadingDisplaySettings()" data-tooltip="阅读字号" aria-label="阅读字号">字</button>
+            </div>
+            <div class="reader-tool-group reader-tool-group-end">
+              <button class="reader-tool reader-tool-wide" id="readingAnalysisButton" type="button" onclick="toggleReadingInsights()" data-tooltip="文章难度" aria-label="文章难度">难度</button>
+              <button class="reader-tool reader-tool-wide is-active" id="readingDetailToggleBtn" type="button" onclick="toggleReadingDetailPanel()" data-tooltip="显示或隐藏详解" aria-label="显示或隐藏详解">详解</button>
+              <span class="reader-tool-divider" aria-hidden="true"></span>
+              <button class="reader-tool import-tool" type="button" onclick="editSourceText()" data-tooltip="更换文章" aria-label="更换文章或链接">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6"></path><path d="M18 3.8v4.7h-4.7"></path><path d="M20 12a8 8 0 0 1-13.7 5.6"></path><path d="M6 20.2v-4.7h4.7"></path></svg>
+              </button>
+              <button class="reader-tool download-tool" id="exportTriggerBtn" type="button" onclick="openExportModal()" data-tooltip="导出" aria-label="导出">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 输入区域 -->
+          <div class="source-composer" id="sourceComposer">
+            <div class="source-dropzone">
+              <textarea id="inputText" placeholder="粘贴日语原文或文章链接，也可以上传本地资料开始阅读。"></textarea>
+              <div class="source-actions">
+                <button class="btn-primary" onclick="analyzeSourceInput()">开始阅读</button>
+                <button class="btn-secondary" type="button" onclick="document.getElementById('documentFileInput').click()">上传文件</button>
+                <button class="btn-secondary" onclick="loadSample()">用示例开始</button>
+              </div>
+              <input id="articleUrlInput" type="hidden">
+              <input id="documentFileInput" type="file" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden onchange="extractUploadedFile(this.files[0])">
+              <div class="import-status" id="importStatus"></div>
+            </div>
+
+            <section class="reading-source-panel" aria-label="阅读资料设置和推荐来源">
+              <div class="reading-source-options">
+                <label class="pdf-mode-field" title="日文小说/书籍常见竖排版式，选这个会自动转成从左到右的横排">
+                  <span>排版方向</span>
+                  <select id="pdfModeSelect">
+                    <option value="auto" selected>自动识别</option>
+                    <option value="horizontal">横排（普通文档）</option>
+                    <option value="vertical">竖排书籍/小说</option>
+                  </select>
+                </label>
+                <label class="pdf-mode-field" title="如果这个PDF是把网页打印/导出得到的，选这个能更好地去掉网页里的导航、广告等无关内容">
+                  <span>资料类型</span>
+                  <select id="pdfCleanupSelect">
+                    <option value="normal" selected>普通文档</option>
+                    <option value="web-article">网页打印/导出的PDF</option>
+                  </select>
+                </label>
+              </div>
+              <div class="reading-source-suggestions">
+                <span class="reading-source-label">推荐来源</span>
+                <div class="source-list" aria-label="推荐日语内容来源">
+                <button class="source-card" onclick="openRecommendedSource('https://www.aozora.gr.jp/')">
+                  <b>青空文庫</b><span>N2-N1 公版文学</span>
+                </button>
+                <button class="source-card" onclick="openRecommendedSource('https://tsunagarujp.mext.go.jp/')">
+                  <b>つながる日本語</b><span>N5-N3 生活日语</span>
+                </button>
+                <button class="source-card" onclick="openRecommendedSource('https://www.nippon.com/ja/')">
+                  <b>Nippon.com</b><span>N2-N1 社会文化</span>
+                </button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="reading-hint" id="readingHint" hidden style="display:none !important;"></div>
+
+          <div class="reading-output" id="output">
+            <span style="color:var(--ink-soft);font-size:var(--type-size-step-14-5);">点击「用示例开始」看效果 →</span>
+          </div>
+
+          <div class="next-step-bar" id="nextStepBar" style="display:none;">
+            <span class="next-step-copy">完成阅读后，可以用这篇文章生成练习。</span>
+            <button class="btn-primary reading-practice-action" id="readingNextAction" onclick="openGuidedStep('practice')">去练习</button>
+          </div>
+
+          <div class="reading-hidden-controls" hidden>
+            <input id="useKuromoji" type="checkbox" checked>
+            <span id="tokenizerStatus"></span>
+            <div id="statsBar"></div>
+            <section id="readingAnalysisCard"></section>
+          </div>
+        </div>
+      </section>
+
+      <!-- 侧边栏 -->
+      <div class="reading-side" style="display:flex;flex-direction:column;gap:22px;">
+
+        <div class="card detail-panel">
+          <div class="card-pad">
+            <div class="card-head">
+              <span class="card-title"><span class="tag">详解</span></span>
+              <button class="detail-panel-toggle" type="button" onclick="setReadingDetailCollapsed(true)" aria-label="隐藏详解" data-tooltip="隐藏详解">−</button>
+            </div>
+            <div id="detailArea">
+              <div class="detail-box detail-example-box">
+                <div class="detail-word-header">
+                  <div class="detail-word">食べる</div>
+                  <div class="detail-icon-actions">
+                    <button class="reader-tool reader-speech-tool detail-icon-button" type="button" onclick="speakEncodedJapanese('%E9%A3%9F%E3%81%B9%E3%82%8B', this, false)" data-tooltip="朗读" aria-label="朗读">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"></path><path d="M16 8.2a5.5 5.5 0 0 1 0 7.6M18.8 5.5a9 9 0 0 1 0 13"></path></svg>
+                    </button>
+                    <button class="reader-tool detail-icon-button add-vocab-tool" type="button" onclick="addCustomToVocab('食べる', 'たべる', '吃', 'N5', '动词')" data-tooltip="加入生词本" aria-label="加入生词本">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-3.8-6 3.8v-17Z"></path><path d="M12 7v6M9 10h6"></path></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="detail-meta">
+                  <div class="detail-reading-control" id="detailReadingControl">
+                    <span class="detail-reading-text" id="detailReadingText">たべる</span>
+                    <button class="detail-reading-edit" type="button" onclick="beginRubyEdit('%E9%A3%9F%E3%81%B9%E3%82%8B')" data-tooltip="修改读音" aria-label="修改 食べる 的读音">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 17 9.8-9.8 3 3L7 20H4v-3Z"></path><path d="m15.5 5.5 1.7-1.7a1.4 1.4 0 0 1 2 0l1 1a1.4 1.4 0 0 1 0 2l-1.7 1.7"></path></svg>
+                    </button>
+                  </div>
+                  <div class="detail-badges">
+                    <span class="detail-badge detail-badge-level">N5</span>
+                    <span class="detail-badge">动词</span>
+                  </div>
+                </div>
+                <div class="detail-definition"><span>释义</span><div class="detail-meaning">吃</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+
+    <!-- 其他标签页内容保持不变，但通过菜单访问 -->
+    <div class="card vocab-section-page">
+      <div class="card-pad">
+        <div class="vocab-workbar">
+          <label class="vocab-search-shell">
+            <span aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m21 21-4.4-4.4"></path><circle cx="10.5" cy="10.5" r="6.5"></circle></svg>
+            </span>
+            <input id="vocabSearchInput" class="vocab-search-input" type="search" placeholder="搜索单词、读音、释义" oninput="renderVocab()">
+          </label>
+          <button class="btn-primary" id="vocabPrimaryAction" onclick="runVocabPrimaryAction()" data-tooltip="闪卡复习" aria-label="闪卡复习">
+            <span class="vocab-primary-action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3.5h9.5l2.5 5v12H6v-17Z"></path><path d="M15.5 3.5v5H18"></path><path d="M9.2 13.2h5.6"></path><path d="M12 10.4V16"></path></svg>
+            </span>
+            <span>闪卡复习</span>
+          </button>
+          <details class="vocab-tool-actions vocab-management-menu">
+            <summary class="vocab-management-trigger" aria-label="管理生词本">管理</summary>
+            <div class="vocab-management-options" role="menu" aria-label="生词本管理">
+              <button type="button" onclick="exportVocabCsv(); closeVocabManagementMenu(this)" role="menuitem">
+                <span>导出 CSV</span>
+              </button>
+              <button class="danger" type="button" onclick="clearAllVocab(); closeVocabManagementMenu(this)" role="menuitem">
+                <span>清空生词本</span>
+              </button>
+            </div>
+          </details>
+        </div>
+
+        <div class="vocab-filter-summary" aria-live="polite">
+          <div class="vocab-active-filters">
+            <span>当前筛选</span>
+            <span id="vocabActiveFilters"></span>
+            <button type="button" id="vocabClearFilters" onclick="clearVocabFilters()">清除</button>
+          </div>
+          <strong>找到 <b id="vocabFilteredCount">0</b> 个生词</strong>
+        </div>
+        <div class="export-inline-status" id="vocabExportStatusPage" aria-live="polite"></div>
+        <section class="vocab-page-list primary-task-panel">
+          <div class="vocab-table-head">
+            <span>词汇 / 读音</span>
+            <span>释义</span>
+            <details class="vocab-table-filter vocab-filter-menu" id="vocabJlptFilterMenu">
+              <summary class="vocab-table-filter-trigger" aria-label="按 JLPT 等级筛选">JLPT等级</summary>
+              <div class="vocab-filter-menu-options" role="menu" aria-label="JLPT等级选项">
+                <button type="button" data-level="all" onclick="setVocabJlptFilter('all'); closeVocabFilterMenu(this)">全部</button>
+                <button type="button" data-level="N5" onclick="setVocabJlptFilter('N5'); closeVocabFilterMenu(this)">N5</button>
+                <button type="button" data-level="N4" onclick="setVocabJlptFilter('N4'); closeVocabFilterMenu(this)">N4</button>
+                <button type="button" data-level="N3" onclick="setVocabJlptFilter('N3'); closeVocabFilterMenu(this)">N3</button>
+                <button type="button" data-level="N2" onclick="setVocabJlptFilter('N2'); closeVocabFilterMenu(this)">N2</button>
+                <button type="button" data-level="N1" onclick="setVocabJlptFilter('N1'); closeVocabFilterMenu(this)">N1</button>
+              </div>
+            </details>
+            <details class="vocab-table-filter vocab-filter-menu" id="vocabStatusFilterMenu">
+              <summary class="vocab-table-filter-trigger" aria-label="按熟悉程度筛选">熟悉程度</summary>
+              <div class="vocab-filter-menu-options" role="menu" aria-label="熟悉程度选项">
+                <button type="button" data-status="all" onclick="setVocabFilter('all'); closeVocabFilterMenu(this)">全部</button>
+                <button type="button" data-status="weak" onclick="setVocabFilter('weak'); closeVocabFilterMenu(this)">没记住</button>
+                <button type="button" data-status="unsure" onclick="setVocabFilter('unsure'); closeVocabFilterMenu(this)">有点犹豫</button>
+                <button type="button" data-status="practiced" onclick="setVocabFilter('practiced'); closeVocabFilterMenu(this)">已练过</button>
+              </div>
+            </details>
+            <span>操作</span>
+          </div>
+          <ul class="vocab-list" id="vocabListPage"></ul>
+          <div class="vocab-empty" id="vocabEmptyPage">还没有收藏的词。<button class="btn-secondary btn--small" type="button" onclick="switchWorkspace('reading')">去阅读</button></div>
+        </section>
+        <section class="vocab-page-review vocab-review-primary is-hidden" aria-label="闪卡复习主舞台">
+          <div class="vocab-review-head">
+            <span class="vocab-review-progress" id="flashProgress">复习未开始</span>
+            <button class="vocab-review-exit" type="button" onclick="exitFlashcards()">退出复习</button>
+          </div>
+          <div class="flash-card-host">
+            <div id="flashArea" class="flash-page-placeholder">先积累几个生词，再开始复习。</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="card grammar-section">
+      <div class="card-pad">
+        <div class="grammar-controls" aria-label="语法本搜索与筛选">
+          <div class="grammar-workbar">
+            <label class="grammar-search-shell">
+              <span aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="m21 21-4.4-4.4"></path><circle cx="10.5" cy="10.5" r="6.5"></circle></svg>
+              </span>
+              <input class="grammar-search" id="grammarSearch" type="search" placeholder="搜索收藏的语法、例句和备注" oninput="renderGrammar();renderGrammarBook()">
+            </label>
+          </div>
+
+          <div class="grammar-filter-summary" aria-label="语法筛选">
+            <div class="grammar-filter-options">
+              <button type="button" class="is-active">全部</button>
+              <button type="button">未掌握</button>
+              <button type="button">已掌握</button>
+              <button type="button">N5</button>
+              <button type="button">N4</button>
+              <button type="button">N3</button>
+              <button type="button">未分级</button>
+            </div>
+          </div>
+        </div>
+
+        <section class="grammar-book-panel primary-task-panel" aria-labelledby="grammarBookTitle">
+          <div class="grammar-panel-head">
+            <div>
+              <h2 id="grammarBookTitle">我的语法笔记</h2>
+            </div>
+            <div class="grammar-panel-actions">
+              <strong class="grammar-book-count">已收藏 <b id="grammarBookCount">0</b> 条</strong>
+              <button class="btn-primary grammar-add-trigger" type="button" onclick="document.getElementById('grammarAddPanel').toggleAttribute('open')">添加语法</button>
+            </div>
+          </div>
+          <details class="grammar-save-panel" id="grammarAddPanel" aria-labelledby="grammarSaveTitle">
+            <summary class="grammar-save-summary">
+              <span id="grammarSaveTitle">添加一条语法</span>
+              <small>记录意思、接续、例句或自己容易混淆的地方</small>
+            </summary>
+            <div class="grammar-save-form">
+              <input id="grammarCustomTitle" type="text" maxlength="80" placeholder="语法 / 句型，例如：ようです">
+              <select id="grammarCustomLevel" aria-label="语法等级">
+                <option value="未分级">未分级</option>
+                <option value="N5">N5</option>
+                <option value="N4">N4</option>
+                <option value="N3">N3</option>
+                <option value="N2">N2</option>
+                <option value="N1">N1</option>
+              </select>
+              <textarea id="grammarCustomNote" rows="3" placeholder="备注：意思、接续、例句、自己容易错的点"></textarea>
+              <button class="btn-primary" type="button" onclick="addCustomGrammarNote()">加入语法本</button>
+            </div>
+          </details>
+          <div class="grammar-book-list" id="grammarBookList"></div>
+        </section>
+
+        <details class="grammar-example-panel" aria-labelledby="grammarExampleTitle">
+          <summary class="grammar-example-summary">
+            <span>
+              <strong id="grammarExampleTitle">常见语法示例</strong>
+            </span>
+            <span class="grammar-example-action">展开</span>
+          </summary>
+          <div class="grammar-grid" id="grammarGrid"></div>
+        </details>
+      </div>
+    </div>
+
+    <div class="card retell-section">
+      <div class="card-pad">
+        <div class="practice-page-head">
+          <div class="practice-start-row" aria-label="练习模式">
+            <button class="btn-secondary" id="startQuizPracticeBtn" onclick="focusPracticeModule('quiz')" type="button">选择题</button>
+            <button class="btn-secondary" id="startRetellPracticeBtn" onclick="focusPracticeModule('retell')" type="button">复述</button>
+            <button class="btn-secondary" id="startTypingPracticeBtn" onclick="focusPracticeModule('typing')" type="button">打字</button>
+          </div>
+        </div>
+        <details class="progressive-panel practice-secondary-panel practice-utility-panel">
+          <summary>今日练习总结</summary>
+          <div class="practice-summary-grid" id="practiceSummaryGrid" aria-label="今日练习总结"></div>
+        </details>
+        <details class="progressive-panel practice-secondary-panel practice-utility-panel">
+          <summary>错题回看</summary>
+          <section class="practice-review-panel" aria-labelledby="practiceReviewTitle">
+            <div class="practice-review-head">
+              <div>
+                <span class="module-kicker">错题回看</span>
+                <h3 id="practiceReviewTitle">最近需要补的地方</h3>
+              </div>
+              <button class="btn-secondary" type="button" onclick="clearPracticeReview()">清空已完成</button>
+            </div>
+            <div class="practice-review-list" id="practiceReviewList"></div>
+          </section>
+        </details>
+
+        <div class="practice-module article-module" id="articlePracticeModule">
+          <div class="practice-module-head">
+            <div>
+              <span class="module-kicker" id="articlePracticeKicker">文章理解</span>
+              <h3 id="articlePracticeTitle">选择题练习</h3>
+            </div>
+            <span class="module-lock" id="articleModuleLock"><span class="practice-lock-icon" aria-hidden="true">⌁</span>需要先完成阅读</span>
+          </div>
+          <div class="lookup-status" id="articlePracticeDesc"></div>
+          <div class="article-practice-body">
+            <div class="practice-mode-tabs" aria-label="文章理解练习类型">
+              <button class="practice-mode-tab active" id="clozeModeTab" onclick="setArticlePracticeMode('cloze')" type="button">选择题</button>
+              <button class="practice-mode-tab" id="retellModeTab" onclick="setArticlePracticeMode('retell')" type="button">复述</button>
+            </div>
+            <div class="practice-subgrid">
+              <section class="practice-subpanel article-practice-panel active" data-article-practice="cloze">
+                <div class="section-header"><span class="section-title">选择题练习</span></div>
+                <div class="article-practice-empty reading-quiz-start" id="readingQuizStart"></div>
+                <div class="reading-output cloze-output is-hidden" id="clozeOutput"></div>
+                <div class="typing-score" id="clozeScore"></div>
+              </section>
+              <section class="practice-subpanel article-practice-panel" data-article-practice="retell">
+                <div class="section-header"><span class="section-title">复述</span></div>
+                <div class="retell-practice-card">
+                  <div class="retell-card-label">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z"></path>
+                      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 8H20"></path>
+                    </svg>
+                    <span>原文</span>
+                  </div>
+                  <div class="retell-sentence-row">
+                    <svg class="retell-mic-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"></path>
+                      <path d="M5 11a7 7 0 0 0 14 0"></path>
+                      <path d="M12 18v3"></path>
+                      <path d="M8 21h8"></path>
+                    </svg>
+                    <p id="retellSourceText">私は毎朝七時に起きます……</p>
+                  </div>
+                  <div class="retell-steps" aria-label="复述步骤">
+                    <span>
+                      <b>1</b>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z"></path>
+                        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 8H20"></path>
+                      </svg>
+                      朗读
+                    </span>
+                    <span>
+                      <b>2</b>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"></path>
+                        <path d="M5 11a7 7 0 0 0 14 0"></path>
+                        <path d="M12 18v3"></path>
+                        <path d="M8 21h8"></path>
+                      </svg>
+                      录音
+                    </span>
+                    <span>
+                      <b>3</b>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 19V5"></path>
+                        <path d="M8 19v-7"></path>
+                        <path d="M12 19V8"></path>
+                        <path d="M16 19v-4"></path>
+                        <path d="M20 19V9"></path>
+                      </svg>
+                      反馈
+                    </span>
+                  </div>
+                  <div class="btnrow">
+                    <button class="btn-secondary" id="retellReadBtn" onclick="speakOriginalForRetell()">朗读原文</button>
+                    <button class="btn-primary" id="retellRecordBtn" onclick="toggleRetellRecording()">开始录音复述</button>
+                  </div>
+                </div>
+                <div class="typing-result" id="retellResult"></div>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div class="practice-module vocab-practice-module" id="vocabPracticeModule">
+          <div class="practice-module-head">
+            <div>
+              <span class="module-kicker">生词练习</span>
+              <h3>基于生词本</h3>
+            </div>
+            <span class="module-lock" id="vocabModuleLock">需要先收藏生词</span>
+          </div>
+          <div class="lookup-status" id="vocabPracticeAdvice">阅读时收藏的词会在这里变成快速自测。</div>
+          <div class="vocab-practice-empty" id="vocabPracticeEmpty">
+            <p>生词本为空。先在阅读页点击词语，再加入生词本。</p>
+            <button class="btn-primary" onclick="switchWorkspace('reading')">去阅读页</button>
+          </div>
+          <div class="vocab-practice-body" id="vocabPracticeBody">
+            <div class="vocab-quiz-card" id="vocabQuizCard"></div>
+            <div class="btnrow">
+              <button class="btn-secondary" onclick="prevVocabPractice()">上一词</button>
+              <button class="btn-primary" onclick="toggleVocabPracticeAnswer()">显示释义</button>
+              <button class="btn-secondary" onclick="rateVocabPractice('again')">不认识</button>
+              <button class="btn-secondary" onclick="rateVocabPractice('hard')">模糊</button>
+              <button class="btn-secondary" onclick="rateVocabPractice('easy')">认识</button>
+              <button class="btn-secondary" onclick="nextVocabPractice()">下一词</button>
+            </div>
+            <div class="typing-score" id="vocabPracticeResult"></div>
+          </div>
+        </div>
+
+        <div class="practice-module" id="typingPracticeModule">
+          <div class="practice-module-head typing-module-head" aria-hidden="true"></div>
+          <div class="lookup-status"></div>
+          <div class="typing-grid">
+            <div>
+              <div class="typing-prompt">
+                <div class="typing-meta" id="typingMeta"></div>
+                <div class="typing-cn" id="typingPromptCn"></div>
+                <div class="typing-answer" id="typingAnswerPreview"></div>
+              </div>
+              <textarea class="typing-input" id="typingInput" placeholder="在这里输入日语答案……" oninput="clearTypingResult()"></textarea>
+              <div class="btnrow">
+                <button class="btn-primary" onclick="checkTypingAnswer()">检查</button>
+                <button class="btn-secondary" onclick="speakCurrentTypingAnswer()">朗读答案</button>
+                <button class="btn-secondary" onclick="showTypingAnswer()">显示答案</button>
+                <button class="btn-secondary" onclick="nextTypingPrompt()">下一题</button>
+              </div>
+              <div class="typing-result" id="typingResult"></div>
+            </div>
+            <div class="typing-side">
+              <div class="typing-side-head">
+                <span>句型列表</span>
+                <div>
+                  <button type="button" onclick="prevTypingPrompt()" aria-label="上一题">‹</button>
+                  <button type="button" onclick="nextTypingPrompt()" aria-label="下一题">›</button>
+                </div>
+              </div>
+              <div class="typing-list" id="typingList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card discover-section">
+      <div class="card-pad">
+        <section class="discover-panel quick-add-panel reading-queue-panel is-empty" id="readingQueuePanel" aria-labelledby="readingQueueTitle">
+          <div class="discover-panel-head">
+            <div>
+              <h3 id="readingQueueTitle">我的阅读清单</h3>
+            </div>
+            <div class="reading-queue-head-actions">
+              <button class="discover-panel-meta reading-queue-level-button" type="button" onclick="enterReadingFromHero();switchWorkspace('test')" aria-label="打开水平测试" title="水平测试">水平测试</button>
+              <span class="discover-panel-meta" id="readingQueueCount">0 篇未读</span>
+            </div>
+          </div>
+          <div class="reading-queue-list" id="readingQueueList"></div>
+          <form class="reading-queue-form" id="readingQueueInlineForm" onsubmit="addReadingQueueItem(event)">
+            <input id="readingQueueTitleInput" type="text" maxlength="80" placeholder="文章标题（可选）" aria-label="文章标题">
+            <input id="readingQueueUrlInput" type="url" required placeholder="粘贴具体文章链接" aria-label="文章链接">
+            <button class="btn-primary" type="submit">加入清单</button>
+          </form>
+          <div class="reading-queue-status" id="readingQueueStatus" aria-live="polite"></div>
+        </section>
+
+        <section class="discover-panel graded-reading-section graded-reading-section--refined" aria-labelledby="gradedReadingTitle">
+          <div class="discover-panel-head">
+            <div>
+              <h3 id="gradedReadingTitle">阅读素材</h3>
+            </div>
+            <button class="discover-panel-link" type="button" onclick="clearDiscoverFilters()">查看全部 <span id="gradedMaterialTotal">32</span> 篇 →</button>
+          </div>
+
+          <div class="discover-filter-panel discover-filter-panel--refined" aria-label="阅读素材筛选">
+            <div class="discover-selects-row">
+              <div class="discover-filter-options discover-select-control" id="gradedLevelFilters"></div>
+              <div class="discover-filter-options discover-select-control" id="gradedTopicFilters"></div>
+            </div>
+            <div class="discover-quick-tags" id="gradedQuickTags" aria-label="快速筛选组合"></div>
+          </div>
+
+          <div class="graded-material-grid" id="gradedMaterialGrid"></div>
+        </section>
+
+        <section class="discover-panel external-source-section" aria-labelledby="externalSourceTitle">
+          <div class="discover-panel-head">
+            <div>
+              <h3 id="externalSourceTitle">精选来源</h3>
+              <p class="discover-panel-desc">新闻、经济与日语学习类网站导航，点击卡片打开原文来源</p>
+            </div>
+            <button class="discover-panel-link" type="button" onclick="clearSourceFilters()">查看全部 <span id="externalSourceTotal">18</span> 个 →</button>
+          </div>
+          <div class="discover-sources" id="sourceDirectory"></div>
+        </section>
+      </div>
+    </div>
+
+    <div class="card test-section">
+      <div class="card-pad">
+        <section class="level-test-shell" aria-labelledby="levelTestTitle">
+          <div class="level-test-hero">
+            <div class="level-test-copy">
+              <span class="module-kicker" id="levelTestTitle">水平测试</span>
+            </div>
+            <div class="test-primary-actions">
+              <button class="btn-primary" onclick="startLevelTest()">开始测试</button>
+            </div>
+          </div>
+
+          <div class="level-test-status-card">
+            <span class="status-label">当前状态</span>
+            <strong class="status-value" id="levelResultBadge">未测试</strong>
+            <p class="lookup-status" id="levelResult"></p>
+          </div>
+
+          <div class="level-test-board" id="levelTest"></div>
+
+          <div class="level-test-actions">
+            <button class="btn-secondary" onclick="resetLevelTest()">重新测试</button>
+            <div class="btnrow" id="levelScoreActions" style="display:none;">
+              <button class="btn-primary" onclick="scoreLevelTest()">查看结果</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="card history-section">
+      <div class="card-pad">
+        <div class="history-progress-center">
+          <section class="history-progress-layout">
+            <div class="history-main-column">
+              <section class="history-panel history-calendar-panel" aria-labelledby="historyCalendarTitle">
+                <div class="history-panel-head">
+                  <div>
+                    <h2 id="historyCalendarTitle">学习日历</h2>
+                  </div>
+                </div>
+                <div class="history-calendar-weekdays" aria-hidden="true">
+                  <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+                </div>
+                <div class="history-calendar-grid" id="historyCalendarGrid" aria-label="最近 30 天学习记录"></div>
+                <div class="history-calendar-foot" id="historyCalendarFoot"></div>
+              </section>
+
+              <section class="history-panel history-suggestion-panel" aria-labelledby="historySuggestionTitle">
+                <div class="history-panel-head compact">
+                  <div>
+                    <span id="historySuggestionTitle">今日建议</span>
+                  </div>
+                </div>
+                <div class="history-task-list" id="historySuggestionList"></div>
+              </section>
+            </div>
+
+            <aside class="history-side-column" aria-label="水平和薄弱项">
+              <section class="history-panel history-overview-panel" aria-labelledby="historyOverviewTitle">
+                <div class="history-panel-head compact">
+                  <div>
+                    <span id="historyOverviewTitle">本周概览</span>
+                  </div>
+                </div>
+
+                <div class="history-overview-block">
+                  <strong class="history-summary-text-card" id="historySummaryText">正在整理学习记录</strong>
+                  <div class="history-overview-stats history-summary-legacy-stats" id="historySummaryStats" hidden aria-hidden="true"></div>
+                </div>
+              </section>
+
+              <section class="history-panel history-level-panel" aria-labelledby="historyLevelTitle">
+                <div class="history-panel-head compact">
+                  <div>
+                    <span id="historyLevelTitle">水平</span>
+                  </div>
+                </div>
+                <div class="history-level-card">
+                  <strong id="historyLevelBadge">未测试</strong>
+                  <button class="btn-secondary history-level-test-action" type="button" onclick="enterReadingFromHero();switchWorkspace('test')">水平测试</button>
+                </div>
+              </section>
+
+            </aside>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="card settings-section">
+      <div class="card-pad">
+        <div class="settings-layout">
+          <div class="settings-main-column">
+            <section class="settings-page-card settings-list-section">
+              <div class="settings-section-head">
+                <div>
+                  <span class="settings-kicker">偏好设置</span>
+                </div>
+              </div>
+
+              <article class="settings-action-item">
+                <div>
+                  <strong>界面语言</strong>
+                  <p>切换中文或日语界面显示。</p>
+                </div>
+                <label class="settings-language-select">
+                  <select id="settingsLanguageSelect" onchange="setInterfaceLanguage(this.value)" aria-label="界面语言">
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                  </select>
+                </label>
+              </article>
+            </section>
+
+            <section class="settings-page-card settings-list-section">
+              <div class="settings-section-head">
+                <div>
+                  <span class="settings-kicker">数据管理</span>
+                </div>
+              </div>
+
+              <article class="settings-action-item">
+                <div>
+                  <strong>备份数据</strong>
+                  <p>导出生词本、语法本和阅读记录到本地文件。</p>
+                </div>
+                <button class="settings-primary-action" onclick="backupData()">备份</button>
+              </article>
+              <article class="settings-action-item">
+                <div>
+                  <strong>数据保存说明</strong>
+                  <p>学习记录保存在当前浏览器本地，换设备或清理浏览器数据前建议先备份。</p>
+                </div>
+              </article>
+              <article class="settings-action-item settings-action-item--caution">
+                <div>
+                  <strong>恢复备份</strong>
+                  <p>从备份文件恢复学习数据，会覆盖当前设备上的学习数据。</p>
+                </div>
+                <button class="settings-secondary-action" onclick="restoreData()">恢复</button>
+              </article>
+              <input id="backupFileInput" type="file" accept="application/json,.json" hidden onchange="importLearningBackup(this.files[0])">
+            </section>
+
+            <section class="settings-page-card settings-list-section">
+              <div class="settings-section-head">
+                <div>
+                  <span class="settings-kicker">帮助说明</span>
+                </div>
+              </div>
+
+              <article class="settings-action-item">
+                <div>
+                  <strong>阅读流程说明</strong>
+                  <p>了解粘贴正文、上传资料、保存生词和复习练习如何配合使用。</p>
+                </div>
+                <button class="settings-secondary-action" onclick="openOnboarding()">查看说明</button>
+              </article>
+              <article class="settings-action-item">
+                <div>
+                  <strong>常见问题</strong>
+                  <p>查看链接导入、文件解析、词典结果和本地数据保存的常见问题。</p>
+                </div>
+                <button class="settings-secondary-action" onclick="openOnboarding()">查看</button>
+              </article>
+            </section>
+          </div>
+
+          <aside class="settings-side-column" aria-label="高级功能额度">
+            <section class="settings-page-card settings-quota-panel">
+              <div class="settings-section-head">
+                <div>
+                  <span class="settings-kicker">高级功能</span>
+                </div>
+              </div>
+              <div class="settings-quota-list" id="quotaStatus">正在读取本地状态。</div>
+              <div class="settings-pro-note">
+                <b>Pro 可无限使用</b>
+                <span>免费额度按月重置，核心阅读功能仍在本地运行。</span>
+              </div>
+            </section>
+
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    </main>
+  </div>
+
+</div>
+
+<!-- 右侧菜单面板 -->
+<div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-labelledby="menuPanelTitle">
+  <div class="menu-header">
+    <strong id="menuPanelTitle">更多功能</strong>
+    <button class="btn-icon" onclick="closeMenu()" aria-label="关闭菜单">×</button>
+  </div>
+  <nav class="menu-nav">
+    <button onclick="closeMenu();switchWorkspace('discover')">找阅读材料</button>
+    <button onclick="closeMenu();switchWorkspace('test')">水平测试</button>
+    <button onclick="closeMenu();switchWorkspace('history')">学习历史</button>
+    <button onclick="closeMenu();switchWorkspace('grammar')">语法词典</button>
+    <hr>
+    <button onclick="closeMenu();switchWorkspace('settings')">数据备份</button>
+    <button onclick="closeMenu();openOnboarding()">使用说明</button>
+  </nav>
+</div>
+
+<!-- 生词本面板 -->
+<div class="vocab-panel-slide" id="vocabPanelSlide">
+  <div class="panel-header">
+    <strong>生词本与复习</strong>
+    <button class="btn-icon" onclick="closeVocabPanel()" aria-label="关闭生词本">×</button>
+  </div>
+  <div class="panel-content">
+    <div class="vocab-section">
+      <div class="section-header">
+        <span class="section-title">已收藏 <b id="vocabCountPanel">0</b> 个</span>
+        <div style="display:flex;gap:6px;">
+          <button class="btn-secondary btn--small" onclick="exportVocabCsv()">导出CSV</button>
+          <button class="btn-secondary btn--small" onclick="exportAnkiTsv()">导出Anki</button>
+        </div>
+      </div>
+      <div class="export-inline-status" id="vocabExportStatusPanel"></div>
+      <ul class="vocab-list" id="vocabListPanel"></ul>
+      <div class="vocab-empty" id="vocabEmptyPanel">还没有收藏的词</div>
+    </div>
+
+    <div class="review-section">
+      <div class="section-header">
+        <span class="section-title">闪卡复习</span>
+      </div>
+      <div class="review-stats">
+        生词本 <b id="totalVocabCountPanel">0</b> 个 · 到期 <b id="dueCountPanel">0</b> 个
+      </div>
+      <div class="review-actions" style="margin-top:12px;">
+        <button class="btn-secondary" onclick="reviewAllVocab();closeVocabPanel()">全部复习</button>
+        <button class="btn-primary" onclick="startReview();closeVocabPanel()">复习到期词</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TTS控制菜单 -->
+<div class="tts-control-menu" id="ttsControlMenu" aria-live="polite">
+  <span id="ttsControlStatus">正在朗读</span>
+  <button class="btn-secondary" type="button" id="ttsPauseBtn" onclick="toggleTtsPause()">暂停</button>
+  <button class="btn-primary" type="button" onclick="stopTts()">停止</button>
+</div>
+
+<!-- 选中文本工具栏 -->
+<div class="selection-tools" id="selectionTools" aria-live="polite">
+  <div class="selection-text" id="selectionText"></div>
+  <div class="selection-actions">
+    <button class="btn-primary" type="button" onclick="lookupSelectedText()">翻译/释义</button>
+    <button class="btn-secondary" type="button" onclick="saveSelectedTextToVocab()">加入生词本</button>
+    <button class="btn-secondary" type="button" onclick="speakSelectedText()">朗读</button>
+  </div>
+  <div class="selection-result" id="selectionResult">选中词、短语或句子后可以查询。</div>
+</div>
+
+<!-- 操作确认弹窗 -->
+<div class="delete-confirm-modal" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="deleteConfirmTitle" inert>
+  <div class="delete-confirm-dialog">
+    <div class="delete-confirm-head">
+      <span class="delete-confirm-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 8v5"></path><path d="M12 16.5h.01"></path><path d="M10.3 4.6 2.8 18a1.6 1.6 0 0 0 1.4 2.4h15.6a1.6 1.6 0 0 0 1.4-2.4L13.7 4.6a1.9 1.9 0 0 0-3.4 0Z"></path></svg>
+      </span>
+      <div>
+        <span class="module-kicker" id="deleteConfirmKicker">操作确认</span>
+        <strong id="deleteConfirmTitle">确认操作？</strong>
+      </div>
+      <button class="delete-confirm-close" type="button" onclick="closeDeleteConfirm()" aria-label="关闭确认窗口">×</button>
+    </div>
+    <div class="delete-confirm-body">
+      <p id="deleteConfirmMessage">请确认后继续。</p>
+      <div class="delete-confirm-target is-hidden" id="deleteConfirmTarget"></div>
+    </div>
+    <div class="delete-confirm-actions">
+      <button class="btn-secondary delete-confirm-cancel" id="deleteConfirmCancel" type="button" onclick="closeDeleteConfirm()">取消</button>
+      <button class="btn-primary delete-confirm-submit" id="deleteConfirmSubmit" type="button" onclick="runDeleteConfirm()">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- 阅读显示设置 -->
+<div class="export-modal reading-display-modal" id="readingDisplayModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="readingDisplayTitle" inert>
+  <div class="reading-display-dialog">
+    <div class="reading-display-head">
+      <strong id="readingDisplayTitle">阅读显示设置</strong>
+      <button class="reading-display-close" type="button" onclick="closeReadingDisplaySettings()" aria-label="关闭阅读显示设置">×</button>
+    </div>
+    <div class="reading-display-body">
+      <div class="reading-display-section reading-display-presets">
+        <span class="reading-display-section-label">预设</span>
+        <div class="reading-display-preset-grid" role="group" aria-label="阅读字号预设">
+          <button type="button" data-preset="compact" onclick="applyReadingDisplayPreset('compact')">紧凑</button>
+          <button type="button" data-preset="standard" onclick="applyReadingDisplayPreset('standard')">标准</button>
+          <button type="button" data-preset="comfortable" onclick="applyReadingDisplayPreset('comfortable')">舒适</button>
+          <button type="button" data-preset="large" onclick="applyReadingDisplayPreset('large')">大字</button>
+        </div>
+      </div>
+      <div class="reading-display-section">
+        <h3>详细设置</h3>
+        <div class="reading-display-controls">
+          <label class="reading-display-row" for="readingFontSizeInput">
+            <span>正文字号</span>
+            <input id="readingFontSizeInput" type="range" min="14" max="34" step="1" value="20" oninput="updateReadingDisplayDraft()" aria-label="正文字号">
+            <output id="readingFontSizeCurrent" for="readingFontSizeInput">20</output>
+          </label>
+          <label class="reading-display-row" for="rubyFontSizeInput">
+            <span>假名字号</span>
+            <input id="rubyFontSizeInput" type="range" min="8" max="18" step="1" value="10" oninput="updateReadingDisplayDraft()" aria-label="假名字号">
+            <output id="rubyFontSizeCurrent" for="rubyFontSizeInput">10</output>
+          </label>
+          <label class="reading-display-row" for="readingRubyGapInput">
+            <span>假名距离</span>
+            <input id="readingRubyGapInput" type="range" min="0.08" max="0.28" step="0.01" value="0.16" oninput="updateReadingDisplayDraft()" aria-label="假名距离">
+            <output id="readingRubyGapCurrent" for="readingRubyGapInput">0.16</output>
+          </label>
+          <label class="reading-display-row" for="readingLineHeightInput">
+            <span>行距</span>
+            <input id="readingLineHeightInput" type="range" min="1.4" max="2.4" step="0.1" value="2.0" oninput="updateReadingDisplayDraft()" aria-label="阅读行距">
+            <output id="readingLineHeightCurrent" for="readingLineHeightInput">2.0</output>
+          </label>
+        </div>
+      </div>
+      <div class="reading-display-preview-wrap">
+        <span class="reading-display-preview-label">预览</span>
+        <div class="reading-display-preview" id="readingDisplayPreview" aria-label="阅读显示预览">
+          <ruby>食べる<rt>たべる</rt></ruby>
+          <span class="reading-display-preview-divider" aria-hidden="true"></span>
+          <ruby>私<rt>わたし</rt></ruby>はご<ruby>飯<rt>はん</rt></ruby>を<ruby>食べる<rt>たべる</rt></ruby>。
+        </div>
+      </div>
+    </div>
+    <div class="reading-display-actions">
+      <button class="btn-secondary" type="button" onclick="resetReadingDisplaySettings()">恢复默认</button>
+      <button class="btn-secondary" type="button" onclick="closeReadingDisplaySettings()">取消</button>
+      <button class="btn-primary" type="button" onclick="applyReadingDisplaySettings()">应用</button>
+    </div>
+  </div>
+</div>
+
+<!-- 导出弹窗 -->
+<div class="export-modal" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+  <div class="export-dialog">
+    <div class="export-head">
+      <strong id="exportTitle">导出阅读文本</strong>
+      <button class="btn-icon" type="button" onclick="closeExportModal()" aria-label="关闭导出面板">×</button>
+    </div>
+    <div class="export-body">
+      <div class="export-selects">
+        <div class="export-select-field">
+          <label for="exportLayoutSelect">版式</label>
+          <div class="export-select-shell">
+            <select id="exportLayoutSelect" onchange="syncExportOptions()">
+              <option value="landscape" selected>横版</option>
+              <option value="portrait">竖版</option>
+            </select>
+          </div>
+        </div>
+        <div class="export-select-field">
+          <label for="exportFormatSelect">格式</label>
+          <div class="export-select-shell">
+            <select id="exportFormatSelect" onchange="syncExportOptions()">
+              <option value="pptx" selected>PPTX（可编辑）</option>
+              <option value="png">PNG 图片</option>
+              <option value="jpeg">JPEG 图片</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="export-settings export-settings-modal" id="pptExportSettings" aria-label="PPT 导出设置">
+        <label>正文字号<input id="pptBaseFont" type="number" value="24" min="12" max="44"></label>
+        <label>假名字号<input id="pptRubyFont" type="number" value="11" min="6" max="24"></label>
+        <label>假名距离<input id="pptRubyGap" type="number" value="0.16" min="0.05" max="0.45" step="0.01"></label>
+        <label>行距<input id="pptLineHeight" type="number" value="0.64" min="0.45" max="1.2" step="0.01"></label>
+        <label>每行宽度<input id="pptMaxCells" type="number" value="34" min="18" max="50"></label>
+      </div>
+      <div class="export-preview" aria-label="导出预览"><div class="export-preview-content" id="exportPreviewContent"></div></div>
+    </div>
+    <div class="export-actions">
+      <span class="export-status" id="exportStatus" aria-live="polite"></span>
+      <button class="btn-secondary" type="button" onclick="closeExportModal()">取消</button>
+      <button class="btn-primary" id="exportDownloadBtn" type="button" onclick="runExport()">下载</button>
+    </div>
+  </div>
+</div>
+
+<!-- 导入预览弹窗 -->
+<div class="export-modal" id="importPreviewModal" role="dialog" aria-modal="true" aria-labelledby="importPreviewTitle">
+  <div class="export-dialog">
+    <div class="export-head">
+      <strong id="importPreviewTitle">检查导入正文</strong>
+      <button class="btn-icon" type="button" onclick="closeImportPreview()" aria-label="关闭导入预览">×</button>
+    </div>
+    <div class="export-body">
+      <div class="import-preview-summary" id="importPreviewSummary"></div>
+      <div class="clean-actions">
+        <button class="btn-secondary" type="button" onclick="cleanImportText('article')">只保留正文</button>
+        <button class="btn-secondary" type="button" onclick="cleanImportText('blank')">合并多余空行</button>
+        <button class="btn-secondary" type="button" onclick="cleanImportText('spaces')">整理空格</button>
+        <button class="btn-secondary" type="button" onclick="cleanImportText('edges')">删除首尾短行</button>
+      </div>
+      <textarea id="importPreviewText" style="min-height:340px" aria-label="导入正文预览"></textarea>
+    </div>
+    <div class="export-actions">
+      <button class="btn-secondary" type="button" onclick="closeImportPreview()">取消</button>
+      <button class="btn-primary" type="button" onclick="confirmImportPreview()">使用这段正文</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=20260710-05"></script>
+</body>
+</html>

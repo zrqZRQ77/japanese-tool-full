@@ -30,15 +30,19 @@ const requested = process.argv[2] || '';
 const indexHtml = readFileSync(INDEX_PATH, 'utf8');
 const currentCss = indexHtml.match(/styles\.css\?v=([^"']+)/)?.[1] || '';
 const currentDesignSystem = indexHtml.match(/design-system\.css\?v=([^"']+)/)?.[1] || '';
+const currentGrammarLayout = indexHtml.match(/grammar-layout\.css\?v=([^"']+)/)?.[1] || '';
+const currentTypography = indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1] || '';
 const currentJs = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
-const current = currentCss === currentJs && (!currentDesignSystem || currentDesignSystem === currentCss)
+const current = [currentCss, currentDesignSystem, currentGrammarLayout, currentTypography, currentJs].filter(Boolean).every(value => value === currentCss)
   ? currentCss
-  : currentJs || currentCss || currentDesignSystem;
+  : currentJs || currentCss || currentDesignSystem || currentGrammarLayout || currentTypography;
 const version = nextVersion(current, requested);
 
 const updated = indexHtml
   .replace(/styles\.css\?v=[^"']+/g, `styles.css?v=${version}`)
   .replace(/design-system\.css\?v=[^"']+/g, `design-system.css?v=${version}`)
+  .replace(/grammar-layout\.css\?v=[^"']+/g, `grammar-layout.css?v=${version}`)
+  .replace(/typography\.css\?v=[^"']+/g, `typography.css?v=${version}`)
   .replace(/app\.js\?v=[^"']+/g, `app.js?v=${version}`);
 
 if (updated === indexHtml) {

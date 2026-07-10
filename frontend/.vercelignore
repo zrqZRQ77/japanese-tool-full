@@ -1,0 +1,9 @@
+node_modules/
+audit-screenshots/
+visual-snapshots/
+tools/
+.DS_Store
+*.20260704-29.*
+design-reference.html
+yomeru-ui-kit.html
+config.example.js

@@ -1,0 +1,540 @@
+/* Grammar page: reduce container noise and keep the user's notes as the primary task. */
+
+html body[data-view="grammar"] .grammar-section {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-section > .card-pad {
+  width: min(100%, 1120px) !important;
+  margin: 0 auto !important;
+  padding: 32px 48px 64px !important;
+}
+
+html body[data-view="grammar"] .grammar-page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 30px;
+}
+
+html body[data-view="grammar"] .grammar-page-copy {
+  max-width: 690px;
+}
+
+html body[data-view="grammar"] .grammar-page-copy .module-kicker {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--color-primary, #6750a4);
+  font-size: var(--type-size-caption);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+html body[data-view="grammar"] .grammar-page-copy h1 {
+  margin: 0;
+  color: var(--color-text, #202124);
+  font-family: "Noto Serif SC", "Noto Serif JP", serif;
+  font-size: clamp(var(--type-size-page-title), 3vw, var(--type-size-hero-wide));
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+html body[data-view="grammar"] .grammar-page-copy p {
+  max-width: 620px;
+  margin: 12px 0 0;
+  color: var(--color-text-soft, #5f6368);
+  font-size: var(--type-size-control);
+  line-height: 1.75;
+}
+
+html body[data-view="grammar"] .grammar-add-trigger {
+  flex: 0 0 auto;
+  min-width: 112px;
+  min-height: 44px;
+  margin-top: 4px;
+}
+
+html body[data-view="grammar"] .grammar-controls {
+  margin-bottom: 34px;
+}
+
+html body[data-view="grammar"] .grammar-workbar {
+  display: block !important;
+  margin: 0 !important;
+}
+
+html body[data-view="grammar"] .grammar-search-shell {
+  display: flex !important;
+  align-items: center;
+  width: 100% !important;
+  min-height: 50px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border, #e3e1e8) !important;
+  border-radius: 14px !important;
+  background: var(--color-surface, #fff) !important;
+  box-shadow: 0 1px 2px rgb(32 33 36 / 4%);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+html body[data-view="grammar"] .grammar-search-shell:focus-within {
+  border-color: color-mix(in srgb, var(--color-primary, #6750a4) 65%, white) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary, #6750a4) 10%, transparent);
+}
+
+html body[data-view="grammar"] .grammar-search-shell > span {
+  display: grid;
+  flex: 0 0 auto;
+  width: 21px;
+  height: 21px;
+  place-items: center;
+  color: var(--color-text-soft, #6b6871);
+}
+
+html body[data-view="grammar"] .grammar-search-shell svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+html body[data-view="grammar"] .grammar-search {
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 0 0 0 12px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--color-text, #202124);
+  font-size: var(--type-size-control);
+}
+
+html body[data-view="grammar"] .grammar-search::placeholder {
+  color: #8b8791;
+}
+
+html body[data-view="grammar"] .grammar-filter-summary {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 10px;
+  margin: 14px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+html body[data-view="grammar"] .grammar-filter-options button {
+  min-height: 32px;
+  padding: 5px 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-soft, #5f6368);
+  font-size: var(--type-size-caption);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+html body[data-view="grammar"] .grammar-filter-options button:hover {
+  border-color: var(--color-border, #e3e1e8);
+  background: color-mix(in srgb, var(--color-primary-soft, #eaddff) 30%, white);
+  color: var(--color-text, #202124);
+}
+
+html body[data-view="grammar"] .grammar-filter-options button.is-active {
+  border-color: color-mix(in srgb, var(--color-primary, #6750a4) 18%, transparent);
+  background: var(--color-primary-soft, #eaddff);
+  color: var(--color-primary, #6750a4);
+}
+
+html body[data-view="grammar"] .grammar-filter-options button:focus-visible,
+html body[data-view="grammar"] .grammar-add-trigger:focus-visible,
+html body[data-view="grammar"] .grammar-example-summary:focus-visible,
+html body[data-view="grammar"] .grammar-save-summary:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-primary, #6750a4) 22%, transparent);
+  outline-offset: 2px;
+}
+
+html body[data-view="grammar"] .grammar-save-panel {
+  margin: 0 0 18px !important;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-primary, #6750a4) 18%, var(--color-border, #e3e1e8)) !important;
+  border-radius: 16px !important;
+  background: color-mix(in srgb, var(--color-primary-soft, #eaddff) 18%, white) !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-save-panel:not([open]) {
+  display: none;
+}
+
+html body[data-view="grammar"] .grammar-save-summary {
+  display: flex !important;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 20px 14px !important;
+  border: 0 !important;
+  background: transparent !important;
+  cursor: pointer;
+  list-style: none;
+}
+
+html body[data-view="grammar"] .grammar-save-summary::-webkit-details-marker,
+html body[data-view="grammar"] .grammar-example-summary::-webkit-details-marker {
+  display: none;
+}
+
+html body[data-view="grammar"] .grammar-save-summary span {
+  color: var(--color-text, #202124);
+  font-size: var(--type-size-body);
+  font-weight: 700;
+}
+
+html body[data-view="grammar"] .grammar-save-summary small {
+  color: var(--color-text-soft, #5f6368);
+  font-size: var(--type-size-caption);
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: right;
+}
+
+html body[data-view="grammar"] .grammar-save-form {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 140px;
+  gap: 12px;
+  padding: 0 20px 20px !important;
+}
+
+html body[data-view="grammar"] .grammar-save-form input,
+html body[data-view="grammar"] .grammar-save-form select,
+html body[data-view="grammar"] .grammar-save-form textarea {
+  width: 100%;
+  border: 1px solid var(--color-border, #e3e1e8) !important;
+  border-radius: 11px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: var(--color-text, #202124);
+  font: inherit;
+}
+
+html body[data-view="grammar"] .grammar-save-form input,
+html body[data-view="grammar"] .grammar-save-form select {
+  min-height: 42px;
+  padding: 0 12px;
+}
+
+html body[data-view="grammar"] .grammar-save-form textarea {
+  grid-column: 1 / -1;
+  min-height: 104px;
+  padding: 12px;
+  resize: vertical;
+}
+
+html body[data-view="grammar"] .grammar-save-form .btn-primary {
+  grid-column: 2;
+  justify-self: end;
+  min-width: 120px;
+}
+
+html body[data-view="grammar"] .grammar-book-panel,
+html body[data-view="grammar"] .grammar-book-panel.primary-task-panel {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-panel-head {
+  display: flex !important;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 0 18px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body[data-view="grammar"] .grammar-panel-head h2 {
+  margin: 0;
+  color: var(--color-text, #202124);
+  font-size: var(--type-size-section-title);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+html body[data-view="grammar"] .grammar-panel-head p {
+  margin: 5px 0 0;
+  color: var(--color-text-soft, #5f6368);
+  font-size: var(--type-size-caption);
+  line-height: 1.6;
+}
+
+html body[data-view="grammar"] .grammar-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+html body[data-view="grammar"] .grammar-book-count {
+  flex: 0 0 auto;
+  padding-bottom: 2px;
+  color: var(--color-text-soft, #5f6368);
+  font-size: var(--type-size-caption);
+  font-weight: 500;
+}
+
+html body[data-view="grammar"] .grammar-book-count b {
+  color: var(--color-text, #202124);
+  font-size: var(--type-size-body);
+  font-weight: 700;
+}
+
+html body[data-view="grammar"] .grammar-book-list {
+  display: grid !important;
+  gap: 12px !important;
+  min-height: 148px;
+}
+
+html body[data-view="grammar"] .grammar-empty {
+  display: grid;
+  min-height: 148px;
+  padding: 28px;
+  place-items: center;
+  border: 1px dashed color-mix(in srgb, var(--color-primary, #6750a4) 20%, var(--color-border, #e3e1e8)) !important;
+  border-radius: 16px !important;
+  background: color-mix(in srgb, var(--color-bg, #f8f6fe) 58%, white) !important;
+  color: var(--color-text-soft, #5f6368);
+  font-size: var(--type-size-meta);
+  line-height: 1.75;
+  text-align: center;
+}
+
+html body[data-view="grammar"] .grammar-book-card {
+  border: 1px solid var(--color-border, #e3e1e8) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: 0 1px 2px rgb(32 33 36 / 3%) !important;
+}
+
+html body[data-view="grammar"] .grammar-book-card:hover {
+  border-color: color-mix(in srgb, var(--color-primary, #6750a4) 25%, var(--color-border, #e3e1e8)) !important;
+  box-shadow: 0 8px 24px rgb(52 42 82 / 6%) !important;
+}
+
+html body[data-view="grammar"] .grammar-example-panel {
+  margin: 44px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-top: 1px solid var(--color-border, #e3e1e8) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body[data-view="grammar"] .grammar-example-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 82px;
+  padding: 20px 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+html body[data-view="grammar"] .grammar-example-summary > span:first-child {
+  display: grid;
+  gap: 5px;
+}
+
+html body[data-view="grammar"] .grammar-example-summary strong {
+  color: var(--color-text, #202124);
+  font-size: var(--type-size-body);
+  font-weight: 700;
+}
+
+html body[data-view="grammar"] .grammar-example-summary small {
+  color: var(--color-text-soft, #5f6368);
+  font-size: var(--type-size-caption);
+  font-weight: 400;
+}
+
+html body[data-view="grammar"] .grammar-example-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-primary, #6750a4);
+  font-size: 0;
+  font-weight: 600;
+}
+
+html body[data-view="grammar"] .grammar-example-action::before {
+  content: "展开";
+  font-size: var(--type-size-caption);
+}
+
+html body[data-view="grammar"] .grammar-example-action::after {
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  content: "";
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 160ms ease;
+}
+
+html body[data-view="grammar"] .grammar-example-panel[open] .grammar-example-action::before {
+  content: "收起";
+}
+
+html body[data-view="grammar"] .grammar-example-panel[open] .grammar-example-action::after {
+  transform: rotate(225deg) translate(-1px, -1px);
+}
+
+html body[data-view="grammar"] .grammar-example-panel .grammar-grid {
+  padding: 4px 0 28px !important;
+}
+
+html body[data-view="grammar"] .grammar-book-card button[onclick^="removeGrammarNote"] {
+  display: inline-grid !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+  place-items: center;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: #85818c !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  cursor: pointer;
+  isolation: isolate;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+html body[data-view="grammar"] .grammar-book-card button[onclick^="removeGrammarNote"] > * {
+  display: none !important;
+}
+
+html body[data-view="grammar"] .grammar-book-card button[onclick^="removeGrammarNote"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+html body[data-view="grammar"] .grammar-book-card button[onclick^="removeGrammarNote"]::before {
+  display: block;
+  width: 18px;
+  height: 18px;
+  background: currentColor;
+  content: "";
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7h2v-7h-2Zm4 0v7h2v-7h-2Z'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7h2v-7h-2Zm4 0v7h2v-7h-2Z'/%3E%3C/svg%3E") center / 18px 18px no-repeat;
+}
+
+html body[data-view="grammar"] .grammar-book-card button[onclick^="removeGrammarNote"]:hover {
+  background: #f5eeee !important;
+  color: #c43d3d !important;
+}
+
+html body[data-view="grammar"] .grammar-book-card button[onclick^="removeGrammarNote"]:focus-visible {
+  outline: 3px solid color-mix(in srgb, #c43d3d 18%, transparent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 820px) {
+  html body[data-view="grammar"] .grammar-section > .card-pad {
+    padding: 30px 24px 48px !important;
+  }
+
+  html body[data-view="grammar"] .grammar-page-head {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  html body[data-view="grammar"] .grammar-add-trigger {
+    align-self: flex-start;
+    margin-top: 0;
+  }
+
+  html body[data-view="grammar"] .grammar-save-form {
+    grid-template-columns: 1fr;
+  }
+
+  html body[data-view="grammar"] .grammar-save-form textarea,
+  html body[data-view="grammar"] .grammar-save-form .btn-primary {
+    grid-column: 1;
+  }
+
+  html body[data-view="grammar"] .grammar-save-form .btn-primary {
+    justify-self: stretch;
+  }
+}
+
+@media (max-width: 560px) {
+  html body[data-view="grammar"] .grammar-section > .card-pad {
+    padding: 24px 16px 40px !important;
+  }
+
+  html body[data-view="grammar"] .grammar-page-copy h1 {
+    font-size: var(--type-size-page-title);
+  }
+
+  html body[data-view="grammar"] .grammar-panel-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  html body[data-view="grammar"] .grammar-panel-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  html body[data-view="grammar"] .grammar-save-summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  html body[data-view="grammar"] .grammar-save-summary small {
+    text-align: left;
+  }
+
+  html body[data-view="grammar"] .grammar-filter-options {
+    flex-wrap: nowrap;
+    width: calc(100vw - 32px);
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  html body[data-view="grammar"] .grammar-filter-options::-webkit-scrollbar {
+    display: none;
+  }
+
+  html body[data-view="grammar"] .grammar-filter-options button {
+    flex: 0 0 auto;
+  }
+}

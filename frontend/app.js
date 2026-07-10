@@ -3626,6 +3626,7 @@ async function renderText(){
   await ensureLearningData();
   const useKuromoji = !!document.getElementById('useKuromoji')?.checked;
   document.body.classList.toggle('reading-ruby-visible', useKuromoji);
+  document.getElementById('rubyToggleBtn')?.classList.toggle('is-active', useKuromoji);
   const raw = normalizeReadingInput(document.getElementById('inputText').value).trim();
   const nextPracticeKey = articlePracticeKey(raw);
   const out = document.getElementById('output');
@@ -3661,7 +3662,7 @@ async function renderText(){
 
   if(useKuromoji){
     if(!KUROMOJI_TOKENIZER){
-      out.innerHTML = '<span style="color:var(--ink-soft);font-size:14.5px;">正在加载分词引擎，第一次使用需要几秒钟……</span>';
+      renderWithDictionary(raw, out, statsBar);
     }
     const tokenizer = await initKuromoji();
     if(tokenizer){
@@ -7436,11 +7437,12 @@ function renderHistorySummary(){
   const activeDays = recentActivityDays(7).filter(day => day.total > 0).length;
   const weekArticles = historyWeekArticleCount();
   const vocabTotal = getAllVocab().length;
+  const grammarTotal = GRAMMAR_BOOK.length;
   const quizRate = historyQuizRate();
   const rateLabel = quizRate === null ? '暂无正确率' : `正确率 ${quizRate}%`;
   if(title) title.textContent = '学习历史';
   if(subtitle) subtitle.textContent = '记录你的阅读、练习和复习进度。';
-  if(text) text.textContent = `${activeDays} 天打卡 · ${weekArticles} 篇阅读 · ${vocabTotal} 个生词 · ${rateLabel}`;
+  if(text) text.textContent = `${activeDays} 天打卡 · ${weekArticles} 篇阅读 · ${vocabTotal} 个生词 · ${grammarTotal} 条语法 · ${rateLabel}`;
   if(stats){
     stats.innerHTML = `
       <div><b>${learningActivityStreak()}</b><small>连续天数</small></div>
@@ -7490,7 +7492,7 @@ function renderHistoryCalendar(){
 }
 
 function historyPrimaryActionLabel(){
-  if(!historyLevelValue()) return '开始水平测试';
+  if(!historyLevelValue()) return '水平测试';
   if(!READING_HISTORY.some(item => isDateToday(item.date))) return '开始今日阅读';
   if(historyDueVocabCount() > 0) return '复习到期生词';
   const todayPractice = PRACTICE_HISTORY.find(item => item.date === practiceDateKey());
@@ -7529,7 +7531,7 @@ function renderHistorySuggestions(){
   const practicedToday = todayPractice && Number(todayPractice.total || 0) > 0;
   const items = [];
   if(!level){
-    items.push({priority:true, icon:'測', title:'完成 3 分钟水平测试', detail:'测试后会显示更适合你的阅读等级和材料建议。', action:"switchWorkspace('test')", label:'开始测试'});
+    items.push({priority:true, icon:'測', title:'水平测试', detail:'测试后会显示更适合你的阅读等级和材料建议。', action:"enterReadingFromHero();switchWorkspace('test')", label:'水平测试'});
   }
   if(!todayRead){
     items.push({priority:!!level, icon:'読', title:`继续读一篇 ${level || '入门'} 文章`, detail:'完成后会更新阅读天数，并生成可复习词汇。', action:"switchWorkspace('reading')", label:'去阅读'});
@@ -7543,7 +7545,7 @@ function renderHistorySuggestions(){
   if(items.length < 3){
     items.push({priority:false, icon:'材', title:'找一篇新的阅读材料', detail:'', action:"switchWorkspace('discover')", label:'找材料'});
   }
-  target.innerHTML = items.slice(0, 3).map(item => `
+  target.innerHTML = items.slice(0, 2).map(item => `
     <article class="history-task-row ${item.priority ? 'priority' : ''}">
       <div class="history-task-icon">${escapeHtml(item.icon)}</div>
       <div>
@@ -7839,8 +7841,8 @@ function renderGradedReadingMaterials(){
   if(total) total.textContent = '32';
   if(levelTarget){
     levelTarget.innerHTML = `
-      <select class="discover-filter-select" aria-label="筛选等级" onchange="setGradedLevelFilter(this.value)">
-        <option value="全部" ${ACTIVE_GRADED_LEVEL === '全部' ? 'selected' : ''}>难度等级</option>
+      <select class="discover-filter-select discover-filter-select--refined" aria-label="JLPT等级" onchange="setGradedLevelFilter(this.value)">
+        <option value="全部" ${ACTIVE_GRADED_LEVEL === '全部' ? 'selected' : ''}>JLPT等级</option>
         ${GRADED_LEVEL_FILTERS.map(level => `
           ${level === '全部' ? '' : `<option value="${escapeHtml(level)}" ${ACTIVE_GRADED_LEVEL === level ? 'selected' : ''}>${escapeHtml(level)}</option>`}
         `).join('')}
@@ -7849,8 +7851,8 @@ function renderGradedReadingMaterials(){
   }
   if(topicTarget){
     topicTarget.innerHTML = `
-      <select class="discover-filter-select" aria-label="筛选题材" onchange="setGradedTopicFilter(this.value)">
-        <option value="全部" ${ACTIVE_GRADED_TOPIC === '全部' ? 'selected' : ''}>题材分类</option>
+      <select class="discover-filter-select discover-filter-select--refined" aria-label="题材" onchange="setGradedTopicFilter(this.value)">
+        <option value="全部" ${ACTIVE_GRADED_TOPIC === '全部' ? 'selected' : ''}>题材</option>
         ${GRADED_TOPIC_FILTERS.map(topic => `
           ${topic === '全部' ? '' : `<option value="${escapeHtml(topic)}" ${ACTIVE_GRADED_TOPIC === topic ? 'selected' : ''}>${escapeHtml(topic)}</option>`}
         `).join('')}
@@ -8238,6 +8240,7 @@ function upsertGrammarBookItem(rawItem){
     ...GRAMMAR_BOOK.filter(saved => grammarBookKey(saved.title) !== key)
   ].slice(0, 100);
   saveGrammarBook();
+  recordPracticeResult('grammar');
   renderGrammarBook();
   renderGrammar();
   return true;
