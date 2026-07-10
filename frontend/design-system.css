@@ -14377,3 +14377,36 @@ body[data-view="discover"] .discover-panel-link {
     border-radius: 18px !important;
   }
 }
+
+
+/* TTS settings controls */
+body[data-view="settings"] .settings-tts-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: min(100%, 330px);
+}
+
+body[data-view="settings"] .settings-tts-select {
+  min-width: 190px;
+  max-width: 250px;
+}
+
+body[data-view="settings"] .settings-tts-select select {
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 640px) {
+  body[data-view="settings"] .settings-tts-controls {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  body[data-view="settings"] .settings-tts-select {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+  }
+}

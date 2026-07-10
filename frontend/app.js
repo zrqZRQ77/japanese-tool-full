@@ -5183,9 +5183,43 @@ function speakSelectedText(trigger, showControls = true){
 }
 
 let CURRENT_TTS_TRIGGER = null;
+const DEFAULT_TTS_RATE = 0.78;
+
+function normalizeJapaneseSpeechText(text){
+  return String(text || '')
+    .replace(/\r\n?/g, '\n')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/([。！？!?])\s*\n+/g, '$1 ')
+    .replace(/\n+/g, '。')
+    .replace(/([。！？!?])(?=[^\s])/g, '$1 ')
+    .trim();
+}
+
+function getPreferredTtsRate(){
+  const saved = Number(safeStorage.getItem('reading_tts_rate'));
+  return Number.isFinite(saved) && saved >= 0.6 && saved <= 1 ? saved : DEFAULT_TTS_RATE;
+}
+
+function setPreferredTtsRate(value){
+  const rate = Number(value);
+  const normalized = Number.isFinite(rate) && rate >= 0.6 && rate <= 1 ? rate : DEFAULT_TTS_RATE;
+  safeStorage.setItem('reading_tts_rate', String(normalized));
+  const select = document.getElementById('ttsRateSelect');
+  if(select) select.value = String(normalized);
+  stopTts();
+  showToast('日语朗读速度已更新。', 'success');
+}
+
+function initTtsSettings(){
+  const select = document.getElementById('ttsRateSelect');
+  if(select){
+    const saved = Number(safeStorage.getItem('reading_tts_rate'));
+    select.value = String(Number.isFinite(saved) && saved >= 0.6 && saved <= 1 ? saved : DEFAULT_TTS_RATE);
+  }
+}
 
 function speakJapanese(text, trigger = null, showControls = true){
-  const value = String(text || '').replace(/\s+/g, ' ').trim();
+  const value = normalizeJapaneseSpeechText(text);
   if(!value) return;
   if(!('speechSynthesis' in window)){
     showToast('当前浏览器不支持发音功能。', 'warning');
@@ -5201,8 +5235,8 @@ function speakJapanese(text, trigger = null, showControls = true){
   }
   const utterance = new SpeechSynthesisUtterance(value);
   utterance.lang = 'ja-JP';
-  utterance.rate = 0.88;
-  utterance.pitch = 0.98;
+  utterance.rate = getPreferredTtsRate(value);
+  utterance.pitch = 1;
   const jaVoice = chooseJapaneseVoice();
   if(jaVoice) utterance.voice = jaVoice;
   utterance.onstart = ()=>setTtsActive(trigger);
@@ -5279,46 +5313,74 @@ function stopTts(){
   finishTts();
 }
 
-const RECOMMENDED_VOICE_PATTERN = /(Hattori|Kyoko|O-?ren|Otoya)/i;
-const EXCLUDED_VOICE_PATTERN = /(Shelley|Sandy|Rocko|Reed|Grandpa|Grandma|Flo|Eddy)/i;
+const RECOMMENDED_VOICE_PATTERN = /(Premium|Enhanced|Siri|Natural|Neural|Hattori|Kyoko|O-?ren|Otoya|Nanami|Nozomi|Haruka|Ichiro)/i;
+const EXCLUDED_VOICE_PATTERN = /(Compact|Novelty|Shelley|Sandy|Rocko|Reed|Grandpa|Grandma|Flo|Eddy|Bad News|Bells|Boing|Bubbles|Cellos|Good News|Organ|Trinoids|Whisper|Zarvox)/i;
+
+function japaneseVoiceScore(voice){
+  let score = 0;
+  if(voice.localService) score += 40;
+  if(/Kyoko/i.test(voice.name)) score += 140;
+  if(/(Otoya|Siri|Nanami|Nozomi|Haruka|Ichiro)/i.test(voice.name)) score += 125;
+  if(/(Premium|Enhanced|Natural|Neural)/i.test(voice.name)) score += 110;
+  if(/Hattori/i.test(voice.name)) score += 35;
+  if(/O-?ren/i.test(voice.name)) score += 20;
+  if(/(Google|Microsoft|Apple)/i.test(voice.name)) score += 8;
+  if(EXCLUDED_VOICE_PATTERN.test(voice.name)) score -= 200;
+  return score;
+}
+
+function sortedJapaneseVoices(){
+  if(!('speechSynthesis' in window)) return [];
+  const japanese = window.speechSynthesis.getVoices().filter(voice=>/^ja[-_]/i.test(voice.lang));
+  const natural = japanese.filter(voice=>!EXCLUDED_VOICE_PATTERN.test(voice.name));
+  return (natural.length ? natural : japanese).sort((a, b)=>japaneseVoiceScore(b) - japaneseVoiceScore(a) || a.name.localeCompare(b.name));
+}
 
 function populateVoiceOptions(){
   if(!('speechSynthesis' in window)) return;
-  const allVoices = window.speechSynthesis.getVoices().filter(v=>/^ja[-_]/i.test(v.lang) && !EXCLUDED_VOICE_PATTERN.test(v.name));
+  const allVoices = sortedJapaneseVoices();
   const field = document.getElementById('ttsVoiceField');
   const select = document.getElementById('ttsVoiceSelect');
   if(!select || !allVoices.length){ if(field) field.style.display = 'none'; return; }
-  const recommended = allVoices.filter(v=>RECOMMENDED_VOICE_PATTERN.test(v.name));
-  const others = allVoices.filter(v=>!RECOMMENDED_VOICE_PATTERN.test(v.name));
-  const preferred = safeStorage.getItem('reading_tts_voice') || '';
-  const optionHtml = v => `<option value="${escapeHtml(v.name)}" ${v.name===preferred?'selected':''}>${escapeHtml(v.name)}${RECOMMENDED_VOICE_PATTERN.test(v.name)?' · 推荐':''}</option>`;
+  const recommended = allVoices.slice(0, Math.min(3, allVoices.length));
+  const recommendedNames = new Set(recommended.map(voice=>voice.name));
+  const others = allVoices.slice(recommended.length);
+  let preferred = safeStorage.getItem('reading_tts_voice') || '';
+  if(safeStorage.getItem('reading_tts_voice_quality_version') !== '2'){
+    preferred = '';
+    safeStorage.setItem('reading_tts_voice_quality_version', '2');
+  }
+  const optionHtml = v => `<option value="${escapeHtml(v.name)}" ${v.name===preferred?'selected':''}>${escapeHtml(v.name)}${recommendedNames.has(v.name)?' · 推荐':''}</option>`;
   select.innerHTML = (recommended.length ? recommended.map(optionHtml).join('') : '')
     + (recommended.length && others.length ? '<option disabled>──────</option>' : '')
     + others.map(optionHtml).join('');
   if(field) field.style.display = 'flex';
-  if(!preferred){
-    const best = recommended[0] || allVoices.find(v=>v.localService) || allVoices[0];
+  if(!allVoices.some(voice=>voice.name === preferred)){
+    const best = recommended[0] || allVoices[0];
     if(best){ select.value = best.name; safeStorage.setItem('reading_tts_voice', best.name); }
   }
 }
 
 function setPreferredVoice(name){
   safeStorage.setItem('reading_tts_voice', name || '');
+  stopTts();
+  showToast('日语朗读音色已更新。', 'success');
+}
+
+function previewJapaneseVoice(){
+  stopTts();
+  speakJapanese('今日は天気がいいですね。ゆっくり日本語を練習しましょう。', null, false);
 }
 
 function chooseJapaneseVoice(){
-  const voices = window.speechSynthesis.getVoices();
-  const japanese = voices.filter(voice=>/^ja[-_]/i.test(voice.lang));
+  const japanese = sortedJapaneseVoices();
   if(!japanese.length) return null;
   const preferred = safeStorage.getItem('reading_tts_voice');
   if(preferred){
-    const match = japanese.find(v=>v.name === preferred);
+    const match = japanese.find(voice=>voice.name === preferred);
     if(match) return match;
   }
-  return japanese.find(voice=>voice.localService && /(Kyoko|Otoya|Siri|Nanami|Nozomi|Haruka|Ichiro)/i.test(voice.name)) ||
-    japanese.find(voice=>voice.localService) ||
-    japanese.find(voice=>/(Kyoko|Otoya|Siri|Nanami|Nozomi|Haruka|Ichiro)/i.test(voice.name)) ||
-    japanese[0];
+  return japanese[0];
 }
 
 function renderTypingPractice(){
@@ -6086,10 +6148,10 @@ function speakOriginalForRetell(){
   renderRetellReadingControls();
 
   const button = document.getElementById('retellReadBtn');
-  const utterance = new SpeechSynthesisUtterance(text.replace(/\s+/g, ' '));
+  const utterance = new SpeechSynthesisUtterance(normalizeJapaneseSpeechText(text));
   utterance.lang = 'ja-JP';
-  utterance.rate = 0.88;
-  utterance.pitch = 0.98;
+  utterance.rate = getPreferredTtsRate(text);
+  utterance.pitch = 1;
   const jaVoice = chooseJapaneseVoice();
   if(jaVoice) utterance.voice = jaVoice;
   utterance.onstart = ()=>{
@@ -8511,6 +8573,7 @@ async function initializeApp(){
   if(savedLevelResult) showLevelResult(savedLevelResult);
   setTokenizerStatus('默认使用轻量词库，需要时可手动开启智能分词', '');
   renderQuotaStatus();
+  initTtsSettings();
   document.getElementById('useKuromoji')?.addEventListener('change', renderText);
 
   if('speechSynthesis' in window){
