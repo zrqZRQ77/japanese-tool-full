@@ -12790,17 +12790,6 @@ body[data-view="reading"] .detail-selected-box {
   position: relative;
 }
 
-body[data-view="reading"] .detail-selected-box::before {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -14px;
-  width: 3px;
-  border-radius: 999px;
-  background: #6750A4;
-  content: "";
-}
-
 body[data-view="reading"].has-reading:not(.is-editing-source) .next-step-bar {
   justify-content: space-between !important;
   gap: 12px !important;
