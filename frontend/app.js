@@ -4917,10 +4917,10 @@ function populateVoiceOptions(){
   }
 }
 
-function setPreferredVoice(name){
+function setPreferredVoice(name, notify = true){
   safeStorage.setItem('reading_tts_voice', name || '');
   stopTts();
-  showToast('日语朗读音色已更新。', 'success');
+  if(notify) showToast('日语朗读音色已更新。', 'success');
 }
 
 function previewJapaneseVoice(){
