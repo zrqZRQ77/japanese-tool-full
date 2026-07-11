@@ -69,6 +69,15 @@ const safeStorage = {
       console.error('localStorage删除失败:', e);
       return false;
     }
+  },
+  clear: function() {
+    try {
+      localStorage.clear();
+      return true;
+    } catch (e) {
+      console.error('localStorage清除失败:', e);
+      return false;
+    }
   }
 };
 
@@ -3154,7 +3163,12 @@ async function extractUploadedFile(file){
 }
 
 function escapeHtml(str){
-  return String(str ?? '').replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  return String(str ?? '')
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
 }
 
 function plainSelectedText(){
@@ -3295,6 +3309,7 @@ async function renderText(){
   await ensureLearningData();
   const showRuby = !!document.getElementById('useKuromoji')?.checked;
   const useKuromoji = showRuby && ENABLE_REMOTE_SMART_SEGMENTATION;
+  document.body.dataset.tokenizerMode = 'built-in';
   document.body.classList.toggle('reading-ruby-visible', showRuby);
   document.getElementById('rubyToggleBtn')?.classList.toggle('is-active', showRuby);
   const raw = normalizeReadingInput(document.getElementById('inputText').value).trim();
@@ -3336,6 +3351,7 @@ async function renderText(){
     }
     const tokenizer = await initKuromoji();
     if(tokenizer){
+      document.body.dataset.tokenizerMode = 'kuromoji';
       renderWithKuromoji(raw, tokenizer, out, statsBar);
       saveCurrentArticleToHistory();
       return;
@@ -3640,7 +3656,7 @@ function collectRubyUnits(){
 async function collectExportRubyUnits(){
   const fallback = collectRubyUnits();
   const raw = String(CURRENT_ARTICLE_TEXT || '').trim();
-  if(!raw) return fallback;
+  if(!raw || !ENABLE_REMOTE_SMART_SEGMENTATION) return fallback;
   try{
     const tokenizer = await initKuromoji();
     if(!tokenizer) return fallback;
@@ -6860,11 +6876,12 @@ function normalizeReadingHistoryItem(item = {}, index = 0){
   const date = new Date(item.date);
   const safeDate = Number.isNaN(date.getTime()) ? new Date(Date.now() - index).toISOString() : date.toISOString();
   const compact = String(item.fingerprint || text.replace(/\s+/g, '').slice(0, 180));
+  const url = readingQueueUrl(item.url);
   return {
     id:Number(item.id || 0) || Date.now() - index,
     title:String(item.title || articleTitleFromText(text) || '未命名文章'),
-    source:String(item.source || (item.url ? readingQueueFallbackTitle(item.url) : '手动导入')),
-    url:String(item.url || ''),
+    source:String(item.source || (url ? readingQueueFallbackTitle(url) : '手动导入')),
+    url,
     date:safeDate,
     chars:Number(item.chars || text.length || 0),
     text,
@@ -7334,18 +7351,15 @@ function renderReadingQuizHistory(){
   `).join('');
 }
 
-function restoreHistoryArticle(id){
+async function restoreHistoryArticle(id){
   const item = READING_HISTORY.find(entry => entry.id === id);
   if(!item) return;
   document.getElementById('inputText').value = item.text || '';
   CURRENT_ARTICLE_TEXT = item.text || '';
   CURRENT_ARTICLE_URL = item.url || '';
   resetArticlePracticeState(articlePracticeKey(CURRENT_ARTICLE_TEXT));
-  document.getElementById('output').innerHTML = item.annotatedHtml || escapeHtml(item.text || '');
-  setReadingReady(true);
-  setPostAnalysisActionsVisible(true);
-  refreshRetellAdvice();
   switchWorkspace('reading');
+  await renderText();
 }
 
 function removeHistoryArticle(id){
@@ -7794,7 +7808,7 @@ function showLevelResult(result){
 function resetLevelTest(){
   LEVEL_TEST_STATE.index = 0;
   LEVEL_TEST_STATE.answers = [];
-  localStorage.removeItem('reading_level_result');
+  safeStorage.removeItem('reading_level_result');
   document.getElementById('levelResultBadge').textContent = '未测试';
   document.getElementById('levelResult').textContent = '';
   const test = document.getElementById('levelTest');

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import { createServer } from 'node:http';
-import { access, readFile, mkdir, writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createReadStream } from 'node:fs';
 import { dirname, extname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -16,12 +17,7 @@ const VIEWPORTS = [
   { name: 'mobile-430', width: 430, height: 932 },
   { name: 'desktop-1280', width: 1280, height: 720 }
 ];
-const CHROME_CANDIDATES = [
-  process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-  '/Applications/Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing',
-  '/Applications/Chromium.app/Contents/MacOS/Chromium'
-].filter(Boolean);
+const CUSTOM_CHROMIUM_EXECUTABLE = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || '';
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -52,18 +48,6 @@ async function loadPlaywright() {
   } catch (error) {
     failMissingPlaywright(error);
   }
-}
-
-async function findBrowserExecutable() {
-  for (const candidate of CHROME_CANDIDATES) {
-    try {
-      await access(candidate);
-      return candidate;
-    } catch {
-      // Try the next candidate.
-    }
-  }
-  return null;
 }
 
 function safePathFromUrl(url) {
@@ -132,6 +116,27 @@ function printableMessage(message) {
   return JSON.stringify(message);
 }
 
+function gitValue(args, fallback = 'unavailable') {
+  try {
+    return execFileSync('git', args, { cwd: resolve(FRONTEND_DIR, '..'), encoding: 'utf8' }).trim() || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+async function auditEnvironment(browser) {
+  const indexHtml = await readFile(join(FRONTEND_DIR, 'index.html'), 'utf8');
+  const cacheVersion = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || 'unavailable';
+  return {
+    browserVersion: browser.version(),
+    executableSource: CUSTOM_CHROMIUM_EXECUTABLE ? 'custom executable' : 'playwright bundled chromium',
+    customExecutableConfigured: Boolean(CUSTOM_CHROMIUM_EXECUTABLE),
+    gitCommit: gitValue(['rev-parse', 'HEAD']),
+    gitWorktree: gitValue(['status', '--porcelain'], '') ? 'dirty' : 'clean',
+    cacheVersion
+  };
+}
+
 async function runAudit() {
   const { chromium } = await loadPlaywright();
   const { server, port, mode = 'server' } = await startServerWithFallback();
@@ -154,12 +159,12 @@ async function runAudit() {
     trace: null
   };
 
-  const executablePath = await findBrowserExecutable();
   const browser = await chromium.launch({
     headless: true,
     args: mode === 'file' ? ['--allow-file-access-from-files'] : [],
-    ...(executablePath ? { executablePath } : {})
+    ...(CUSTOM_CHROMIUM_EXECUTABLE ? { executablePath: CUSTOM_CHROMIUM_EXECUTABLE } : {})
   });
+  report.environment = await auditEnvironment(browser);
   const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
   await context.tracing.start({ screenshots: true, snapshots: true, sources: true });
   const page = await context.newPage();
@@ -225,6 +230,7 @@ async function runAudit() {
         view: document.body.dataset.view || '',
         firstVisit: document.body.classList.contains('first-visit'),
         hasReading: document.body.classList.contains('has-reading'),
+        tokenizerMode: document.body.dataset.tokenizerMode || 'not-run',
         overflowX: document.documentElement.scrollWidth > window.innerWidth + 2,
         viewport: {
           width: window.innerWidth,
@@ -367,12 +373,55 @@ async function runAudit() {
     return state('state: grammar deleted');
   });
 
+  await step('reading history URL allowlist', async () => {
+    const normalized = await page.evaluate(() => {
+      const unsafeUrls = [
+        'javascript:window.__historyUrlExecuted=true',
+        'data:text/html,<script>window.__historyUrlExecuted=true</script>',
+        ' JAVASCRIPT:window.__historyUrlExecuted=true'
+      ];
+      const history = unsafeUrls.map((url, index) => ({
+        id: 9100 + index,
+        title: `Unsafe URL ${index + 1}`,
+        source: '',
+        url,
+        date: new Date(Date.now() - index).toISOString(),
+        text: `安全测试正文 ${index + 1}`,
+        fingerprint: `unsafe-url-${index + 1}`
+      }));
+      return normalizeReadingHistoryList(history).map(item => ({ title: item.title, url: item.url }));
+    });
+    if (normalized.length !== 3) throw new Error('Unsafe history URL fixtures were not normalized.');
+    if (normalized.some(item => item.url)) throw new Error('Unsafe history URL passed the HTTP(S) allowlist.');
+    return { rejected: normalized.length, protocols: ['javascript:', 'data:', 'whitespace-obfuscated javascript:'] };
+  });
+
   for (const viewport of VIEWPORTS) {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => localStorage.clear());
+    await page.reload({ waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
-    await page.locator('button.nav-vocab').click().catch(() => {});
+    const moreMenu = page.locator('.hero-more-menu');
+    await moreMenu.locator('summary').click();
+    await moreMenu.locator('.hero-menu-popover').waitFor({ state: 'visible', timeout: 3000 });
+    await page.locator('#heroInputText').fill(SAMPLE_TEXT);
+    await page.locator('button[onclick="analyzeFromHero()"]', { hasText: '开始阅读' }).click();
+    await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
+    const vocabNav = page.locator('button.nav-vocab');
+    await vocabNav.waitFor({ state: 'visible', timeout: 3000 });
+    await vocabNav.click();
+    await page.waitForFunction(() => document.body.dataset.view === 'vocab');
     const viewportState = await state(`viewport: ${viewport.name}`);
+    if (viewportState.firstVisit || !viewportState.hasReading || viewportState.view !== 'vocab') {
+      throw new Error(`Viewport ${viewport.name} did not reach the vocab state after reading import.`);
+    }
+    if (!viewportState.nav || viewportState.nav.width <= 0 || viewportState.nav.height <= 0) {
+      throw new Error(`Viewport ${viewport.name} navigation is not visible.`);
+    }
+    if (!viewportState.content || viewportState.content.width <= 0 || viewportState.content.height <= 0) {
+      throw new Error(`Viewport ${viewport.name} app content is not visible.`);
+    }
     const filePath = await screenshot(`viewport-${viewport.name}`);
     report.viewportChecks.push({ ...viewport, screenshot: filePath, state: viewportState });
     if (viewportState.overflowX) {
@@ -397,7 +446,8 @@ async function runAudit() {
     ok: failedSteps.length === 0 && report.issues.length === 0 && appLogs.length === 0,
     failedSteps: failedSteps.length,
     issues: report.issues.length,
-    consoleWarningsOrErrors: appLogs.length
+    consoleWarningsOrErrors: appLogs.length,
+    tokenizerMode: report.steps.find(item => item.name === 'state: reading')?.state?.tokenizerMode || 'not-recorded'
   };
 
   if (!summary.ok) {
@@ -437,6 +487,11 @@ function markdownReport(report, summary, appLogs) {
     `- Failed steps: ${summary.failedSteps}`,
     `- Issues: ${summary.issues}`,
     `- Console warnings/errors: ${summary.consoleWarningsOrErrors}`,
+    `- Tokenizer mode: ${summary.tokenizerMode}`,
+    `- Browser: ${report.environment.browserVersion}`,
+    `- Executable source: ${report.environment.executableSource}`,
+    `- Git commit: ${report.environment.gitCommit} (${report.environment.gitWorktree} worktree)`,
+    `- Cache version: ${report.environment.cacheVersion}`,
     '',
     '## Steps',
     ''

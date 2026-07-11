@@ -8,28 +8,25 @@
 - `DEPLOYMENT.md` - Deployment notes.
 - `DESIGN.md` - Design direction and UI rules.
 
-## Frontend Files To Publish
+## Recommended Vercel Deployment
 
-Upload or deploy the contents of `frontend/`:
-
-- `index.html`
-- `styles.css`
-- `app.js`
-- `config.js`
-- `analytics.js`
-- `data/`
-- `vercel.json`
-
-Do not upload `node_modules/`, `.DS_Store`, or old generated output folders.
-
-## Vercel
-
-When importing the GitHub repository in Vercel, use `frontend/` as the project
-root if the full project is uploaded. If only the `frontend/` folder is in the
-GitHub repository, keep the root directory as the repository root.
+Import the repository root in Vercel. The root `vercel.json` runs `npm run build`
+and publishes the generated `dist/` directory. This is the supported production
+path and includes a build-time check that every local asset referenced by
+`index.html` exists in the bundle.
 
 Use:
 
 - Framework Preset: `Other`
-- Build Command: empty
-- Output Directory: `.`
+- Root Directory: repository root
+- Build Command: `npm run build`
+- Output Directory: `dist`
+
+## Alternative Static Deployment
+
+If a static host does not run the root build, publish the entire contents of
+`frontend/`, including all CSS/JS files plus `assets/` and `data/`. Do not copy
+only a hand-picked file list.
+
+Do not publish `node_modules/`, `.DS_Store`, audit output, or old generated
+folders.

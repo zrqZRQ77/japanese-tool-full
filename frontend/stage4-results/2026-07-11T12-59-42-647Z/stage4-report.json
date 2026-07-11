@@ -1,0 +1,69 @@
+{
+  "startedAt": "2026-07-11T13:00:06.912Z",
+  "outputDir": "/Users/zhouruoqi/Downloads/japan/japaneselearning/frontend/stage4-results/2026-07-11T12-59-42-647Z",
+  "pass": 12,
+  "fail": 0,
+  "results": [
+    {
+      "name": "PDF text",
+      "status": "PASS",
+      "detail": "text extracted, previewed, and entered reading workspace"
+    },
+    {
+      "name": "PDF scanned",
+      "status": "PASS",
+      "detail": "这个 PDF 没有可提取文字，可能是扫描图片版。 请复制 PDF 中需要学习的日语文本后粘贴分析。扫描件、图片型 PDF 和复杂排版目前可能无法识别。"
+    },
+    {
+      "name": "PDF encrypted",
+      "status": "PASS",
+      "detail": "No password given 请复制 PDF 中需要学习的日语文本后粘贴分析。扫描件、图片型 PDF 和复杂排版目前可能无法识别。"
+    },
+    {
+      "name": "PDF corrupted",
+      "status": "PASS",
+      "detail": "Invalid PDF structure. 请复制 PDF 中需要学习的日语文本后粘贴分析。扫描件、图片型 PDF 和复杂排版目前可能无法识别。"
+    },
+    {
+      "name": "PDF over 20 MB",
+      "status": "PASS",
+      "detail": "PDF 文件超过大小限制（20MB > 20MB）。"
+    },
+    {
+      "name": "Backup export and restore persistence",
+      "status": "PASS",
+      "detail": "/Users/zhouruoqi/Downloads/japan/japaneselearning/frontend/stage4-results/2026-07-11T12-59-42-647Z/dokedo-backup-20260711.json"
+    },
+    {
+      "name": "SEC-001 malicious backup fields",
+      "status": "PASS",
+      "detail": "import, history open, grammar render, and refresh remained inert"
+    },
+    {
+      "name": "Core vocab persistence and full flashcard round",
+      "status": "PASS",
+      "detail": "saved vocab survived refresh; one-card round completed and history persisted"
+    },
+    {
+      "name": "Reading and vocab exports",
+      "status": "PASS",
+      "detail": "/Users/zhouruoqi/Downloads/japan/japaneselearning/frontend/stage4-results/2026-07-11T12-59-42-647Z"
+    },
+    {
+      "name": "localStorage corrupted data",
+      "status": "PASS",
+      "detail": "page remained usable"
+    },
+    {
+      "name": "localStorage disabled",
+      "status": "PASS",
+      "detail": "reset, setting save, and data clear completed without uncaught exception"
+    },
+    {
+      "name": "localStorage quota exceeded",
+      "status": "PASS",
+      "detail": "reset, setting save, and data clear completed without uncaught exception"
+    }
+  ],
+  "unexpectedErrors": []
+}

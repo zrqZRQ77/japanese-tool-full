@@ -6,6 +6,7 @@
     "verify:fast": "node tools/check.mjs",
     "verify:flows": "node tools/ui-audit.mjs",
     "verify:visual": "node tools/verify-visual.mjs",
+    "verify:stage4": "node tools/stage4-audit.mjs",
     "verify:all": "node tools/verify-all.mjs",
     "bump-cache": "node tools/bump-cache.mjs",
     "typography:normalize": "node tools/normalize-typography.mjs",

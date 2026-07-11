@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>読める · 日语阅读辅助工具 · 自动标注假名与释义</title>
-<meta name="description" content="粘贴日语文章，自动标注假名和释义，JLPT词汇分级，一键导出Anki牌组，间隔复习系统">
+<meta name="description" content="粘贴日语文章，自动标注假名和释义，JLPT词汇分级，导出可导入 Anki 的生词文件，并进行间隔复习">
 <meta name="keywords" content="日语学习,日语阅读,JLPT,N5,N4,N3,N2,N1,假名标注,Anki,间隔复习">
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260711-07">
-<link rel="stylesheet" href="design-system.css?v=20260711-07">
-<link rel="stylesheet" href="grammar-layout.css?v=20260711-07">
-<link rel="stylesheet" href="typography.css?v=20260711-07">
+<link rel="stylesheet" href="styles.css?v=20260711-10">
+<link rel="stylesheet" href="design-system.css?v=20260711-10">
+<link rel="stylesheet" href="grammar-layout.css?v=20260711-10">
+<link rel="stylesheet" href="typography.css?v=20260711-10">
 <link rel="stylesheet" href="hero-menu-refresh.css?v=20260710-12">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260710-01"></script>
@@ -1226,7 +1226,7 @@
   </div>
 </div>
 
-<script src="app.js?v=20260711-07"></script>
+<script src="app.js?v=20260711-10"></script>
 <script src="search-entry-fix.js?v=20260711-01"></script>
 <script>
   const applyChineseInterface = typeof window.setInterfaceLanguage === 'function'
@@ -1292,7 +1292,7 @@
     const hattori = options.find(option => /hattori/i.test(option.value));
     const recommendedName = hattori?.value || options[0]?.value || '';
 
-    if (!localStorage.getItem('reading_tts_voice') && recommendedName) {
+    if (!safeStorage.getItem('reading_tts_voice') && recommendedName) {
       select.value = recommendedName;
       window.setPreferredVoice?.(recommendedName, false);
     }
@@ -1377,7 +1377,7 @@
     }
     try {
       window.speechSynthesis?.cancel();
-      localStorage.clear();
+      safeStorage.clear();
       sessionStorage.clear();
     } finally {
       window.location.reload();

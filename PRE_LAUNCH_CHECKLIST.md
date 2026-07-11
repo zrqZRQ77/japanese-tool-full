@@ -31,15 +31,16 @@
 | 2026-07-11 | 设置页将“数据保存说明”改为面向用户的“数据与隐私”说明 | 用“当前浏览器、当前设备”表达实际结果，避免向普通用户暴露服务器、后端和本地解析等技术概念 |
 | 2026-07-11 | 全局搜索移除“调整今日目标”，并更新“学习历史”说明 | 隐藏的目标设置不应继续通过搜索暴露；搜索描述必须与当前学习历史页面一致 |
 | 2026-07-11 | 阅读结果导出收口为 PPTX、PNG、JPEG，并删除未接入的 DOCX 代码 | PPTX 已提供可编辑输出；避免为未验证的 DOCX 兼容性扩大 MVP 测试和维护范围 |
+| 2026-07-11 | 远程 Kuromoji 在 MVP 中安全关闭，默认使用内置轻量词库 | 无痕首次访问构建远程词典曾造成页面失去响应；重新启用前需自托管并移出主线程 |
 
 ---
 
 ## 一、基础元信息
 
-### 1.1 缺失项 🔴
-- [ ] **favicon.ico** - 浏览器标签页图标缺失
-- [ ] **description** meta标签 - SEO描述缺失
-- [ ] **keywords** meta标签 - SEO关键词缺失
+### 1.1 当前状态
+- [x] **favicon** - 已使用 `assets/brand/yomeru-mark.svg`
+- [x] **description** meta标签 - 已存在，并与 Anki TSV 实际能力一致
+- [x] **keywords** meta标签 - 已存在
 - [ ] **Open Graph标签** - 社交媒体分享预览缺失
 - [ ] **manifest.json** - PWA配置缺失
 
@@ -54,7 +55,7 @@
 ## 二、性能优化
 
 ### 2.1 需要优化 🟡
-- [ ] **外部库CDN** - kuromoji、pptxgenjs等使用CDN，无fallback
+- [ ] **外部库CDN** - PDF.js、pptxgenjs 等仍使用 CDN；远程 Kuromoji 已在 MVP 中安全关闭
 - [ ] **字体加载** - Google Fonts可能被墙，需要本地备份
 - [ ] **CSS/JS压缩** - 未压缩，文件体积较大
 - [ ] **图片优化** - 检查是否有未压缩的图片
@@ -79,7 +80,8 @@
 ## 三、响应式和移动端
 
 ### 3.1 需要测试 🟡
-- [ ] **移动端布局** - 检查320px、375px、768px断点
+- [x] **390 / 430 移动端自动化** - 更多菜单、阅读导入、生词本导航、关键区域可见性和横向溢出已通过 Chromium viewport；不替代 iPhone 实机
+- [ ] **其他移动端布局** - 继续检查320px、375px、768px断点
 - [ ] **触摸操作** - 按钮大小是否足够（最小44x44px）
 - [ ] **横屏适配** - 手机横屏时的布局
 - [ ] **侧边栏** - 移动端侧边栏应该收起
@@ -118,14 +120,14 @@
 ### 5.1 需要测试 ⚠️
 - [x] **MVP 不依赖自有后端** - 公开核心流程和文字型 PDF Beta 均可在浏览器中运行；现有后端仅作为未来技术储备
 - [x] **Pro / 免费额度文案闭环** - 正式前端已移除“Pro 可无限使用”、免费额度和无升级入口的承诺，避免出现无法升级的死路
-- [ ] **PDF Beta** - 测试正常文字型、扫描型、加密、损坏、复杂排版和大文件 PDF；失败时能回退到粘贴文本
+- [x] **PDF Beta 基础专项** - 正常文字型、扫描型、加密、损坏和超过 20 MB 实际文件均通过；复杂排版仍属 Beta 风险
 - [ ] **文本分析** - 空输入、超长输入、特殊字符
-- [ ] **生词本** - 添加、删除、导出（CSV/Anki）
+- [x] **生词本核心自动化** - 添加、刷新持久化、完整闪卡评分、完成状态和学习历史均在当前基线通过；CSV/Anki 实际下载与内容检查通过
 - [ ] **复习系统** - 间隔重复算法是否正确
 - [ ] **语音朗读** - TTS功能在不同浏览器
 - [ ] **打字练习** - 输入验证、评分逻辑
 - [ ] **历史记录** - localStorage容量限制
-- [ ] **备份恢复** - JSON导入/导出
+- [x] **备份恢复** - JSON 实际导出、覆盖恢复和刷新持久化通过
 
 ### 5.2 边界情况
 ```javascript
@@ -141,10 +143,10 @@
 
 ## 六、错误处理
 
-### 6.1 需要添加 🔴
-- [ ] **全局错误捕获** - window.onerror
-- [ ] **网络错误提示** - fetch失败时的友好提示
-- [ ] **文件解析失败** - PDF 本地解析出错时的提示和粘贴文本回退路径
+### 6.1 当前状态
+- [x] **全局错误捕获** - 已实现 `window.onerror` 和未处理 Promise 捕获
+- [x] **网络错误提示** - 学习数据加载失败时使用内置数据降级
+- [x] **文件解析失败** - PDF 失败时提示改用复制粘贴
 - [ ] **浏览器兼容性提示** - 不支持的浏览器警告
 - [ ] **加载失败重试** - CDN资源加载失败的处理
 
@@ -175,6 +177,14 @@ window.addEventListener('error', function(e) {
 - [ ] **Safari** - 特别是iOS Safari
 - [ ] **移动端浏览器** - 微信内置、UC、QQ浏览器
 
+### 7.2 上线前外部 PENDING
+
+- [ ] **Mac Safari** - 当前核心闭环真实浏览器验收
+- [ ] **iPhone Safari** - 输入、阅读、收藏、复习和触摸操作
+- [ ] **移动端真实下载** - PDF、备份及导出文件下载行为
+- [ ] **PPTX 办公软件打开** - PowerPoint / Keynote 字体和版式抽查
+- [ ] **当前线上版本** - 缓存 `20260711-10` 部署、首次访问、资源与控制台复核
+
 ### 7.2 可能的问题
 - CSS变量在旧浏览器不支持
 - LocalStorage在隐私模式可能被禁用
@@ -186,10 +196,11 @@ window.addEventListener('error', function(e) {
 ## 八、安全性
 
 ### 8.1 需要检查 🟡
-- [ ] **XSS防护** - 用户输入是否正确转义
+- [x] **XSS 核心动态验证** - 恶意 title/source/text/grammar/annotatedHtml 导入、渲染和刷新均未执行
 - [ ] **innerHTML使用** - 是否有注入风险
 - [ ] **外部链接** - 添加rel="noopener noreferrer"
 - [ ] **敏感数据** - localStorage中不应存储敏感信息
+- [x] **备份历史 URL 协议** - 历史链接只接受 HTTP(S)；`javascript:`、`data:` 和空白混淆动态回归通过
 
 ### 8.2 已发现
 ```javascript
@@ -225,7 +236,7 @@ function escapeHtml(text) {
 - [ ] **隐私政策** - 数据如何存储和使用
 - [ ] **Cookie声明** - 是否使用Cookie
 - [ ] **数据导出** - 用户能否导出所有数据
-- [ ] **数据清除** - 提供清除所有数据的选项
+- [x] **数据清除** - 设置页提供二次确认的“清除本机学习数据”入口
 
 ---
 
@@ -236,7 +247,7 @@ function escapeHtml(text) {
 - [ ] **文件上传进度** - 大文件上传时的进度条
 - [ ] **分析进度** - 文本分析时的loading状态
 - [ ] **按钮禁用** - 处理中的按钮应该禁用防止重复点击
-- [ ] **操作成功提示** - Toast通知
+- [x] **操作成功提示** - 已有统一 Toast；首次自动选择语音不会误报为用户修改
 
 ### 11.2 建议
 ```html
@@ -257,36 +268,25 @@ function escapeHtml(text) {
 
 ## 十二、SEO和分享
 
-### 12.1 需要添加 🔴
-```html
-<!-- 基础SEO -->
-<meta name="description" content="日语阅读辅助工具，粘贴日语文本后自动标注假名和释义，支持文字型PDF Beta">
-<meta name="keywords" content="日语学习,日语阅读,JLPT,N5,N4,N3,N2,N1,假名标注,Anki">
+### 12.1 当前状态
 
-<!-- Open Graph -->
-<meta property="og:title" content="读得懂 · 日语阅读辅助工具">
-<meta property="og:description" content="自动标注假名和释义的日语阅读工具">
-<meta property="og:image" content="https://yourdomain.com/og-image.png">
-<meta property="og:url" content="https://yourdomain.com">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="读得懂 · 日语阅读辅助工具">
-```
+- [x] 基础 title、description、keywords 已存在。
+- [x] favicon 已使用品牌 SVG。
+- [x] Anki 描述与实际 TSV 导入文件能力一致。
+- [ ] Open Graph 和 Twitter Card 分享预览尚未添加，作为上线基础项继续评估。
 
 ---
 
 ## 检查优先级
 
-### 🔴 高优先级（必须修复）
-1. 添加favicon
-2. 添加全局错误处理
-3. 添加文件上传错误提示
-4. 测试所有核心功能
+### 🔴 高优先级（必须完成）
+1. 完成剩余核心功能与异常场景测试
+2. 完成 PDF、数据恢复和真实 Safari / iPhone 验收
+3. 保持 P0/P1 为零，并同步正式测试证据
 
 ### 🟡 中优先级（建议修复）
 1. 移动端响应式完善
-2. 添加SEO meta标签
+2. 补充 Open Graph / Twitter Card（非核心阻断）
 3. CDN fallback
 4. 加载状态提示
 5. 浏览器兼容性测试

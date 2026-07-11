@@ -88,6 +88,31 @@ assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
 assertCheck(!appJs.includes("label:'调整今日目标'") && appJs.includes("detail:'查看学习日历、进度和今日建议'"), 'global search matches public MVP navigation');
 assertCheck(
+  /function\s+resetLevelTest\s*\(\)[\s\S]*?safeStorage\.removeItem\('reading_level_result'\)/.test(appJs)
+    && !/function\s+resetLevelTest\s*\(\)[\s\S]*?localStorage\.removeItem\('reading_level_result'\)/.test(appJs),
+  'level-test reset uses safe storage'
+);
+assertCheck(!/\blocalStorage\./.test(indexHtml), 'inline page logic uses safe storage');
+assertCheck(appJs.includes("dataset.tokenizerMode = 'built-in'"), 'reading flow exposes tokenizer mode');
+assertCheck(
+  /async function collectExportRubyUnits\(\)[\s\S]*?if\(!raw \|\| !ENABLE_REMOTE_SMART_SEGMENTATION\) return fallback;[\s\S]*?await initKuromoji\(\)/.test(appJs),
+  'reading export respects the remote-tokenizer safety switch'
+);
+assertCheck(
+  /function escapeHtml\(str\)[\s\S]*?&quot;[\s\S]*?&#39;/.test(appJs),
+  'HTML escaping covers quoted attribute values'
+);
+assertCheck(
+  /async function restoreHistoryArticle\(id\)[\s\S]*?await renderText\(\)/.test(appJs)
+    && !/function restoreHistoryArticle\(id\)[\s\S]*?innerHTML\s*=\s*item\.annotatedHtml/.test(appJs),
+  'reading history is regenerated from plain text instead of stored HTML'
+);
+assertCheck(
+  /function normalizeReadingHistoryItem\(item = \{\}, index = 0\)[\s\S]*?const url = readingQueueUrl\(item\.url\);[\s\S]*?\n\s*url,/.test(appJs),
+  'reading history URLs use the HTTP(S) allowlist'
+);
+assertCheck(indexHtml.includes('导出可导入 Anki 的生词文件') && !indexHtml.includes('一键导出Anki牌组'), 'Anki copy matches TSV export');
+assertCheck(
   ['pptx', 'png', 'jpeg'].every(format => indexHtml.includes(`<option value="${format}"`))
     && !/downloadRubyDocx|<option value=["']docx["']/.test(inlineSource),
   'reading export formats match the public MVP boundary'
