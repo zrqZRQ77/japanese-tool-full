@@ -878,6 +878,10 @@ const THIRD_PARTY_SCRIPTS = {
   pdfjs:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',
   pdfjsWorker:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
 };
+// Building the remote Kuromoji dictionary on the main thread can freeze or
+// crash a fresh browser tab. Keep the responsive local dictionary path as the
+// MVP default until the tokenizer is self-hosted and moved off the main thread.
+const ENABLE_REMOTE_SMART_SEGMENTATION = false;
 const EXTERNAL_SCRIPT_LOADS = new Map();
 
 function withTimeout(promise, ms, message){
@@ -3289,9 +3293,10 @@ function addParagraphTranslations(html, raw){
 
 async function renderText(){
   await ensureLearningData();
-  const useKuromoji = !!document.getElementById('useKuromoji')?.checked;
-  document.body.classList.toggle('reading-ruby-visible', useKuromoji);
-  document.getElementById('rubyToggleBtn')?.classList.toggle('is-active', useKuromoji);
+  const showRuby = !!document.getElementById('useKuromoji')?.checked;
+  const useKuromoji = showRuby && ENABLE_REMOTE_SMART_SEGMENTATION;
+  document.body.classList.toggle('reading-ruby-visible', showRuby);
+  document.getElementById('rubyToggleBtn')?.classList.toggle('is-active', showRuby);
   const raw = normalizeReadingInput(document.getElementById('inputText').value).trim();
   const nextPracticeKey = articlePracticeKey(raw);
   const out = document.getElementById('output');
@@ -3337,7 +3342,6 @@ async function renderText(){
     }
   }
   renderWithDictionary(raw, out, statsBar);
-  if(useKuromoji) showFallbackNotice();
   saveCurrentArticleToHistory();
 }
 
