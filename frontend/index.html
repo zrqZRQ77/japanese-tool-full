@@ -9,10 +9,10 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260711-10">
-<link rel="stylesheet" href="design-system.css?v=20260711-10">
-<link rel="stylesheet" href="grammar-layout.css?v=20260711-10">
-<link rel="stylesheet" href="typography.css?v=20260711-10">
+<link rel="stylesheet" href="styles.css?v=20260711-11">
+<link rel="stylesheet" href="design-system.css?v=20260711-11">
+<link rel="stylesheet" href="grammar-layout.css?v=20260711-11">
+<link rel="stylesheet" href="typography.css?v=20260711-11">
 <link rel="stylesheet" href="hero-menu-refresh.css?v=20260710-12">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260710-01"></script>
@@ -151,6 +151,9 @@
         <button class="sidebar-toggle-button sidebar-icon-toggle" id="collapseSidebarButton" type="button" onclick="toggleSidebar()" aria-label="隐藏左侧目录" aria-expanded="true">
           <span aria-hidden="true"></span>
         </button>
+        <button class="mobile-main-menu-button" id="mobileMainMenuButton" type="button" onclick="openMenu()" aria-label="打开主导航">
+          <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+        </button>
       </div>
       <div class="global-search" role="search">
         <span class="global-search-icon" aria-hidden="true">
@@ -267,7 +270,7 @@
           <div class="reader-toolbar" id="readerToolbar" style="display:none;" aria-label="阅读工具栏">
             <div class="reader-tool-group">
               <button class="reader-tool is-active" id="annotationEditBtn" type="button" onclick="toggleAnnotationEditMode()" data-tooltip="编辑词语标注" aria-label="编辑词语标注">词</button>
-              <button class="reader-tool is-active" id="rubyToggleBtn" type="button" onclick="toggleReaderSmartSegmentation()" data-tooltip="显示或隐藏假名" aria-label="显示或隐藏假名">あ</button>
+              <button class="reader-tool" id="rubyToggleBtn" type="button" onclick="toggleReaderSmartSegmentation()" data-tooltip="显示或隐藏假名" aria-label="显示或隐藏假名">あ</button>
               <button class="reader-tool" id="translationToggleBtn" type="button" onclick="toggleParagraphTranslation()" data-tooltip="句段翻译" aria-label="句段翻译">译</button>
               <button class="reader-tool reader-speech-tool" type="button" onclick="speakCurrentReading(this)" data-tooltip="朗读正文" aria-label="朗读正文">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h4l5-4v13l-5-4H4z"></path><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"></path></svg>
@@ -347,7 +350,7 @@
           </div>
 
           <div class="reading-hidden-controls" hidden>
-            <input id="useKuromoji" type="checkbox" checked>
+            <input id="useKuromoji" type="checkbox">
             <span id="tokenizerStatus"></span>
             <div id="statsBar"></div>
             <section id="readingAnalysisCard"></section>
@@ -982,15 +985,18 @@
 <div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-labelledby="menuPanelTitle">
   <div class="menu-header">
     <strong id="menuPanelTitle">更多功能</strong>
-    <button class="btn-icon" onclick="closeMenu()" aria-label="关闭菜单">×</button>
+    <button class="btn-icon" id="menuCloseButton" onclick="closeMenu()" aria-label="关闭菜单">×</button>
   </div>
   <nav class="menu-nav">
+    <button onclick="closeMenu();switchWorkspace('reading')">阅读</button>
+    <button onclick="closeMenu();switchWorkspace('vocab')">生词本</button>
+    <button onclick="closeMenu();switchWorkspace('grammar')">语法本</button>
+    <button onclick="closeMenu();switchWorkspace('retell')">练习</button>
     <button onclick="closeMenu();switchWorkspace('discover')">找阅读材料</button>
     <button onclick="closeMenu();switchWorkspace('test')">水平测试</button>
     <button onclick="closeMenu();switchWorkspace('history')">学习历史</button>
-    <button onclick="closeMenu();switchWorkspace('grammar')">语法词典</button>
     <hr>
-    <button onclick="closeMenu();switchWorkspace('settings')">数据备份</button>
+    <button onclick="closeMenu();switchWorkspace('settings')">设置与数据备份</button>
     <button onclick="closeMenu();openOnboarding()">使用说明</button>
   </nav>
 </div>
@@ -1226,7 +1232,7 @@
   </div>
 </div>
 
-<script src="app.js?v=20260711-10"></script>
+<script src="app.js?v=20260711-11"></script>
 <script src="search-entry-fix.js?v=20260711-01"></script>
 <script>
   const applyChineseInterface = typeof window.setInterfaceLanguage === 'function'

@@ -490,7 +490,7 @@ function setDialogVisibility(dialog, isOpen, focusTarget){
 }
 
 function activeDialogRoot(){
-  return ['deleteConfirmModal', 'retellPermissionModal', 'readingDisplayModal', 'importPreviewModal', 'exportModal', 'menuPanel']
+  return ['deleteConfirmModal', 'vocabEditModal', 'retellPermissionModal', 'readingDisplayModal', 'importPreviewModal', 'exportModal', 'menuPanel']
     .map(id => document.getElementById(id))
     .find(el => el?.classList.contains('active')) || null;
 }
@@ -514,6 +514,8 @@ function trapDialogFocus(event, root){
 }
 
 function closeTopLayer(){
+  const vocabEditModal = document.getElementById('vocabEditModal');
+  if(vocabEditModal?.classList.contains('active')){ closeVocabEditDialog(); return true; }
   const deleteModal = document.getElementById('deleteConfirmModal');
   if(deleteModal?.classList.contains('active')){ closeDeleteConfirm(); return true; }
   const retellModal = document.getElementById('retellPermissionModal');
@@ -857,6 +859,7 @@ const FALLBACK_DICTIONARY = {
   '先生': {reading:'せんせい', level:'N5', pos:'名词', meaning:'老师'},
   '親切': {reading:'しんせつ', level:'N4', pos:'形容动词', meaning:'亲切'},
   '丁寧': {reading:'ていねい', level:'N4', pos:'形容动词', meaning:'认真、礼貌'},
+  'でも': {reading:'でも', level:'N5', pos:'接续词', meaning:'但是、不过'},
   '教えて': {reading:'おしえて', level:'N5', pos:'动词', meaning:'教、告诉'},
   '週末': {reading:'しゅうまつ', level:'N4', pos:'名词', meaning:'周末'},
   '時間': {reading:'じかん', level:'N5', pos:'名词', meaning:'时间'},
@@ -1009,6 +1012,12 @@ let KUROMOJI_LOADING = null;
 window.KUROMOJI_TOKEN_CACHE = [];
 let RUBY_OVERRIDES = {};
 try{ RUBY_OVERRIDES = JSON.parse(safeStorage.getItem('reading_ruby_overrides') || '{}'); }catch{}
+// Correct a bad reading that was written by an older build. Keep all other
+// user edits, but never allow this known-corrupt legacy value to win.
+if(RUBY_OVERRIDES['丁寧']?.reading === 'あつやす'){
+  RUBY_OVERRIDES['丁寧'] = {reading:'ていねい', hidden:false};
+  safeStorage.setItem('reading_ruby_overrides', JSON.stringify(RUBY_OVERRIDES));
+}
 let IS_ANNOTATION_EDITING = false;
 let CURRENT_FOOTNOTES = [];
 let READING_HISTORY = [];
@@ -3265,20 +3274,9 @@ function localSentenceTranslation(sentence){
   if(!clean) return '';
   if(LOCAL_SENTENCE_TRANSLATIONS.has(clean)) return LOCAL_SENTENCE_TRANSLATIONS.get(clean);
 
-  const words = Object.keys(DICT)
-    .filter(word => !['は','が','を','に','で','と','も','の','へ','ば','たり','から','まで','より'].includes(word))
-    .sort((a, b) => b.length - a.length);
-  const meanings = [];
-  const seen = new Set();
-  words.forEach(word => {
-    if(!clean.includes(word)) return;
-    const meaning = conciseDictionaryMeaning(DICT[word]);
-    if(!meaning || seen.has(meaning)) return;
-    seen.add(meaning);
-    meanings.push(meaning);
-  });
-  if(!meanings.length) return LOCAL_TRANSLATION_FALLBACK;
-  return `${meanings.join('，')}。`;
+  // Joining isolated dictionary meanings produces fluent-looking but false
+  // translations. For unknown text, be explicit about the local MVP limit.
+  return LOCAL_TRANSLATION_FALLBACK;
 }
 
 function localParagraphTranslation(text){
@@ -3644,7 +3642,7 @@ function collectRubyUnits(){
         .filter(child=>!(child.nodeType === Node.ELEMENT_NODE && child.tagName.toLowerCase() === 'rt'))
         .map(child=>child.textContent)
         .join('');
-      units.push({base, ruby});
+      units.push({base, ruby:shouldShowRuby(base, ruby) ? ruby : ''});
       return;
     }
     node.childNodes.forEach(visit);
@@ -4254,11 +4252,15 @@ async function downloadRubyPptx(orientation = 'landscape'){
             breakLine:false
           });
         }
+        const baseFontFace = /[\u3400-\u4dbf\u4e00-\u9fff]/.test(unit.base) && !/[\u3040-\u30ff]/.test(unit.base)
+          ? 'PingFang SC'
+          : 'Yu Gothic';
         slide.addText(unit.base, {
           x, y:y + rubyH + rubyGap, w:baseW, h:baseH,
-          fontFace:'Yu Gothic',
+          fontFace:baseFontFace,
           fontSize:payload.baseFont,
           color:'2B2A28',
+          bold:false,
           align:'center',
           valign:'mid',
           margin:0,
@@ -4599,9 +4601,26 @@ function showDetail(word, el){
       ${detailWordHeaderHtml(word, `addToVocab('${word}')`, `speakEncodedJapanese('${encodeURIComponent(word)}', this, false)`)}
       ${detailMetaHtml(word, info.reading, LEVEL_LABEL[info.level], info.pos)}
       ${detailDefinitionHtml(escapeHtml(info.meaning))}
+      <button class="btn-secondary btn--small" type="button" onclick="saveWordAsGrammar('${encodeURIComponent(word)}')">保存到语法本</button>
     </div>
   `;
   renderSampleFlow();
+}
+
+function saveWordAsGrammar(encodedWord){
+  const word = decodeURIComponent(encodedWord || '').trim();
+  if(!word) return;
+  const info = DICT[word] || {};
+  upsertGrammarBookItem({
+    title:word,
+    level:info.level || '待整理',
+    sub:info.pos || '阅读中保存',
+    note:info.meaning || '从阅读详解保存，请稍后补充说明。',
+    examples:[{jp:word, cn:info.meaning || ''}],
+    source:'阅读详解',
+    savedAt:Date.now()
+  });
+  showToast('已保存到语法本。', 'success');
 }
 
 function showTokenDetail(tokenId, el){
@@ -5857,6 +5876,12 @@ async function prepareRetellRecording(){
     showToast('请先在「阅读」标签里分析一段文本。', 'warning');
     return;
   }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){
+    startRetellRecording();
+    requestAnimationFrame(()=>document.getElementById('retellResult')?.scrollIntoView({behavior:'smooth', block:'center'}));
+    return;
+  }
   const state = await retellMicrophonePermissionState();
   if(state === 'granted' || safeStorage.getItem('retell_microphone_intro_seen') === '1'){
     startRetellRecording();
@@ -6294,11 +6319,80 @@ function vocabListMarkup(items){
       </div>
       <div class="vocab-cell vocab-row-actions">
         <button class="vocab-action-button reader-speech-tool" type="button" onclick="speakEncodedJapanese('${encodeURIComponent(v.word)}', this, false)" data-tooltip="朗读" aria-label="朗读 ${escapeHtml(v.word)}">${speakerIconSvg()}</button>
-        <button class="vocab-action-button" type="button" onclick="showToast('编辑功能会在下个版本接入。', 'info')" data-tooltip="编辑" aria-label="编辑 ${escapeHtml(v.word)}">${editIconSvg()}</button>
+        <button class="vocab-action-button" type="button" onclick="editVocabItem('${encodeURIComponent(v.word)}')" data-tooltip="编辑" aria-label="编辑 ${escapeHtml(v.word)}">${editIconSvg()}</button>
         <button class="vocab-action-button" type="button" onclick="removeFromVocab('${encodeURIComponent(v.word)}')" data-tooltip="删除" aria-label="删除 ${escapeHtml(v.word)}">${removeVocabIcon()}</button>
       </div>
     </li>
   `;}).join('');
+}
+
+function editVocabItem(encodedWord){
+  const originalWord = decodeURIComponent(encodedWord);
+  const item = vocabData.find(entry=>vocabIdentityKey(entry.word) === vocabIdentityKey(originalWord));
+  if(!item) return;
+  openVocabEditDialog(item);
+}
+
+let VOCAB_EDIT_TARGET = null;
+
+function ensureVocabEditDialog(){
+  let modal = document.getElementById('vocabEditModal');
+  if(modal) return modal;
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `<div class="delete-confirm-modal vocab-edit-modal" id="vocabEditModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="vocabEditTitle" inert>
+    <form class="delete-confirm-dialog vocab-edit-dialog" onsubmit="submitVocabEdit(event)">
+      <div class="delete-confirm-head">
+        <div><span class="module-kicker">生词本</span><strong id="vocabEditTitle">编辑生词</strong></div>
+        <button class="delete-confirm-close" type="button" onclick="closeVocabEditDialog()" aria-label="关闭编辑窗口">×</button>
+      </div>
+      <div class="vocab-edit-fields">
+        <label>单词<input id="vocabEditWord" required autocomplete="off"></label>
+        <label>假名<input id="vocabEditReading" autocomplete="off"></label>
+        <label>释义<textarea id="vocabEditMeaning" required rows="3"></textarea></label>
+      </div>
+      <div class="delete-confirm-actions">
+        <button class="btn-secondary" type="button" onclick="closeVocabEditDialog()">取消</button>
+        <button class="btn-primary" type="submit">保存</button>
+      </div>
+    </form>
+  </div>`;
+  modal = wrapper.firstElementChild;
+  modal.addEventListener('click', event=>{ if(event.target === modal) closeVocabEditDialog(); });
+  document.body.appendChild(modal);
+  return modal;
+}
+
+function openVocabEditDialog(item){
+  const modal = ensureVocabEditDialog();
+  VOCAB_EDIT_TARGET = item;
+  document.getElementById('vocabEditWord').value = item.word || '';
+  document.getElementById('vocabEditReading').value = item.reading || '';
+  document.getElementById('vocabEditMeaning').value = displayVocabMeaning(item.meaning);
+  setDialogVisibility(modal, true, document.getElementById('vocabEditWord'));
+}
+
+function closeVocabEditDialog(){
+  setDialogVisibility(document.getElementById('vocabEditModal'), false);
+  VOCAB_EDIT_TARGET = null;
+}
+
+function submitVocabEdit(event){
+  event.preventDefault();
+  if(!VOCAB_EDIT_TARGET) return;
+  const word = document.getElementById('vocabEditWord').value.trim();
+  const reading = document.getElementById('vocabEditReading').value.trim();
+  const meaning = document.getElementById('vocabEditMeaning').value.trim();
+  if(!word || !meaning){ showToast('请填写单词和释义。', 'warning'); return; }
+  if(vocabData.some(entry=>entry !== VOCAB_EDIT_TARGET && vocabIdentityKey(entry.word) === vocabIdentityKey(word))){
+    showToast('生词本中已经有这个词。', 'warning'); return;
+  }
+  VOCAB_EDIT_TARGET.word = word;
+  VOCAB_EDIT_TARGET.reading = reading;
+  VOCAB_EDIT_TARGET.meaning = meaning;
+  saveVocab();
+  closeVocabEditDialog();
+  renderVocab();
+  showToast('生词已更新。', 'success');
 }
 
 function vocabMasteryLabel(v, isDueNow){
@@ -6485,7 +6579,7 @@ function exportVocabCsv() {
 function exportVocabCsvFile() {
   // 添加 BOM 头 \uFEFF，防止 Excel 打开时出现中文乱码。
   let csvContent = "\uFEFF";
-  csvContent += "单词,假名,释义,词性,等级,来源,来源链接,复习状态,下次复习时间\n";
+  csvContent += "单词,假名,释义,词性,等级,来源,来源链接,复习状态,下次复习时间（按复习结果自动安排）\n";
   
   const csvField = value => `"${String(value || '').replace(/"/g, '""')}"`;
   const now = Date.now();
@@ -7169,9 +7263,8 @@ function renderHistorySuggestions(){
   const todayPractice = PRACTICE_HISTORY.find(item => item.date === practiceDateKey());
   const practicedToday = todayPractice && Number(todayPractice.total || 0) > 0;
   const items = [];
-  if(!level){
-    items.push({priority:true, icon:'測', title:'水平测试', detail:'测试后会显示更适合你的阅读等级和材料建议。', action:"enterReadingFromHero();switchWorkspace('test')", label:'水平测试'});
-  }
+  // The level card on the right already owns the untested-state action.
+  // Avoid repeating the same recommendation in the main task list.
   if(!todayRead){
     items.push({priority:!!level, icon:'読', title:`继续读一篇 ${level || '入门'} 文章`, detail:'完成后会更新阅读天数，并生成可复习词汇。', action:"switchWorkspace('reading')", label:'去阅读'});
   }
@@ -7440,12 +7533,14 @@ function clearDiscoverFilters(){
   ACTIVE_GRADED_LEVEL = '全部';
   ACTIVE_GRADED_TOPIC = '全部';
   renderGradedReadingMaterials();
+  requestAnimationFrame(()=>document.getElementById('gradedMaterialGrid')?.scrollIntoView({behavior:'smooth', block:'start'}));
 }
 
 function clearSourceFilters(){
   ACTIVE_SOURCE_LEVEL = '全部';
   ACTIVE_SOURCE_TYPE = '全部';
   renderSourceDirectory();
+  requestAnimationFrame(()=>document.getElementById('sourceDirectory')?.scrollIntoView({behavior:'smooth', block:'start'}));
 }
 
 function gradedMaterialDisplayTitle(title){

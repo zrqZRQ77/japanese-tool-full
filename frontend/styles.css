@@ -2898,6 +2898,59 @@ button:disabled {
   }
 }
 
+.mobile-main-menu-button { display: none; }
+
+.vocab-edit-fields {
+  display: grid;
+  gap: 14px;
+  padding: 22px 24px;
+}
+
+.vocab-edit-fields label {
+  display: grid;
+  gap: 7px;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.vocab-edit-fields input,
+.vocab-edit-fields textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+
+@media (max-width: 720px) {
+  .sidebar-brand .sidebar-toggle-button { display: none !important; }
+  .app-sidebar .sidebar-footer { display: none !important; }
+  .mobile-main-menu-button {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    align-content: center;
+    gap: 5px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+  }
+  .mobile-main-menu-button span {
+    width: 100%;
+    height: 2px;
+    display: block;
+    border-radius: 999px;
+    background: currentColor;
+  }
+  .vocab-edit-dialog { width: min(100%, 480px); }
+  .vocab-edit-fields { padding: 18px 16px; }
+}
+
 /* icon-btn は btn-icon に統合されました */
 
 /* 朗读控制：平时隐藏，仅在朗读中再次点击图标时出现 */
@@ -6277,6 +6330,32 @@ body[data-view="discover"] .source-directory-panel {
   .source-directory-item .btnrow {
     justify-content: stretch;
   }
+}
+
+@media (max-width: 520px) {
+  body.first-visit .hero-secondary-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  body.first-visit .hero-secondary-actions > * {
+    width: 100%;
+    min-width: 0;
+  }
+
+  body[data-view="reading"] .reader-toolbar {
+    display: flex;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+  }
+
+  body[data-view="reading"] .reader-toolbar::-webkit-scrollbar { display: none; }
+  body[data-view="reading"] .reader-tool-group { flex: 0 0 auto; }
 }
 
 @media (max-width: 420px) {
@@ -12316,5 +12395,74 @@ body[data-view="vocab"] .vocab-page-review .rate-btn:focus-visible {
 
   body[data-view="vocab"] .vocab-page-review .rate-btn {
     min-height: 40px;
+  }
+}
+
+/* Real-device follow-up: align the generated markup with the mobile rules. */
+.reading-display-preset-grid button.is-selected {
+  border-color: transparent !important;
+  background: #6F50B7 !important;
+  color: #fff !important;
+}
+
+@media (max-width: 900px) {
+  body[data-view="retell"] .typing-side { order: initial; }
+}
+
+@media (max-width: 720px) {
+  .export-actions .export-status {
+    grid-column: 1 / -1;
+    min-height: 0;
+  }
+
+  .export-actions .btn-secondary { grid-column: 1; }
+  .export-actions .btn-primary { grid-column: 2; }
+
+  .settings-tts-controls {
+    min-width: 0;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .settings-tts-controls select,
+  .settings-tts-controls button {
+    min-width: 0 !important;
+    max-width: 100%;
+  }
+
+  body[data-view="vocab"] .flash-stage-solid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 240px;
+    height: min(310px, 40vh);
+    overflow: hidden;
+  }
+
+  body[data-view="vocab"] .flash-card-surface {
+    width: 100%;
+    min-width: 0;
+    padding: 28px 20px;
+    overflow-wrap: anywhere;
+  }
+
+  body[data-view="vocab"] .flash-main-word {
+    max-width: 100%;
+    font-size: clamp(var(--type-size-step-40), 13vw, var(--type-size-step-64));
+    overflow-wrap: anywhere;
+  }
+
+  body[data-view="vocab"] .flash-rating-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  body[data-view="vocab"] .flash-rating-row .rate-btn {
+    min-width: 0;
+    padding-inline: 5px;
+    white-space: normal;
   }
 }
