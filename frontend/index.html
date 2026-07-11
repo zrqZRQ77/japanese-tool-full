@@ -9,14 +9,15 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260710-09">
-<link rel="stylesheet" href="design-system.css?v=20260710-09">
-<link rel="stylesheet" href="grammar-layout.css?v=20260710-09">
-<link rel="stylesheet" href="typography.css?v=20260710-09">
+<link rel="stylesheet" href="styles.css?v=20260711-05">
+<link rel="stylesheet" href="design-system.css?v=20260711-05">
+<link rel="stylesheet" href="grammar-layout.css?v=20260711-05">
+<link rel="stylesheet" href="typography.css?v=20260711-05">
+<link rel="stylesheet" href="hero-menu-refresh.css?v=20260710-12">
 <script defer src="config.js"></script>
+<script defer src="analytics.js?v=20260710-01"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 </head>
 <body data-view="reading" class="first-visit">
 <div class="wrap">
@@ -34,36 +35,27 @@
       </div>
 
       <div class="hero-input">
-        <textarea id="heroInputText" placeholder="在此粘贴文章…" aria-label="粘贴文章正文或网页链接"></textarea>
+        <textarea id="heroInputText" placeholder="在此粘贴日语文本…" aria-label="粘贴日语文本"></textarea>
         <div class="hero-actions">
           <div class="hero-secondary-actions">
-            <details class="hero-menu-details hero-import-menu">
-              <summary class="hero-text-action" onclick="closeOtherHeroMenus(this.closest('details'))">导入资料 <span aria-hidden="true">⌄</span></summary>
-              <div class="hero-menu-popover" role="menu" aria-label="导入资料">
-                <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');document.getElementById('heroWordInput').click()">
-                  <span>上传 Word / DOCX</span>
-                </button>
-                <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');document.getElementById('heroPdfInput').click()">
-                  <span>上传 PDF</span>
-                  <span class="hero-beta-pill">Beta</span>
-                </button>
-                <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');focusHeroLinkInput()">
-                  <span>导入链接</span>
-                  <span class="hero-beta-pill">Beta</span>
-                </button>
-              </div>
-            </details>
             <button class="btn-secondary btn--text hero-text-action" type="button" onclick="loadSampleFromHero()">
-              <span>使用示例</span>
+              <span>阅读示例</span>
             </button>
             <details class="hero-menu-details hero-more-menu">
-              <summary class="hero-text-action" onclick="closeOtherHeroMenus(this.closest('details'))">更多 <span aria-hidden="true">⌄</span></summary>
+              <summary class="hero-text-action" onclick="closeOtherHeroMenus(this.closest('details'))">
+                <span>更多</span>
+                <svg class="hero-menu-chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.25 6 7.5l3.5-3.25"></path></svg>
+              </summary>
               <div class="hero-menu-popover" role="menu" aria-label="更多选项">
+                <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');document.getElementById('heroPdfInput').click()">
+                  <span class="hero-menu-item-label">上传 PDF</span>
+                  <span class="hero-beta-pill">Beta</span>
+                </button>
                 <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');enterReadingFromHero();switchWorkspace('test')">
-                  <span>水平测试</span>
+                  <span class="hero-menu-item-label">水平测试</span>
                 </button>
                 <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');openOnboarding()">
-                  <span>使用说明</span>
+                  <span class="hero-menu-item-label">使用说明</span>
                 </button>
               </div>
             </details>
@@ -77,7 +69,6 @@
           <button class="btn-primary btn--small" type="button" onclick="startGuidedSampleFromHero()">需要引导</button>
           <button class="btn-secondary btn--small" type="button" onclick="dismissHeroGuidePrompt()">不用了</button>
         </div>
-        <input id="heroWordInput" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden onchange="extractUploadedFile(this.files[0])">
         <input id="heroPdfInput" type="file" accept=".pdf,application/pdf" hidden onchange="extractUploadedFile(this.files[0])">
       </div>
     </div>
@@ -287,7 +278,7 @@
               <button class="reader-tool reader-tool-wide" id="readingAnalysisButton" type="button" onclick="toggleReadingInsights()" data-tooltip="文章难度" aria-label="文章难度">难度</button>
               <button class="reader-tool reader-tool-wide is-active" id="readingDetailToggleBtn" type="button" onclick="toggleReadingDetailPanel()" data-tooltip="显示或隐藏详解" aria-label="显示或隐藏详解">详解</button>
               <span class="reader-tool-divider" aria-hidden="true"></span>
-              <button class="reader-tool import-tool" type="button" onclick="editSourceText()" data-tooltip="更换文章" aria-label="更换文章或链接">
+              <button class="reader-tool import-tool" type="button" onclick="editSourceText()" data-tooltip="更换文章" aria-label="更换文章">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6"></path><path d="M18 3.8v4.7h-4.7"></path><path d="M20 12a8 8 0 0 1-13.7 5.6"></path><path d="M6 20.2v-4.7h4.7"></path></svg>
               </button>
               <button class="reader-tool download-tool" id="exportTriggerBtn" type="button" onclick="openExportModal()" data-tooltip="导出" aria-label="导出">
@@ -299,14 +290,13 @@
           <!-- 输入区域 -->
           <div class="source-composer" id="sourceComposer">
             <div class="source-dropzone">
-              <textarea id="inputText" placeholder="粘贴日语原文或文章链接，也可以上传本地资料开始阅读。"></textarea>
+              <textarea id="inputText" placeholder="粘贴日语文本，或上传文字型 PDF（Beta）。"></textarea>
               <div class="source-actions">
-                <button class="btn-primary" onclick="analyzeSourceInput()">开始阅读</button>
-                <button class="btn-secondary" type="button" onclick="document.getElementById('documentFileInput').click()">上传文件</button>
+                <button class="btn-primary" id="analyzeSourceBtn" onclick="analyzeSourceInput()">开始阅读</button>
+                <button class="btn-secondary" type="button" onclick="document.getElementById('documentFileInput').click()">上传 PDF <span class="hero-beta-pill">Beta</span></button>
                 <button class="btn-secondary" onclick="loadSample()">用示例开始</button>
               </div>
-              <input id="articleUrlInput" type="hidden">
-              <input id="documentFileInput" type="file" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden onchange="extractUploadedFile(this.files[0])">
+              <input id="documentFileInput" type="file" accept=".pdf,application/pdf" hidden onchange="extractUploadedFile(this.files[0])">
               <div class="import-status" id="importStatus"></div>
             </div>
 
@@ -429,6 +419,9 @@
             <div class="vocab-management-options" role="menu" aria-label="生词本管理">
               <button type="button" onclick="exportVocabCsv(); closeVocabManagementMenu(this)" role="menuitem">
                 <span>导出 CSV</span>
+              </button>
+              <button type="button" onclick="exportAnkiTsv(); closeVocabManagementMenu(this)" role="menuitem" title="导出为可在 Anki 中导入的 TSV 文件">
+                <span>导出 Anki</span>
               </button>
               <button class="danger" type="button" onclick="clearAllVocab(); closeVocabManagementMenu(this)" role="menuitem">
                 <span>清空生词本</span>
@@ -882,41 +875,41 @@
 
               <article class="settings-action-item">
                 <div>
-                  <strong>界面语言</strong>
-                  <p>切换中文或日语界面显示。</p>
-                </div>
-                <label class="settings-language-select">
-                  <select id="settingsLanguageSelect" onchange="setInterfaceLanguage(this.value)" aria-label="界面语言">
-                    <option value="zh">中文</option>
-                    <option value="ja">日本語</option>
-                  </select>
-                </label>
-              </article>
-              <article class="settings-action-item">
-                <div>
                   <strong>日语朗读速度</strong>
-                  <p>学习速度比系统默认更慢，句子和段落会保留更自然的停顿。</p>
+                  <p>选择适合听读练习的朗读节奏。</p>
                 </div>
                 <div class="settings-tts-controls">
-                  <label class="settings-language-select settings-tts-select">
-                    <select id="ttsRateSelect" onchange="setPreferredTtsRate(this.value)" aria-label="日语朗读速度">
-                      <option value="0.68">慢速</option>
-                      <option value="0.78">学习速度 · 推荐</option>
-                      <option value="0.9">自然速度</option>
-                    </select>
-                  </label>
+                  <details class="settings-choice-menu" id="ttsRateMenu">
+                    <summary class="settings-choice-trigger" onclick="closeOtherSettingsChoiceMenus(this.closest('details'))">
+                      <span class="settings-choice-title">朗读速度</span>
+                    </summary>
+                    <div class="settings-choice-options" role="menu" aria-label="日语朗读速度选项">
+                      <button type="button" role="menuitemradio" data-value="0.68" onclick="selectTtsRate('0.68')"><span>慢速</span></button>
+                      <button type="button" role="menuitemradio" data-value="0.78" onclick="selectTtsRate('0.78')"><span>学习速度</span><span class="settings-choice-badge">推荐</span></button>
+                      <button type="button" role="menuitemradio" data-value="0.9" onclick="selectTtsRate('0.9')"><span>自然速度</span></button>
+                    </div>
+                  </details>
+                  <select id="ttsRateSelect" onchange="setPreferredTtsRate(this.value)" aria-label="日语朗读速度" hidden>
+                    <option value="0.68">慢速</option>
+                    <option value="0.78">学习速度</option>
+                    <option value="0.9">自然速度</option>
+                  </select>
                   <button class="settings-secondary-action" type="button" onclick="previewJapaneseVoice()">试听</button>
                 </div>
               </article>
               <article class="settings-action-item" id="ttsVoiceField" style="display:none;">
                 <div>
                   <strong>日语朗读音色</strong>
-                  <p>优先使用当前设备上更自然的日语音色，实际效果取决于系统已安装的语音。</p>
+                  <p>选择当前设备上已安装的日语朗读音色。</p>
                 </div>
                 <div class="settings-tts-controls">
-                  <label class="settings-language-select settings-tts-select">
-                    <select id="ttsVoiceSelect" onchange="setPreferredVoice(this.value)" aria-label="日语朗读音色"></select>
-                  </label>
+                  <details class="settings-choice-menu settings-choice-menu--voice" id="ttsVoiceMenu">
+                    <summary class="settings-choice-trigger" onclick="closeOtherSettingsChoiceMenus(this.closest('details'))">
+                      <span class="settings-choice-title">朗读音色</span>
+                    </summary>
+                    <div class="settings-choice-options settings-choice-options--voice" id="ttsVoiceOptions" role="menu" aria-label="日语朗读音色选项"></div>
+                  </details>
+                  <select id="ttsVoiceSelect" onchange="setPreferredVoice(this.value)" aria-label="日语朗读音色" hidden></select>
                   <button class="settings-secondary-action" type="button" onclick="previewJapaneseVoice()">试听</button>
                 </div>
               </article>
@@ -938,8 +931,8 @@
               </article>
               <article class="settings-action-item">
                 <div>
-                  <strong>数据保存说明</strong>
-                  <p>学习记录保存在当前浏览器本地，换设备或清理浏览器数据前建议先备份。</p>
+                  <strong>数据与隐私</strong>
+                  <p>学习记录保存在当前浏览器。粘贴的文本和选择的 PDF 仅在当前设备中处理。清除浏览器数据后可能无法恢复，建议定期备份。</p>
                 </div>
               </article>
               <article class="settings-action-item settings-action-item--caution">
@@ -948,6 +941,13 @@
                   <p>从备份文件恢复学习数据，会覆盖当前设备上的学习数据。</p>
                 </div>
                 <button class="settings-secondary-action" onclick="restoreData()">恢复</button>
+              </article>
+              <article class="settings-action-item settings-action-item--caution">
+                <div>
+                  <strong>清除本机学习数据</strong>
+                  <p>删除当前浏览器中的生词、语法笔记、阅读记录、练习记录、阅读清单、测试结果和偏好设置。此操作无法撤销。</p>
+                </div>
+                <button class="settings-secondary-action" type="button" onclick="openClearLocalDataDialog()">清除数据</button>
               </article>
               <input id="backupFileInput" type="file" accept="application/json,.json" hidden onchange="importLearningBackup(this.files[0])">
             </section>
@@ -962,35 +962,13 @@
               <article class="settings-action-item">
                 <div>
                   <strong>阅读流程说明</strong>
-                  <p>了解粘贴正文、上传资料、保存生词和复习练习如何配合使用。</p>
+                  <p>了解粘贴文本、上传文字型 PDF、保存生词和复习练习如何配合使用。</p>
                 </div>
                 <button class="settings-secondary-action" onclick="openOnboarding()">查看说明</button>
-              </article>
-              <article class="settings-action-item">
-                <div>
-                  <strong>常见问题</strong>
-                  <p>查看链接导入、文件解析、词典结果和本地数据保存的常见问题。</p>
-                </div>
-                <button class="settings-secondary-action" onclick="openOnboarding()">查看</button>
               </article>
             </section>
           </div>
 
-          <aside class="settings-side-column" aria-label="高级功能额度">
-            <section class="settings-page-card settings-quota-panel">
-              <div class="settings-section-head">
-                <div>
-                  <span class="settings-kicker">高级功能</span>
-                </div>
-              </div>
-              <div class="settings-quota-list" id="quotaStatus">正在读取本地状态。</div>
-              <div class="settings-pro-note">
-                <b>Pro 可无限使用</b>
-                <span>免费额度按月重置，核心阅读功能仍在本地运行。</span>
-              </div>
-            </section>
-
-          </aside>
         </div>
       </div>
     </div>
@@ -1090,6 +1068,30 @@
     <div class="delete-confirm-actions">
       <button class="btn-secondary delete-confirm-cancel" id="deleteConfirmCancel" type="button" onclick="closeDeleteConfirm()">取消</button>
       <button class="btn-primary delete-confirm-submit" id="deleteConfirmSubmit" type="button" onclick="runDeleteConfirm()">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- 清除本机学习数据确认 -->
+<div class="delete-confirm-modal" id="clearLocalDataModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="clearLocalDataTitle" inert>
+  <div class="delete-confirm-dialog">
+    <div class="delete-confirm-head">
+      <span class="delete-confirm-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 8v5"></path><path d="M12 16.5h.01"></path><path d="M10.3 4.6 2.8 18a1.6 1.6 0 0 0 1.4 2.4h15.6a1.6 1.6 0 0 0 1.4-2.4L13.7 4.6a1.9 1.9 0 0 0-3.4 0Z"></path></svg>
+      </span>
+      <div>
+        <span class="module-kicker">数据管理</span>
+        <strong id="clearLocalDataTitle">清除本机学习数据？</strong>
+      </div>
+      <button class="delete-confirm-close" type="button" onclick="closeClearLocalDataDialog()" aria-label="关闭清除数据确认窗口">×</button>
+    </div>
+    <div class="delete-confirm-body">
+      <p>将删除当前浏览器中的全部学习数据和偏好设置，包括生词、语法笔记、阅读与练习记录、阅读清单和水平测试结果。</p>
+      <div class="delete-confirm-target">清除后无法恢复。需要保留数据时，请先返回设置页完成备份。</div>
+    </div>
+    <div class="delete-confirm-actions">
+      <button class="btn-secondary delete-confirm-cancel" type="button" onclick="closeClearLocalDataDialog()">取消</button>
+      <button class="btn-primary delete-confirm-submit" id="clearLocalDataConfirmButton" type="button" onclick="confirmClearLocalData()">确认清除</button>
     </div>
   </div>
 </div>
@@ -1224,6 +1226,175 @@
   </div>
 </div>
 
-<script src="app.js?v=20260710-09"></script>
+<script src="app.js?v=20260711-05"></script>
+<script src="search-entry-fix.js?v=20260711-01"></script>
+<script>
+  const applyChineseInterface = typeof window.setInterfaceLanguage === 'function'
+    ? window.setInterfaceLanguage.bind(window)
+    : null;
+  if (applyChineseInterface) {
+    applyChineseInterface('zh', true);
+    window.setInterfaceLanguage = () => applyChineseInterface('zh', true);
+  }
+
+  function closeOtherSettingsChoiceMenus(current) {
+    document.querySelectorAll('.settings-choice-menu[open]').forEach(menu => {
+      if (menu !== current) menu.removeAttribute('open');
+    });
+  }
+
+  function syncTtsRateMenu() {
+    const select = document.getElementById('ttsRateSelect');
+    if (!select) return;
+    document.querySelectorAll('#ttsRateMenu [data-value]').forEach(button => {
+      const selected = button.dataset.value === String(select.value);
+      button.classList.toggle('is-selected', selected);
+      button.setAttribute('aria-checked', selected ? 'true' : 'false');
+    });
+  }
+
+  function selectTtsRate(value) {
+    const select = document.getElementById('ttsRateSelect');
+    if (!select) return;
+    select.value = value;
+    window.setPreferredTtsRate?.(value);
+    syncTtsRateMenu();
+    document.getElementById('ttsRateMenu')?.removeAttribute('open');
+  }
+
+  function voiceOptionButton(option, recommendedName) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.setAttribute('role', 'menuitemradio');
+    button.dataset.value = option.value;
+
+    const label = document.createElement('span');
+    label.textContent = option.textContent.replace(/\s*·\s*推荐\s*$/u, '');
+    button.append(label);
+
+    if (option.value === recommendedName) {
+      const badge = document.createElement('span');
+      badge.className = 'settings-choice-badge';
+      badge.textContent = '推荐';
+      button.append(badge);
+    }
+
+    button.addEventListener('click', () => selectTtsVoice(option.value));
+    return button;
+  }
+
+  function syncTtsVoiceMenu() {
+    const select = document.getElementById('ttsVoiceSelect');
+    const optionsHost = document.getElementById('ttsVoiceOptions');
+    if (!select || !optionsHost) return;
+
+    const options = Array.from(select.options).filter(option => option.value && !option.disabled);
+    const hattori = options.find(option => /hattori/i.test(option.value));
+    const recommendedName = hattori?.value || options[0]?.value || '';
+
+    if (!localStorage.getItem('reading_tts_voice') && recommendedName) {
+      select.value = recommendedName;
+      window.setPreferredVoice?.(recommendedName);
+    }
+
+    optionsHost.replaceChildren(...options.map(option => voiceOptionButton(option, recommendedName)));
+    optionsHost.querySelectorAll('button').forEach(button => {
+      const selected = button.dataset.value === select.value;
+      button.classList.toggle('is-selected', selected);
+      button.setAttribute('aria-checked', selected ? 'true' : 'false');
+    });
+  }
+
+  function selectTtsVoice(name) {
+    const select = document.getElementById('ttsVoiceSelect');
+    if (!select) return;
+    select.value = name;
+    window.setPreferredVoice?.(name);
+    syncTtsVoiceMenu();
+    document.getElementById('ttsVoiceMenu')?.removeAttribute('open');
+  }
+
+  function initializeSettingsChoiceMenus() {
+    const rateSelect = document.getElementById('ttsRateSelect');
+    const voiceSelect = document.getElementById('ttsVoiceSelect');
+    syncTtsRateMenu();
+    syncTtsVoiceMenu();
+
+    rateSelect?.addEventListener('change', syncTtsRateMenu);
+    voiceSelect?.addEventListener('change', syncTtsVoiceMenu);
+
+    if (voiceSelect) {
+      new MutationObserver(syncTtsVoiceMenu).observe(voiceSelect, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    document.addEventListener('click', event => {
+      if (event.target.closest('.settings-choice-menu')) return;
+      document.querySelectorAll('.settings-choice-menu[open]').forEach(menu => menu.removeAttribute('open'));
+    });
+
+    window.speechSynthesis?.addEventListener?.('voiceschanged', () => {
+      window.setTimeout(syncTtsVoiceMenu, 0);
+    });
+    window.setTimeout(syncTtsVoiceMenu, 120);
+  }
+
+  initializeSettingsChoiceMenus();
+
+  let clearLocalDataReturnFocus = null;
+
+  function openClearLocalDataDialog() {
+    const modal = document.getElementById('clearLocalDataModal');
+    if (!modal) return;
+    clearLocalDataReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    modal.removeAttribute('inert');
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add('active');
+    document.body.dataset.clearDataPreviousOverflow = document.body.style.overflow || '';
+    document.body.style.overflow = 'hidden';
+    window.setTimeout(() => document.getElementById('clearLocalDataConfirmButton')?.focus(), 0);
+  }
+
+  function closeClearLocalDataDialog(restoreFocus = true) {
+    const modal = document.getElementById('clearLocalDataModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('inert', '');
+    document.body.style.overflow = document.body.dataset.clearDataPreviousOverflow || '';
+    delete document.body.dataset.clearDataPreviousOverflow;
+    if (restoreFocus) clearLocalDataReturnFocus?.focus?.();
+    clearLocalDataReturnFocus = null;
+  }
+
+  function confirmClearLocalData() {
+    const button = document.getElementById('clearLocalDataConfirmButton');
+    if (button) {
+      button.disabled = true;
+      button.textContent = '正在清除…';
+    }
+    try {
+      window.speechSynthesis?.cancel();
+      localStorage.clear();
+      sessionStorage.clear();
+    } finally {
+      window.location.reload();
+    }
+  }
+
+  document.getElementById('clearLocalDataModal')?.addEventListener('click', event => {
+    if (event.target === event.currentTarget) closeClearLocalDataDialog();
+  });
+
+  document.addEventListener('keydown', event => {
+    const modal = document.getElementById('clearLocalDataModal');
+    if (event.key !== 'Escape' || !modal?.classList.contains('active')) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    closeClearLocalDataDialog();
+  }, true);
+</script>
 </body>
 </html>

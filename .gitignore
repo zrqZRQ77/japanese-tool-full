@@ -3,9 +3,11 @@
 node_modules/
 **/node_modules/
 dist/
+.ai-bridge/
 .env
 **/.env
 npm-debug.log*
 *.log
 frontend/audit-screenshots/**/*.png
 frontend/audit-screenshots/**/*.json
+frontend/audit-screenshots/**/ui-audit-trace.zip

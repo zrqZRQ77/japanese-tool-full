@@ -11899,7 +11899,7 @@ body[data-view="settings"] .settings-version-pill {
 
 body[data-view="settings"] .settings-layout {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 310px) !important;
+  grid-template-columns: minmax(0, 1fr) !important;
   align-items: start !important;
   gap: 18px !important;
 }

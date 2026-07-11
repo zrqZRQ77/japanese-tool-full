@@ -1,0 +1,45 @@
+{
+  "version": "20260710-09",
+  "createdAt": "2026-07-10T13:57:54.950Z",
+  "ok": true,
+  "screenshots": [
+    {
+      "page": "首页",
+      "file": "01-home.png"
+    },
+    {
+      "page": "阅读页",
+      "file": "02-reading.png"
+    },
+    {
+      "page": "生词本",
+      "file": "03-vocab.png"
+    },
+    {
+      "page": "语法本",
+      "file": "04-grammar.png"
+    },
+    {
+      "page": "练习页",
+      "file": "05-practice.png"
+    },
+    {
+      "page": "资料页",
+      "file": "06-discover.png"
+    },
+    {
+      "page": "水平测试",
+      "file": "07-test.png"
+    },
+    {
+      "page": "学习历史",
+      "file": "08-history.png"
+    },
+    {
+      "page": "设置与帮助",
+      "file": "09-settings.png"
+    }
+  ],
+  "mode": "server",
+  "baseUrl": "http://127.0.0.1:5184/index.html"
+}

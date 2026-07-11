@@ -10,6 +10,10 @@ window.addEventListener('unhandledrejection', function(event) {
   showToast('操作失败，请重试', 'error');
 });
 
+function trackAnalyticsEvent(eventName, parameters = {}){
+  return window.yomeruAnalytics?.track(eventName, parameters) || false;
+}
+
 // 资源加载失败处理
 window.addEventListener('error', function(e) {
   if (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK') {
@@ -288,11 +292,14 @@ function applyReadingDisplaySettings(){
   readingDisplayBeforeOpen = null;
 }
 
-function toggleParagraphTranslation(){
+async function toggleParagraphTranslation(){
   SHOW_PARAGRAPH_TRANSLATION = !SHOW_PARAGRAPH_TRANSLATION;
   const button = document.getElementById('translationToggleBtn');
   button?.classList.toggle('is-active', SHOW_PARAGRAPH_TRANSLATION);
-  renderText();
+  await renderText();
+  if(SHOW_PARAGRAPH_TRANSLATION && CURRENT_ARTICLE_TEXT.trim()){
+    trackAnalyticsEvent('translation_completed');
+  }
 }
 
 function toggleReaderSmartSegmentation(){
@@ -354,18 +361,10 @@ document.addEventListener('click', event=>{
   });
 });
 
-function focusHeroLinkInput(){
-  const input = document.getElementById('heroInputText');
-  if(!input) return;
-  input.focus();
-  input.placeholder = '粘贴网页链接，例如 https://www3.nhk.or.jp/news/easy/';
-  showToast('把网页链接粘贴到输入框后，点击开始阅读。', 'info');
-}
-
 function analyzeFromHero() {
   const text = document.getElementById('heroInputText').value.trim();
   if (!text) {
-    showToast('请先粘贴日语文本或文章链接。', 'warning');
+    showToast('请先粘贴日语文本。', 'warning');
     document.getElementById('heroInputText')?.focus();
     return;
   }
@@ -876,137 +875,10 @@ const DATA_FILES = {
 const THIRD_PARTY_SCRIPTS = {
   kuromoji:'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js',
   pptx:'https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js',
-  jszip:'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
   pdfjs:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',
-  pdfjsWorker:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js',
-  mammoth:'https://cdn.jsdelivr.net/npm/mammoth@1.9.1/mammoth.browser.min.js'
+  pdfjsWorker:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
 };
 const EXTERNAL_SCRIPT_LOADS = new Map();
-
-const METERED_FEATURES = {
-  urlExtract: { label:'网页链接自动提取', defaultPaidDaily:60 },
-  serverFileExtract: { label:'服务器文件解析兜底', defaultPaidDaily:20 },
-  onlineDictionary: { label:'联网词典增强', defaultPaidDaily:120 }
-};
-
-function appPlan(){
-  const config = window.NIHONGO_CONFIG || {};
-  if(config.premiumUnlocked === true) return 'paid';
-  const plan = String(config.plan || 'free').toLowerCase();
-  return ['paid', 'pro', 'premium'].includes(plan) ? 'paid' : 'free';
-}
-
-function premiumFeaturesEnabled(){
-  return window.NIHONGO_CONFIG?.premiumFeaturesEnabled !== false;
-}
-
-function isPaidPlan(){
-  return premiumFeaturesEnabled() && appPlan() === 'paid';
-}
-
-function meteredLimit(featureKey){
-  if(!premiumFeaturesEnabled()) return 0;
-  const feature = METERED_FEATURES[featureKey];
-  if(!feature) return 0;
-  if(!isPaidPlan()) return 0;
-  const configured = Number(window.NIHONGO_CONFIG?.quotas?.paidDaily?.[featureKey]);
-  return Number.isFinite(configured) ? Math.max(0, configured) : feature.defaultPaidDaily;
-}
-
-function quotaDateKey(){
-  return new Date().toISOString().slice(0, 10);
-}
-
-function meteredUsageStore(){
-  const today = quotaDateKey();
-  try{
-    const raw = JSON.parse(safeStorage.getItem('reading_metered_usage') || '{}');
-    return raw.date === today && raw.counts && typeof raw.counts === 'object'
-      ? raw
-      : { date:today, counts:{} };
-  }catch{
-    return { date:today, counts:{} };
-  }
-}
-
-function saveMeteredUsageStore(store){
-  safeStorage.setItem('reading_metered_usage', JSON.stringify(store));
-}
-
-function meteredStatus(featureKey){
-  const feature = METERED_FEATURES[featureKey];
-  const limit = meteredLimit(featureKey);
-  const usage = meteredUsageStore();
-  const used = Number(usage.counts?.[featureKey] || 0);
-  const remaining = Math.max(0, limit - used);
-  return {
-    label:feature?.label || featureKey,
-    limit,
-    used,
-    remaining,
-    enabled:premiumFeaturesEnabled(),
-    paid:isPaidPlan()
-  };
-}
-
-function paidFeatureMessage(featureKey){
-  const status = meteredStatus(featureKey);
-  if(!status.enabled) return `${status.label}当前未开放。`;
-  if(!status.paid) return `${status.label}是 Pro 增强。当前可以继续使用本地解析、粘贴正文和本地词库。`;
-  if(status.limit <= 0) return `${status.label}今天没有可用额度。`;
-  if(status.remaining <= 0) return `${status.label}今日额度已用完，请明天再试。`;
-  return '';
-}
-
-function reserveMeteredFeature(featureKey){
-  const status = meteredStatus(featureKey);
-  if(!status.enabled || !status.paid || status.limit <= 0 || status.remaining <= 0){
-    return { ok:false, status, message:paidFeatureMessage(featureKey) };
-  }
-  const store = meteredUsageStore();
-  store.counts[featureKey] = Number(store.counts[featureKey] || 0) + 1;
-  saveMeteredUsageStore(store);
-  renderQuotaStatus();
-  return { ok:true, status:meteredStatus(featureKey) };
-}
-
-function renderQuotaStatus(){
-  const planTarget = document.getElementById('planStatus');
-  const quotaTarget = document.getElementById('quotaStatus');
-  if(planTarget){
-    planTarget.innerHTML = isPaidPlan()
-      ? '<span class="plan-pill pro">Pro</span><span>已开启服务器增强功能</span>'
-      : '<span class="plan-pill local">本地模式</span><span>核心功能在浏览器本地运行</span>';
-  }
-  if(!quotaTarget) return;
-  const colorByKey = {
-    urlExtract:'#7D68F1',
-    serverFileExtract:'#E3A032',
-    onlineDictionary:'#E45252'
-  };
-  quotaTarget.innerHTML = Object.keys(METERED_FEATURES).map(key=>{
-    const status = meteredStatus(key);
-    const limit = Number(status.limit || 10) || 10;
-    const used = Math.min(limit, Math.max(0, Number(status.used || 0)));
-    const percent = Math.max(0, Math.min(100, Math.round(used / limit * 100)));
-    const note = key === 'onlineDictionary'
-      ? '<p>本月额度已用完，将于 <b>8 月 1 日</b> 重置，或升级 Pro 无限使用</p>'
-      : '';
-    return `
-      <article class="settings-quota-card">
-        <div class="settings-quota-head">
-          <h3>${escapeHtml(status.label)}</h3>
-          <span>★ Pro 无限</span>
-        </div>
-        <div class="settings-quota-meter">
-          <i style="width:${percent}%;background:${colorByKey[key] || '#7D68F1'}"></i>
-        </div>
-        <div class="settings-quota-value">${used} / ${limit} 次</div>
-        ${note}
-      </article>
-    `;
-  }).join('');
-}
 
 function withTimeout(promise, ms, message){
   let timer = null;
@@ -1649,7 +1521,7 @@ function guidedPathSteps(){
     {
       type:'reading',
       title:'放入一篇文章',
-      detail:hasReading ? '已经有可学习的文章' : '先粘贴文本、链接或上传 TXT / HTML',
+      detail:hasReading ? '已经有可学习的文章' : '先粘贴日语文本或上传文字型 PDF',
       done:hasReading,
       action:'开始阅读'
     },
@@ -1732,8 +1604,7 @@ function openGuidedStep(type = ''){
 }
 
 const GLOBAL_SEARCH_ITEMS = [
-  {label:'开始阅读', detail:'粘贴文章、链接或上传 TXT / HTML', keywords:'阅读 开始 粘贴 文章 txt html 上传', action:()=>switchWorkspace('reading')},
-  {label:'调整今日目标', detail:'设置每天阅读、生词和练习数量', keywords:'目标 今日 学习 设置', action:()=>{ switchWorkspace('reading'); const panel = document.getElementById('dailyGoalSettings'); if(panel?.classList.contains('is-hidden')) toggleLearningGoalSettings(); }},
+  {label:'开始阅读', detail:'粘贴日语文本或上传文字型 PDF', keywords:'阅读 开始 粘贴 日语 文本 pdf 上传', action:()=>switchWorkspace('reading')},
   {label:'整理生词本', detail:'搜索、筛选、管理收藏词', keywords:'生词 单词 词汇 收藏 搜索 筛选', action:()=>switchWorkspace('vocab')},
   {label:'复习到期词', detail:'打开闪卡复习', keywords:'复习 闪卡 到期 生词', action:()=>startReview()},
   {label:'做文章理解练习', detail:'选择题和复述', keywords:'练习 文章 理解 选择题 复述', action:()=>focusPracticeModule('quiz')},
@@ -1741,7 +1612,7 @@ const GLOBAL_SEARCH_ITEMS = [
   {label:'句型打字', detail:'按题库练习日语输出', keywords:'练习 句型 打字 输出', action:()=>focusPracticeModule('typing')},
   {label:'找阅读材料', detail:'按等级查看推荐来源', keywords:'找材料 来源 下一篇', action:()=>switchWorkspace('discover')},
   {label:'水平测试', detail:'3 分钟定位阅读等级', keywords:'水平 测试 等级 JLPT', action:()=>switchWorkspace('test')},
-  {label:'学习历史', detail:'查看最近文章和 7 天进度', keywords:'历史 记录 进度 七天', action:()=>switchWorkspace('history')},
+  {label:'学习历史', detail:'查看学习日历、进度和今日建议', keywords:'历史 记录 日历 进度 今日 建议', action:()=>switchWorkspace('history')},
   {label:'备份数据', detail:'在设置与帮助中导出或恢复学习数据', keywords:'备份 恢复 导出 数据 设置', action:()=>switchWorkspace('settings')},
   {label:'语法本', detail:'收藏与查询语法点', keywords:'语法 收藏 词典 查询 は て形 敬语', action:()=>switchWorkspace('grammar')}
 ];
@@ -1948,7 +1819,7 @@ function renderReadingQueue(){
         <p>${escapeHtml(readingQueueFallbackTitle(item.url))}</p>
       </div>
       <div class="reading-queue-actions">
-        ${item.status === 'read' ? '' : `<button class="btn-primary" onclick="openReadingQueueItem(${item.id})">开始阅读</button>`}
+        ${item.status === 'read' ? '' : `<button class="btn-primary" onclick="openReadingQueueItem(${item.id})">粘贴文本学习</button>`}
         <a class="btn-ghost" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">打开原文</a>
         <button class="btn-ghost" onclick="toggleReadingQueueItem(${item.id})">${item.status === 'read' ? '重新加入' : '标为已读'}</button>
         <button class="reading-queue-remove" onclick="removeReadingQueueItem(${item.id})" title="删除" aria-label="从阅读清单删除 ${escapeHtml(item.title || '')}">${removeVocabIcon()}</button>
@@ -1963,12 +1834,11 @@ function openReadingQueueItem(id){
   ACTIVE_READING_QUEUE_ID = item.id;
   safeStorage.setItem('reading_queue_active_id', String(item.id));
   const input = document.getElementById('inputText');
-  const hiddenInput = document.getElementById('articleUrlInput');
-  if(input) input.value = item.url;
-  if(hiddenInput) hiddenInput.value = item.url;
+  if(input) input.value = '';
   switchWorkspace('reading');
   editSourceText();
-  setImportStatus(`已准备「${item.title}」。可以直接提取；若提取不可用，请打开原文并复制正文回来。`);
+  setImportStatus(`请打开「${item.title}」的原文，复制需要学习的日语文本后粘贴到这里。`);
+  input?.focus();
 }
 
 function toggleReadingQueueItem(id){
@@ -2271,6 +2141,7 @@ async function loadSample(useGuidedTour = false){
   document.getElementById('inputText').value = SAMPLE_TEXT;
   switchWorkspace('reading');
   if(useGuidedTour) startSampleFlow();
+  trackAnalyticsEvent('analysis_started', { source_type:'sample' });
   try{
     await ensureLearningData();
     document.getElementById('inputText').value = SAMPLE_TEXT || FALLBACK_SAMPLE_TEXT;
@@ -2280,6 +2151,7 @@ async function loadSample(useGuidedTour = false){
     document.getElementById('inputText').value = FALLBACK_SAMPLE_TEXT;
   }
   await renderText();
+  trackAnalyticsEvent('analysis_completed', { source_type:'sample' });
   setImportStatus('');
   if(useGuidedTour) renderSampleFlow();
 }
@@ -2513,7 +2385,7 @@ function normalizeArticleUrl(value){
 async function analyzeSourceInput(){
   const value = sourceInputValue();
   if(!value){
-    setImportStatus('请先粘贴日语文本；这是最快、最稳定的导入方式。也可以上传可选择、复制文字的 PDF（Beta）。', 'error');
+    setImportStatus('请先粘贴日语文本，或上传可选择、复制文字的 PDF（Beta）。', 'error');
     document.getElementById('inputText')?.focus();
     return;
   }
@@ -2521,14 +2393,15 @@ async function analyzeSourceInput(){
   try{
     const normalizedUrl = normalizeArticleUrl(value);
     if(normalizedUrl){
-      const input = document.getElementById('inputText');
-      if(input) input.value = normalizedUrl;
-      await extractArticleUrl(normalizedUrl);
+      setImportStatus('MVP 暂不自动读取网页正文。请打开原文，复制需要学习的日语文本后粘贴到这里。', 'error');
+      showToast('请复制原文中的日语文本后粘贴分析', 'info');
       return;
     }
+    trackAnalyticsEvent('analysis_started', { source_type:'text' });
     CURRENT_ARTICLE_URL = '';
     setImportStatus('正在分析文本……');
     await renderText();
+    trackAnalyticsEvent('analysis_completed', { source_type:'text' });
     setImportStatus('已生成可点击阅读材料。', 'ok');
   }catch(error){
     console.error('文本分析失败', error);
@@ -2623,7 +2496,7 @@ function openRecommendedSource(url){
   window.open(url, '_blank', 'noopener,noreferrer');
   const input = document.getElementById('inputText');
   if(input) input.focus();
-  setImportStatus('打开来源后，复制具体文章页链接并粘贴到资料框。');
+  setImportStatus('来源已在新窗口打开。复制需要学习的日语文本，再回到这里粘贴分析。');
 }
 
 function setImportStatus(message, type = ''){
@@ -2675,7 +2548,6 @@ function switchWorkspace(view){
     document.querySelectorAll('#settingsLanguageSelect, #interfaceLanguageSelect').forEach(select=>{
       if(select) select.value = safeStorage.getItem('interface_language') || 'zh';
     });
-    renderQuotaStatus();
   }
   if(view === 'history') renderReadingHistory();
   if(view === 'vocab'){
@@ -2890,12 +2762,15 @@ async function confirmImportPreview(){
   CURRENT_FOOTNOTES = Array.isArray(pendingImportMeta?.footnotes) ? pendingImportMeta.footnotes : [];
   CURRENT_ARTICLE_URL = readingQueueUrl(pendingImportMeta?.url || '');
   document.getElementById('inputText').value = text;
+  const sourceType = String(pendingImportMeta?.type || 'file').toLowerCase();
   closeImportPreview();
   switchWorkspace('reading');
   setSourceAnalysisBusy(true);
   try{
+    trackAnalyticsEvent('analysis_started', { source_type:sourceType });
     setImportStatus(`正在分析: ${pendingImportMeta?.title || '正文'}……`);
     await renderText();
+    trackAnalyticsEvent('analysis_completed', { source_type:sourceType });
     setImportStatus(`已导入: ${pendingImportMeta?.title || '正文'}`, 'ok');
   }catch(error){
     console.error('导入正文分析失败', error);
@@ -2904,129 +2779,6 @@ async function confirmImportPreview(){
   }finally{
     setSourceAnalysisBusy(false);
   }
-}
-
-function apiEndpoints(path){
-  const configured = String(window.NIHONGO_CONFIG?.apiBaseUrl || '').trim().replace(/\/$/, '');
-  if(configured) return [`${configured}${path}`];
-
-  const isHttp = location.protocol === 'http:' || location.protocol === 'https:';
-  const isLocalDev = ['localhost', '127.0.0.1', '::1'].includes(location.hostname);
-  if(isHttp && !isLocalDev) return [`${location.origin}${path}`];
-
-  const bases = [];
-  if(isLocalDev){
-    bases.push('http://127.0.0.1:3001', 'http://localhost:3001', 'http://127.0.0.1:3002', 'http://localhost:3002');
-  }
-  if(!bases.length) console.error('未配置 apiBaseUrl，且当前页面不是本地开发地址。请检查 config.js。');
-  return [...new Set(bases)].map(base=>`${base}${path}`);
-}
-
-function hasConfiguredBackend(){
-  const configured = String(window.NIHONGO_CONFIG?.apiBaseUrl || '').trim();
-  const isLocalDev = ['localhost', '127.0.0.1', '::1'].includes(location.hostname);
-  return !!configured || isLocalDev;
-}
-
-function connectionHelp(){
-  const configured = String(window.NIHONGO_CONFIG?.apiBaseUrl || '').trim();
-  if(configured) return '请确认后端服务正在运行，并且 config.js 里的 API 地址可以访问。';
-  if(location.protocol === 'file:') return '请不要直接双击 HTML 文件打开；请用本地网页服务或正式部署地址访问。';
-  if(['localhost', '127.0.0.1', '::1'].includes(location.hostname)) return '请确认 backend 服务已经启动。';
-  return '请在 config.js 里配置公开的后端 API 地址，或把前后端部署到同一个域名。';
-}
-
-async function readJsonResponse(response){
-  try{
-    return await response.json();
-  }catch{
-    if(response.status === 404){
-      return { ok:false, message:'当前部署没有找到文件解析接口。PDF / Word 解析需要连接后端服务。' };
-    }
-    return { ok:false, message:`服务返回了无法识别的内容（HTTP ${response.status}）。` };
-  }
-}
-
-async function postExtractUrl(url){
-  const endpoints = apiEndpoints('/api/extract-url');
-  let lastError = null;
-  for(const endpoint of endpoints){
-    const controller = new AbortController();
-    const timeout = setTimeout(()=>controller.abort(), 5000);
-    try{
-      const response = await fetch(endpoint, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({url}),
-        signal:controller.signal
-      });
-      clearTimeout(timeout);
-      const data = await readJsonResponse(response);
-      return { response, data };
-    }catch(error){
-      clearTimeout(timeout);
-      lastError = error;
-    }
-  }
-  throw new Error(`无法连接后端服务。${connectionHelp()}${lastError?.message ? ' 浏览器提示: ' + lastError.message : ''}`);
-}
-
-async function extractArticleUrl(urlOverride = ''){
-  await ensureLearningData();
-  const input = document.getElementById('articleUrlInput');
-  const rawUrl = String(urlOverride || input?.value || sourceInputValue()).trim();
-  const url = normalizeArticleUrl(rawUrl) || rawUrl;
-  if(input) input.value = url;
-  if(!url){
-    setImportStatus('请先粘贴一个具体文章链接。', 'error');
-    return;
-  }
-
-  if(!hasConfiguredBackend()){
-    setImportStatus('当前无法读取这个链接。请复制网页正文，或把网页保存为 HTML / PDF 后上传；HTML 可直接读取，PDF 需要解析服务。', 'error');
-    return;
-  }
-
-  const paidCheck = reserveMeteredFeature('urlExtract');
-  if(!paidCheck.ok){
-    setImportStatus(`${paidCheck.message} 你仍然可以免费复制网页正文粘贴，或上传 TXT / HTML / PDF / Word 本地解析。`, 'error');
-    showToast('链接自动提取是 Pro 增强', 'warning');
-    return;
-  }
-
-  setImportStatus('正在提取网页……如果超过几秒没有结果，可以直接复制网页正文粘贴。');
-  try{
-    const { response, data } = await postExtractUrl(url);
-    if(!response.ok || !data.ok){
-      throw new Error(data.message || '提取失败。');
-    }
-    const text = (data.text || '').trim();
-    if(!text){
-      throw new Error('没有提取到正文。');
-    }
-    setImportStatus(`已提取: ${data.title || '文章正文'}，请检查内容`, 'ok');
-    openImportPreview(text, {title:data.title || '文章正文', type:data.type || 'html', url});
-  }catch(error){
-    const reason = error.message || '提取失败。';
-    setImportStatus(`${reason} 可以复制网页正文，或把网页保存为 HTML / PDF 后上传。网页截图需要等 OCR 服务接入后才能识别。`, 'error');
-  }
-}
-
-function extractReadableHtml(html){
-  const documentNode = new DOMParser().parseFromString(String(html || ''), 'text/html');
-  documentNode.querySelectorAll('script,style,noscript,svg,canvas,nav,header,footer,aside,form,button').forEach(node=>node.remove());
-  const candidates = Array.from(documentNode.querySelectorAll('article,main,[role="main"]'));
-  const contentRoot = candidates
-    .map(node=>({node, length:(node.textContent || '').replace(/\s+/g, '').length}))
-    .sort((a,b)=>b.length-a.length)[0]?.node || documentNode.body;
-  const blocks = Array.from(contentRoot.querySelectorAll('h1,h2,h3,p,li,blockquote,pre'))
-    .map(node=>(node.textContent || '').replace(/[ \t]+/g, ' ').trim())
-    .filter(Boolean);
-  const text = (blocks.length ? blocks.join('\n\n') : (contentRoot.textContent || ''))
-    .replace(/\n[ \t]+/g, '\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-  return { text, title:(documentNode.title || '').trim() };
 }
 
 async function loadPdfJs(){
@@ -3040,7 +2792,7 @@ async function extractPdfTextInBrowser(file){
   const pdfjsLib = await loadPdfJs();
   const buffer = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data:buffer }).promise;
-  if(pdf.numPages > 80) throw new Error(`PDF 共 ${pdf.numPages} 页，免费本地解析最多支持 80 页。`);
+  if(pdf.numPages > 80) throw new Error(`PDF 共 ${pdf.numPages} 页，当前最多支持 80 页。`);
   const mode = document.getElementById('pdfModeSelect')?.value || 'auto';
   const pageTexts = [];
   for(let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1){
@@ -3327,15 +3079,6 @@ function medianBrowserPdf(values){
   return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
 }
 
-async function extractDocxTextInBrowser(file){
-  await loadExternalScript(THIRD_PARTY_SCRIPTS.mammoth, 'mammoth');
-  if(!window.mammoth?.extractRawText) throw new Error('Word 本地解析组件加载失败。');
-  const result = await window.mammoth.extractRawText({ arrayBuffer:await file.arrayBuffer() });
-  const text = String(result.value || '').trim();
-  if(!text) throw new Error('这个 Word 文件没有可提取文字。');
-  return { text };
-}
-
 async function extractLocalDocumentFile(file, extension){
   if(extension === '.pdf'){
     const result = await extractPdfTextInBrowser(file);
@@ -3348,25 +3091,17 @@ async function extractLocalDocumentFile(file, extension){
         cleanupMode,
         pageCount:result.pageCount,
         layoutMode:result.layoutMode,
-        layoutWarnings:result.layoutMode === 'browser-local' ? ['本地 PDF 解析适合文本型 PDF；复杂竖排、扫描版可使用 Pro 服务器解析兜底。'] : []
+        layoutWarnings:result.layoutMode === 'browser-local' ? ['PDF Beta 适合文字型 PDF；扫描件和复杂排版可能无法正确识别。'] : []
       },
       status:`已在浏览器本地读取 ${file.name}${result.pageCount ? `，${result.pageCount} 页` : ''}，请检查内容`
     };
   }
-  if(extension === '.docx'){
-    const result = await extractDocxTextInBrowser(file);
-    return {
-      text:result.text,
-      meta:{ title:file.name, type:'docx' },
-      status:`已在浏览器本地读取 ${file.name}，请检查内容`
-    };
-  }
-  throw new Error('这个文件类型不能本地解析。');
+  throw new Error('MVP 当前只支持文字型 PDF。');
 }
 
 async function extractUploadedFile(file){
   await ensureLearningData();
-  const resetFileInputs = ()=>document.querySelectorAll('#documentFileInput,#heroWordInput,#heroPdfInput').forEach(node=>{ node.value = ''; });
+  const resetFileInputs = ()=>document.querySelectorAll('#documentFileInput,#heroPdfInput').forEach(node=>{ node.value = ''; });
   if(!file) return;
 
   // 基本验证
@@ -3380,9 +3115,9 @@ async function extractUploadedFile(file){
   safeStorage.setItem('hasUsedApp', 'true');
   switchWorkspace('reading');
   const extension = (file.name.match(/\.[^.]+$/)?.[0] || '').toLowerCase();
-  const limits = {'.pdf':20 * 1024 * 1024, '.docx':10 * 1024 * 1024, '.txt':2 * 1024 * 1024, '.html':5 * 1024 * 1024, '.htm':5 * 1024 * 1024};
+  const limits = {'.pdf':20 * 1024 * 1024};
   if(!limits[extension]){
-    setImportStatus('目前支持 Word（DOCX）和文本型 PDF。旧版 DOC、图片、扫描件和其他格式暂不支持。', 'error');
+    setImportStatus('MVP 当前只支持文字型 PDF（Beta）。其他格式请复制日语文本后粘贴分析。', 'error');
     showToast('不支持的文件格式', 'error');
     resetFileInputs();
     return;
@@ -3396,106 +3131,21 @@ async function extractUploadedFile(file){
     return;
   }
 
-  // TXT / HTML 在浏览器本地读取，避免依赖后端
-  if(extension === '.txt' || extension === '.html' || extension === '.htm'){
-    setImportStatus(`正在读取 ${file.name}……`);
-    try{
-      const source = await file.text();
-      const parsed = extension === '.txt' ? {text:source.trim(), title:file.name} : extractReadableHtml(source);
-      const text = parsed.text.trim();
-      if(!text) throw new Error('文件中没有可提取的正文。');
-      setImportStatus(`已读取 ${file.name}，请检查内容`, 'ok');
-      openImportPreview(text, {title:parsed.title || file.name, type:extension === '.txt' ? 'txt' : 'html'});
-      showToast('文件读取成功', 'success');
-    }catch(error){
-      setImportStatus(error.message || 'TXT 文件读取失败。', 'error');
-      showToast('文件读取失败', 'error');
-    }finally{
-      resetFileInputs();
-    }
-    return;
-  }
-
-  if(extension === '.pdf' || extension === '.docx'){
+  if(extension === '.pdf'){
     setImportStatus(`正在浏览器本地解析 ${file.name}……`);
     try{
       const result = await extractLocalDocumentFile(file, extension);
       setImportStatus(result.status, 'ok');
       openImportPreview(result.text, result.meta);
-      showToast('本地解析成功，没有产生服务器成本', 'success');
+      showToast('PDF 解析成功，请先检查提取内容', 'success');
       resetFileInputs();
       return;
     }catch(error){
-      if(!hasConfiguredBackend()){
-        const message = `${error.message || '本地解析失败。'} 已开启 Pro 增强，但当前没有配置后端 API 地址。请先配置后端，或改用 TXT / HTML / 复制正文。`;
-        setImportStatus(message, 'error');
-        showToast('文件解析服务未配置', 'error');
-        resetFileInputs();
-        return;
-      }
-      const paidCheck = reserveMeteredFeature('serverFileExtract');
-      if(!paidCheck.ok){
-        const fallbackMessage = extension === '.docx'
-          ? `${error.message || 'Word 解析失败。'} 建议确认文件为 DOCX，或复制正文后直接粘贴。Word 中的图片文字和复杂文本框暂不支持。`
-          : `${error.message || 'PDF 解析失败。'} 建议复制 PDF 中的文字后直接粘贴。扫描件、图片型 PDF 和复杂排版暂不保证结果。`;
-        setImportStatus(fallbackMessage, 'error');
-        showToast('本地解析失败，可使用 Pro 服务器解析兜底', 'warning');
-        resetFileInputs();
-        return;
-      }
-      setImportStatus(`本地解析不完整，正在使用 Pro 服务器解析兜底：${file.name}……`);
+      setImportStatus(`${error.message || 'PDF 解析失败。'} 请复制 PDF 中需要学习的日语文本后粘贴分析。扫描件、图片型 PDF 和复杂排版目前可能无法识别。`, 'error');
+      showToast('PDF 解析失败，请改用复制粘贴', 'error');
+      resetFileInputs();
+      return;
     }
-  }else if(!hasConfiguredBackend()){
-    const message = `${extension.slice(1).toUpperCase()} 解析需要后端服务。当前还没有配置后端 API 地址。临时方案：复制正文，或上传 TXT / HTML。`;
-    setImportStatus(message, 'error');
-    showToast('文件解析服务未配置', 'error');
-    resetFileInputs();
-    return;
-  }
-
-  setImportStatus(document.getElementById('importStatus')?.textContent || `正在读取 ${file.name}……`);
-  try{
-    const endpoints = apiEndpoints('/api/extract-file');
-    let result = null;
-    let lastError = null;
-    for(const endpoint of endpoints){
-      try{
-        const response = await fetch(endpoint, {
-          method:'POST',
-          headers:{
-            'Content-Type':file.type || 'application/octet-stream',
-            'X-File-Name':encodeURIComponent(file.name),
-            'X-File-Type':extension.slice(1),
-            'X-Pdf-Mode':extension === '.pdf' ? (document.getElementById('pdfModeSelect')?.value || 'auto') : 'auto'
-          },
-          body:file
-        });
-        const data = await readJsonResponse(response);
-        result = {response, data};
-        break;
-      }catch(error){
-        lastError = error;
-      }
-    }
-    if(!result){
-      const errorMsg = `无法连接后端服务。${connectionHelp()}${lastError?.message ? ' 浏览器提示: ' + lastError.message : ''}`;
-      throw new Error(errorMsg);
-    }
-    if(!result.response.ok || !result.data.ok) throw new Error(result.data.message || '文件提取失败。');
-    const text = (result.data.text || '').trim();
-    if(!text) throw new Error('文件中没有可提取的正文。');
-    const cleanupMode = extension === '.pdf' ? (document.getElementById('pdfCleanupSelect')?.value || 'normal') : 'normal';
-    const pageInfo = result.data.pageCount ? `，${result.data.pageCount} 页` : '';
-    const layoutInfo = result.data.layoutMode === 'vertical-to-horizontal' ? '，已按竖版转横排处理' : '';
-    const cleanupInfo = cleanupMode === 'web-article' ? '，已按网页文章清理' : '';
-    setImportStatus(`已读取 ${file.name}${pageInfo}${layoutInfo}${cleanupInfo}，请检查内容`, 'ok');
-    openImportPreview(text, {title:file.name, type:result.data.type, cleanupMode, footnotes:result.data.footnotes || [], layoutWarnings:result.data.layoutWarnings || []});
-    showToast('文件读取成功', 'success');
-  }catch(error){
-    setImportStatus(`${error.message || 'PDF 提取失败。'} 建议确认文字可以被选择和复制，或直接复制日语正文后粘贴。扫描件、图片型 PDF 和复杂排版暂不保证结果。`, 'error');
-    showToast('文件处理失败，请查看提示', 'error');
-  }finally{
-    resetFileInputs();
   }
 }
 
@@ -4128,8 +3778,9 @@ function syncExportOptions(){
   if(!settings) return;
   settings.classList.remove('is-hidden');
   if(note){
-    note.textContent = selectedExportFormat() === 'png'
-      ? 'PNG 适合直接保存和分享；导出后不能编辑文字。'
+    const format = selectedExportFormat();
+    note.textContent = format === 'png' || format === 'jpeg'
+      ? `${format.toUpperCase()} 适合直接保存和分享；导出后不能编辑文字。`
       : 'PPTX 中的正文和假名可以继续编辑；不同演示软件之间可能有轻微位置差异。';
   }
   if(lastExportLayout !== layout){
@@ -4144,11 +3795,15 @@ async function runExport(){
   setExportBusy(true, '');
   try{
     await new Promise(resolve=>setTimeout(resolve, 30));
-    if(format === 'png'){
+    if(format === 'png' || format === 'jpeg'){
       await downloadRubyImage(layout, format);
     } else {
       await downloadRubyPptx(layout);
     }
+    trackAnalyticsEvent('export_completed', {
+      export_format:format,
+      export_layout:layout
+    });
     setExportBusy(false, '');
   }catch(error){
     setExportBusy(false, error?.message || '导出失败');
@@ -4166,54 +3821,6 @@ function setExportBusy(isBusy, message){
     button.disabled = isBusy;
     button.textContent = isBusy ? '下载中' : '下载';
   }
-}
-
-function escapeXml(value){
-  return String(value || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
-}
-
-function wordTextRun(text, fontHalfPoints){
-  const preserve = /^\s|\s$/.test(text) ? ' xml:space="preserve"' : '';
-  return `<w:r><w:rPr><w:rFonts w:ascii="Yu Gothic" w:eastAsia="Yu Gothic"/><w:sz w:val="${fontHalfPoints}"/><w:szCs w:val="${fontHalfPoints}"/></w:rPr><w:t${preserve}>${escapeXml(text)}</w:t></w:r>`;
-}
-
-function wordRubyRun(unit, baseHalfPoints, rubyHalfPoints){
-  if(!unit.ruby) return wordTextRun(unit.base, baseHalfPoints);
-  return `<w:ruby><w:rubyPr><w:rubyAlign w:val="center"/><w:hps w:val="${rubyHalfPoints}"/><w:hpsRaise w:val="${rubyHalfPoints + 2}"/><w:hpsBaseText w:val="${baseHalfPoints}"/><w:lid w:val="ja-JP"/></w:rubyPr><w:rt>${wordTextRun(unit.ruby,rubyHalfPoints)}</w:rt><w:rubyBase>${wordTextRun(unit.base,baseHalfPoints)}</w:rubyBase></w:ruby>`;
-}
-
-async function downloadRubyDocx(orientation = 'landscape'){
-  const units = await collectExportRubyUnits();
-  if(!units.length) throw new Error('请先分析文本，再导出 Word。');
-  if(!window.JSZip){
-    try{
-      await loadExternalScript(THIRD_PARTY_SCRIPTS.jszip, 'JSZip');
-    }catch{
-      throw new Error('Word 导出组件加载失败，请检查网络后重试。');
-    }
-  }
-  const baseHalfPoints = Math.round(numberValue('pptBaseFont',24) * 2);
-  const rubyHalfPoints = Math.round(numberValue('pptRubyFont',11) * 2);
-  const paragraphs = [[]];
-  units.forEach(unit=>{
-    const pieces = String(unit.base).split('\n');
-    pieces.forEach((piece,index)=>{
-      if(piece) paragraphs[paragraphs.length-1].push({...unit,base:piece});
-      if(index < pieces.length-1) paragraphs.push([]);
-    });
-  });
-  const page = orientation === 'portrait'
-    ? '<w:pgSz w:w="11906" w:h="16838"/>'
-    : '<w:pgSz w:w="16838" w:h="11906" w:orient="landscape"/>';
-  const body = paragraphs.map(parts=>`<w:p><w:pPr><w:spacing w:after="160" w:line="${Math.round(numberValue('pptLineHeight',.78)*480)}" w:lineRule="auto"/></w:pPr>${parts.map(unit=>wordRubyRun(unit,baseHalfPoints,rubyHalfPoints)).join('')}</w:p>`).join('');
-  const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}<w:sectPr>${page}<w:pgMar w:top="900" w:right="900" w:bottom="900" w:left="900"/></w:sectPr></w:body></w:document>`;
-  const zip = new JSZip();
-  zip.file('[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>');
-  zip.folder('_rels').file('.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>');
-  zip.folder('word').file('document.xml',documentXml);
-  const blob = await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a'); link.href=url; link.download=`japanese-ruby-${orientation}.docx`; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url); closeExportModal();
 }
 
 function exportPayload(orientation = 'landscape', units = collectRubyUnits()){
@@ -4250,11 +3857,13 @@ function downloadBlob(blob, filename){
 }
 
 async function downloadClientRubyImage(payload, format = 'png'){
-  const canvases = buildRubyCanvases(payload, { paged:false, background:'transparent' });
+  const isJpeg = format === 'jpeg';
+  const canvases = buildRubyCanvases(payload, { paged:false, background:isJpeg ? '#fffdf8' : 'transparent' });
   const canvas = canvases[0];
-  const blob = await new Promise(resolve=>canvas.toBlob(resolve, 'image/png'));
+  const mimeType = isJpeg ? 'image/jpeg' : 'image/png';
+  const blob = await new Promise(resolve=>canvas.toBlob(resolve, mimeType, isJpeg ? 0.92 : undefined));
   if(!blob) throw new Error('浏览器没有生成图片。');
-  downloadBlob(blob, `japanese-ruby-text-${payload.layout}.png`);
+  downloadBlob(blob, `japanese-ruby-text-${payload.layout}.${isJpeg ? 'jpeg' : 'png'}`);
 }
 
 function buildRubyCanvases(payload, options = {}){
@@ -4792,55 +4401,15 @@ function resetRubyOverride(encoded){
   renderText();
 }
 
-function tokenLookupCandidates(tokenId, fallbackWord = ''){
-  const token = window.KUROMOJI_TOKEN_CACHE[tokenId];
-  const words = [
-    token?.info?.lookupWord,
-    token?.info?.baseForm,
-    token?.info?.dictWord,
-    token?.surface,
-    fallbackWord
-  ].map(word => String(word || '').trim()).filter(Boolean);
-  return [...new Set(words)];
-}
-
 async function lookupDictionary(encoded, tokenId = ''){
   const word = decodeURIComponent(encoded);
-  const candidates = tokenLookupCandidates(tokenId, word);
   const target = document.getElementById('dictionaryLookupResult');
-  target.textContent = '正在查询词典……';
   if(DICT[word]){
     const info = DICT[word];
     target.innerHTML = `<b>${escapeHtml(info.reading)}</b> · ${escapeHtml(info.pos)}<br>${escapeHtml(info.meaning)}`;
     return;
   }
-  if(!hasConfiguredBackend()){
-    target.textContent = '本地词库暂时没有这个词。联网词典需要后端服务。';
-    return;
-  }
-  const paidCheck = reserveMeteredFeature('onlineDictionary');
-  if(!paidCheck.ok){
-    target.textContent = `${paidCheck.message} 仍可使用本地词库释义和生词本。`;
-    return;
-  }
-  try{
-    let lastError = null;
-    for(const candidate of candidates){
-      let response = null;
-      for(const endpoint of apiEndpoints(`/api/dictionary?keyword=${encodeURIComponent(candidate)}`)){
-        try{ response = await fetch(endpoint); break; }catch(error){ lastError = error; }
-      }
-      if(!response) continue;
-      const data = await response.json();
-      if(response.ok && data.ok && data.entries?.length){
-        const note = candidate !== word ? `<div class="lookup-status">已按原形「${escapeHtml(candidate)}」查询。</div>` : '';
-        target.innerHTML = note + data.entries.map(dictionaryEntryChinese).join('<br><br>');
-        return;
-      }
-      lastError = new Error(data.message || '未找到词条。');
-    }
-    throw lastError || new Error('无法连接词典服务。');
-  }catch(error){ target.textContent = error.message || '词典查询失败。'; }
+  target.textContent = '本地词库暂未收录这个词，可以先收藏后补充释义。';
 }
 
 function speakerIconSvg(){
@@ -5040,36 +4609,7 @@ function showTokenDetail(tokenId, el){
 async function autoLookupTokenMeaning(word, tokenId){
   const target = document.getElementById(`tokenMeaning-${tokenId}`);
   if(!target) return;
-  const candidates = tokenLookupCandidates(tokenId, word);
-  if(!hasConfiguredBackend()){
-    target.innerHTML = '<span style="color:var(--ink-soft);">本地词库没有这个词。联网词典需要后端服务。</span>';
-    return;
-  }
-  const paidCheck = reserveMeteredFeature('onlineDictionary');
-  if(!paidCheck.ok){
-    target.innerHTML = `<span style="color:var(--ink-soft);">${escapeHtml(paidCheck.message)} 可先收藏词语，之后手动整理释义。</span>`;
-    return;
-  }
-  try{
-    let lastError = null;
-    for(const candidate of candidates){
-      let response = null;
-      for(const endpoint of apiEndpoints(`/api/dictionary?keyword=${encodeURIComponent(candidate)}`)){
-        try{ response = await fetch(endpoint); break; }catch(error){ lastError = error; }
-      }
-      if(!response) continue;
-      const data = await response.json();
-      if(response.ok && data.ok && data.entries?.length){
-        const note = candidate !== word ? `<span style="color:var(--ink-soft);">按原形「${escapeHtml(candidate)}」查询。</span><br>` : '';
-        target.innerHTML = note + data.entries.slice(0, 3).map(dictionaryEntryChinese).join('<br>');
-        return;
-      }
-      lastError = new Error(data.message || '词典里没查到这个词。');
-    }
-    throw lastError || new Error('无法连接词典服务,请确认 backend 已启动。');
-  }catch(error){
-    target.innerHTML = `<span style="color:var(--ink-soft);">${escapeHtml(error.message || '查询失败。')}</span> <button class="btn-ghost" style="padding:3px 8px;font-size:11px;" onclick='autoLookupTokenMeaning(${JSON.stringify(word)}, ${tokenId})'>重试</button>`;
-  }
+  target.innerHTML = '<span style="color:var(--ink-soft);">本地词库暂未收录这个词，可以先收藏后补充释义。</span>';
 }
 
 function showFootnoteDetail(id){
@@ -5360,10 +4900,11 @@ function populateVoiceOptions(){
   const recommended = allVoices.slice(0, Math.min(3, allVoices.length));
   const recommendedNames = new Set(recommended.map(voice=>voice.name));
   const others = allVoices.slice(recommended.length);
+  const hattori = allVoices.find(voice=>/Hattori/i.test(voice.name));
   let preferred = safeStorage.getItem('reading_tts_voice') || '';
-  if(safeStorage.getItem('reading_tts_voice_quality_version') !== '2'){
-    preferred = '';
-    safeStorage.setItem('reading_tts_voice_quality_version', '2');
+  if(safeStorage.getItem('reading_tts_voice_quality_version') !== '3'){
+    if(!preferred && hattori) preferred = hattori.name;
+    safeStorage.setItem('reading_tts_voice_quality_version', '3');
   }
   const optionHtml = v => `<option value="${escapeHtml(v.name)}" ${v.name===preferred?'selected':''}>${escapeHtml(v.name)}${recommendedNames.has(v.name)?' · 推荐':''}</option>`;
   select.innerHTML = (recommended.length ? recommended.map(optionHtml).join('') : '')
@@ -5371,7 +4912,7 @@ function populateVoiceOptions(){
     + others.map(optionHtml).join('');
   if(field) field.style.display = 'flex';
   if(!allVoices.some(voice=>voice.name === preferred)){
-    const best = recommended[0] || allVoices[0];
+    const best = hattori || recommended[0] || allVoices[0];
     if(best){ select.value = best.name; safeStorage.setItem('reading_tts_voice', best.name); }
   }
 }
@@ -5395,7 +4936,7 @@ function chooseJapaneseVoice(){
     const match = japanese.find(voice=>voice.name === preferred);
     if(match) return match;
   }
-  return japanese[0];
+  return japanese.find(voice=>/Hattori/i.test(voice.name)) || japanese[0];
 }
 
 function renderTypingPractice(){
@@ -8587,7 +8128,6 @@ async function initializeApp(){
   const savedLevelResult = safeStorage.getItem('reading_level_result');
   if(savedLevelResult) showLevelResult(savedLevelResult);
   setTokenizerStatus('默认使用轻量词库，需要时可手动开启智能分词', '');
-  renderQuotaStatus();
   initTtsSettings();
   document.getElementById('useKuromoji')?.addEventListener('change', renderText);
 

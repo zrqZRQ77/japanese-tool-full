@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const JSZip = require('jszip');
@@ -127,19 +128,31 @@ test('frontend exposes stable export formats and loads split assets', () => {
   const document = new JSDOM(html).window.document;
   assert.deepEqual(
     Array.from(document.querySelectorAll('#exportFormatSelect option')).map(option => option.value),
-    ['pptx', 'png']
+    ['pptx', 'png', 'jpeg']
   );
   assert.equal(document.querySelector('script[src="config.js"]') !== null, true);
+  assert.equal(document.querySelector('script[src^="analytics.js"]') !== null, true);
   assert.equal(document.querySelector('link[href^="styles.css"]') !== null, true);
   assert.equal(document.querySelector('script[src^="app.js"]') !== null, true);
   assert.equal(document.querySelector('style'), null);
   assert.equal(document.querySelector('#documentFileInput') !== null, true);
+  assert.equal(document.querySelector('#documentFileInput').getAttribute('accept'), '.pdf,application/pdf');
+  assert.equal(document.querySelector('#heroPdfInput') !== null, true);
+  assert.equal(document.querySelector('#heroWordInput'), null);
+  assert.equal(document.querySelector('#quotaStatus'), null);
+  assert.equal(html.includes('导入链接'), false);
+  assert.equal(html.includes('Pro 可无限使用'), false);
   assert.equal(document.querySelector('#pdfModeSelect') !== null, true);
   assert.equal(document.querySelector('#pdfCleanupSelect') !== null, true);
   assert.equal(document.querySelector('.app-sidebar .nav-item[data-view="retell"]')?.textContent.trim(), '练习');
   assert.equal(document.querySelector('.app-sidebar .nav-resources')?.textContent.trim(), '资料');
-  assert.equal(Array.from(document.querySelectorAll('.source-actions button')).some(button => button.textContent.trim() === '水平测试'), true);
+  assert.equal(Array.from(document.querySelectorAll('.hero-more-menu button')).some(button => button.textContent.trim() === '水平测试'), true);
   assert.equal(document.querySelector('#startTypingPracticeBtn')?.textContent.trim(), '打字');
+  assert.equal(
+    Array.from(document.querySelectorAll('.vocab-management-options [role="menuitem"]')).some(button => button.textContent.trim() === '导出 Anki'),
+    true
+  );
+  assert.equal(html.includes('<strong>常见问题</strong>'), false);
 });
 
 test('frontend data files are valid JSON and app keeps key safeguards', () => {
@@ -154,8 +167,14 @@ test('frontend data files are valid JSON and app keeps key safeguards', () => {
   assert.match(sample.text, /図書館/);
   assert.equal(Array.isArray(typingPrompts), true);
   assert.equal(Array.isArray(grammarPoints), true);
-  assert.match(appJs, /function connectionHelp/);
-  assert.match(appJs, /if\(configured\) return \[\`\$\{configured\}\$\{path\}\`\]/);
+  assert.doesNotMatch(appJs, /function extractArticleUrl/);
+  assert.doesNotMatch(appJs, /function reserveMeteredFeature/);
+  assert.match(appJs, /MVP 暂不自动读取网页正文/);
+  assert.match(appJs, /trackAnalyticsEvent\('analysis_started'/);
+  assert.match(appJs, /trackAnalyticsEvent\('analysis_completed'/);
+  assert.match(appJs, /trackAnalyticsEvent\('translation_completed'/);
+  assert.match(appJs, /trackAnalyticsEvent\('export_completed'/);
+  assert.match(appJs, /export_format:format/);
   assert.match(appJs, /单词,假名,释义,词性,等级,来源,来源链接,复习状态,下次复习时间/);
   assert.match(appJs, /const csvField = value =>/);
   assert.match(appJs, /\[\s*v\.word,\s*v\.reading,\s*displayVocabMeaning\(v\.meaning\),\s*v\.pos,\s*v\.level,\s*vocabSourceLabel\(v\),\s*v\.sourceUrl,\s*mastery\.label,\s*exportDateTime\(v\.dueAt\)\s*\]\.map\(csvField\)/);

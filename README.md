@@ -4,7 +4,7 @@
 
 - `frontend/` - Current website files for GitHub and Vercel.
 - `frontend/data/` - Required learning data used by the website.
-- `backend/` - Optional backend service for URL extraction, document upload, and export helpers.
+- `backend/` - Future/optional service retained outside the public MVP; the current MVP does not require it.
 - `DEPLOYMENT.md` - Deployment notes.
 - `DESIGN.md` - Design direction and UI rules.
 
@@ -16,6 +16,7 @@ Upload or deploy the contents of `frontend/`:
 - `styles.css`
 - `app.js`
 - `config.js`
+- `analytics.js`
 - `data/`
 - `vercel.json`
 

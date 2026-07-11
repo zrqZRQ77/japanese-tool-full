@@ -13,11 +13,13 @@ const FILES = [
   'index.html',
   'yomeru-ui-kit.html',
   'app.js',
+  'search-entry-fix.js',
   'config.js',
   'styles.css',
   'design-system.css',
   'grammar-layout.css',
-  'typography.css'
+  'typography.css',
+  'hero-menu-refresh.css'
 ];
 
 await rm(DIST_DIR, { recursive: true, force: true });

@@ -1,0 +1,157 @@
+{
+  "version": "20260710-07",
+  "createdAt": "2026-07-10T08:59:55.921Z",
+  "ok": true,
+  "screenshots": [
+    {
+      "state": "词语详解面板",
+      "file": "01-word-detail.png",
+      "ok": true,
+      "pageState": {
+        "view": "reading",
+        "hasReading": true,
+        "rubyCount": 22,
+        "detailText": "毎朝\nまいあさ\nN4\n名词\n释义\n每天早上",
+        "translationVisible": false,
+        "fontModalVisible": false,
+        "exportModalVisible": false,
+        "vocabCountText": "0"
+      }
+    },
+    {
+      "state": "假名隐藏状态",
+      "file": "02-ruby-hidden.png",
+      "ok": true,
+      "pageState": {
+        "view": "reading",
+        "hasReading": true,
+        "rubyCount": 22,
+        "detailText": "示例详解\n\n点击正文中的词语后，这里会显示真实详解。\n\n食べる\nたべる\nN5\n动词\n释义\n吃",
+        "translationVisible": false,
+        "fontModalVisible": false,
+        "exportModalVisible": false,
+        "vocabCountText": "0"
+      }
+    },
+    {
+      "state": "假名开启状态",
+      "file": "03-ruby-shown.png",
+      "ok": true,
+      "pageState": {
+        "view": "reading",
+        "hasReading": true,
+        "rubyCount": 22,
+        "detailText": "示例详解\n\n点击正文中的词语后，这里会显示真实详解。\n\n食べる\nたべる\nN5\n动词\n释义\n吃",
+        "translationVisible": false,
+        "fontModalVisible": false,
+        "exportModalVisible": false,
+        "vocabCountText": "0"
+      }
+    },
+    {
+      "state": "翻译开启状态",
+      "file": "04-translation-on.png",
+      "ok": true,
+      "pageState": {
+        "view": "reading",
+        "hasReading": true,
+        "rubyCount": 22,
+        "detailText": "示例详解\n\n点击正文中的词语后，这里会显示真实详解。\n\n食べる\nたべる\nN5\n动词\n释义\n吃",
+        "translationVisible": true,
+        "fontModalVisible": false,
+        "exportModalVisible": false,
+        "vocabCountText": "0"
+      }
+    },
+    {
+      "state": "字号设置弹窗",
+      "file": "05-reading-font-settings.png",
+      "ok": true,
+      "pageState": {
+        "view": "reading",
+        "hasReading": true,
+        "rubyCount": 22,
+        "detailText": "示例详解\n\n点击正文中的词语后，这里会显示真实详解。\n\n食べる\nたべる\nN5\n动词\n释义\n吃",
+        "translationVisible": true,
+        "fontModalVisible": true,
+        "exportModalVisible": false,
+        "vocabCountText": "0"
+      }
+    },
+    {
+      "state": "导出弹窗",
+      "file": "06-export-modal.png",
+      "ok": true,
+      "pageState": {
+        "view": "reading",
+        "hasReading": true,
+        "rubyCount": 22,
+        "detailText": "示例详解\n\n点击正文中的词语后，这里会显示真实详解。\n\n食べる\nたべる\nN5\n动词\n释义\n吃",
+        "translationVisible": true,
+        "fontModalVisible": false,
+        "exportModalVisible": true,
+        "vocabCountText": "0"
+      }
+    },
+    {
+      "state": "收藏生词后的生词本",
+      "file": "07-vocab-saved.png",
+      "ok": true,
+      "pageState": {
+        "view": "vocab",
+        "hasReading": true,
+        "rubyCount": 22,
+        "detailText": "私\n    \n    \n      \n      \n    \n  \n  \n      \n    わたし\n    \n  N5名词\n      释义我",
+        "translationVisible": false,
+        "fontModalVisible": false,
+        "exportModalVisible": false,
+        "vocabCountText": "1"
+      }
+    },
+    {
+      "state": "生词本管理菜单",
+      "file": "08-vocab-management-menu.png",
+      "ok": true,
+      "pageState": {
+        "view": "vocab",
+        "hasReading": true,
+        "rubyCount": 22,
+        "detailText": "私\n    \n    \n      \n      \n    \n  \n  \n      \n    わたし\n    \n  N5名词\n      释义我",
+        "translationVisible": false,
+        "fontModalVisible": false,
+        "exportModalVisible": false,
+        "vocabCountText": "1"
+      }
+    },
+    {
+      "state": "JLPT筛选菜单",
+      "file": "09-vocab-jlpt-filter.png",
+      "ok": true,
+      "pageState": {
+        "view": "vocab",
+        "hasReading": true,
+        "rubyCount": 22,
+        "detailText": "私\n    \n    \n      \n      \n    \n  \n  \n      \n    わたし\n    \n  N5名词\n      释义我",
+        "translationVisible": false,
+        "fontModalVisible": false,
+        "exportModalVisible": false,
+        "vocabCountText": "1"
+      }
+    }
+  ],
+  "console": [
+    {
+      "type": "warning",
+      "text": "kuromoji 加载失败,已退回内置词库 Error: 智能分词词典加载超时\n    at http://127.0.0.1:5194/app.js?v=20260710-07:1002:35",
+      "location": {
+        "url": "http://127.0.0.1:5194/app.js?v=20260710-07",
+        "line": 2247,
+        "column": 14,
+        "lineNumber": 2247,
+        "columnNumber": 14
+      }
+    }
+  ],
+  "mode": "server",
+  "baseUrl": "http://127.0.0.1:5194/index.html"
+}

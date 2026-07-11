@@ -86,6 +86,12 @@ assertCheck(!/\b(?:alert|confirm)\s*\(/.test(inlineSource), 'no native alert() /
 assertCheck(requiredFiles.every(file => existsSync(resolve(FRONTEND_DIR, file))), 'required frontend files exist');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
+assertCheck(!appJs.includes("label:'调整今日目标'") && appJs.includes("detail:'查看学习日历、进度和今日建议'"), 'global search matches public MVP navigation');
+assertCheck(
+  ['pptx', 'png', 'jpeg'].every(format => indexHtml.includes(`<option value="${format}"`))
+    && !/downloadRubyDocx|<option value=["']docx["']/.test(inlineSource),
+  'reading export formats match the public MVP boundary'
+);
 assertCheck(hardcodedFontSizes.length === 0, `no hardcoded px font sizes outside typography.css${hardcodedFontSizes.length ? `: ${hardcodedFontSizes.join(', ')}` : ''}`);
 assertCheck(css && designSystem && grammarLayout && typography && js && css === designSystem && css === grammarLayout && css === typography && css === js, 'CSS and JS cache versions match');
 assertCheck(/^\d{8}-\d{2}$/.test(css), 'cache version format is YYYYMMDD-NN');
