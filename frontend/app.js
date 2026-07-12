@@ -4451,6 +4451,10 @@ function addVocabIconSvg(){
   return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-3.8-6 3.8v-17Z"></path><path d="M12 7v6M9 10h6"></path></svg>';
 }
 
+function addGrammarIconSvg(){
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"></path><path d="M8 8h8M8 12h5M8 16h7"></path><path d="M17 13v6M14 16h6"></path></svg>';
+}
+
 function editIconSvg(){
   return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 17 9.8-9.8 3 3L7 20H4v-3Z"></path><path d="m15.5 5.5 1.7-1.7a1.4 1.4 0 0 1 2 0l1 1a1.4 1.4 0 0 1 0 2l-1.7 1.7"></path></svg>';
 }
@@ -4467,11 +4471,14 @@ function hideRubyIconSvg(){
   return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3.2-5.5 9-5.5S21 12 21 12s-3.2 5.5-9 5.5S3 12 3 12Z"></path><path d="M4 4l16 16"></path></svg>';
 }
 
-function detailIconActions(addAction, speakAction){
+function detailIconActions(addAction, speakAction, actionType = 'vocab'){
+  const saveButton = !addAction || actionType === 'none' ? '' : actionType === 'grammar'
+    ? `<button class="reader-tool detail-icon-button add-grammar-tool" type="button" onclick="${addAction}" data-tooltip="加入语法本" aria-label="加入语法本">${addGrammarIconSvg()}</button>`
+    : `<button class="reader-tool detail-icon-button add-vocab-tool" type="button" onclick="${addAction}" data-tooltip="加入生词本" aria-label="加入生词本">${addVocabIconSvg()}</button>`;
   return `
     <div class="detail-icon-actions">
       <button class="reader-tool reader-speech-tool detail-icon-button" type="button" onclick="${speakAction}" data-tooltip="朗读" aria-label="朗读">${speakerIconSvg()}</button>
-      <button class="reader-tool detail-icon-button add-vocab-tool" type="button" onclick="${addAction}" data-tooltip="加入生词本" aria-label="加入生词本">${addVocabIconSvg()}</button>
+      ${saveButton}
     </div>
   `;
 }
@@ -4488,11 +4495,44 @@ function selectReadingWord(el){
   el._readingSelectTimer = setTimeout(()=>el.classList.remove('is-just-selected'), 260);
 }
 
-function detailWordHeaderHtml(surface, addAction, speakAction){
+function detailWordHeaderHtml(surface, addAction, speakAction, actionType = 'vocab'){
   return `<div class="detail-word-header">
     <div class="detail-word">${escapeHtml(surface)}</div>
-    ${detailIconActions(addAction, speakAction)}
+    ${detailIconActions(addAction, speakAction, actionType)}
   </div>`;
+}
+
+const READING_GRAMMAR_POINT_MAP = {
+  'は':'は と が の違い',
+  'が':'は と が の違い',
+  'ば':'ば形(假定条件)',
+  'のに':'のに(轻微不满的转折)',
+  'ている':'ている(进行/状态)',
+  'なければならない':'なければならない(义务/必须)',
+  'ようだ':'ようだ・みたい(推量/比喻)',
+  'みたい':'ようだ・みたい(推量/比喻)'
+};
+
+function grammarPointForReadingUnit(surface){
+  const title = READING_GRAMMAR_POINT_MAP[String(surface || '').trim()];
+  return title ? GRAMMAR_POINTS.find(point => point.title === title) || null : null;
+}
+
+function isGrammarReadingUnit(info = {}){
+  return info.level === 'particle' || /助词|助詞|助动词|助動詞/.test(String(info.pos || ''));
+}
+
+function readingDetailAction(surface, info = {}){
+  const point = grammarPointForReadingUnit(surface);
+  if(point){
+    return {
+      type:'grammar',
+      action:`saveGrammarPoint('${encodeURIComponent(point.title)}', event)`,
+      point
+    };
+  }
+  if(isGrammarReadingUnit(info)) return {type:'none', action:'', point:null};
+  return {type:'vocab', action:null, point:null};
 }
 
 function detailBadgesHtml(level, part){
@@ -4602,34 +4642,19 @@ function showDetail(word, el){
 
   const info = DICT[word];
   if(!info) return;
+  const detailAction = readingDetailAction(word, info);
+  const addAction = detailAction.action || (detailAction.type === 'vocab' ? `addToVocab('${word}')` : '');
   const area = document.getElementById('detailArea');
   setReadingDetailVisible(true);
   setDetailHeadActions();
   area.innerHTML = `
     <div class="detail-box detail-selected-box">
-      ${detailWordHeaderHtml(word, `addToVocab('${word}')`, `speakEncodedJapanese('${encodeURIComponent(word)}', this, false)`)}
+      ${detailWordHeaderHtml(word, addAction, `speakEncodedJapanese('${encodeURIComponent(word)}', this, false)`, detailAction.type)}
       ${detailMetaHtml(word, info.reading, LEVEL_LABEL[info.level], info.pos)}
-      ${detailDefinitionHtml(escapeHtml(info.meaning))}
-      <button class="btn-secondary btn--small" type="button" onclick="saveWordAsGrammar('${encodeURIComponent(word)}')">保存到语法本</button>
+      ${detailDefinitionHtml(detailAction.point ? escapeHtml(detailAction.point.explain) : escapeHtml(info.meaning))}
     </div>
   `;
   renderSampleFlow();
-}
-
-function saveWordAsGrammar(encodedWord){
-  const word = decodeURIComponent(encodedWord || '').trim();
-  if(!word) return;
-  const info = DICT[word] || {};
-  upsertGrammarBookItem({
-    title:word,
-    level:info.level || '待整理',
-    sub:info.pos || '阅读中保存',
-    note:info.meaning || '从阅读详解保存，请稍后补充说明。',
-    examples:[{jp:word, cn:info.meaning || ''}],
-    source:'阅读详解',
-    savedAt:Date.now()
-  });
-  showToast('已保存到语法本。', 'success');
 }
 
 function showTokenDetail(tokenId, el){
@@ -4639,19 +4664,21 @@ function showTokenDetail(tokenId, el){
   const token = window.KUROMOJI_TOKEN_CACHE[tokenId];
   if(!token) return;
   const { surface, info } = token;
+  const detailAction = readingDetailAction(surface, info);
+  const addAction = detailAction.action || (detailAction.type === 'vocab' ? `addTokenToVocab(${tokenId})` : '');
   const needsLookup = info.source === 'kuromoji';
   const area = document.getElementById('detailArea');
   setReadingDetailVisible(true);
   setDetailHeadActions();
   area.innerHTML = `
     <div class="detail-box detail-selected-box">
-      ${detailWordHeaderHtml(surface, `addTokenToVocab(${tokenId})`, `speakEncodedJapanese('${encodeURIComponent(surface)}', this, false)`)}
+      ${detailWordHeaderHtml(surface, addAction, `speakEncodedJapanese('${encodeURIComponent(surface)}', this, false)`, detailAction.type)}
       ${detailMetaHtml(surface, info.reading, LEVEL_LABEL[info.level], info.pos, token)}
-      ${detailDefinitionHtml(needsLookup ? '正在查询词典……' : escapeHtml(info.meaning), `tokenMeaning-${tokenId}`)}
+      ${detailDefinitionHtml(detailAction.point ? escapeHtml(detailAction.point.explain) : (needsLookup ? '正在查询词典……' : escapeHtml(info.meaning)), `tokenMeaning-${tokenId}`)}
     </div>
   `;
   renderSampleFlow();
-  if(needsLookup) autoLookupTokenMeaning(surface, tokenId);
+  if(needsLookup && !detailAction.point) autoLookupTokenMeaning(surface, tokenId);
 }
 
 async function autoLookupTokenMeaning(word, tokenId){

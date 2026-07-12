@@ -152,7 +152,7 @@
           <span aria-hidden="true"></span>
         </button>
         <button class="mobile-main-menu-button" id="mobileMainMenuButton" type="button" onclick="openMenu()" aria-label="打开主导航">
-          <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+          <span class="brand-mark" aria-hidden="true"><img src="assets/brand/yomeru-mark.svg" alt=""></span>
         </button>
       </div>
       <div class="global-search" role="search">
@@ -1068,6 +1068,7 @@
   <div class="selection-actions">
     <button class="btn-primary" type="button" onclick="lookupSelectedText()">翻译/释义</button>
     <button class="btn-secondary" type="button" onclick="saveSelectedTextToVocab()">加入生词本</button>
+    <button class="btn-secondary" type="button" onclick="saveSelectedTextAsGrammar()">保存为语法</button>
     <button class="btn-secondary" type="button" onclick="speakSelectedText()">朗读</button>
   </div>
   <div class="selection-result" id="selectionResult">选中词、短语或句子后可以查询。</div>
