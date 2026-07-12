@@ -1552,7 +1552,7 @@ function guidedPathSteps(){
     {
       type:'reading',
       title:'放入一篇文章',
-      detail:hasReading ? '已经有可学习的文章' : '先粘贴日语文本或上传文字型 PDF',
+      detail:hasReading ? '已经有可学习的文章' : '先粘贴日语文本',
       done:hasReading,
       action:'开始阅读'
     },
@@ -1635,7 +1635,7 @@ function openGuidedStep(type = ''){
 }
 
 const GLOBAL_SEARCH_ITEMS = [
-  {label:'开始阅读', detail:'粘贴日语文本或上传文字型 PDF', keywords:'阅读 开始 粘贴 日语 文本 pdf 上传', action:()=>switchWorkspace('reading')},
+  {label:'开始阅读', detail:'粘贴日语文本', keywords:'阅读 开始 粘贴 日语 文本', action:()=>switchWorkspace('reading')},
   {label:'整理生词本', detail:'搜索、筛选、管理收藏词', keywords:'生词 单词 词汇 收藏 搜索 筛选', action:()=>switchWorkspace('vocab')},
   {label:'复习到期词', detail:'打开闪卡复习', keywords:'复习 闪卡 到期 生词', action:()=>startReview()},
   {label:'做文章理解练习', detail:'选择题和复述', keywords:'练习 文章 理解 选择题 复述', action:()=>focusPracticeModule('quiz')},
@@ -2416,7 +2416,7 @@ function normalizeArticleUrl(value){
 async function analyzeSourceInput(){
   const value = sourceInputValue();
   if(!value){
-    setImportStatus('请先粘贴日语文本，或上传可选择、复制文字的 PDF（Beta）。', 'error');
+    setImportStatus('请先粘贴日语文本。', 'error');
     document.getElementById('inputText')?.focus();
     return;
   }

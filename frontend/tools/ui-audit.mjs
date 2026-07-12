@@ -441,12 +441,60 @@ async function runAudit() {
     await page.evaluate(() => localStorage.clear());
     await page.reload({ waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
+    const publicPdfEntryCount = await page.getByText('上传 PDF', { exact: true }).count();
+    if (publicPdfEntryCount !== 0) {
+      throw new Error(`Viewport ${viewport.name} still exposes ${publicPdfEntryCount} public PDF upload entr${publicPdfEntryCount === 1 ? 'y' : 'ies'}.`);
+    }
+    if (viewport.width <= 720) {
+      const heroActionsLayout = await page.evaluate(() => {
+        const sample = document.querySelector('button[onclick="loadSampleFromHero()"]');
+        const more = document.querySelector('.hero-more-menu > summary');
+        if (!sample || !more) return null;
+        const sampleRect = sample.getBoundingClientRect();
+        const moreRect = more.getBoundingClientRect();
+        return {
+          sampleLeft: Math.round(sampleRect.left),
+          sampleTop: Math.round(sampleRect.top),
+          moreLeft: Math.round(moreRect.left),
+          moreTop: Math.round(moreRect.top)
+        };
+      });
+      if (!heroActionsLayout
+        || Math.abs(heroActionsLayout.sampleTop - heroActionsLayout.moreTop) > 3
+        || heroActionsLayout.sampleLeft >= heroActionsLayout.moreLeft) {
+        throw new Error(`Viewport ${viewport.name} hero secondary actions are not on one left-to-right row: ${JSON.stringify(heroActionsLayout)}.`);
+      }
+      if (viewport.name === 'mobile-390') await screenshot('viewport-mobile-390-home');
+    }
     const moreMenu = page.locator('.hero-more-menu');
     await moreMenu.locator('summary').click();
     await moreMenu.locator('.hero-menu-popover').waitFor({ state: 'visible', timeout: 3000 });
     await page.locator('#heroInputText').fill(SAMPLE_TEXT);
     await page.locator('button[onclick="analyzeFromHero()"]', { hasText: '开始阅读' }).click();
     await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
+    if (viewport.width <= 720) {
+      const toolbarLayout = await page.evaluate(() => {
+        const toolbar = document.querySelector('#readerToolbar');
+        const groups = toolbar ? [...toolbar.querySelectorAll('.reader-tool-group')] : [];
+        if (!toolbar || groups.length !== 2) return null;
+        const first = groups[0].getBoundingClientRect();
+        const second = groups[1].getBoundingClientRect();
+        const style = getComputedStyle(toolbar);
+        return {
+          firstTop: Math.round(first.top),
+          secondTop: Math.round(second.top),
+          flexWrap: style.flexWrap,
+          overflowX: style.overflowX
+        };
+      });
+      if (!toolbarLayout
+        || Math.abs(toolbarLayout.firstTop - toolbarLayout.secondTop) > 3
+        || toolbarLayout.flexWrap !== 'nowrap'
+        || !['auto', 'scroll'].includes(toolbarLayout.overflowX)) {
+        throw new Error(`Viewport ${viewport.name} reader toolbar is not a single horizontal strip: ${JSON.stringify(toolbarLayout)}.`);
+      }
+      if (viewport.name === 'mobile-390') await screenshot('viewport-mobile-390-reading-toolbar');
+    }
     await page.locator('#rubyToggleBtn').click();
     await page.locator('#iconButtonHint.is-visible').waitFor({state:'attached', timeout:2000});
     const hintBounds = await page.locator('#iconButtonHint').boundingBox();

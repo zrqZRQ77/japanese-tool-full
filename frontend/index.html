@@ -9,11 +9,11 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260712-04">
-<link rel="stylesheet" href="design-system.css?v=20260712-04">
-<link rel="stylesheet" href="grammar-layout.css?v=20260712-04">
-<link rel="stylesheet" href="typography.css?v=20260712-04">
-<link rel="stylesheet" href="hero-menu-refresh.css?v=20260710-12">
+<link rel="stylesheet" href="styles.css?v=20260712-05">
+<link rel="stylesheet" href="design-system.css?v=20260712-05">
+<link rel="stylesheet" href="grammar-layout.css?v=20260712-05">
+<link rel="stylesheet" href="typography.css?v=20260712-05">
+<link rel="stylesheet" href="hero-menu-refresh.css?v=20260712-05">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260710-01"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
@@ -47,10 +47,6 @@
                 <svg class="hero-menu-chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.25 6 7.5l3.5-3.25"></path></svg>
               </summary>
               <div class="hero-menu-popover" role="menu" aria-label="更多选项">
-                <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');document.getElementById('heroPdfInput').click()">
-                  <span class="hero-menu-item-label">上传 PDF</span>
-                  <span class="hero-beta-pill">Beta</span>
-                </button>
                 <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');enterReadingFromHero();switchWorkspace('test')">
                   <span class="hero-menu-item-label">水平测试</span>
                 </button>
@@ -69,7 +65,6 @@
           <button class="btn-primary btn--small" type="button" onclick="startGuidedSampleFromHero()">需要引导</button>
           <button class="btn-secondary btn--small" type="button" onclick="dismissHeroGuidePrompt()">不用了</button>
         </div>
-        <input id="heroPdfInput" type="file" accept=".pdf,application/pdf" hidden onchange="extractUploadedFile(this.files[0])">
       </div>
     </div>
 
@@ -293,13 +288,11 @@
           <!-- 输入区域 -->
           <div class="source-composer" id="sourceComposer">
             <div class="source-dropzone">
-              <textarea id="inputText" placeholder="粘贴日语文本，或上传文字型 PDF（Beta）。"></textarea>
+              <textarea id="inputText" placeholder="粘贴日语文本。"></textarea>
               <div class="source-actions">
                 <button class="btn-primary" id="analyzeSourceBtn" onclick="analyzeSourceInput()">开始阅读</button>
-                <button class="btn-secondary" type="button" onclick="document.getElementById('documentFileInput').click()">上传 PDF <span class="hero-beta-pill">Beta</span></button>
                 <button class="btn-secondary" onclick="loadSample()">用示例开始</button>
               </div>
-              <input id="documentFileInput" type="file" accept=".pdf,application/pdf" hidden onchange="extractUploadedFile(this.files[0])">
               <div class="import-status" id="importStatus"></div>
             </div>
 
@@ -965,7 +958,7 @@
               <article class="settings-action-item">
                 <div>
                   <strong>阅读流程说明</strong>
-                  <p>了解粘贴文本、上传文字型 PDF、保存生词和复习练习如何配合使用。</p>
+                  <p>了解粘贴文本、保存生词和复习练习如何配合使用。</p>
                 </div>
                 <button class="settings-secondary-action" onclick="openOnboarding()">查看说明</button>
               </article>
@@ -1254,7 +1247,7 @@
 
 <div class="icon-button-hint" id="iconButtonHint" role="tooltip" aria-hidden="true"></div>
 
-<script src="app.js?v=20260712-04"></script>
+<script src="app.js?v=20260712-05"></script>
 <script src="search-entry-fix.js?v=20260711-01"></script>
 <script>
   const applyChineseInterface = typeof window.setInterfaceLanguage === 'function'

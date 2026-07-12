@@ -127,12 +127,60 @@ body.first-visit .hero-beta-pill {
 
 @media (max-width: 640px) {
   body.first-visit .hero-secondary-actions {
-    gap: 22px;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+  }
+
+  body.first-visit .hero-secondary-actions > *,
+  body.first-visit .hero-menu-details,
+  body.first-visit .hero-menu-details > summary.hero-text-action,
+  body.first-visit .hero-secondary-actions > .hero-text-action {
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
   }
 
   body.first-visit .hero-menu-popover,
   body.first-visit .hero-more-menu .hero-menu-popover {
     max-width: calc(100vw - 28px);
+  }
+}
+
+/* Mobile reader controls stay on one familiar, horizontally scrollable strip. */
+@media (max-width: 720px) {
+  body[data-view="reading"] #readerToolbar.reader-toolbar {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body[data-view="reading"] #readerToolbar.reader-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  body[data-view="reading"] #readerToolbar .reader-tool-group,
+  body[data-view="reading"] #readerToolbar .reader-tool-group-end {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  body[data-view="reading"] #readerToolbar .reader-tool-divider {
+    flex: 0 0 1px;
   }
 }
 
