@@ -247,6 +247,7 @@ async function runAudit() {
         typing: textOf('#typingResult') || textOf('#typingPromptCn'),
         history: textOf('#historyStatsGrid'),
         nav: rectOf('.sidebar-nav'),
+        mobileMenu: rectOf('#mobileMainMenuButton'),
         brand: rectOf('.sidebar-brand'),
         content: rectOf('.app-content')
       };
@@ -268,6 +269,12 @@ async function runAudit() {
     await page.locator('#heroInputText').fill(SAMPLE_TEXT);
     await page.locator('button[onclick="analyzeFromHero()"]').click();
     await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
+    await page.locator('#rubyToggleBtn').click();
+    const rubyVisible = await page.locator('#output rt').first().evaluate(node => {
+      const style = getComputedStyle(node);
+      return style.visibility === 'visible' && Number.parseFloat(style.fontSize) > 0;
+    });
+    if(!rubyVisible) throw new Error('Ruby toggle did not reveal furigana.');
     await screenshot('02-reading');
     return state('state: reading');
   });
@@ -297,6 +304,35 @@ async function runAudit() {
     await page.locator('#typingPracticeModule button[onclick="checkTypingAnswer()"]').click();
     await screenshot('05-typing');
     return state('state: typing');
+  });
+
+  await step('Safari audio-only retell fallback', async () => {
+    await page.evaluate(() => {
+      Object.defineProperty(window, 'SpeechRecognition', {value:undefined, configurable:true});
+      Object.defineProperty(window, 'webkitSpeechRecognition', {value:undefined, configurable:true});
+      const fakeStream = {getTracks:()=>[{stop(){}}]};
+      Object.defineProperty(navigator, 'mediaDevices', {
+        configurable:true,
+        value:{getUserMedia:async()=>fakeStream}
+      });
+      window.MediaRecorder = class {
+        constructor(){ this.state = 'inactive'; this.mimeType = 'audio/mp4'; }
+        start(){ this.state = 'recording'; }
+        stop(){
+          this.state = 'inactive';
+          this.ondataavailable?.({data:new Blob(['audio'], {type:'audio/mp4'})});
+          this.onstop?.();
+        }
+      };
+    });
+    await page.locator('#startRetellPracticeBtn').click();
+    await page.locator('#retellRecordBtn').click();
+    await page.locator('#retellRecordBtn').filter({hasText:'停止录音'}).waitFor({state:'visible', timeout:3000});
+    await page.locator('#retellRecordBtn').click();
+    await page.locator('#retellResult audio').waitFor({state:'visible', timeout:3000});
+    const ttsReading = await page.evaluate(() => normalizeJapaneseSpeechText('丁寧に教えます。'));
+    if(!ttsReading.includes('ていねい')) throw new Error('TTS pronunciation override for 丁寧 was not applied.');
+    return {audioPlayback:true, ttsReading};
   });
 
   await step('history page', async () => {
@@ -408,15 +444,46 @@ async function runAudit() {
     await page.locator('#heroInputText').fill(SAMPLE_TEXT);
     await page.locator('button[onclick="analyzeFromHero()"]', { hasText: '开始阅读' }).click();
     await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
-    const vocabNav = page.locator('button.nav-vocab');
-    await vocabNav.waitFor({ state: 'visible', timeout: 3000 });
-    await vocabNav.click();
+    await page.locator('#rubyToggleBtn').click();
+    const viewportRubyVisible = await page.locator('#output rt').first().evaluate(node => {
+      const style = getComputedStyle(node);
+      return style.visibility === 'visible' && Number.parseFloat(style.fontSize) > 0;
+    });
+    if(!viewportRubyVisible) throw new Error(`Viewport ${viewport.name} ruby toggle did not reveal furigana.`);
+    await page.locator('#output ruby[data-word="毎朝"]').click();
+    await page.locator('#detailArea .add-vocab-tool').click();
+    if(viewport.width <= 720){
+      const mobileMenuButton = page.locator('#mobileMainMenuButton');
+      await mobileMenuButton.waitFor({ state: 'visible', timeout: 3000 });
+      await mobileMenuButton.click();
+      await page.locator('#menuPanel.active').waitFor({ state: 'visible', timeout: 3000 });
+      await page.locator('.menu-primary-grid button').filter({hasText:'生词本'}).click();
+    }else{
+      const vocabNav = page.locator('button.nav-vocab');
+      await vocabNav.waitFor({ state: 'visible', timeout: 3000 });
+      await vocabNav.click();
+    }
     await page.waitForFunction(() => document.body.dataset.view === 'vocab');
+    await page.locator('#vocabPrimaryAction').click();
+    const mobileFlash = page.locator('#flashArea .flash-stage');
+    await mobileFlash.waitFor({state:'visible', timeout:3000});
+    await mobileFlash.click();
     const viewportState = await state(`viewport: ${viewport.name}`);
     if (viewportState.firstVisit || !viewportState.hasReading || viewportState.view !== 'vocab') {
       throw new Error(`Viewport ${viewport.name} did not reach the vocab state after reading import.`);
     }
-    if (!viewportState.nav || viewportState.nav.width <= 0 || viewportState.nav.height <= 0) {
+    if (viewport.width <= 720) {
+      if (!viewportState.mobileMenu || viewportState.mobileMenu.width <= 0 || viewportState.mobileMenu.height <= 0) {
+        throw new Error(`Viewport ${viewport.name} mobile menu is not visible.`);
+      }
+      if (viewportState.nav && viewportState.nav.width > 0 && viewportState.nav.height > 0) {
+        throw new Error(`Viewport ${viewport.name} still shows the duplicate bottom navigation.`);
+      }
+      const flashBounds = await mobileFlash.boundingBox();
+      if(!flashBounds || flashBounds.x < 0 || flashBounds.x + flashBounds.width > viewport.width + 1){
+        throw new Error(`Viewport ${viewport.name} flashcard exceeds the viewport: ${JSON.stringify(flashBounds)}.`);
+      }
+    } else if (!viewportState.nav || viewportState.nav.width <= 0 || viewportState.nav.height <= 0) {
       throw new Error(`Viewport ${viewport.name} navigation is not visible.`);
     }
     if (!viewportState.content || viewportState.content.width <= 0 || viewportState.content.height <= 0) {

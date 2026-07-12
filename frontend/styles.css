@@ -7000,13 +7000,18 @@ body.has-reading .reading-side .detail-panel {
 }
 
 .reading-output rt {
-  font-size: var(--reading-ruby-font) !important;
-  display: none;
+  font-size: 0 !important;
+  line-height: 0;
+  visibility: hidden;
+  opacity: 0;
   transform: translateY(calc(var(--reading-ruby-gap, 0.16em) * -1));
 }
 
 body.reading-ruby-visible .reading-output rt {
-  display: ruby-text;
+  font-size: var(--reading-ruby-font) !important;
+  line-height: normal;
+  visibility: visible;
+  opacity: 1;
 }
 
 .paragraph-translation {
@@ -11768,7 +11773,7 @@ body.first-visit .hero-demo-practice .hero-practice-result {
     display: block;
     min-height: 100vh;
     padding-top: 64px;
-    padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   body:not(.first-visit) .app-sidebar {
@@ -11886,7 +11891,7 @@ body.first-visit .hero-demo-practice .hero-practice-result {
     z-index: 230;
     width: auto;
     height: 62px;
-    display: grid !important;
+    display: none !important;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 2px;
     margin: 0 !important;
@@ -11956,7 +11961,7 @@ body.first-visit .hero-demo-practice .hero-practice-result {
     width: 100% !important;
     min-width: 0;
     margin-left: 0 !important;
-    padding: 16px 14px calc(100px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 16px 14px calc(28px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
   body:not(.first-visit) .reading-workbench,
@@ -12464,5 +12469,143 @@ body[data-view="vocab"] .vocab-page-review .rate-btn:focus-visible {
     min-width: 0;
     padding-inline: 5px;
     white-space: normal;
+  }
+}
+
+/* iPhone/Safari real-device corrections */
+.menu-nav-label {
+  display: block;
+  margin: 18px 2px 8px;
+  color: var(--muted);
+  font-size: var(--type-size-caption);
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+
+.menu-primary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.menu-nav .menu-primary-grid button {
+  min-height: 86px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 7px;
+  margin: 0;
+  padding: 12px;
+  border-color: rgba(111, 80, 183, .16);
+  background: #F8F5FF;
+  text-align: center;
+}
+
+.menu-nav .menu-primary-grid button b {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #EADDFF;
+  color: #5C3EA5;
+  font-family: var(--font-reading);
+  font-size: var(--type-size-body-large);
+}
+
+.menu-nav .menu-primary-grid button span {
+  font-weight: 750;
+}
+
+.menu-secondary-list {
+  display: grid;
+  gap: 7px;
+}
+
+.menu-nav .menu-secondary-list button {
+  margin: 0;
+  background: #fff;
+}
+
+.icon-button-hint {
+  z-index: 2147483000;
+  max-width: calc(100vw - 20px);
+  white-space: normal;
+}
+
+@media (max-width: 720px) {
+  .menu-panel {
+    width: min(88vw, 360px);
+    border-radius: 18px 0 0 18px !important;
+  }
+
+  .menu-panel .menu-header {
+    align-items: center;
+    padding: 20px 18px;
+    background: linear-gradient(180deg, #FCFAFF, #FFFFFF);
+  }
+
+  .menu-panel .menu-nav {
+    min-height: 0;
+    padding: 0 16px 24px;
+    overflow-y: auto;
+  }
+
+  body[data-view="vocab"] .vocab-section-page,
+  body[data-view="vocab"] .vocab-section-page > .card-pad,
+  body[data-view="vocab"] .vocab-review-primary,
+  body[data-view="vocab"] .flash-card-host,
+  body[data-view="vocab"] #flashArea {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  body[data-view="vocab"] #flashArea.has-card {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  body[data-view="vocab"] #flashArea .flash-stage-solid {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: min(300px, 42dvh);
+    min-height: 220px;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  body[data-view="vocab"] #flashArea .flash-card-surface {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  body[data-view="vocab"] #flashArea .flash-main-word,
+  body[data-view="vocab"] #flashArea .flash-main-reading,
+  body[data-view="vocab"] #flashArea .flash-main-meaning {
+    width: 100%;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  body[data-view="vocab"] .vocab-review-primary {
+    min-height: auto;
+    padding-bottom: 24px;
   }
 }

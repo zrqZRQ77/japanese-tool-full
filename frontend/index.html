@@ -9,10 +9,10 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260711-11">
-<link rel="stylesheet" href="design-system.css?v=20260711-11">
-<link rel="stylesheet" href="grammar-layout.css?v=20260711-11">
-<link rel="stylesheet" href="typography.css?v=20260711-11">
+<link rel="stylesheet" href="styles.css?v=20260712-01">
+<link rel="stylesheet" href="design-system.css?v=20260712-01">
+<link rel="stylesheet" href="grammar-layout.css?v=20260712-01">
+<link rel="stylesheet" href="typography.css?v=20260712-01">
 <link rel="stylesheet" href="hero-menu-refresh.css?v=20260710-12">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260710-01"></script>
@@ -988,13 +988,19 @@
     <button class="btn-icon" id="menuCloseButton" onclick="closeMenu()" aria-label="关闭菜单">×</button>
   </div>
   <nav class="menu-nav">
-    <button onclick="closeMenu();switchWorkspace('reading')">阅读</button>
-    <button onclick="closeMenu();switchWorkspace('vocab')">生词本</button>
-    <button onclick="closeMenu();switchWorkspace('grammar')">语法本</button>
-    <button onclick="closeMenu();switchWorkspace('retell')">练习</button>
-    <button onclick="closeMenu();switchWorkspace('discover')">找阅读材料</button>
-    <button onclick="closeMenu();switchWorkspace('test')">水平测试</button>
-    <button onclick="closeMenu();switchWorkspace('history')">学习历史</button>
+    <span class="menu-nav-label">学习</span>
+    <div class="menu-primary-grid">
+      <button onclick="closeMenu();switchWorkspace('reading')"><b>読</b><span>阅读</span></button>
+      <button onclick="closeMenu();switchWorkspace('vocab')"><b>単</b><span>生词本</span></button>
+      <button onclick="closeMenu();switchWorkspace('grammar')"><b>文</b><span>语法本</span></button>
+      <button onclick="closeMenu();switchWorkspace('retell')"><b>練</b><span>练习</span></button>
+    </div>
+    <span class="menu-nav-label">更多</span>
+    <div class="menu-secondary-list">
+      <button onclick="closeMenu();switchWorkspace('discover')">找阅读材料</button>
+      <button onclick="closeMenu();switchWorkspace('test')">水平测试</button>
+      <button onclick="closeMenu();switchWorkspace('history')">学习历史</button>
+    </div>
     <hr>
     <button onclick="closeMenu();switchWorkspace('settings')">设置与数据备份</button>
     <button onclick="closeMenu();openOnboarding()">使用说明</button>
@@ -1232,7 +1238,7 @@
   </div>
 </div>
 
-<script src="app.js?v=20260711-11"></script>
+<script src="app.js?v=20260712-01"></script>
 <script src="search-entry-fix.js?v=20260711-01"></script>
 <script>
   const applyChineseInterface = typeof window.setInterfaceLanguage === 'function'

@@ -9846,21 +9846,32 @@ body[data-view="vocab"] .flash-rating-row .rate-btn {
 }
 
 @media (max-width: 720px) {
+  body[data-view="vocab"] #flashArea,
+  body[data-view="vocab"] .flash-card-host {
+    width: calc(100vw - 64px) !important;
+    max-width: calc(100vw - 64px) !important;
+    min-width: 0 !important;
+    justify-self: center !important;
+  }
+
   body[data-view="vocab"] .flash-stage-solid,
   body[data-view="vocab"] .vocab-page-review .flash-stage.flash-stage-solid {
-    height: auto !important;
-    min-height: 360px !important;
-    max-height: none !important;
+    width: calc(100vw - 64px) !important;
+    max-width: calc(100vw - 64px) !important;
+    height: min(300px, 42dvh) !important;
+    min-height: 220px !important;
+    max-height: 300px !important;
+    overflow: hidden !important;
   }
 
   body[data-view="vocab"] .flash-card-surface-front {
-    padding: 40px 24px !important;
+    padding: 30px 18px !important;
   }
 
   body[data-view="vocab"] .flash-card-surface-back {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
-    padding: 34px 28px !important;
+    padding: 28px 18px !important;
   }
 
   body[data-view="vocab"] .flash-card-word-group {
@@ -9881,6 +9892,8 @@ body[data-view="vocab"] .flash-rating-row .rate-btn {
   }
 
   body[data-view="vocab"] .flash-rating-row {
+    width: calc(100vw - 64px) !important;
+    max-width: calc(100vw - 64px) !important;
     grid-template-columns: 1fr !important;
   }
 }
@@ -12166,7 +12179,7 @@ body[data-view="settings"] .settings-version-panel p {
     z-index: 230 !important;
     width: auto !important;
     height: 62px !important;
-    display: grid !important;
+    display: none !important;
     grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
     gap: 2px !important;
     margin: 0 !important;
@@ -12704,8 +12717,18 @@ body[data-view="reading"] .reading-output ruby.w {
 }
 
 body[data-view="reading"] .reading-output rt {
-  font-size: var(--reading-ruby-font) !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
   transform: translateY(calc(var(--reading-ruby-gap, 0.16em) * -1));
+}
+
+body.reading-ruby-visible[data-view="reading"] .reading-output rt {
+  font-size: var(--reading-ruby-font) !important;
+  line-height: normal !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Reading page: keep the center column as layout only, so cards do not nest. */

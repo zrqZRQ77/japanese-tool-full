@@ -3213,7 +3213,7 @@ function renderWordNode(surface, reading, cls, attrs, onClick){
   const allAttrs = {...(attrs || {}), 'data-reading':reading || ''};
   const attrText = Object.entries(allAttrs).map(([key,value]) => `${key}="${escapeHtml(String(value))}"`).join(' ');
   const groupCls = isMixedKanjiKana(surface) ? ' w-grouped' : '';
-  const content = document.body.classList.contains('reading-ruby-visible') && shouldShowRuby(surface, reading)
+  const content = shouldShowRuby(surface, reading)
     ? `${safeSurface}<rt>${safeReading}</rt>`
     : safeSurface;
   const label = `${surface}${reading ? '，读音 ' + reading : ''}。查看释义`;
@@ -3245,7 +3245,7 @@ function renderRubyUnitNode(unit, index){
   const safeBase = escapeHtml(unit.base || '');
   const safeRuby = escapeHtml(unit.ruby || '');
   const cls = unit.cls || 'w-kuromoji';
-  const content = document.body.classList.contains('reading-ruby-visible') && shouldShowRuby(unit.base, unit.ruby)
+  const content = shouldShowRuby(unit.base, unit.ruby)
     ? `${safeBase}<rt>${safeRuby}</rt>`
     : safeBase;
   return `<ruby class="w ${cls}" data-edited-unit="${index}" data-reading="${safeRuby}">${content}</ruby>`;
@@ -4786,6 +4786,7 @@ function normalizeJapaneseSpeechText(text){
     .replace(/([。！？!?])\s*\n+/g, '$1 ')
     .replace(/\n+/g, '。')
     .replace(/([。！？!?])(?=[^\s])/g, '$1 ')
+    .replace(/丁寧/g, 'ていねい')
     .trim();
 }
 
@@ -5876,18 +5877,9 @@ async function prepareRetellRecording(){
     showToast('请先在「阅读」标签里分析一段文本。', 'warning');
     return;
   }
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){
-    startRetellRecording();
-    requestAnimationFrame(()=>document.getElementById('retellResult')?.scrollIntoView({behavior:'smooth', block:'center'}));
-    return;
-  }
-  const state = await retellMicrophonePermissionState();
-  if(state === 'granted' || safeStorage.getItem('retell_microphone_intro_seen') === '1'){
-    startRetellRecording();
-    return;
-  }
-  openRetellPermissionModal();
+  // Keep getUserMedia in the direct click gesture. iOS Safari can reject a
+  // request that starts only after awaiting the Permissions API.
+  startRetellRecording();
 }
 
 function openRetellPermissionModal(){
@@ -5918,14 +5910,11 @@ async function startRetellRecording(){
   const resultBox = document.getElementById('retellResult');
   const btn = document.getElementById('retellRecordBtn');
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){
-    setRetellActivityState('manual');
-    resultBox.innerHTML = retellFallbackInputHtml('当前浏览器不支持语音识别，可以打字复述。', '凭记忆打字复述刚才读到的内容……');
-    return;
-  }
+  if(btn){ btn.disabled = true; btn.textContent = '正在请求麦克风…'; }
 
   if(RETELL_AUDIO_URL){ URL.revokeObjectURL(RETELL_AUDIO_URL); RETELL_AUDIO_URL = null; }
   RETELL_AUDIO_CHUNKS = [];
+  let audioRecordingStarted = false;
 
   if(navigator.mediaDevices?.getUserMedia && window.MediaRecorder){
     try{
@@ -5934,19 +5923,40 @@ async function startRetellRecording(){
       RETELL_MEDIA_RECORDER.ondataavailable = (event)=>{ if(event.data.size) RETELL_AUDIO_CHUNKS.push(event.data); };
       RETELL_MEDIA_RECORDER.onstop = ()=>{
         if(RETELL_AUDIO_CHUNKS.length){
-          RETELL_AUDIO_URL = URL.createObjectURL(new Blob(RETELL_AUDIO_CHUNKS, { type: 'audio/webm' }));
+          const audioType = RETELL_MEDIA_RECORDER?.mimeType || RETELL_AUDIO_CHUNKS[0]?.type || 'audio/mp4';
+          RETELL_AUDIO_URL = URL.createObjectURL(new Blob(RETELL_AUDIO_CHUNKS, { type: audioType }));
         }
         stream.getTracks().forEach(track=>track.stop());
-        renderRetellAudioSlot();
+        if(!SR) showRetellAudioOnlyResult();
+        else renderRetellAudioSlot();
       };
       RETELL_MEDIA_RECORDER.start();
+      audioRecordingStarted = true;
     }catch(error){
       RETELL_MEDIA_RECORDER = null;
-      console.warn('无法录制可回放的音频,只保留语音转写文字。', error);
+      console.warn('无法录制可回放的音频。', error);
+      if(!SR){
+        setRetellActivityState('manual');
+        resultBox.innerHTML = retellFallbackInputHtml('麦克风没有开启。请在 Safari 网站设置中允许麦克风，或先打字复述。');
+        if(btn){ btn.disabled = false; btn.textContent = '重新尝试录音'; }
+        requestAnimationFrame(()=>resultBox.scrollIntoView({behavior:'smooth', block:'center'}));
+        return;
+      }
+    }
+  }
+
+  if(!SR){
+    if(!audioRecordingStarted){
       setRetellActivityState('manual');
-      resultBox.innerHTML = retellFallbackInputHtml('没有拿到麦克风权限，可以打字复述。');
+      resultBox.innerHTML = retellFallbackInputHtml('当前浏览器不能录音，可以打字复述。');
+      if(btn){ btn.disabled = false; btn.textContent = '开始录音复述'; }
       return;
     }
+    RETELL_RECORDING = true;
+    if(btn){ btn.disabled = false; btn.textContent = '⏹ 停止录音'; btn.classList.add('is-recording'); }
+    resultBox.innerHTML = '<div class="recording-indicator"><span class="recording-dot"></span>正在录音……点击「停止录音」后可以回放</div>';
+    requestAnimationFrame(()=>resultBox.scrollIntoView({behavior:'smooth', block:'center'}));
+    return;
   }
 
   RETELL_RECOGNITION = new SR();
@@ -5983,13 +5993,30 @@ async function startRetellRecording(){
   };
   RETELL_RECOGNITION.start();
   RETELL_RECORDING = true;
-  if(btn){ btn.textContent = '⏹ 停止录音'; btn.classList.add('is-recording'); }
+  if(btn){ btn.disabled = false; btn.textContent = '⏹ 停止录音'; btn.classList.add('is-recording'); }
   resultBox.innerHTML = '<div class="recording-indicator"><span class="recording-dot"></span>正在录音…… 请开始用日语复述</div>';
 }
 
 function stopRetellRecording(){
   if(RETELL_RECOGNITION) RETELL_RECOGNITION.stop();
   if(RETELL_MEDIA_RECORDER?.state === 'recording') RETELL_MEDIA_RECORDER.stop();
+  if(!RETELL_RECOGNITION){
+    RETELL_RECORDING = false;
+    const btn = document.getElementById('retellRecordBtn');
+    if(btn){ btn.disabled = false; btn.textContent = '再次录音'; btn.classList.remove('is-recording'); }
+  }
+}
+
+function showRetellAudioOnlyResult(){
+  const resultBox = document.getElementById('retellResult');
+  if(!resultBox) return;
+  setRetellActivityState('result');
+  resultBox.innerHTML = `
+    <div class="retell-result-head"><strong>录音完成</strong><div id="retellAudioSlot"></div></div>
+    <p class="lookup-status">Safari 暂不提供日语语音转写。你可以回放录音，再打字记录复述内容。</p>
+    ${retellFallbackInputHtml('补充复述文字（可选）', '输入刚才复述的日语……')}
+  `;
+  renderRetellAudioSlot();
 }
 
 function showRetellComparison(transcript){
@@ -6781,7 +6808,10 @@ function getFlashArea(){
 
 function setFlashArea(message){
   const area = getFlashArea();
-  if(area) area.innerHTML = `<div class="flash-empty">${message}</div>`;
+  if(area){
+    area.classList.remove('has-card');
+    area.innerHTML = `<div class="flash-empty">${message}</div>`;
+  }
   updateFlashProgress(message ? '复习未开始' : '');
 }
 
@@ -6892,6 +6922,7 @@ function renderCard(){
   if(!v){ reviewQueue.shift(); showNextCard(); return; }
   const area = getFlashArea();
   if(!area) return;
+  area.classList.add('has-card');
   updateFlashProgress();
   const flashCardMarkup = cardFlipped
     ? `

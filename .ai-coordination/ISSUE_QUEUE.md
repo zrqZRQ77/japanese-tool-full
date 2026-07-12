@@ -4,6 +4,19 @@
 
 ## 当前问题
 
+### USER-REAL-002
+
+- 来源：用户第二轮 Mac Safari / iPhone Safari 实机复测（2026-07-12）
+- 基线：`main / 3cba6c8 / 缓存 20260711-11`
+- 等级：P1
+- 状态：FIXED（缓存 `20260712-01` 自动回归 PASS，等待部署后实机复核）
+- 涉及文件：`frontend/app.js`、`frontend/index.html`、`frontend/styles.css`、`frontend/design-system.css`、`frontend/tools/ui-audit.mjs`
+- 发现：`丁寧` ruby 正确但系统 TTS 误读；Safari ruby 开关无效；手机重复导航、工具提示遮挡、闪卡越界；iPhone 录音点击无反馈。
+- 复现方式或证据：用户在最新线上版本逐项复测；本地检查确认后加载的 `design-system.css` 覆盖了旧修复，录音权限查询也会让 iOS Safari 丢失直接点击手势。
+- 证据层级：真实设备反馈、静态调用链审查、本地 Chromium 动态回归与 Safari 能力模拟。
+- 预期结果：TTS 使用核验读音；Safari ruby 可切换；手机只保留统一顶部菜单；闪卡不越界；无语音识别时仍能真实录音并回放。
+- 处理结论：TTS 输入将 `丁寧` 替换为 `ていねい`；ruby 始终保留 `rt` 并以字号/可见性切换；移除手机底部导航并重做顶部菜单；统一最高层工具提示；闪卡及父容器按 viewport 限宽；录音直接请求麦克风，Safari 无转写能力时使用 MediaRecorder 录音回放。自动审计新增对应断言并 PASS，真实 Safari 麦克风权限仍需部署后复核。
+
 ### USER-REAL-001
 
 - 来源：用户 Mac Safari / iPhone Safari / PowerPoint / Keynote 实机验收（2026-07-11 21:17–21:49）
