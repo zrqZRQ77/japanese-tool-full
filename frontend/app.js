@@ -2424,7 +2424,7 @@ async function analyzeSourceInput(){
   try{
     const normalizedUrl = normalizeArticleUrl(value);
     if(normalizedUrl){
-      setImportStatus('MVP 暂不自动读取网页正文。请打开原文，复制需要学习的日语文本后粘贴到这里。', 'error');
+      setImportStatus('暂不支持自动读取网页正文。请打开原文，复制需要学习的日语文本后粘贴到这里。', 'error');
       showToast('请复制原文中的日语文本后粘贴分析', 'info');
       return;
     }
@@ -3127,7 +3127,7 @@ async function extractLocalDocumentFile(file, extension){
       status:`已在浏览器本地读取 ${file.name}${result.pageCount ? `，${result.pageCount} 页` : ''}，请检查内容`
     };
   }
-  throw new Error('MVP 当前只支持文字型 PDF。');
+  throw new Error('目前支持文字型 PDF（Beta），其他格式请复制文本后粘贴。');
 }
 
 async function extractUploadedFile(file){
@@ -3148,7 +3148,7 @@ async function extractUploadedFile(file){
   const extension = (file.name.match(/\.[^.]+$/)?.[0] || '').toLowerCase();
   const limits = {'.pdf':20 * 1024 * 1024};
   if(!limits[extension]){
-    setImportStatus('MVP 当前只支持文字型 PDF（Beta）。其他格式请复制日语文本后粘贴分析。', 'error');
+    setImportStatus('目前支持文字型 PDF（Beta）。其他格式请复制日语文本后粘贴分析。', 'error');
     showToast('不支持的文件格式', 'error');
     resetFileInputs();
     return;
