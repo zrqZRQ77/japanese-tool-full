@@ -469,6 +469,14 @@ async function runAudit() {
     const moreMenu = page.locator('.hero-more-menu');
     await moreMenu.locator('summary').click();
     await moreMenu.locator('.hero-menu-popover').waitFor({ state: 'visible', timeout: 3000 });
+    if (viewport.width <= 720) {
+      const moreMenuBounds = await moreMenu.locator('.hero-menu-popover').boundingBox();
+      if (!moreMenuBounds
+        || moreMenuBounds.x < -1
+        || moreMenuBounds.x + moreMenuBounds.width > viewport.width + 1) {
+        throw new Error(`Viewport ${viewport.name} more menu exceeds the viewport: ${JSON.stringify(moreMenuBounds)}.`);
+      }
+    }
     await page.locator('#heroInputText').fill(SAMPLE_TEXT);
     await page.locator('button[onclick="analyzeFromHero()"]', { hasText: '开始阅读' }).click();
     await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
@@ -481,17 +489,23 @@ async function runAudit() {
         const second = groups[1].getBoundingClientRect();
         const style = getComputedStyle(toolbar);
         return {
+          firstLeft: Math.round(first.left),
           firstTop: Math.round(first.top),
+          firstBottom: Math.round(first.bottom),
+          secondLeft: Math.round(second.left),
           secondTop: Math.round(second.top),
-          flexWrap: style.flexWrap,
-          overflowX: style.overflowX
+          display: style.display,
+          overflowX: style.overflowX,
+          clientWidth: toolbar.clientWidth,
+          scrollWidth: toolbar.scrollWidth
         };
       });
       if (!toolbarLayout
-        || Math.abs(toolbarLayout.firstTop - toolbarLayout.secondTop) > 3
-        || toolbarLayout.flexWrap !== 'nowrap'
-        || !['auto', 'scroll'].includes(toolbarLayout.overflowX)) {
-        throw new Error(`Viewport ${viewport.name} reader toolbar is not a single horizontal strip: ${JSON.stringify(toolbarLayout)}.`);
+        || Math.abs(toolbarLayout.firstLeft - toolbarLayout.secondLeft) > 3
+        || toolbarLayout.secondTop < toolbarLayout.firstBottom
+        || toolbarLayout.display !== 'grid'
+        || toolbarLayout.scrollWidth > toolbarLayout.clientWidth + 2) {
+        throw new Error(`Viewport ${viewport.name} reader toolbar is not two visible left-aligned rows: ${JSON.stringify(toolbarLayout)}.`);
       }
       if (viewport.name === 'mobile-390') await screenshot('viewport-mobile-390-reading-toolbar');
     }

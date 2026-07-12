@@ -145,34 +145,29 @@ body.first-visit .hero-beta-pill {
 
   body.first-visit .hero-menu-popover,
   body.first-visit .hero-more-menu .hero-menu-popover {
+    left: auto !important;
+    right: 0 !important;
     max-width: calc(100vw - 28px);
   }
 }
 
-/* Mobile reader controls stay on one familiar, horizontally scrollable strip. */
+/* Mobile reader controls stay visible in two consistent, left-aligned groups. */
 @media (max-width: 720px) {
   body[data-view="reading"] #readerToolbar.reader-toolbar {
     width: 100% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 8px !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    overscroll-behavior-inline: contain;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  body[data-view="reading"] #readerToolbar.reader-toolbar::-webkit-scrollbar {
-    display: none;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    align-items: start !important;
+    justify-content: stretch !important;
+    gap: 6px !important;
+    overflow: visible !important;
   }
 
   body[data-view="reading"] #readerToolbar .reader-tool-group,
   body[data-view="reading"] #readerToolbar .reader-tool-group-end {
+    width: 100% !important;
     display: flex !important;
-    flex: 0 0 auto !important;
+    justify-content: flex-start !important;
     align-items: center !important;
     gap: 8px !important;
     margin: 0 !important;
@@ -180,7 +175,21 @@ body.first-visit .hero-beta-pill {
   }
 
   body[data-view="reading"] #readerToolbar .reader-tool-divider {
-    flex: 0 0 1px;
+    display: none !important;
+  }
+
+  body[data-view="reading"] #readerToolbar .reader-tool {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+
+  body[data-view="reading"] #readerToolbar .reader-tool-wide {
+    width: auto !important;
+    min-width: 72px !important;
+    padding-right: 12px !important;
+    padding-left: 12px !important;
   }
 }
 
