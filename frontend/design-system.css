@@ -14587,6 +14587,36 @@ body.first-visit .hero-beta-pill {
     flex: 0 0 auto;
   }
 
+  body[data-view="reading"] .selection-tools {
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    left: 12px;
+    z-index: 1000;
+    width: auto;
+    max-width: none;
+    max-height: min(46dvh, 360px);
+    padding: 14px;
+    overflow-y: auto;
+  }
+
+  body[data-view="reading"] .selection-text {
+    max-height: 3.2em;
+    overflow: hidden;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+
+  body[data-view="reading"] .selection-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  body[data-view="reading"] .selection-actions button {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
   .reading-display-body {
     flex: 1 1 auto;
     min-height: 0;

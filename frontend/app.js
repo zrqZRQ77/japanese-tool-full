@@ -4703,23 +4703,34 @@ function showFootnoteDetail(id){
 }
 
 let currentSelectionText = '';
+let readingSelectionTimer = 0;
 
 function handleReadingSelection(event){
   if(IS_ANNOTATION_EDITING) return;
   const output = document.getElementById('output');
   const tools = document.getElementById('selectionTools');
   if(!output || !tools) return;
-  setTimeout(()=>{
+  clearTimeout(readingSelectionTimer);
+  const wait = event?.type === 'touchend' || event?.type === 'selectionchange' ? 180 : 0;
+  readingSelectionTimer = setTimeout(()=>{
     const selection = window.getSelection();
     const text = plainSelectedText();
     if(!text || text.length > 220 || !selection.rangeCount || !output.contains(selection.anchorNode)){
-      hideSelectionTools();
+      if(event?.type !== 'selectionchange') hideSelectionTools();
       return;
     }
     currentSelectionText = text;
     showSelectedTextDetail(text);
-    hideSelectionTools();
-  }, 0);
+    if(window.matchMedia('(max-width: 720px)').matches){
+      const selectedLabel = document.getElementById('selectionText');
+      const result = document.getElementById('selectionResult');
+      if(selectedLabel) selectedLabel.textContent = text;
+      if(result) result.textContent = '可以查询、收藏、保存为语法或朗读这段文字。';
+      tools.classList.add('active');
+    }else{
+      hideSelectionTools();
+    }
+  }, wait);
 }
 
 function hideSelectionTools(){
@@ -4771,7 +4782,7 @@ function buildChineseSentenceAnalysis(text, summary){
   if(summary){
     parts.push(`<b>关键词释义</b><br>${escapeHtml(summary)}`);
   }
-  parts.push('完整自然中文翻译需要接入翻译或 AI 服务；当前先提供本地词义解析，适合做 MVP 验证。');
+  parts.push('当前显示本地词库中的关键词释义。可以继续点击正文中的词语查看详细释义。');
   return parts.join('<br><br>');
 }
 
@@ -8333,6 +8344,8 @@ async function initializeApp(){
   document.getElementById('importPreviewText')?.addEventListener('input', updateImportPreviewSummary);
   document.getElementById('output')?.addEventListener('mouseup', handleReadingSelection);
   document.getElementById('output')?.addEventListener('keyup', handleReadingSelection);
+  document.getElementById('output')?.addEventListener('touchend', handleReadingSelection, {passive:true});
+  document.addEventListener('selectionchange', handleReadingSelection);
   document.addEventListener('mousedown', event=>{
     closeOpenVocabMenus(event.target);
     const tools = document.getElementById('selectionTools');
