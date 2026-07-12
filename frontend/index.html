@@ -9,11 +9,11 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260712-06">
-<link rel="stylesheet" href="design-system.css?v=20260712-06">
-<link rel="stylesheet" href="grammar-layout.css?v=20260712-06">
-<link rel="stylesheet" href="typography.css?v=20260712-06">
-<link rel="stylesheet" href="hero-menu-refresh.css?v=20260712-06">
+<link rel="stylesheet" href="styles.css?v=20260712-07">
+<link rel="stylesheet" href="design-system.css?v=20260712-07">
+<link rel="stylesheet" href="grammar-layout.css?v=20260712-07">
+<link rel="stylesheet" href="typography.css?v=20260712-07">
+<link rel="stylesheet" href="hero-menu-refresh.css?v=20260712-07">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260710-01"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
@@ -297,23 +297,6 @@
             </div>
 
             <section class="reading-source-panel" aria-label="阅读资料设置和推荐来源">
-              <div class="reading-source-options">
-                <label class="pdf-mode-field" title="日文小说/书籍常见竖排版式，选这个会自动转成从左到右的横排">
-                  <span>排版方向</span>
-                  <select id="pdfModeSelect">
-                    <option value="auto" selected>自动识别</option>
-                    <option value="horizontal">横排（普通文档）</option>
-                    <option value="vertical">竖排书籍/小说</option>
-                  </select>
-                </label>
-                <label class="pdf-mode-field" title="如果这个PDF是把网页打印/导出得到的，选这个能更好地去掉网页里的导航、广告等无关内容">
-                  <span>资料类型</span>
-                  <select id="pdfCleanupSelect">
-                    <option value="normal" selected>普通文档</option>
-                    <option value="web-article">网页打印/导出的PDF</option>
-                  </select>
-                </label>
-              </div>
               <div class="reading-source-suggestions">
                 <span class="reading-source-label">推荐来源</span>
                 <div class="source-list" aria-label="推荐日语内容来源">
@@ -928,7 +911,7 @@
               <article class="settings-action-item">
                 <div>
                   <strong>数据与隐私</strong>
-                  <p>学习记录保存在当前浏览器。粘贴的文本和选择的 PDF 仅在当前设备中处理。清除浏览器数据后可能无法恢复，建议定期备份。</p>
+                  <p>学习记录保存在当前浏览器。粘贴的文本仅在当前设备中处理。清除浏览器数据后可能无法恢复，建议定期备份。</p>
                 </div>
               </article>
               <article class="settings-action-item settings-action-item--caution">
@@ -1247,7 +1230,7 @@
 
 <div class="icon-button-hint" id="iconButtonHint" role="tooltip" aria-hidden="true"></div>
 
-<script src="app.js?v=20260712-06"></script>
+<script src="app.js?v=20260712-07"></script>
 <script src="search-entry-fix.js?v=20260711-01"></script>
 <script>
   const applyChineseInterface = typeof window.setInterfaceLanguage === 'function'

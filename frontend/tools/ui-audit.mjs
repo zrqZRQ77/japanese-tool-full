@@ -509,6 +509,23 @@ async function runAudit() {
       }
       if (viewport.name === 'mobile-390') await screenshot('viewport-mobile-390-reading-toolbar');
     }
+    await page.locator('#readerToolbar .import-tool').click();
+    await page.locator('#sourceComposer').waitFor({ state: 'visible', timeout: 3000 });
+    const withdrawnPdfUi = await page.evaluate(() => {
+      const composer = document.querySelector('#sourceComposer');
+      return {
+        pdfControls: composer?.querySelectorAll('#pdfModeSelect, #pdfCleanupSelect, input[accept*="pdf"], button').length
+          ? [...composer.querySelectorAll('#pdfModeSelect, #pdfCleanupSelect, input[accept*="pdf"], button')]
+            .filter(node => /pdf|排版方向|资料类型/i.test(`${node.id || ''} ${node.textContent || ''} ${node.getAttribute('accept') || ''}`)).length
+          : 0,
+        pdfCopy: /pdf|排版方向|资料类型|竖排|横排|网页打印/i.test(composer?.innerText || '')
+      };
+    });
+    if (withdrawnPdfUi.pdfControls || withdrawnPdfUi.pdfCopy) {
+      throw new Error(`Viewport ${viewport.name} edit-source flow still exposes withdrawn PDF UI: ${JSON.stringify(withdrawnPdfUi)}.`);
+    }
+    await page.locator('#analyzeSourceBtn').click();
+    await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
     await page.locator('#rubyToggleBtn').click();
     await page.locator('#iconButtonHint.is-visible').waitFor({state:'attached', timeout:2000});
     const hintBounds = await page.locator('#iconButtonHint').boundingBox();

@@ -4692,7 +4692,7 @@ function showFootnoteDetail(id){
   if(!note) return;
   const area = document.getElementById('detailArea');
   setReadingDetailVisible(true);
-  setDetailHeadActions(detailIconActions(`addEncodedTextToVocab('${encodeURIComponent(note.text || '')}', 'PDF 脚注')`, `speakEncodedJapanese('${encodeURIComponent(note.text || '')}', this, false)`));
+  setDetailHeadActions(detailIconActions(`addEncodedTextToVocab('${encodeURIComponent(note.text || '')}', '文本脚注')`, `speakEncodedJapanese('${encodeURIComponent(note.text || '')}', this, false)`));
   area.innerHTML = `
     <div class="detail-box">
       <div class="detail-word">注 ${escapeHtml(String(note.id))}</div>
