@@ -12472,59 +12472,61 @@ body[data-view="vocab"] .vocab-page-review .rate-btn:focus-visible {
   }
 }
 
-/* iPhone/Safari real-device corrections */
-.menu-nav-label {
-  display: block;
-  margin: 18px 2px 8px;
-  color: var(--muted);
-  font-size: var(--type-size-caption);
-  font-weight: 750;
-  letter-spacing: .08em;
+/* Mobile menu reuses the desktop sidebar's quiet, single-column language. */
+.menu-sidebar-nav {
+  min-height: 0;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 16px;
+  overflow-y: auto;
 }
 
-.menu-primary-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.menu-nav .menu-primary-grid button {
-  min-height: 86px;
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 7px;
+.menu-nav.menu-sidebar-nav .nav-item {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
   margin: 0;
-  padding: 12px;
-  border-color: rgba(111, 80, 183, .16);
-  background: #F8F5FF;
-  text-align: center;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--sumi);
+  text-align: left;
 }
 
-.menu-nav .menu-primary-grid button b {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  background: #EADDFF;
-  color: #5C3EA5;
-  font-family: var(--font-reading);
-  font-size: var(--type-size-body-large);
+.menu-sidebar-nav .nav-icon,
+.menu-sidebar-nav .nav-icon svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
 }
 
-.menu-nav .menu-primary-grid button span {
-  font-weight: 750;
+.menu-sidebar-nav .nav-icon svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.menu-secondary-list {
-  display: grid;
-  gap: 7px;
+.menu-sidebar-nav .nav-label {
+  font-size: var(--type-size-control);
+  font-weight: 650;
 }
 
-.menu-nav .menu-secondary-list button {
-  margin: 0;
-  background: #fff;
+.menu-nav.menu-sidebar-nav .nav-item.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.menu-sidebar-nav hr {
+  width: 100%;
+  margin: 8px 0;
 }
 
 .icon-button-hint {
@@ -12534,23 +12536,6 @@ body[data-view="vocab"] .vocab-page-review .rate-btn:focus-visible {
 }
 
 @media (max-width: 720px) {
-  .menu-panel {
-    width: min(88vw, 360px);
-    border-radius: 18px 0 0 18px !important;
-  }
-
-  .menu-panel .menu-header {
-    align-items: center;
-    padding: 20px 18px;
-    background: linear-gradient(180deg, #FCFAFF, #FFFFFF);
-  }
-
-  .menu-panel .menu-nav {
-    min-height: 0;
-    padding: 0 16px 24px;
-    overflow-y: auto;
-  }
-
   body[data-view="vocab"] .vocab-section-page,
   body[data-view="vocab"] .vocab-section-page > .card-pad,
   body[data-view="vocab"] .vocab-review-primary,

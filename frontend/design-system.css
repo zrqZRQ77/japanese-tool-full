@@ -6334,7 +6334,7 @@ body[data-view="reading"] .reader-toolbar .reader-tool-details > summary.reader-
 
 body[data-view="reading"] .reader-toolbar .reader-tool[data-tooltip]::after,
 body[data-view="reading"] .reader-toolbar .reader-tool-details > summary[data-tooltip]::after {
-  display: block !important;
+  display: none !important;
   content: attr(data-tooltip) !important;
   position: absolute !important;
   left: 50% !important;
@@ -12731,6 +12731,12 @@ body.reading-ruby-visible[data-view="reading"] .reading-output rt {
   opacity: 1 !important;
 }
 
+@media (max-width: 720px) {
+  body[data-view="reading"] .reading-output rt {
+    transform: translateY(calc(var(--reading-ruby-mobile-gap, 0.10em) * -1)) !important;
+  }
+}
+
 /* Reading page: keep the center column as layout only, so cards do not nest. */
 body[data-view="reading"] .reading-main,
 body[data-view="reading"] .reading-main.card {
@@ -12906,6 +12912,11 @@ textarea {
   border-radius: var(--polish-radius-card) !important;
   background: var(--polish-surface) !important;
   box-shadow: var(--polish-shadow-card) !important;
+}
+
+.menu-panel {
+  border-radius: 0 !important;
+  background: var(--polish-surface-solid) !important;
 }
 
 .card-head,

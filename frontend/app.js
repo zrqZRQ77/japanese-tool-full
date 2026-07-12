@@ -191,6 +191,7 @@ function setReadingDisplayCss(values){
   document.documentElement.style.setProperty('--reading-base-font', `${normalized.base}px`);
   document.documentElement.style.setProperty('--reading-ruby-font', `${normalized.ruby}px`);
   document.documentElement.style.setProperty('--reading-ruby-gap', `${normalized.rubyGap}em`);
+  document.documentElement.style.setProperty('--reading-ruby-mobile-gap', `${(normalized.rubyGap * 0.6).toFixed(3)}em`);
   document.documentElement.style.setProperty('--reading-line-height', normalized.lineHeight.toFixed(1));
   setReadingDisplayInputs(normalized);
 }
@@ -680,6 +681,7 @@ function runVocabPrimaryAction(){
 let menuReturnFocus = null;
 
 function openMenu() {
+  hideIconButtonHint(null, true);
   const select = document.getElementById('interfaceLanguageSelect');
   if(select) select.value = safeStorage.getItem('interface_language') || 'zh';
   const menu = document.getElementById('menuPanel');
@@ -815,7 +817,14 @@ function initIconButtonHints(){
     if(control) showIconButtonHint(control, 1400);
   }, true);
   window.addEventListener('resize', ()=>hideIconButtonHint(null, true));
-  window.addEventListener('scroll', ()=>hideIconButtonHint(null, true), true);
+  window.addEventListener('scroll', ()=>{
+    if(iconHintPinned && activeIconHintControl?.isConnected){
+      const hint = document.getElementById('iconButtonHint');
+      if(hint) positionIconButtonHint(activeIconHintControl, hint);
+      return;
+    }
+    hideIconButtonHint(null, true);
+  }, true);
 }
 
 // ===== 检测首次访问 =====
@@ -2535,7 +2544,7 @@ function switchWorkspace(view){
   closeVocabPanel();
   closeMenu();
   document.body.dataset.view = view;
-  document.querySelectorAll('.app-sidebar .nav-item').forEach(button=>{
+  document.querySelectorAll('.app-sidebar .nav-item, #menuPanel .nav-item[data-view]').forEach(button=>{
     const navView = button.dataset.view;
     const isPractice = (view === 'typing' || view === 'retell') && navView === 'retell';
     const isReadingSetup = view === 'test' && navView === 'reading';

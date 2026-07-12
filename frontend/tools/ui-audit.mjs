@@ -270,6 +270,9 @@ async function runAudit() {
     await page.locator('button[onclick="analyzeFromHero()"]').click();
     await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
     await page.locator('#rubyToggleBtn').click();
+    await page.locator('#iconButtonHint.is-visible').waitFor({state:'attached', timeout:2000});
+    const inlineTooltipDisabled = await page.locator('#rubyToggleBtn').evaluate(node => getComputedStyle(node, '::after').display === 'none');
+    if(!inlineTooltipDisabled) throw new Error('Toolbar still renders the clipped inline tooltip.');
     const rubyVisible = await page.locator('#output rt').first().evaluate(node => {
       const style = getComputedStyle(node);
       return style.visibility === 'visible' && Number.parseFloat(style.fontSize) > 0;
@@ -298,7 +301,7 @@ async function runAudit() {
   });
 
   await step('typing practice', async () => {
-    await page.locator('button[data-view="retell"]').click();
+    await page.locator('.app-sidebar button[data-view="retell"]').click();
     await page.locator('#startTypingPracticeBtn').click();
     await page.locator('#typingInput').fill('私は学生です。');
     await page.locator('#typingPracticeModule button[onclick="checkTypingAnswer()"]').click();
@@ -336,7 +339,7 @@ async function runAudit() {
   });
 
   await step('history page', async () => {
-    await page.locator('button[data-view="history"]').click();
+    await page.locator('.app-sidebar button[data-view="history"]').click();
     await screenshot('06-history');
     return state('state: history');
   });
@@ -354,7 +357,7 @@ async function runAudit() {
   await step('grammar add and persistence', async () => {
     const cancelButton = page.locator('#deleteConfirmCancel');
     if (await cancelButton.isVisible().catch(() => false)) await cancelButton.click();
-    await page.locator('button[data-view="grammar"]').click();
+    await page.locator('.app-sidebar button[data-view="grammar"]').click();
     await page.locator('.grammar-add-trigger').click();
     await page.locator('#grammarCustomTitle').fill('〜てから');
     await page.locator('#grammarCustomLevel').selectOption('N4');
@@ -445,6 +448,11 @@ async function runAudit() {
     await page.locator('button[onclick="analyzeFromHero()"]', { hasText: '开始阅读' }).click();
     await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
     await page.locator('#rubyToggleBtn').click();
+    await page.locator('#iconButtonHint.is-visible').waitFor({state:'attached', timeout:2000});
+    const hintBounds = await page.locator('#iconButtonHint').boundingBox();
+    if(!hintBounds || hintBounds.x < 0 || hintBounds.x + hintBounds.width > viewport.width + 1){
+      throw new Error(`Viewport ${viewport.name} tool hint exceeds the viewport: ${JSON.stringify(hintBounds)}.`);
+    }
     const viewportRubyVisible = await page.locator('#output rt').first().evaluate(node => {
       const style = getComputedStyle(node);
       return style.visibility === 'visible' && Number.parseFloat(style.fontSize) > 0;
@@ -457,7 +465,11 @@ async function runAudit() {
       await mobileMenuButton.waitFor({ state: 'visible', timeout: 3000 });
       await mobileMenuButton.click();
       await page.locator('#menuPanel.active').waitFor({ state: 'visible', timeout: 3000 });
-      await page.locator('.menu-primary-grid button').filter({hasText:'生词本'}).click();
+      if(viewport.name === 'mobile-390'){
+        await page.waitForTimeout(380);
+        await screenshot('viewport-mobile-390-menu');
+      }
+      await page.locator('#menuPanel .nav-item[data-view="vocab"]').click();
     }else{
       const vocabNav = page.locator('button.nav-vocab');
       await vocabNav.waitFor({ state: 'visible', timeout: 3000 });

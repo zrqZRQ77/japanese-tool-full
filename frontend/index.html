@@ -9,10 +9,10 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260712-01">
-<link rel="stylesheet" href="design-system.css?v=20260712-01">
-<link rel="stylesheet" href="grammar-layout.css?v=20260712-01">
-<link rel="stylesheet" href="typography.css?v=20260712-01">
+<link rel="stylesheet" href="styles.css?v=20260712-02">
+<link rel="stylesheet" href="design-system.css?v=20260712-02">
+<link rel="stylesheet" href="grammar-layout.css?v=20260712-02">
+<link rel="stylesheet" href="typography.css?v=20260712-02">
 <link rel="stylesheet" href="hero-menu-refresh.css?v=20260710-12">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260710-01"></script>
@@ -984,26 +984,39 @@
 <!-- 右侧菜单面板 -->
 <div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-labelledby="menuPanelTitle">
   <div class="menu-header">
-    <strong id="menuPanelTitle">更多功能</strong>
+    <strong id="menuPanelTitle">导航</strong>
     <button class="btn-icon" id="menuCloseButton" onclick="closeMenu()" aria-label="关闭菜单">×</button>
   </div>
-  <nav class="menu-nav">
-    <span class="menu-nav-label">学习</span>
-    <div class="menu-primary-grid">
-      <button onclick="closeMenu();switchWorkspace('reading')"><b>読</b><span>阅读</span></button>
-      <button onclick="closeMenu();switchWorkspace('vocab')"><b>単</b><span>生词本</span></button>
-      <button onclick="closeMenu();switchWorkspace('grammar')"><b>文</b><span>语法本</span></button>
-      <button onclick="closeMenu();switchWorkspace('retell')"><b>練</b><span>练习</span></button>
-    </div>
-    <span class="menu-nav-label">更多</span>
-    <div class="menu-secondary-list">
-      <button onclick="closeMenu();switchWorkspace('discover')">找阅读材料</button>
-      <button onclick="closeMenu();switchWorkspace('test')">水平测试</button>
-      <button onclick="closeMenu();switchWorkspace('history')">学习历史</button>
-    </div>
+  <nav class="menu-nav menu-sidebar-nav" aria-label="手机主导航">
+    <button class="nav-item" type="button" data-view="reading" onclick="switchWorkspace('reading')">
+      <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22V5.5Z"></path><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22V5.5Z"></path></svg></span>
+      <span class="nav-label">阅读</span>
+    </button>
+    <button class="nav-item" type="button" data-view="vocab" onclick="switchWorkspace('vocab')">
+      <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-3.8L6 21V3Z"></path><path d="M9 7h6M9 11h6"></path></svg></span>
+      <span class="nav-label">生词本</span>
+    </button>
+    <button class="nav-item" type="button" data-view="grammar" onclick="switchWorkspace('grammar')">
+      <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="M8 8h8M8 12h5M8 16h7"></path></svg></span>
+      <span class="nav-label">语法本</span>
+    </button>
+    <button class="nav-item" type="button" data-view="retell" onclick="switchWorkspace('retell')">
+      <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 17 9.8-9.8 3 3L7 20H4v-3Z"></path><path d="m15.5 5.5 1.7-1.7a1.4 1.4 0 0 1 2 0l1 1a1.4 1.4 0 0 1 0 2l-1.7 1.7"></path></svg></span>
+      <span class="nav-label">练习</span>
+    </button>
+    <button class="nav-item" type="button" data-view="discover" onclick="switchWorkspace('discover')">
+      <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v11H3V6Z"></path><path d="M3 10h18"></path></svg></span>
+      <span class="nav-label">资料</span>
+    </button>
+    <button class="nav-item" type="button" data-view="history" onclick="switchWorkspace('history')">
+      <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg></span>
+      <span class="nav-label">学习历史</span>
+    </button>
     <hr>
-    <button onclick="closeMenu();switchWorkspace('settings')">设置与数据备份</button>
-    <button onclick="closeMenu();openOnboarding()">使用说明</button>
+    <button class="nav-item" type="button" data-view="settings" onclick="switchWorkspace('settings')">
+      <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 8.2a3.8 3.8 0 1 1 0 7.6 3.8 3.8 0 0 1 0-7.6Z"></path><path d="M19.4 13.5a7.8 7.8 0 0 0 0-3l2-1.5-2-3.4-2.4 1a8 8 0 0 0-2.6-1.5L14 2.5h-4l-.4 2.6A8 8 0 0 0 7 6.6l-2.4-1-2 3.4 2 1.5a7.8 7.8 0 0 0 0 3l-2 1.5 2 3.4 2.4-1a8 8 0 0 0 2.6 1.5l.4 2.6h4l.4-2.6a8 8 0 0 0 2.6-1.5l2.4 1 2-3.4-2-1.5Z"></path></svg></span>
+      <span class="nav-label">设置与帮助</span>
+    </button>
   </nav>
 </div>
 
@@ -1238,7 +1251,9 @@
   </div>
 </div>
 
-<script src="app.js?v=20260712-01"></script>
+<div class="icon-button-hint" id="iconButtonHint" role="tooltip" aria-hidden="true"></div>
+
+<script src="app.js?v=20260712-02"></script>
 <script src="search-entry-fix.js?v=20260711-01"></script>
 <script>
   const applyChineseInterface = typeof window.setInterfaceLanguage === 'function'
