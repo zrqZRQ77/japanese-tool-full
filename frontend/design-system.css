@@ -5554,6 +5554,58 @@ body[data-view="reading"] .reading-hint {
   font-size: var(--type-size-meta) !important;
 }
 
+body[data-view="reading"] .engine-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  border: 1px solid #DADDE3;
+  border-radius: 8px;
+  background: #F8F9FA;
+  color: #4B4851;
+  font-size: var(--type-size-meta);
+  line-height: 1.45;
+}
+
+body[data-view="reading"] .engine-status[hidden] {
+  display: none !important;
+}
+
+body[data-view="reading"] .engine-status.loading::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  border: 2px solid rgba(103, 80, 164, .22);
+  border-top-color: #6750A4;
+  border-radius: 50%;
+  animation: tokenizer-status-spin .8s linear infinite;
+}
+
+body[data-view="reading"] .engine-status.ready {
+  border-color: rgba(45, 132, 90, .28);
+  background: rgba(45, 132, 90, .08);
+  color: #216A48;
+}
+
+body[data-view="reading"] .engine-status.error {
+  border-color: rgba(200, 72, 67, .28);
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+@keyframes tokenizer-status-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-view="reading"] .engine-status.loading::before {
+    animation: none;
+  }
+}
+
 body[data-view="reading"] .reading-output {
   min-height: 360px !important;
   padding: 34px 32px !important;

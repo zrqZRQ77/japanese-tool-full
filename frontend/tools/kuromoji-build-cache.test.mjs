@@ -40,7 +40,8 @@ assert.ok(controllerJs.includes('vendor/kuromoji/${KUROMOJI_ASSET_VERSION}/kurom
 assert.ok(workerJs.includes("const KUROMOJI_SCRIPT_URL = './kuromoji.js'"));
 assert.ok(workerJs.includes("const KUROMOJI_DICTIONARY_URL = './dict/'"));
 assert.ok(indexHtml.includes('kuromoji-worker-poc.js?v=20260714-01'));
-assert.ok(indexHtml.includes('app.js?v=20260714-01'));
+const pageCacheVersion = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
+assert.match(pageCacheVersion, /^\d{8}-\d{2}$/);
 
 for (const config of [rootVercel, frontendVercel]) {
   const immutable = config.headers.find(header => header.source === `/vendor/kuromoji/${VERSION}/(.*)`);

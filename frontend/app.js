@@ -317,12 +317,19 @@ async function toggleParagraphTranslation(){
   }
 }
 
-function toggleReaderSmartSegmentation(){
+async function toggleReaderSmartSegmentation(){
   const input = document.getElementById('useKuromoji');
   if(!input) return;
   input.checked = !input.checked;
   document.getElementById('rubyToggleBtn')?.classList.toggle('is-active', input.checked);
-  renderText();
+  if(input.checked){
+    startTokenizerProgress();
+  }else{
+    clearTokenizerProgressTimers();
+    setRubyToggleBusy(false);
+    setTokenizerStatus('', '');
+  }
+  await renderText();
 }
 
 function toggleReadingInsights(){
@@ -837,6 +844,12 @@ window.addEventListener('DOMContentLoaded', () => {
   setSidebarCollapsed(safeStorage.getItem('reading_sidebar_collapsed') === '1', false);
   initIconButtonHints();
   document.getElementById('heroInputText')?.addEventListener('input', updateHeroStartState);
+  document.getElementById('heroInputText')?.addEventListener('input', event=>{
+    scheduleLocalKuromojiPrewarm(event.currentTarget?.value || '');
+  });
+  document.getElementById('inputText')?.addEventListener('input', event=>{
+    scheduleLocalKuromojiPrewarm(event.currentTarget?.value || '');
+  });
   updateHeroStartState();
 });
 
@@ -1049,6 +1062,12 @@ let RETELL_SPEAKING = false;
 let KUROMOJI_TOKENIZER = null;
 let KUROMOJI_LOADING = null;
 let LOCAL_KUROMOJI_WORKER_CLIENT = null;
+let LOCAL_KUROMOJI_PREWARM_PROMISE = null;
+let LOCAL_KUROMOJI_PREWARM_STATE = 'idle';
+let LOCAL_KUROMOJI_LAST_METRICS = null;
+let LOCAL_KUROMOJI_PREWARM_TIMER = 0;
+let TOKENIZER_STATUS_HIDE_TIMER = 0;
+let TOKENIZER_PROGRESS_TIMERS = [];
 let LOCAL_KUROMOJI_RENDER_GENERATION = 0;
 let SOURCE_ANALYSIS_GENERATION = 0;
 window.KUROMOJI_TOKEN_CACHE = [];
@@ -2145,11 +2164,55 @@ const LEVEL_TEST_QUESTIONS = [
 ];
 const LEVEL_TEST_STATE = { index: 0, answers: [] };
 
-function setTokenizerStatus(text, state){
+function clearTokenizerProgressTimers(){
+  TOKENIZER_PROGRESS_TIMERS.forEach(timer => clearTimeout(timer));
+  TOKENIZER_PROGRESS_TIMERS = [];
+}
+
+function setTokenizerStatus(text, state = '', options = {}){
   const el = document.getElementById('tokenizerStatus');
   if(!el) return;
-  el.textContent = text;
-  el.className = `engine-status ${state || ''}`.trim();
+  clearTimeout(TOKENIZER_STATUS_HIDE_TIMER);
+  const message = String(text || '').trim();
+  el.textContent = message;
+  el.className = `engine-status ${state}`.trim();
+  el.hidden = !message;
+  el.setAttribute('aria-busy', String(state === 'loading'));
+  if(message && options.autoHideMs){
+    TOKENIZER_STATUS_HIDE_TIMER = setTimeout(()=>{
+      if(el.textContent !== message) return;
+      el.hidden = true;
+      el.textContent = '';
+      el.className = 'engine-status';
+      el.setAttribute('aria-busy', 'false');
+    }, options.autoHideMs);
+  }
+}
+
+function setRubyToggleBusy(isBusy){
+  const button = document.getElementById('rubyToggleBtn');
+  if(!button) return;
+  button.classList.toggle('is-loading', !!isBusy);
+  button.setAttribute('aria-busy', String(!!isBusy));
+  button.dataset.tooltip = isBusy ? '正在生成假名' : '显示或隐藏假名';
+}
+
+function startTokenizerProgress(){
+  clearTokenizerProgressTimers();
+  setRubyToggleBusy(true);
+  setTokenizerStatus('正在生成假名……', 'loading');
+  TOKENIZER_PROGRESS_TIMERS.push(setTimeout(()=>{
+    setTokenizerStatus('首次使用正在加载本地日语词典，完成后再次使用会更快……', 'loading');
+  }, 1200));
+  TOKENIZER_PROGRESS_TIMERS.push(setTimeout(()=>{
+    setTokenizerStatus('仍在生成假名，请保持页面打开；正文可以先正常阅读。', 'loading');
+  }, 10000));
+}
+
+function finishTokenizerProgress(message, state = 'ready'){
+  clearTokenizerProgressTimers();
+  setRubyToggleBusy(false);
+  setTokenizerStatus(message, state, state === 'ready' ? {autoHideMs:6000} : {});
 }
 
 function showFallbackNotice(){
@@ -2182,8 +2245,85 @@ async function analyzeWithLocalKuromojiWorker(raw){
     console.warn('本地 Kuromoji Worker 分析失败，已退回内置词库', error);
     LOCAL_KUROMOJI_WORKER_CLIENT?.terminate();
     LOCAL_KUROMOJI_WORKER_CLIENT = null;
+    LOCAL_KUROMOJI_PREWARM_PROMISE = null;
+    LOCAL_KUROMOJI_PREWARM_STATE = 'idle';
     return {ok:false, mode:'fallback', error:error?.message || String(error)};
   }
+}
+
+function rememberLocalTokenizerMetrics(metrics = {}, phase = 'analysis'){
+  const normalized = {
+    phase,
+    initMs:Math.max(0, Math.round(Number(metrics.initMs || 0))),
+    tokenizeMs:Math.max(0, Math.round(Number(metrics.tokenizeMs || 0))),
+    roundTripMs:Math.max(0, Math.round(Number(metrics.roundTripMs || 0))),
+    recordedAt:new Date().toISOString()
+  };
+  LOCAL_KUROMOJI_LAST_METRICS = normalized;
+  window.YOMERU_TOKENIZER_METRICS = normalized;
+  document.body.dataset.tokenizerInitMs = String(normalized.initMs);
+  document.body.dataset.tokenizerRoundTripMs = String(normalized.roundTripMs);
+  return normalized;
+}
+
+function tokenizerElapsedLabel(metrics = {}){
+  const elapsed = Math.max(0, Number(metrics.roundTripMs || metrics.initMs || 0));
+  if(!elapsed) return '';
+  if(elapsed < 1000) return `${Math.max(1, Math.round(elapsed))} 毫秒`;
+  return `${(elapsed / 1000).toFixed(elapsed < 10000 ? 1 : 0)} 秒`;
+}
+
+function finishLocalTokenizerSuccess(result){
+  LOCAL_KUROMOJI_PREWARM_STATE = 'ready';
+  const metrics = rememberLocalTokenizerMetrics(result?.metrics || {}, 'analysis');
+  const elapsedLabel = tokenizerElapsedLabel(metrics);
+  finishTokenizerProgress(`假名已显示${elapsedLabel ? `（本次 ${elapsedLabel}）` : ''}。`, 'ready');
+  return metrics;
+}
+
+async function prewarmLocalKuromojiWorker(options = {}){
+  if(!ENABLE_LOCAL_KUROMOJI_WORKER || location.protocol === 'file:') return null;
+  const showStatus = options.showStatus === true;
+  if(LOCAL_KUROMOJI_PREWARM_STATE === 'ready') return LOCAL_KUROMOJI_LAST_METRICS;
+  if(LOCAL_KUROMOJI_PREWARM_PROMISE) return LOCAL_KUROMOJI_PREWARM_PROMISE;
+
+  LOCAL_KUROMOJI_PREWARM_STATE = 'loading';
+  if(showStatus) setTokenizerStatus('正在后台准备假名功能，正文可以先正常阅读……', 'loading');
+  const startedAt = performance.now();
+  LOCAL_KUROMOJI_PREWARM_PROMISE = getLocalKuromojiWorkerClient().initialize()
+    .then(result=>{
+      LOCAL_KUROMOJI_PREWARM_STATE = 'ready';
+      const metrics = rememberLocalTokenizerMetrics({
+        ...(result?.metrics || {}),
+        roundTripMs:performance.now() - startedAt
+      }, 'prewarm');
+      if(showStatus && !document.getElementById('useKuromoji')?.checked){
+        setTokenizerStatus('假名功能已准备好。', 'ready', {autoHideMs:4000});
+      }
+      return metrics;
+    })
+    .catch(error=>{
+      LOCAL_KUROMOJI_PREWARM_STATE = 'idle';
+      LOCAL_KUROMOJI_PREWARM_PROMISE = null;
+      console.warn('假名功能后台准备未完成，将在用户开启时重试', error);
+      if(showStatus){
+        setTokenizerStatus('假名功能尚未准备完成，点击「あ」时会自动重试。', 'error', {autoHideMs:6000});
+      }
+      return null;
+    });
+  return LOCAL_KUROMOJI_PREWARM_PROMISE;
+}
+
+function scheduleLocalKuromojiPrewarm(text, options = {}){
+  const value = String(text || '');
+  const japaneseChars = (value.match(/[\u3040-\u30ff\u3400-\u9fff]/g) || []).length;
+  if(japaneseChars < 4 || LOCAL_KUROMOJI_PREWARM_STATE !== 'idle') return;
+  clearTimeout(LOCAL_KUROMOJI_PREWARM_TIMER);
+  LOCAL_KUROMOJI_PREWARM_TIMER = setTimeout(()=>{
+    const run = ()=>prewarmLocalKuromojiWorker({showStatus:options.showStatus === true});
+    if(typeof requestIdleCallback === 'function') requestIdleCallback(run, {timeout:800});
+    else setTimeout(run, 0);
+  }, Number(options.delayMs ?? 250));
 }
 
 function initKuromoji(){
@@ -2481,6 +2621,7 @@ async function analyzeSourceInput(){
     }
     trackAnalyticsEvent('analysis_started', { source_type:'text' });
     CURRENT_ARTICLE_URL = '';
+    prewarmLocalKuromojiWorker({showStatus:false});
     setImportStatus('正在分析文本……');
     await renderText();
     if(analysisGeneration !== SOURCE_ANALYSIS_GENERATION) return;
@@ -3411,7 +3552,7 @@ async function renderText(){
 
   if(useLocalKuromojiWorker){
     renderWithDictionary(raw, out, statsBar);
-    setTokenizerStatus('正在本地分析读音……', 'loading');
+    if(!document.getElementById('rubyToggleBtn')?.classList.contains('is-loading')) startTokenizerProgress();
     const workerResult = await analyzeWithLocalKuromojiWorker(raw);
     const currentRaw = normalizeReadingInput(document.getElementById('inputText')?.value || '').trim();
     if(renderGeneration !== LOCAL_KUROMOJI_RENDER_GENERATION || currentRaw !== raw) return;
@@ -3419,12 +3560,12 @@ async function renderText(){
       document.body.dataset.tokenizerMode = 'kuromoji-worker';
       delete document.body.dataset.tokenizerFallback;
       renderWithKuromojiWorkerResult(raw, workerResult, out, statsBar);
-      setTokenizerStatus('本地自动标假名已启用', 'ready');
+      finishLocalTokenizerSuccess(workerResult);
       saveCurrentArticleToHistory();
       return;
     }
     document.body.dataset.tokenizerFallback = 'true';
-    setTokenizerStatus('自动标假名加载失败，当前使用基础词库匹配', '');
+    finishTokenizerProgress('假名生成没有完成，当前使用基础词库；可以稍后重试。', 'error');
     showFallbackNotice();
     saveCurrentArticleToHistory();
     return;
@@ -8498,7 +8639,7 @@ async function initializeApp(){
   setInterfaceLanguage(safeStorage.getItem('interface_language') || 'zh', true);
   const savedLevelResult = safeStorage.getItem('reading_level_result');
   if(savedLevelResult) showLevelResult(savedLevelResult);
-  setTokenizerStatus('默认使用轻量词库，需要时可手动开启智能分词', '');
+  setTokenizerStatus('', '');
   initTtsSettings();
   document.getElementById('useKuromoji')?.addEventListener('change', renderText);
 

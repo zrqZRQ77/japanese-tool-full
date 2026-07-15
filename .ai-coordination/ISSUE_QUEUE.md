@@ -9,11 +9,13 @@
 - 来源：用户 Mac Safari 真实 Preview 验收（2026-07-15）
 - 基线：`preview-20260715-04 / dpl_5xGZ87W82spvjrqYWu7LKYSqLkKM`
 - 等级：P0
-- 状态：CONFIRMED
-- 涉及文件：`frontend/index.html`、`frontend/app.js`、`frontend/kuromoji-worker-poc.js`、相关测试
+- 状态：FIXED（本地自动回归 PASS，等待 Mac Safari Preview 复测）
+- 涉及文件：`frontend/index.html`、`frontend/design-system.css`、`frontend/app.js`、`frontend/tools/check.mjs`、`frontend/tools/ui-audit.mjs`、Kuromoji 测试
 - 发现：Mac Safari 首次生成假名需要数分钟；状态文本位于隐藏控制区，用户点击后看不到处理中反馈。
 - 预期结果：点击后立即显示可见状态；进入阅读页后空闲预热 Worker；记录 init/tokenize/round-trip 指标；热加载不重复构建词典。
-- 处理结论：待修复；基线建立完成后立即开始。
+- 处理结论：状态区已移出隐藏容器；点击后立即显示进度并提供长等待说明；输入和开始阅读时后台预热 Worker；记录 `initMs`、`tokenizeMs`、`roundTripMs`；完成后显示实际耗时且不暴露内部技术名。缓存升级为 `20260715-01`。
+- 自动证据：`frontend/audit-screenshots/2026-07-15T05-42-36-670Z/ui-audit-report.md` 与 `2026-07-15T05-42-55-247Z/ui-audit-report.md`，均 PASS。
+- 外部状态：仍需新 Preview 的 Mac Safari 冷启动与热启动实测；不得仅凭 Chromium 标记性能 PASS。
 
 ### DICT-COVERAGE-001
 

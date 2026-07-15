@@ -139,6 +139,17 @@ assertCheck(
   'local Kuromoji Worker is integrated without exposing the PoC page or main-thread CDN runtime'
 );
 assertCheck(
+  /class="engine-status" id="tokenizerStatus"[^>]*role="status"/.test(indexHtml)
+    && !/class="reading-hidden-controls"[\s\S]*?id="tokenizerStatus"/.test(indexHtml),
+  'furigana progress status is visible and not stored in hidden controls'
+);
+assertCheck(
+  appJs.includes('function scheduleLocalKuromojiPrewarm')
+    && appJs.includes('window.YOMERU_TOKENIZER_METRICS')
+    && appJs.includes('首次使用正在加载本地日语词典'),
+  'furigana flow prewarms locally, exposes progress, and records performance metrics'
+);
+assertCheck(
   /function\s+resetLevelTest\s*\(\)[\s\S]*?safeStorage\.removeItem\('reading_level_result'\)/.test(appJs)
     && !/function\s+resetLevelTest\s*\(\)[\s\S]*?localStorage\.removeItem\('reading_level_result'\)/.test(appJs),
   'level-test reset uses safe storage'

@@ -35,6 +35,7 @@ function extractBetween(startMarker, endMarker) {
     trackAnalyticsEvent(name) {
       analytics.push(name);
     },
+    prewarmLocalKuromojiWorker() {},
     async renderText() {
       const captured = context.currentValue;
       await delay(captured === '文章A' ? 30 : 5);

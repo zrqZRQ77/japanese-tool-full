@@ -283,6 +283,12 @@ async function runAudit() {
     await page.locator('button[onclick="analyzeFromHero()"]').click();
     await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
     await page.locator('#rubyToggleBtn').click();
+    const tokenizerStatus = page.locator('#tokenizerStatus');
+    await tokenizerStatus.waitFor({state:'visible', timeout:2000});
+    const immediateTokenizerStatus = await tokenizerStatus.textContent();
+    if(!/(?:正在|假名已显示)/.test(immediateTokenizerStatus || '')){
+      throw new Error(`Furigana action did not expose immediate user feedback: ${JSON.stringify(immediateTokenizerStatus)}.`);
+    }
     await page.locator('#iconButtonHint.is-visible').waitFor({state:'attached', timeout:2000});
     const inlineTooltipDisabled = await page.locator('#rubyToggleBtn').evaluate(node => getComputedStyle(node, '::after').display === 'none');
     if(!inlineTooltipDisabled) throw new Error('Toolbar still renders the clipped inline tooltip.');
@@ -292,6 +298,15 @@ async function runAudit() {
     });
     if(!rubyVisible) throw new Error('Ruby toggle did not reveal furigana.');
     await page.waitForFunction(() => document.body.dataset.tokenizerMode === 'kuromoji-worker', null, {timeout:15000});
+    const completedTokenizerStatus = await tokenizerStatus.textContent();
+    const tokenizerMetrics = await page.evaluate(() => window.YOMERU_TOKENIZER_METRICS || null);
+    if(!/假名已显示/.test(completedTokenizerStatus || '')){
+      throw new Error(`Furigana completion status is not user-visible: ${JSON.stringify(completedTokenizerStatus)}.`);
+    }
+    if(/kuromoji|worker/i.test(completedTokenizerStatus || '')) throw new Error('Tokenizer status exposes internal technology names.');
+    if(!tokenizerMetrics || !Number.isFinite(Number(tokenizerMetrics.roundTripMs))){
+      throw new Error(`Tokenizer performance metrics are missing: ${JSON.stringify(tokenizerMetrics)}.`);
+    }
     await screenshot('02-reading');
     return state('state: reading');
   });
