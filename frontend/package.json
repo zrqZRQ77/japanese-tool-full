@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "node tools/check.mjs && node tools/ui-audit.mjs && node tools/verify-visual.mjs",
-    "audit:ui": "node tools/ui-audit.mjs",
+    "audit:ui": "UI_AUDIT_FUNCTIONAL_ONLY=1 node tools/ui-audit.mjs && UI_AUDIT_RESPONSIVE_ONLY=1 node tools/ui-audit.mjs",
     "check": "node tools/check.mjs",
     "verify:fast": "node tools/check.mjs",
     "verify:flows": "node tools/ui-audit.mjs",
@@ -10,6 +10,8 @@
     "verify:all": "node tools/verify-all.mjs",
     "bump-cache": "node tools/bump-cache.mjs",
     "typography:normalize": "node tools/normalize-typography.mjs",
+    "poc:kuromoji": "node tools/kuromoji-worker-poc.mjs",
+    "test:kuromoji": "node tools/kuromoji-worker-lifecycle.test.mjs && node tools/kuromoji-app-consistency.test.mjs && node tools/kuromoji-build-cache.test.mjs",
     "visual:snapshot": "node tools/visual-snapshot.mjs",
     "visual:snapshot:states": "node tools/visual-snapshot-states.mjs",
     "visual:prune": "node tools/prune-visual-snapshots.mjs"

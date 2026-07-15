@@ -8,6 +8,17 @@ dist/
 **/.env
 npm-debug.log*
 *.log
-frontend/audit-screenshots/**/*.png
-frontend/audit-screenshots/**/*.json
-frontend/audit-screenshots/**/ui-audit-trace.zip
+# Generated test, fixture and review output stays local. Keep executable source and tests tracked.
+frontend/audit-screenshots/
+frontend/stage4-results/
+frontend/stage4-fixtures/
+frontend/visual-snapshots/
+.ai-coordination/evidence/
+.ai-coordination/reviews/
+Reference_Books/
+tmp/
+frontend/index.*.html
+frontend/design-reference.html
+frontend/assets/icons/refresh.png
+.vercel
+.env*

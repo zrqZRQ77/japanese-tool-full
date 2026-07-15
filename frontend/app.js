@@ -308,6 +308,11 @@ async function toggleParagraphTranslation(){
   button?.classList.toggle('is-active', SHOW_PARAGRAPH_TRANSLATION);
   await renderText();
   if(SHOW_PARAGRAPH_TRANSLATION && CURRENT_ARTICLE_TEXT.trim()){
+    const hasTranslation = [...document.querySelectorAll('.paragraph-translation')]
+      .some(node => node.textContent.trim() !== LOCAL_TRANSLATION_FALLBACK);
+    if(!hasTranslation){
+      showToast('这篇文章暂时没有可靠的本地译文。仍可点击词语查看或补充释义。', 'info');
+    }
     trackAnalyticsEvent('translation_completed');
   }
 }
@@ -383,15 +388,15 @@ function analyzeFromHero() {
   analyzeSourceInput();
 }
 
-function loadSampleFromHero() {
+function loadSampleFromHero(sampleId = 'life') {
   enterReadingFromHero();
-  loadSample();
+  loadSample(sampleId);
 }
 
 function startGuidedSampleFromHero(){
   safeStorage.setItem('reading_guide_prompt_seen', '1');
   enterReadingFromHero();
-  loadSample(true);
+  loadSample('life', true);
 }
 
 function dismissHeroGuidePrompt(){
@@ -839,6 +844,7 @@ window.addEventListener('DOMContentLoaded', () => {
 // 词库、示例文本、练习题和语法点从 data/*.json 加载，便于非代码方式维护。
 let DICT = {};
 let SAMPLE_TEXT = '';
+let SAMPLE_ARTICLES = [];
 let TYPING_PROMPTS = [];
 let GRAMMAR_POINTS = [];
 let GRAMMAR_BOOK = loadGrammarBook();
@@ -848,7 +854,24 @@ let SAMPLE_FLOW_VISITED_PRACTICE = false;
 let SAMPLE_FLOW_INITIAL_VOCAB_COUNT = 0;
 let DATA_READY = null;
 
-const FALLBACK_SAMPLE_TEXT = '私は毎朝七時に起きます。朝ごはんを食べてから、学校に行きます。今日は友達と一緒に図書館で勉強する予定です。先生はとても親切で、いつも丁寧に教えてくれます。週末は時間があれば、映画を見たり、本を読んだりします。';
+const FALLBACK_SAMPLE_ARTICLES = [
+  {
+    id:'life',
+    title:'简单生活短文',
+    text:'私は毎朝七時に起きます。\n朝ごはんを食べてから、学校に行きます。\n夜は本を読んで、十一時に寝ます。'
+  },
+  {
+    id:'story',
+    title:'基础故事',
+    text:'ある日、小さな猫が公園に来ました。\n猫は木の下で休んでいました。\n女の子が水を持ってきたので、猫はうれしそうに飲みました。'
+  },
+  {
+    id:'news',
+    title:'难度较低的普通资讯',
+    text:'市の図書館は来月、新しい読書室を開きます。\n読書室には日本語の本や新聞があります。\n利用時間は午前九時から午後六時までです。'
+  }
+];
+const FALLBACK_SAMPLE_TEXT = FALLBACK_SAMPLE_ARTICLES[0].text;
 
 const FALLBACK_DICTIONARY = {
   '私': {reading:'わたし', level:'N5', pos:'名词', meaning:'我'},
@@ -903,6 +926,11 @@ const THIRD_PARTY_SCRIPTS = {
 // crash a fresh browser tab. Keep the responsive local dictionary path as the
 // MVP default until the tokenizer is self-hosted and moved off the main thread.
 const ENABLE_REMOTE_SMART_SEGMENTATION = false;
+const ENABLE_LOCAL_KUROMOJI_WORKER = true;
+const LOCAL_KUROMOJI_ASSET_VERSION = '20260714-01';
+const LOCAL_KUROMOJI_WORKER_URL = `vendor/kuromoji/${LOCAL_KUROMOJI_ASSET_VERSION}/kuromoji-tokenizer.worker.js`;
+const LOCAL_KUROMOJI_WORKER_INIT_TIMEOUT_MS = 90000;
+const LOCAL_KUROMOJI_WORKER_TOKENIZE_TIMEOUT_MS = 10000;
 const EXTERNAL_SCRIPT_LOADS = new Map();
 
 function withTimeout(promise, ms, message){
@@ -942,6 +970,7 @@ async function fetchJson(path){
 async function loadLearningData(){
   if(location.protocol === 'file:'){
     DICT = {...FALLBACK_DICTIONARY};
+    SAMPLE_ARTICLES = [...FALLBACK_SAMPLE_ARTICLES];
     SAMPLE_TEXT = FALLBACK_SAMPLE_TEXT;
     TYPING_PROMPTS = [...FALLBACK_TYPING_PROMPTS];
     GRAMMAR_POINTS = [];
@@ -957,9 +986,10 @@ async function loadLearningData(){
   DICT = dictionaryResult.status === 'fulfilled' && dictionaryResult.value
     ? dictionaryResult.value
     : {...FALLBACK_DICTIONARY};
-  SAMPLE_TEXT = sampleResult.status === 'fulfilled' && sampleResult.value?.text
-    ? sampleResult.value.text
-    : FALLBACK_SAMPLE_TEXT;
+  SAMPLE_ARTICLES = sampleResult.status === 'fulfilled' && Array.isArray(sampleResult.value?.samples) && sampleResult.value.samples.length
+    ? sampleResult.value.samples.slice(0, 3)
+    : [...FALLBACK_SAMPLE_ARTICLES];
+  SAMPLE_TEXT = SAMPLE_ARTICLES[0]?.text || FALLBACK_SAMPLE_TEXT;
   TYPING_PROMPTS = typingResult.status === 'fulfilled' && Array.isArray(typingResult.value) && typingResult.value.length
     ? typingResult.value
     : [...FALLBACK_TYPING_PROMPTS];
@@ -1018,6 +1048,9 @@ let RETELL_SPEAKING = false;
 
 let KUROMOJI_TOKENIZER = null;
 let KUROMOJI_LOADING = null;
+let LOCAL_KUROMOJI_WORKER_CLIENT = null;
+let LOCAL_KUROMOJI_RENDER_GENERATION = 0;
+let SOURCE_ANALYSIS_GENERATION = 0;
 window.KUROMOJI_TOKEN_CACHE = [];
 let RUBY_OVERRIDES = {};
 try{ RUBY_OVERRIDES = JSON.parse(safeStorage.getItem('reading_ruby_overrides') || '{}'); }catch{}
@@ -1638,14 +1671,8 @@ const GLOBAL_SEARCH_ITEMS = [
   {label:'开始阅读', detail:'粘贴日语文本', keywords:'阅读 开始 粘贴 日语 文本', action:()=>switchWorkspace('reading')},
   {label:'整理生词本', detail:'搜索、筛选、管理收藏词', keywords:'生词 单词 词汇 收藏 搜索 筛选', action:()=>switchWorkspace('vocab')},
   {label:'复习到期词', detail:'打开闪卡复习', keywords:'复习 闪卡 到期 生词', action:()=>startReview()},
-  {label:'做文章理解练习', detail:'选择题和复述', keywords:'练习 文章 理解 选择题 复述', action:()=>focusPracticeModule('quiz')},
   {label:'练生词', detail:'打开生词本闪卡复习', keywords:'练习 生词 自测 闪卡', action:()=>switchWorkspace('vocab')},
-  {label:'句型打字', detail:'按题库练习日语输出', keywords:'练习 句型 打字 输出', action:()=>focusPracticeModule('typing')},
-  {label:'找阅读材料', detail:'按等级查看推荐来源', keywords:'找材料 来源 下一篇', action:()=>switchWorkspace('discover')},
-  {label:'水平测试', detail:'3 分钟定位阅读等级', keywords:'水平 测试 等级 JLPT', action:()=>switchWorkspace('test')},
-  {label:'学习历史', detail:'查看学习日历、进度和今日建议', keywords:'历史 记录 日历 进度 今日 建议', action:()=>switchWorkspace('history')},
-  {label:'备份数据', detail:'在设置与帮助中导出或恢复学习数据', keywords:'备份 恢复 导出 数据 设置', action:()=>switchWorkspace('settings')},
-  {label:'语法本', detail:'收藏与查询语法点', keywords:'语法 收藏 词典 查询 は て形 敬语', action:()=>switchWorkspace('grammar')}
+  {label:'备份数据', detail:'在设置与数据管理中导出或恢复学习数据', keywords:'备份 恢复 导出 数据 设置', action:()=>switchWorkspace('settings')}
 ];
 
 function globalSearchMatches(item, keyword){
@@ -2135,6 +2162,30 @@ function showFallbackNotice(){
   out.prepend(notice);
 }
 
+function getLocalKuromojiWorkerClient(){
+  if(LOCAL_KUROMOJI_WORKER_CLIENT) return LOCAL_KUROMOJI_WORKER_CLIENT;
+  if(!window.KuromojiWorkerClient?.createClient){
+    throw new Error('本地 Kuromoji Worker 控制器不可用');
+  }
+  LOCAL_KUROMOJI_WORKER_CLIENT = window.KuromojiWorkerClient.createClient({
+    workerUrl:LOCAL_KUROMOJI_WORKER_URL,
+    initTimeoutMs:LOCAL_KUROMOJI_WORKER_INIT_TIMEOUT_MS,
+    tokenizeTimeoutMs:LOCAL_KUROMOJI_WORKER_TOKENIZE_TIMEOUT_MS
+  });
+  return LOCAL_KUROMOJI_WORKER_CLIENT;
+}
+
+async function analyzeWithLocalKuromojiWorker(raw){
+  try{
+    return await getLocalKuromojiWorkerClient().analyze(raw);
+  }catch(error){
+    console.warn('本地 Kuromoji Worker 分析失败，已退回内置词库', error);
+    LOCAL_KUROMOJI_WORKER_CLIENT?.terminate();
+    LOCAL_KUROMOJI_WORKER_CLIENT = null;
+    return {ok:false, mode:'fallback', error:error?.message || String(error)};
+  }
+}
+
 function initKuromoji(){
   if(KUROMOJI_TOKENIZER) return Promise.resolve(KUROMOJI_TOKENIZER);
   if(KUROMOJI_LOADING) return KUROMOJI_LOADING;
@@ -2166,24 +2217,23 @@ function initKuromoji(){
   return KUROMOJI_LOADING;
 }
 
-async function loadSample(useGuidedTour = false){
-  SAMPLE_TEXT = SAMPLE_TEXT || FALLBACK_SAMPLE_TEXT;
+async function loadSample(sampleId = 'life', useGuidedTour = false){
+  if(typeof sampleId === 'boolean'){
+    useGuidedTour = sampleId;
+    sampleId = 'life';
+  }
+  await ensureLearningData().catch(error=>{
+    console.warn('示例数据加载失败,使用内置示例', error);
+    DICT = Object.keys(DICT).length ? DICT : {...FALLBACK_DICTIONARY};
+    SAMPLE_ARTICLES = [...FALLBACK_SAMPLE_ARTICLES];
+  });
+  const sample = SAMPLE_ARTICLES.find(item=>item.id === sampleId) || SAMPLE_ARTICLES[0] || FALLBACK_SAMPLE_ARTICLES[0];
+  SAMPLE_TEXT = sample.text;
   clearActiveReadingQueueItem();
   document.getElementById('inputText').value = SAMPLE_TEXT;
   switchWorkspace('reading');
   if(useGuidedTour) startSampleFlow();
-  trackAnalyticsEvent('analysis_started', { source_type:'sample' });
-  try{
-    await ensureLearningData();
-    document.getElementById('inputText').value = SAMPLE_TEXT || FALLBACK_SAMPLE_TEXT;
-  }catch(error){
-    console.warn('示例数据加载失败,使用内置示例', error);
-    DICT = Object.keys(DICT).length ? DICT : {...FALLBACK_DICTIONARY};
-    document.getElementById('inputText').value = FALLBACK_SAMPLE_TEXT;
-  }
-  await renderText();
-  trackAnalyticsEvent('analysis_completed', { source_type:'sample' });
-  setImportStatus('');
+  await analyzeSourceInput();
   if(useGuidedTour) renderSampleFlow();
 }
 
@@ -2414,6 +2464,7 @@ function normalizeArticleUrl(value){
 }
 
 async function analyzeSourceInput(){
+  const analysisGeneration = ++SOURCE_ANALYSIS_GENERATION;
   const value = sourceInputValue();
   if(!value){
     setImportStatus('请先粘贴日语文本。', 'error');
@@ -2432,14 +2483,16 @@ async function analyzeSourceInput(){
     CURRENT_ARTICLE_URL = '';
     setImportStatus('正在分析文本……');
     await renderText();
+    if(analysisGeneration !== SOURCE_ANALYSIS_GENERATION) return;
     trackAnalyticsEvent('analysis_completed', { source_type:'text' });
     setImportStatus('已生成可点击阅读材料。', 'ok');
   }catch(error){
+    if(analysisGeneration !== SOURCE_ANALYSIS_GENERATION) return;
     console.error('文本分析失败', error);
     setImportStatus(`分析没有完成：${error?.message || '请稍后重试'}。可以先关闭智能分词再试一次。`, 'error');
     showToast('分析没有完成，请查看提示', 'error');
   }finally{
-    setSourceAnalysisBusy(false);
+    if(analysisGeneration === SOURCE_ANALYSIS_GENERATION) setSourceAnalysisBusy(false);
   }
 }
 
@@ -3298,24 +3351,28 @@ function localParagraphTranslation(text){
 }
 
 function addParagraphTranslations(html, raw){
-  if(!SHOW_PARAGRAPH_TRANSLATION) return html;
   const paragraphs = normalizeReadingInput(raw).split(/\n{2,}/);
   const parts = String(html).split(/\n{2,}/);
   if(parts.length !== paragraphs.length){
-    return `<section class="reading-translation-pair"><div class="reading-japanese">${html}</div><div class="paragraph-translation" lang="zh-CN">${escapeHtml(localParagraphTranslation(raw))}</div></section>`;
+    const translation = SHOW_PARAGRAPH_TRANSLATION
+      ? `<div class="paragraph-translation" lang="zh-CN">${escapeHtml(localParagraphTranslation(raw))}</div>`
+      : '';
+    return `<section class="reading-translation-pair"><div class="reading-japanese">${html}</div>${translation}</section>`;
   }
   return parts.map((part, index)=>`
     <section class="reading-translation-pair">
       <div class="reading-japanese">${part}</div>
-      <div class="paragraph-translation" lang="zh-CN">${escapeHtml(localParagraphTranslation(paragraphs[index]))}</div>
+      ${SHOW_PARAGRAPH_TRANSLATION ? `<div class="paragraph-translation" lang="zh-CN">${escapeHtml(localParagraphTranslation(paragraphs[index]))}</div>` : ''}
     </section>
   `).join('');
 }
 
 async function renderText(){
+  const renderGeneration = ++LOCAL_KUROMOJI_RENDER_GENERATION;
   await ensureLearningData();
   const showRuby = !!document.getElementById('useKuromoji')?.checked;
-  const useKuromoji = showRuby && ENABLE_REMOTE_SMART_SEGMENTATION;
+  const useLocalKuromojiWorker = showRuby && ENABLE_LOCAL_KUROMOJI_WORKER;
+  const useRemoteKuromoji = showRuby && !useLocalKuromojiWorker && ENABLE_REMOTE_SMART_SEGMENTATION;
   document.body.dataset.tokenizerMode = 'built-in';
   document.body.classList.toggle('reading-ruby-visible', showRuby);
   document.getElementById('rubyToggleBtn')?.classList.toggle('is-active', showRuby);
@@ -3352,7 +3409,28 @@ async function renderText(){
   if(legendInline) legendInline.style.display = 'none';
   if(readingHint) readingHint.style.display = 'none';
 
-  if(useKuromoji){
+  if(useLocalKuromojiWorker){
+    renderWithDictionary(raw, out, statsBar);
+    setTokenizerStatus('正在本地分析读音……', 'loading');
+    const workerResult = await analyzeWithLocalKuromojiWorker(raw);
+    const currentRaw = normalizeReadingInput(document.getElementById('inputText')?.value || '').trim();
+    if(renderGeneration !== LOCAL_KUROMOJI_RENDER_GENERATION || currentRaw !== raw) return;
+    if(workerResult.ok){
+      document.body.dataset.tokenizerMode = 'kuromoji-worker';
+      delete document.body.dataset.tokenizerFallback;
+      renderWithKuromojiWorkerResult(raw, workerResult, out, statsBar);
+      setTokenizerStatus('本地自动标假名已启用', 'ready');
+      saveCurrentArticleToHistory();
+      return;
+    }
+    document.body.dataset.tokenizerFallback = 'true';
+    setTokenizerStatus('自动标假名加载失败，当前使用基础词库匹配', '');
+    showFallbackNotice();
+    saveCurrentArticleToHistory();
+    return;
+  }
+
+  if(useRemoteKuromoji){
     if(!KUROMOJI_TOKENIZER){
       renderWithDictionary(raw, out, statsBar);
     }
@@ -3371,14 +3449,37 @@ async function renderText(){
 function normalizeReadingInput(text){
   return String(text || '')
     .replace(/\r\n?/g, '\n')
-    .split(/\n{2,}/)
-    .map(paragraph => paragraph
-      .split('\n')
-      .map(line => line.trim())
-      .filter(Boolean)
-      .join('')
-    )
+    .split(/\n+/)
+    .map(line => line.trim())
+    .filter(Boolean)
     .join('\n\n');
+}
+
+function segmentUnknownJapaneseText(text){
+  const value = String(text || '');
+  if(!value) return [];
+  if(typeof Intl?.Segmenter !== 'function'){
+    return [...value].map(segment => ({segment, isWordLike:/[\p{L}\p{N}]/u.test(segment)}));
+  }
+  const segmenter = new Intl.Segmenter('ja', {granularity:'word'});
+  return [...segmenter.segment(value)].map(item=>({
+    segment:item.segment,
+    isWordLike:item.isWordLike !== false && /[\p{L}\p{N}]/u.test(item.segment)
+  }));
+}
+
+function fallbackTokenInfo(surface){
+  const override = RUBY_OVERRIDES[surface];
+  return {
+    reading:override && !override.hidden ? override.reading : '',
+    level:'kuromoji',
+    pos:'未收录词',
+    meaning:'本地词库暂未收录，可以先收藏并补充读音或释义。',
+    dictWord:surface,
+    baseForm:surface,
+    lookupWord:surface,
+    source:'fallback'
+  };
 }
 
 function renderWithDictionary(raw, out, statsBar){
@@ -3399,6 +3500,7 @@ function renderWithDictionary(raw, out, statsBar){
   });
 
   let html = '';
+  window.KUROMOJI_TOKEN_CACHE = [];
   const counts = {N5:0,N4:0,N3:0,particle:0,trap:0};
   let matchedChars = 0;
   const totalChars = raw.replace(/[\s\n。、！？「」]/g,'').length;
@@ -3411,7 +3513,20 @@ function renderWithDictionary(raw, out, statsBar){
       const cls = info.level === 'trap' ? 'w-trap' : (info.level === 'particle' ? 'w-particle' : 'w-'+info.level.toLowerCase());
       html += renderWordNode(seg.matched, info.reading, cls, {"data-word":seg.matched}, `showDetail('${seg.matched}', this)`);
     } else {
-      html += renderPlainTextWithFootnotes(seg.text);
+      segmentUnknownJapaneseText(seg.text).forEach(part=>{
+        if(!part.isWordLike){
+          html += renderPlainTextWithFootnotes(part.segment);
+          return;
+        }
+        const tokenId = window.KUROMOJI_TOKEN_CACHE.length;
+        const info = fallbackTokenInfo(part.segment);
+        window.KUROMOJI_TOKEN_CACHE[tokenId] = {
+          surface:part.segment,
+          info,
+          token:{surface_form:part.segment, basic_form:part.segment}
+        };
+        html += renderWordNode(part.segment, info.reading, 'w-kuromoji', {"data-token-id":tokenId}, `showTokenDetail(${tokenId}, this)`);
+      });
     }
   });
 
@@ -3470,7 +3585,10 @@ function getTokenInfo(token){
     const dictWord = dictionaryEntryFor(surface) ? surface : base;
     return { ...dictInfo, dictWord, baseForm: base, lookupWord: dictWord, source:'DICT' };
   }
-  const reading = katakanaToHiragana(token.reading && token.reading !== '*' ? token.reading : surface);
+  const rawReading = token.reading && token.reading !== '*' ? token.reading : '';
+  const reading = rawReading
+    ? katakanaToHiragana(rawReading)
+    : (/^[\u3040-\u30ffー]+$/u.test(surface) ? katakanaToHiragana(surface) : '');
   const pos = [token.pos, token.pos_detail_1].filter(v=>v && v !== '*').join('・') || '已识别词';
   return {
     reading,
@@ -3487,6 +3605,25 @@ function getTokenInfo(token){
 function renderWithKuromoji(raw, tokenizer, out, statsBar){
   const rawTokens = tokenizer.tokenize(raw);
   const tokens = mergeDictionaryCompounds(rawTokens);
+  renderWithKuromojiTokens(raw, tokens, out, statsBar, 'kuromoji');
+}
+
+function renderWithKuromojiWorkerResult(raw, result, out, statsBar){
+  const paragraphTokens = [];
+  const appTokens = Array.isArray(result?.appTokens) ? result.appTokens : [];
+  const paragraphCount = Array.isArray(result?.paragraphs) ? result.paragraphs.length : 0;
+  for(let paragraphIndex = 0; paragraphIndex < paragraphCount; paragraphIndex += 1){
+    const tokens = appTokens.filter(token=>Number(token.paragraph_index) === paragraphIndex);
+    paragraphTokens.push(...mergeDictionaryCompounds(tokens));
+    if(paragraphIndex < paragraphCount - 1){
+      paragraphTokens.push({surface_form:'\n\n', basic_form:'\n\n', paragraph_index:paragraphIndex});
+    }
+  }
+  renderWithKuromojiTokens(raw, paragraphTokens, out, statsBar, 'kuromoji-worker');
+}
+
+function renderWithKuromojiTokens(raw, tokens, out, statsBar, mode = 'kuromoji'){
+  resetReadingDetailPanel();
   window.KUROMOJI_TOKEN_CACHE = [];
   const counts = {N5:0,N4:0,N3:0,particle:0,trap:0,kuromoji:0};
   let dictChars = 0;
@@ -3517,7 +3654,7 @@ function renderWithKuromoji(raw, tokenizer, out, statsBar){
   const coverage = tokenChars > 0 ? Math.round((dictChars/tokenChars)*100) : 0;
   if(statsBar) statsBar.innerHTML = '';
   renderReadingAnalysis({
-    mode:'kuromoji',
+    mode,
     chars:tokenChars,
     coverage,
     counts,
@@ -3656,8 +3793,27 @@ function collectRubyUnits(){
     }
     node.childNodes.forEach(visit);
   }
-  out.childNodes.forEach(visit);
-  return units.filter(unit=>unit.base);
+  const readingRoots = [...out.querySelectorAll('.reading-translation-pair .reading-japanese')];
+  const contentRoots = readingRoots.length ? readingRoots : [out];
+  contentRoots.forEach((root, index)=>{
+    if(index && units.length && units[units.length - 1].base !== '\n'){
+      units.push({base:'\n', ruby:''});
+    }
+    root.childNodes.forEach(visit);
+  });
+
+  const normalized = [];
+  units.filter(unit=>unit.base).forEach(unit=>{
+    if(unit.base === '\n'){
+      while(normalized.length && /^[ \t]+$/.test(normalized[normalized.length - 1].base)) normalized.pop();
+      if(normalized.length && normalized[normalized.length - 1].base !== '\n') normalized.push(unit);
+      return;
+    }
+    if((!normalized.length || normalized[normalized.length - 1].base === '\n') && /^[ \t]+$/.test(unit.base)) return;
+    normalized.push(unit);
+  });
+  while(normalized.length && normalized[normalized.length - 1].base === '\n') normalized.pop();
+  return normalized;
 }
 
 async function collectExportRubyUnits(){
@@ -4160,7 +4316,7 @@ function buildEditablePptRows(units, maxCells){
   let cells = 0;
   units.forEach(unit=>{
     if(unit.base === '\n'){
-      rows.push(current);
+      if(current.length) rows.push(current);
       current = [];
       cells = 0;
       return;
@@ -4231,7 +4387,7 @@ async function downloadRubyPptx(orientation = 'landscape'){
   const rowsPerPage = Math.max(1, Math.floor(contentH / rowH));
   const naturalCellW = payload.baseFont / 72;
   const lineW = Math.min(contentW, naturalCellW * payload.maxCells);
-  const lineX = (slideW - lineW) / 2;
+  const lineX = outerMarginX;
   const cellW = lineW / payload.maxCells;
   const rows = buildEditablePptRows(payload.units, payload.maxCells);
   const pages = chunkRows(rows, rowsPerPage);
@@ -4665,8 +4821,15 @@ function showTokenDetail(tokenId, el){
   if(!token) return;
   const { surface, info } = token;
   const detailAction = readingDetailAction(surface, info);
-  const addAction = detailAction.action || (detailAction.type === 'vocab' ? `addTokenToVocab(${tokenId})` : '');
-  const needsLookup = info.source === 'kuromoji';
+  const tokenSnapshot = encodeURIComponent(JSON.stringify({
+    surface,
+    reading:info.reading || '',
+    meaning:info.meaning || '',
+    level:info.level || 'kuromoji',
+    pos:info.pos || '未收录词'
+  }));
+  const addAction = detailAction.action || (detailAction.type === 'vocab' ? `addTokenSnapshotToVocab('${tokenSnapshot}')` : '');
+  const needsLookup = info.source === 'kuromoji' || info.source === 'fallback';
   const area = document.getElementById('detailArea');
   setReadingDetailVisible(true);
   setDetailHeadActions();
@@ -4824,7 +4987,7 @@ function speakSelectedText(trigger, showControls = true){
 }
 
 let CURRENT_TTS_TRIGGER = null;
-const DEFAULT_TTS_RATE = 0.78;
+const DEFAULT_TTS_RATE = 0.94;
 
 function normalizeJapaneseSpeechText(text){
   return String(text || '')
@@ -4878,7 +5041,7 @@ function speakJapanese(text, trigger = null, showControls = true){
   const utterance = new SpeechSynthesisUtterance(value);
   utterance.lang = 'ja-JP';
   utterance.rate = getPreferredTtsRate(value);
-  utterance.pitch = 1;
+  utterance.pitch = 0.98;
   const jaVoice = chooseJapaneseVoice();
   if(jaVoice) utterance.voice = jaVoice;
   utterance.onstart = ()=>setTtsActive(trigger);
@@ -4955,11 +5118,12 @@ function stopTts(){
   finishTts();
 }
 
-const RECOMMENDED_VOICE_PATTERN = /(Premium|Enhanced|Siri|Natural|Neural|Hattori|Kyoko|O-?ren|Otoya|Nanami|Nozomi|Haruka|Ichiro)/i;
+const RECOMMENDED_VOICE_PATTERN = /(AndrewMultilingual|Premium|Enhanced|Siri|Natural|Neural|Hattori|Kyoko|O-?ren|Otoya|Nanami|Nozomi|Haruka|Ichiro)/i;
 const EXCLUDED_VOICE_PATTERN = /(Compact|Novelty|Shelley|Sandy|Rocko|Reed|Grandpa|Grandma|Flo|Eddy|Bad News|Bells|Boing|Bubbles|Cellos|Good News|Organ|Trinoids|Whisper|Zarvox)/i;
 
 function japaneseVoiceScore(voice){
   let score = 0;
+  if(/AndrewMultilingual/i.test(voice.name)) score += 220;
   if(voice.localService) score += 40;
   if(/Kyoko/i.test(voice.name)) score += 140;
   if(/(Otoya|Siri|Nanami|Nozomi|Haruka|Ichiro)/i.test(voice.name)) score += 125;
@@ -4973,7 +5137,7 @@ function japaneseVoiceScore(voice){
 
 function sortedJapaneseVoices(){
   if(!('speechSynthesis' in window)) return [];
-  const japanese = window.speechSynthesis.getVoices().filter(voice=>/^ja[-_]/i.test(voice.lang));
+  const japanese = window.speechSynthesis.getVoices().filter(voice=>/^ja[-_]/i.test(voice.lang) || /AndrewMultilingual/i.test(voice.name));
   const natural = japanese.filter(voice=>!EXCLUDED_VOICE_PATTERN.test(voice.name));
   return (natural.length ? natural : japanese).sort((a, b)=>japaneseVoiceScore(b) - japaneseVoiceScore(a) || a.name.localeCompare(b.name));
 }
@@ -4987,11 +5151,12 @@ function populateVoiceOptions(){
   const recommended = allVoices.slice(0, Math.min(3, allVoices.length));
   const recommendedNames = new Set(recommended.map(voice=>voice.name));
   const others = allVoices.slice(recommended.length);
+  const andrew = allVoices.find(voice=>/AndrewMultilingual/i.test(voice.name));
   const hattori = allVoices.find(voice=>/Hattori/i.test(voice.name));
   let preferred = safeStorage.getItem('reading_tts_voice') || '';
-  if(safeStorage.getItem('reading_tts_voice_quality_version') !== '3'){
-    if(!preferred && hattori) preferred = hattori.name;
-    safeStorage.setItem('reading_tts_voice_quality_version', '3');
+  if(safeStorage.getItem('reading_tts_voice_quality_version') !== '4'){
+    if(!preferred && (andrew || hattori)) preferred = (andrew || hattori).name;
+    safeStorage.setItem('reading_tts_voice_quality_version', '4');
   }
   const optionHtml = v => `<option value="${escapeHtml(v.name)}" ${v.name===preferred?'selected':''}>${escapeHtml(v.name)}${recommendedNames.has(v.name)?' · 推荐':''}</option>`;
   select.innerHTML = (recommended.length ? recommended.map(optionHtml).join('') : '')
@@ -4999,7 +5164,7 @@ function populateVoiceOptions(){
     + others.map(optionHtml).join('');
   if(field) field.style.display = 'flex';
   if(!allVoices.some(voice=>voice.name === preferred)){
-    const best = hattori || recommended[0] || allVoices[0];
+    const best = andrew || hattori || recommended[0] || allVoices[0];
     if(best){ select.value = best.name; safeStorage.setItem('reading_tts_voice', best.name); }
   }
 }
@@ -5023,7 +5188,7 @@ function chooseJapaneseVoice(){
     const match = japanese.find(voice=>voice.name === preferred);
     if(match) return match;
   }
-  return japanese.find(voice=>/Hattori/i.test(voice.name)) || japanese[0];
+  return japanese.find(voice=>/AndrewMultilingual/i.test(voice.name)) || japanese.find(voice=>/Hattori/i.test(voice.name)) || japanese[0];
 }
 
 function renderTypingPractice(){
@@ -6174,6 +6339,21 @@ function addTokenToVocab(tokenId){
   if(!token) return;
   const { surface, info } = token;
   addCustomToVocab(surface, info.reading, info.meaning, info.level, info.pos);
+}
+
+function addTokenSnapshotToVocab(encodedSnapshot){
+  try{
+    const snapshot = JSON.parse(decodeURIComponent(String(encodedSnapshot || '')));
+    addCustomToVocab(
+      snapshot.surface,
+      snapshot.reading,
+      snapshot.meaning,
+      snapshot.level,
+      snapshot.pos
+    );
+  }catch(error){
+    console.warn('词语快照无效，未加入生词本', error);
+  }
 }
 
 function isSystemGeneratedMeaning(meaning){

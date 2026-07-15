@@ -67,7 +67,11 @@ const appJs = readFileSync(resolve(FRONTEND_DIR, 'app.js'), 'utf8');
 const stylesCss = readFileSync(resolve(FRONTEND_DIR, 'styles.css'), 'utf8');
 const designSystemCss = readFileSync(resolve(FRONTEND_DIR, 'design-system.css'), 'utf8');
 const grammarLayoutCss = readFileSync(resolve(FRONTEND_DIR, 'grammar-layout.css'), 'utf8');
+const kuromojiWorkerPocJs = readFileSync(resolve(FRONTEND_DIR, 'kuromoji-worker-poc.js'), 'utf8');
+const kuromojiWorkerJs = readFileSync(resolve(FRONTEND_DIR, 'vendor/kuromoji/20260714-01/kuromoji-tokenizer.worker.js'), 'utf8');
+const dictionary = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/dictionary.json'), 'utf8'));
 const inlineSource = `${appJs}\n${indexHtml}`;
+const globalSearchSource = appJs.match(/const GLOBAL_SEARCH_ITEMS = \[[\s\S]*?\n\];/)?.[0] || '';
 const { css, designSystem, grammarLayout, typography, js } = cacheVersions(indexHtml);
 const duplicateIdList = duplicateIds(indexHtml);
 const hardcodedFontSizes = hardcodedFontSizeLocations([
@@ -77,6 +81,14 @@ const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['grammar-layout.css', grammarLayoutCss]
 ]);
 const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'app.js'];
+const requiredKuromojiPocFiles = [
+  'kuromoji-worker-poc.js',
+  'poc/kuromoji-worker-poc.html',
+  'vendor/kuromoji/20260714-01/kuromoji-tokenizer.worker.js',
+  'vendor/kuromoji/20260714-01/kuromoji.js',
+  'vendor/kuromoji/20260714-01/dict/base.dat.gz',
+  'vendor/kuromoji/LICENSE-2.0.txt'
+];
 const requiredFunctions = ['switchWorkspace', 'addCustomGrammarNote', 'removeGrammarNote', 'renderGrammarBook'];
 
 run('app.js syntax', 'node', ['--check', 'app.js']);
@@ -87,7 +99,45 @@ assertCheck(!/(?:上传 PDF|选择的 PDF|pdfModeSelect|pdfCleanupSelect|排版�
 assertCheck(requiredFiles.every(file => existsSync(resolve(FRONTEND_DIR, file))), 'required frontend files exist');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
-assertCheck(!appJs.includes("label:'调整今日目标'") && appJs.includes("detail:'查看学习日历、进度和今日建议'"), 'global search matches public MVP navigation');
+assertCheck(
+  globalSearchSource.includes("label:'开始阅读'")
+    && globalSearchSource.includes("label:'整理生词本'")
+    && globalSearchSource.includes("label:'备份数据'")
+    && !/(?:语法本|水平测试|学习历史|找阅读材料|句型打字|文章理解练习)/.test(globalSearchSource),
+  'global search matches reduced public MVP navigation'
+);
+assertCheck(
+  !indexHtml.includes('句子翻译')
+    && /id="translationToggleBtn"[^>]*hidden[^>]*data-mvp-hidden="translation"/.test(indexHtml),
+  'translation promotion and reader translation control are not public'
+);
+assertCheck(
+  ['grammar', 'retell', 'discover', 'history'].every(view => new RegExp(`data-view="${view}"[^>]*hidden[^>]*data-mvp-hidden`).test(indexHtml))
+    && /class="mvp-settings-button"[^>]*data-view="settings"[^>]*hidden[^>]*data-mvp-hidden="floating-settings"/.test(indexHtml)
+    && /class="sidebar-footer"[\s\S]*?data-view="settings"/.test(indexHtml)
+    && /class="nav-item menu-settings-entry"[^>]*data-view="settings"/.test(indexHtml),
+  'only reading and vocabulary remain in primary navigation and settings is low frequency'
+);
+assertCheck(
+  (indexHtml.match(/onclick="loadSample\('(life|story|news)'\)"/g) || []).length === 3
+    && !/(?:三菱|株式|時価総額|金融機関)/.test(indexHtml),
+  'public examples are limited to three basic non-financial texts'
+);
+assertCheck(
+  /async function loadSample\([\s\S]*?await analyzeSourceInput\(\)/.test(appJs),
+  'examples use the same analysis entry point as pasted text'
+);
+assertCheck(appJs.includes('const ENABLE_REMOTE_SMART_SEGMENTATION = false;'), 'remote smart segmentation remains disabled');
+assertCheck(
+  requiredKuromojiPocFiles.every(file => existsSync(resolve(FRONTEND_DIR, file)))
+    && kuromojiWorkerPocJs.includes('const ENABLE_KUROMOJI_WORKER_POC = false;')
+    && kuromojiWorkerJs.includes("importScripts(KUROMOJI_SCRIPT_URL)")
+    && appJs.includes('const ENABLE_LOCAL_KUROMOJI_WORKER = true;')
+    && indexHtml.includes('src="kuromoji-worker-poc.js?v=')
+    && !indexHtml.includes('cdn.jsdelivr.net/npm/kuromoji@')
+    && !indexHtml.includes('poc/kuromoji-worker-poc.html'),
+  'local Kuromoji Worker is integrated without exposing the PoC page or main-thread CDN runtime'
+);
 assertCheck(
   /function\s+resetLevelTest\s*\(\)[\s\S]*?safeStorage\.removeItem\('reading_level_result'\)/.test(appJs)
     && !/function\s+resetLevelTest\s*\(\)[\s\S]*?localStorage\.removeItem\('reading_level_result'\)/.test(appJs),
@@ -95,6 +145,19 @@ assertCheck(
 );
 assertCheck(!/\blocalStorage\./.test(indexHtml), 'inline page logic uses safe storage');
 assertCheck(appJs.includes("dataset.tokenizerMode = 'built-in'"), 'reading flow exposes tokenizer mode');
+assertCheck(
+  appJs.includes(".split(/\\n+/)") && appJs.includes(".join('\\n\\n');"),
+  'pasted single line breaks remain paragraph boundaries'
+);
+assertCheck(
+  /function\s+addParagraphTranslations[\s\S]*?parts\.map\([\s\S]*?reading-translation-pair/.test(appJs),
+  'reading output renders preserved paragraphs as separate blocks'
+);
+assertCheck(
+  appJs.includes("new Intl.Segmenter('ja', {granularity:'word'})")
+    && /window\.KUROMOJI_TOKEN_CACHE\[tokenId\][\s\S]*?showTokenDetail/.test(appJs),
+  'unknown Japanese words remain clickable and saveable'
+);
 assertCheck(
   /async function collectExportRubyUnits\(\)[\s\S]*?if\(!raw \|\| !ENABLE_REMOTE_SMART_SEGMENTATION\) return fallback;[\s\S]*?await initKuromoji\(\)/.test(appJs),
   'reading export respects the remote-tokenizer safety switch'
@@ -112,11 +175,27 @@ assertCheck(
   /function normalizeReadingHistoryItem\(item = \{\}, index = 0\)[\s\S]*?const url = readingQueueUrl\(item\.url\);[\s\S]*?\n\s*url,/.test(appJs),
   'reading history URLs use the HTTP(S) allowlist'
 );
-assertCheck(indexHtml.includes('导出可导入 Anki 的生词文件') && !indexHtml.includes('一键导出Anki牌组'), 'Anki copy matches TSV export');
+assertCheck(indexHtml.includes('导出为可在 Anki 中导入的 TSV 文件') && !indexHtml.includes('一键导出Anki牌组'), 'Anki copy matches TSV export');
 assertCheck(
   ['pptx', 'png', 'jpeg'].every(format => indexHtml.includes(`<option value="${format}"`))
     && !/downloadRubyDocx|<option value=["']docx["']/.test(inlineSource),
   'reading export formats match the public MVP boundary'
+);
+assertCheck(
+  /function collectRubyUnits\(\)[\s\S]*?\.reading-translation-pair \.reading-japanese/.test(appJs)
+    && /if\(current\.length\) rows\.push\(current\)/.test(appJs)
+    && appJs.includes('const lineX = outerMarginX;'),
+  'editable PPT export ignores layout whitespace, packs rows, and starts at the upper-left content edge'
+);
+assertCheck(
+  ['主要', '出願', '産学連携', '国際競争力', '知財戦略'].every(word => dictionary[word]?.meaning),
+  'article vocabulary has local Chinese meanings for the reported gaps'
+);
+assertCheck(
+  appJs.includes('const DEFAULT_TTS_RATE = 0.94;')
+    && appJs.includes('utterance.pitch = 0.98;')
+    && appJs.includes('/AndrewMultilingual/i'),
+  'TTS prefers an available Andrew Multilingual voice with the requested browser-safe tuning'
 );
 assertCheck(hardcodedFontSizes.length === 0, `no hardcoded px font sizes outside typography.css${hardcodedFontSizes.length ? `: ${hardcodedFontSizes.join(', ')}` : ''}`);
 assertCheck(css && designSystem && grammarLayout && typography && js && css === designSystem && css === grammarLayout && css === typography && css === js, 'CSS and JS cache versions match');

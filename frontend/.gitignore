@@ -1,10 +1,12 @@
-audit-screenshots/**/*.png
-audit-screenshots/**/*.json
 node_modules/
 npm-debug.log*
 *.log
+.DS_Store
+
+# Generated local output. Source HTML, assets, executable tools and tests remain trackable.
+audit-screenshots/
+stage4-results/
+stage4-fixtures/
+visual-snapshots/
 tmp/
 pdfs/
-*.png
-*.html
-.DS_Store

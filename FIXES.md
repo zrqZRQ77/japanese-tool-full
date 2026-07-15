@@ -36,7 +36,9 @@ open http://localhost:9999/
 ```
 或者访问已部署的版本：
 ```
-https://japanese-tool-eight.vercel.app/
+历史部署地址（已停用作正式入口）：https://japanese-tool-eight.vercel.app/
+
+当前正式地址：https://yomeru.japanese-hub.com
 ```
 
 测试项目：

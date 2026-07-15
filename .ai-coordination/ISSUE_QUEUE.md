@@ -4,6 +4,71 @@
 
 ## 当前问题
 
+### PERF-SAFARI-001
+
+- 来源：用户 Mac Safari 真实 Preview 验收（2026-07-15）
+- 基线：`preview-20260715-04 / dpl_5xGZ87W82spvjrqYWu7LKYSqLkKM`
+- 等级：P0
+- 状态：CONFIRMED
+- 涉及文件：`frontend/index.html`、`frontend/app.js`、`frontend/kuromoji-worker-poc.js`、相关测试
+- 发现：Mac Safari 首次生成假名需要数分钟；状态文本位于隐藏控制区，用户点击后看不到处理中反馈。
+- 预期结果：点击后立即显示可见状态；进入阅读页后空闲预热 Worker；记录 init/tokenize/round-trip 指标；热加载不重复构建词典。
+- 处理结论：待修复；基线建立完成后立即开始。
+
+### DICT-COVERAGE-001
+
+- 来源：用户 Mac/iPhone Safari 真实文章验收（2026-07-15）
+- 等级：P0
+- 状态：CONFIRMED
+- 涉及文件：`frontend/data/dictionary.json`、`frontend/app.js`、词典构建脚本与覆盖测试
+- 发现：当前本地词典只有 126 条；`autoLookupTokenMeaning()` 没有真实第二层查询；`時価総額`、`総額`、`金融機関`、`半導体` 等常见内容词无中文释义。
+- 预期结果：建立可离线部署的真实词典索引，支持 surface/basic form 与复合词查询；未命中时准确说明边界。
+- 处理结论：待 Safari 性能项完成后独立处理。
+
+### UI-INTERNAL-001
+
+- 来源：用户真实 Preview 验收（2026-07-15）
+- 等级：P1
+- 状态：CONFIRMED
+- 涉及文件：`frontend/app.js`、数据迁移与 UI 测试
+- 发现：内部等级/来源值 `kuromoji` 可直接显示在生词页。
+- 预期结果：内部 source 与用户可见 JLPT 分级分离；未知等级显示“未分级”；迁移既有本地生词数据。
+- 处理结论：待词典覆盖项完成后处理。
+
+### USER-REAL-005
+
+- 来源：用户 Mac Safari 真实粘贴文本验收（2026-07-13）
+- 基线：`main / b84b3cd / 缓存 20260712-07`
+- 等级：P1
+- 状态：FIXED（本地自动回归 PASS，等待 Mac Safari 同文复测）
+- 发现：单换行段落被合并；内置小词典之外的正文不可点击、无假名、无法收藏；任意文章没有通用本地译文但翻译按钮反馈不清。
+- 处理结论：缓存 `20260713-01` 保留每个输入换行并渲染独立段落；使用 Safari 支持的 `Intl.Segmenter` 让未知日语词也可点击、补读音和收藏；没有可靠本地译文时明确提示，不生成虚假翻译。远程 Kuromoji 继续关闭，避免 Safari 卡死。
+- 证据：`frontend/audit-screenshots/2026-07-13T02-27-13-585Z/ui-audit-report.md`
+- 外部状态：Mac Safari 完整端到端闭环继续 `PENDING`。
+
+### DOC-R05-001 / DOC-R05-002
+
+- 来源：ChatGPT 网页端 Round 05
+- 基线：`main / b84b3cd / 缓存 20260712-07`
+- 等级：P2
+- 状态：VERIFIED
+- 处理结论：当前态资料统一到 `b84b3cd / 20260712-07 / https://yomeru.japanese-hub.com`；历史 PDF Beta 决策保留但明确为已撤销，当前公开输入仅粘贴日语文本。
+
+### EVID-R05-001
+
+- 来源：ChatGPT 网页端 Round 05
+- 等级：P2
+- 状态：VERIFIED（内容连续性绑定；非 clean commit 重跑）
+- 证据：`frontend/audit-screenshots/2026-07-12T15-21-30-699Z/ui-audit-report.md`
+- 处理结论：报告记录父提交 `6892c259` 的 dirty worktree；该工作树变更随后提交为 `b84b3cd`。保留原报告不修改，并明确证据边界。
+
+### ONLINE-R05-001
+
+- 来源：ChatGPT 网页端 Round 05
+- 等级：PENDING
+- 状态：BLOCKED BY TEST ENVIRONMENT
+- 处理结论：不把线上抓取阻断推测为失败或 PASS；Mac Safari 完整端到端闭环继续 `PENDING`。
+
 ### DOC-002
 
 - 来源：ChatGPT 网页端 Round 04
@@ -30,9 +95,9 @@
 - 复现方式或证据：静态搜索确认三处用户可见字符串。
 - 证据层级：静态代码与文档审查＋本地运行与自动化测试。
 - 证据位置：`frontend/audit-screenshots/2026-07-12T08-07-00-122Z/ui-audit-report.md`
-- 预期结果：使用普通用户可理解的能力边界文案，保留 PDF Beta 边界但不显示开发阶段术语。
+- 预期结果（历史）：使用普通用户可理解的能力边界文案；该 PDF Beta 公开方案已于 2026-07-12 撤销。
 - 是否阻止上线：否。
-- 处理结论：三处文案分别改为“暂不支持自动读取网页正文”和“目前支持文字型 PDF（Beta）”；缓存升级为 `20260712-03`，静态检查与 UI 回归 PASS。
+- 处理结论（历史）：当时完成 PDF Beta 文案修复；随后已撤下全部公开 PDF 入口，当前公开输入仅粘贴日语文本。
 
 ### USER-REAL-004
 

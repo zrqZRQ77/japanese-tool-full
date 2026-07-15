@@ -1,6 +1,168 @@
 /* Homepage import / more menus
    Hybrid direction: text triggers from proposal A + low-color menu rows from proposal B. */
 
+/* MVP scope reduction: keep completed modules in source while removing public entry points. */
+[data-mvp-hidden] {
+  display: none !important;
+}
+
+.mvp-settings-button {
+  position: fixed;
+  top: 16px;
+  right: 18px;
+  z-index: 140;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-paper);
+  color: var(--ink);
+  box-shadow: 0 8px 22px rgba(35, 26, 50, 0.08);
+  cursor: pointer;
+}
+
+.mvp-settings-button svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+
+.mvp-sample-options {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mvp-sample-options .btn-secondary {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .mvp-settings-button {
+    top: 12px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .mvp-sample-options {
+    width: 100%;
+  }
+
+  .mvp-sample-options .btn-secondary {
+    flex: 1 1 calc(50% - 4px);
+  }
+}
+
+/* Navigation correction: settings belongs to the navigation utility area. */
+@media (min-width: 721px) {
+  body:not(.first-visit) .app-sidebar .sidebar-footer {
+    display: block !important;
+  }
+}
+
+@media (max-width: 720px) {
+  body:not(.first-visit) .app-sidebar .sidebar-footer {
+    display: none !important;
+  }
+
+  .menu-sidebar-nav {
+    min-height: 0 !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .menu-sidebar-nav .menu-settings-divider {
+    margin-top: auto !important;
+  }
+}
+
+/* Vocab table: keep level, mastery and all actions inside the desktop viewport. */
+body[data-view="vocab"] .app-content,
+body[data-view="vocab"] .vocab-section-page,
+body[data-view="vocab"] .vocab-section-page > .card-pad,
+body[data-view="vocab"] .vocab-page-list,
+body[data-view="vocab"] #vocabListPage {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+@media (min-width: 761px) {
+  body[data-view="vocab"] .vocab-table-head,
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: minmax(140px, .85fr) minmax(180px, 1.7fr) 112px 124px 132px !important;
+    column-gap: 12px !important;
+  }
+
+  body[data-view="vocab"] .vocab-table-filter-trigger {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding-inline: 10px !important;
+    gap: 8px !important;
+  }
+
+  body[data-view="vocab"] .vocab-cell,
+  body[data-view="vocab"] .vocab-table-filter,
+  body[data-view="vocab"] .vocab-meaning {
+    min-width: 0 !important;
+  }
+
+  body[data-view="vocab"] .vocab-row-actions {
+    width: 132px !important;
+    min-width: 132px !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body[data-view="vocab"] .vocab-table-head {
+    display: none !important;
+  }
+
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row > .vocab-cell {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    grid-column: 1 !important;
+  }
+
+  body[data-view="vocab"] .vocab-row-actions {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Keep this final override stronger than legacy navigation display rules. */
+html body:not(#mvp-public-all-modules) [data-mvp-hidden] {
+  display: none !important;
+}
+
 body.first-visit .hero-input,
 body.first-visit .hero-actions,
 body.first-visit .hero-secondary-actions {
@@ -343,5 +505,61 @@ body[data-view="settings"] .settings-choice-badge {
   body.first-visit .hero-menu-chevron,
   body[data-view="settings"] .settings-choice-trigger::after {
     transition: none;
+  }
+}
+
+/* Mobile vocab cards: preserve the compact two-column layout instead of
+   forcing every cell back into a full-width stack. */
+@media (max-width: 720px) {
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      "word actions"
+      "meaning meaning"
+      "level mastery" !important;
+    grid-template-rows: auto auto auto !important;
+    column-gap: 12px !important;
+    row-gap: 8px !important;
+    padding: 14px !important;
+  }
+
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row > .vocab-cell {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row > .vocab-cell-word {
+    grid-area: word !important;
+  }
+
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row > .vocab-cell-meaning {
+    grid-area: meaning !important;
+  }
+
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row > .vocab-cell-level {
+    grid-area: level !important;
+    justify-self: start !important;
+    justify-content: flex-start !important;
+  }
+
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row > .vocab-cell-mastery {
+    grid-area: mastery !important;
+    justify-self: end !important;
+    justify-content: flex-end !important;
+  }
+
+  body[data-view="vocab"] .vocab-page-list .vocab-table-row > .vocab-row-actions {
+    grid-area: actions !important;
+    width: auto !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    flex-wrap: nowrap !important;
+    justify-self: end !important;
+    justify-content: flex-end !important;
+    align-self: start !important;
+    gap: 6px !important;
   }
 }

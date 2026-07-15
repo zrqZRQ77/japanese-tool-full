@@ -1,22 +1,21 @@
 # 当前审查基线
 
-> 由本地 Codex维护。未执行的项目不得从其他基线继承 PASS。
+> 未执行的项目不得从其他基线继承 PASS。
 
-- 基线时间：2026-07-12 16:09 CST
-- 审查轮次：Round 04 两项 P2 处理后基线
-- 当前分支：`main`
-- 当前提交号：`4688793ad122f14d2e3ea96bf4029fa4ea7310dc`
-- GitHub 状态：GitHub API 已确认远端 `main` 指向 `4688793`
-- 当前工作区前端缓存版本：`20260712-03`
-- 最近已确认线上缓存版本：`20260712-02`
-- 工作区是否有未提交修改：是
-- 本轮 Codex 修改：`frontend/app.js`、`frontend/index.html`、`.ai-coordination/` 当前状态资料、`PRE_LAUNCH_TEST_REPORT.md`、`PRE_LAUNCH_CHECKLIST.md`
-- 用户/既有变更（不得纳入本轮提交）：历史视觉快照删除、自动审计与阶段四产物、`Reference_Books/`、`tmp/`
-- 最近构建：根目录 `npm test`｜2026-07-12 16:05 CST｜PASS
-- 最近静态检查：`cd frontend && npm run check`｜2026-07-12 16:06 CST｜PASS
-- 最近定向 UI 审计：`frontend/audit-screenshots/2026-07-12T08-07-00-122Z/ui-audit-report.md`｜PASS
-- 审计元数据：Playwright bundled Chromium `149.0.7827.55`、Git `4688793` dirty worktree、缓存 `20260712-03`、失败步骤 0、问题 0、控制台警告/错误 0
-- 真实设备与线上证据：用户确认最新 GitHub/Vercel 版本已在手机端复测，左侧 Y 菜单、阅读显示设置、词汇/语法入口分离及长按选中短句“保存为语法”均正常
-- 外部网络检查：当前 Codex 环境访问 Vercel 两次超时，记为环境 `BLOCKED`，不覆盖用户真实设备 PASS
-- 仍为 PENDING：Mac/iPhone 的完整端到端核心闭环、其他移动浏览器、当前版本的线上 PDF/备份专项复测
-- 已有历史真实验收：PPTX 可由 PowerPoint/Keynote 打开；移动端实际下载可用；JSON 备份可下载
+- 基线时间：2026-07-15 CST
+- 当前工作分支：`stabilize/safari-dictionary-20260715`
+- 起点提交：`main / b84b3cd5a345132fd27db90efa295f8791049f36`
+- 当前代码状态：包含 2026-07-13 至 2026-07-15 已验证但尚未形成基线提交的 Worker、Safari、移动端和发布候选修复
+- 正式线上地址：`https://yomeru.japanese-hub.com`
+- 当前隔离 Preview：`https://japanese-tool-diueoo9o6-zrq-projects1.vercel.app`
+- Preview Deployment：`dpl_5xGZ87W82spvjrqYWu7LKYSqLkKM`
+- 当前公开输入：仅粘贴日语文本；PDF 底层代码为普通用户不可达的技术储备
+- 最新本地功能审计：`frontend/audit-screenshots/2026-07-15T02-52-23-513Z/ui-audit-report.md`｜PASS
+- 最新本地响应式审计：`frontend/audit-screenshots/2026-07-15T02-52-39-223Z/ui-audit-report.md`｜PASS
+- 用户 Mac Safari：核心流可完成；首次生成假名等待数分钟，性能与反馈不合格
+- 用户 iPhone Safari（MLE23CH/A，iOS 26.4.2）：首次、二次、慢网、读音、收藏与稳定性均 PASS
+- 已确认数据问题：本地词典仅 126 条，未真正接入完整词典查询；部分词无中文释义
+- 已确认 UI 问题：生词页可能直接显示内部等级值 `kuromoji`
+- 当前发布判断：`HOLD`；Production 不变
+- 连续任务顺序：建立 Git 基线 → Safari 加载反馈与预热 → 词典覆盖 → 技术字段清理 → 自动化与真实设备验收
+- 生成物规则：审计截图、阶段四结果、证据、历史 review、Reference_Books 与 tmp 保留本地但不进入源码基线

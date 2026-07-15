@@ -1,16 +1,17 @@
 # Codex 当前状态
 
-> 由本地 Codex维护。
-
-- 当前阶段：Round 04 两项 P2 已处理并完成本地回归，等待提交部署
-- 当前工作区：`main / 4688793 + 未提交修改 / 缓存 20260712-03`
-- 最近已确认线上：`main / 4688793 / 缓存 20260712-02`
-- GitHub：远端 `main` 已通过 GitHub API 确认为 `4688793`
-- Vercel：用户已在部署后的手机端验收；Codex 当前网络访问 Vercel 超时，单独记为环境 BLOCKED
-- 当前有效自动审计：`frontend/audit-screenshots/2026-07-12T08-07-00-122Z/ui-audit-report.md`，缓存 `20260712-03`，结果 PASS
-- 本轮实机 PASS：左侧 Y 菜单、阅读显示设置、普通词/明确语法入口分离、手机长按选中短句并保存为语法
-- 问题状态：USER-REAL-002、USER-REAL-003、USER-REAL-004、DOC-002、COPY-002 均为 VERIFIED
-- 保留范围：复杂语法自动识别和参考语法书提取不在本轮；复杂 PDF 版面重建保持后续专项
-- 当前结论：维持“带条件上线”；没有新增确定性 P0/P1
-- 下一步：仅提交本轮明确文件并部署缓存 `20260712-03`；完整 Mac/iPhone 闭环继续 PENDING
-- 最后更新时间：2026-07-12 16:09 CST
+- 当前阶段：稳定化与工作流重置
+- 当前分支：`stabilize/safari-dictionary-20260715`
+- 起点提交：`main / b84b3cd5a345132fd27db90efa295f8791049f36`
+- 正式线上地址：`https://yomeru.japanese-hub.com`
+- 当前 Preview：`https://japanese-tool-diueoo9o6-zrq-projects1.vercel.app`
+- 公开 MVP：仅粘贴日语文本；不恢复 PDF 公开入口
+- 当前真实状态：Mac Safari 功能可用但首次假名等待数分钟；iPhone Safari 核心流 PASS
+- 当前 P0：Safari 首次加载反馈与性能；词典覆盖不足
+- 当前 P1：清理 `kuromoji` 等内部技术字段
+- 当前发布结论：HOLD；不部署 Production
+- 已完成：确认仓库边界；创建独立稳定化分支；收敛生成物忽略规则
+- 正在执行：已通过 build、maintenance check 与 Kuromoji 测试，准备形成可回滚基线提交
+- 下一步：只处理 Safari 预热与可见进度，不混入词典或 UI 其他改动
+- 停止规则：真实产品失败、不可逆文件归属冲突或需要真实设备操作时暂停
+- 最后更新时间：2026-07-15 CST

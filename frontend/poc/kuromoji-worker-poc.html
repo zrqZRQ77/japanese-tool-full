@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kuromoji Worker PoC（非公开）</title>
+  <style>
+    body { max-width: 960px; margin: 32px auto; padding: 0 20px; font: 16px/1.6 system-ui, sans-serif; color: #211a2f; }
+    textarea { box-sizing: border-box; width: 100%; min-height: 180px; padding: 12px; }
+    button { margin: 12px 0; padding: 9px 16px; }
+    pre { overflow: auto; padding: 14px; background: #f5f1fb; border-radius: 8px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Kuromoji Worker PoC</h1>
+  <p>隔离技术验证页面，不属于公开产品入口。</p>
+  <textarea id="sourceText">私は毎朝七時に起きます。
+朝ごはんを食べてから、学校に行きます。
+三菱UFJフィナンシャル・グループの時価総額が上昇した。</textarea>
+  <button id="runButton" type="button">运行 Worker 分析</button>
+  <pre id="result">尚未运行</pre>
+  <script src="../kuromoji-worker-poc.js"></script>
+  <script>
+    const client = KuromojiWorkerPoc.createClient({ workerUrl: '../vendor/kuromoji/20260714-01/kuromoji-tokenizer.worker.js' });
+    document.getElementById('runButton').addEventListener('click', async () => {
+      const output = document.getElementById('result');
+      output.textContent = '加载本地词典并分析中……';
+      const result = await client.analyzeWithFallback(
+        document.getElementById('sourceText').value,
+        text => ({ text, usable: true })
+      );
+      output.textContent = JSON.stringify(result, null, 2);
+    });
+  </script>
+</body>
+</html>

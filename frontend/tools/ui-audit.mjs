@@ -15,9 +15,14 @@ const SAMPLE_TEXT = '私は毎朝七時に起きます。朝ごはんを食べ�
 const VIEWPORTS = [
   { name: 'mobile-390', width: 390, height: 844 },
   { name: 'mobile-430', width: 430, height: 932 },
-  { name: 'desktop-1280', width: 1280, height: 720 }
+  { name: 'desktop-1280', width: 1280, height: 720 },
+  { name: 'desktop-1440', width: 1440, height: 900 },
+  { name: 'desktop-1920', width: 1920, height: 1080 }
 ];
 const CUSTOM_CHROMIUM_EXECUTABLE = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || '';
+const AUDIT_HIDDEN_LEGACY_MODULES = process.env.UI_AUDIT_LEGACY_MODULES === '1';
+const AUDIT_FUNCTIONAL_ONLY = process.env.UI_AUDIT_FUNCTIONAL_ONLY === '1';
+const AUDIT_RESPONSIVE_ONLY = process.env.UI_AUDIT_RESPONSIVE_ONLY === '1';
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -165,9 +170,9 @@ async function runAudit() {
     ...(CUSTOM_CHROMIUM_EXECUTABLE ? { executablePath: CUSTOM_CHROMIUM_EXECUTABLE } : {})
   });
   report.environment = await auditEnvironment(browser);
-  const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+  let context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
   await context.tracing.start({ screenshots: true, snapshots: true, sources: true });
-  const page = await context.newPage();
+  let page = await context.newPage();
 
   page.on('console', message => {
     if (!['error', 'warning', 'warn'].includes(message.type())) return;
@@ -199,13 +204,16 @@ async function runAudit() {
   }
 
   async function step(name, fn) {
+    process.stdout.write(`- ${name}... `);
     try {
       const result = await fn();
       report.steps.push({ name, ok: true, result: result || null });
+      process.stdout.write('ok\n');
       return result;
     } catch (error) {
       report.steps.push({ name, ok: false, error: error.message });
       report.issues.push({ severity: 'error', name, message: error.message });
+      process.stdout.write(`failed: ${error.message}\n`);
       return null;
     }
   }
@@ -256,6 +264,7 @@ async function runAudit() {
     return result;
   }
 
+  if(!AUDIT_RESPONSIVE_ONLY){
   await step('open app', async () => {
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
     await page.evaluate(() => localStorage.clear());
@@ -263,6 +272,10 @@ async function runAudit() {
     await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
     await screenshot('01-initial');
     return state('state: initial');
+  });
+
+  await step('homepage keeps settings out of the primary task', async () => {
+    if (await page.locator('.mvp-settings-button').isVisible()) throw new Error('Legacy floating settings entry is still visible.');
   });
 
   await step('reading import', async () => {
@@ -278,12 +291,144 @@ async function runAudit() {
       return style.visibility === 'visible' && Number.parseFloat(style.fontSize) > 0;
     });
     if(!rubyVisible) throw new Error('Ruby toggle did not reveal furigana.');
+    await page.waitForFunction(() => document.body.dataset.tokenizerMode === 'kuromoji-worker', null, {timeout:15000});
     await screenshot('02-reading');
     return state('state: reading');
   });
 
+  await step('reduced MVP public navigation and settings', async () => {
+    const publicState = await page.evaluate(() => ({
+      desktopNav: [...document.querySelectorAll('.app-sidebar .sidebar-nav .nav-item')]
+        .filter(node => !node.hidden && getComputedStyle(node).display !== 'none')
+        .map(node => node.textContent.trim()),
+      hiddenViewsVisible: [...document.querySelectorAll('[data-mvp-hidden]')]
+        .filter(node => getComputedStyle(node).display !== 'none').length,
+      translationVisible: Boolean(document.querySelector('#translationToggleBtn') && getComputedStyle(document.querySelector('#translationToggleBtn')).display !== 'none'),
+      translationPromotion: /句子翻译/.test(document.querySelector('#heroIntro')?.textContent || ''),
+      settingsVisible: Boolean(document.querySelector('.sidebar-footer .sidebar-utility-button') && getComputedStyle(document.querySelector('.sidebar-footer .sidebar-utility-button')).display !== 'none'),
+      floatingSettingsVisible: Boolean(document.querySelector('.mvp-settings-button') && getComputedStyle(document.querySelector('.mvp-settings-button')).display !== 'none')
+    }));
+    if(JSON.stringify(publicState.desktopNav) !== JSON.stringify(['阅读', '生词本'])) throw new Error(`Unexpected primary navigation: ${JSON.stringify(publicState.desktopNav)}.`);
+    if(publicState.hiddenViewsVisible) throw new Error(`${publicState.hiddenViewsVisible} MVP-hidden entries are still visible.`);
+    if(publicState.translationVisible || publicState.translationPromotion) throw new Error('Translation UI is still publicly visible.');
+    if(!publicState.settingsVisible || publicState.floatingSettingsVisible) throw new Error(`Low-frequency settings placement is incorrect: ${JSON.stringify(publicState)}.`);
+    await page.locator('.sidebar-footer .sidebar-utility-button').click();
+    await page.locator('.settings-section').waitFor({state:'visible', timeout:3000});
+    const dataActions = await page.evaluate(() => ({
+      backup:/备份数据/.test(document.querySelector('.settings-section')?.textContent || ''),
+      restore:/恢复备份/.test(document.querySelector('.settings-section')?.textContent || ''),
+      clear:/清除本机学习数据/.test(document.querySelector('.settings-section')?.textContent || '')
+    }));
+    if(!dataActions.backup || !dataActions.restore || !dataActions.clear) throw new Error(`Settings data actions missing: ${JSON.stringify(dataActions)}.`);
+    await page.locator('.app-sidebar .nav-item[data-view="reading"]').click();
+    return {publicState, dataActions};
+  });
+
+  await step('public sample uses pasted-text analysis path', async () => {
+    await page.evaluate(async () => loadSample('life'));
+    const sampleResult = await page.evaluate(() => ({
+      id:'life',
+      view:document.body.dataset.view,
+      paragraphs:document.querySelectorAll('#output .reading-translation-pair').length,
+      hasReading:document.body.classList.contains('has-reading')
+    }));
+    if(sampleResult.view !== 'reading' || !sampleResult.hasReading || sampleResult.paragraphs < 2) throw new Error(`Public sample did not use the normal reading path: ${JSON.stringify(sampleResult)}.`);
+    await page.evaluate(async text => {
+      document.getElementById('inputText').value = text;
+      await renderText();
+    }, SAMPLE_TEXT);
+    return sampleResult;
+  });
+
+  await step('real pasted text uses local Worker with paragraphs, readings and details', async () => {
+    const pasted = '三菱UFJフィナンシャル・グループの時価総額が上昇した。\n金融機関が首位に浮上した。\n半導体メモリー大手を上回った。';
+    await page.evaluate(async text => {
+      document.getElementById('inputText').value = text;
+      await renderText();
+    }, pasted);
+    const paragraphCount = await page.locator('#output .reading-translation-pair').count();
+    if(paragraphCount < 3) throw new Error(`Single line breaks collapsed: ${paragraphCount} paragraph(s).`);
+    const unknown = page.locator('#output ruby.w-kuromoji').first();
+    await unknown.waitFor({state:'visible', timeout:3000});
+    await unknown.click();
+    await page.locator('#detailArea .add-vocab-tool').waitFor({state:'visible', timeout:3000});
+    await page.waitForFunction(() => document.body.dataset.tokenizerMode === 'kuromoji-worker', null, {timeout:15000});
+    const workerState = await page.evaluate(() => {
+      const cache = window.KUROMOJI_TOKEN_CACHE.filter(Boolean);
+      const selected = ['三菱', 'UFJ', 'フィナンシャル'].map(term => {
+        const item = cache.find(entry => entry.surface === term)
+          || cache.find(entry => entry.surface.includes(term) || term.includes(entry.surface));
+        return {term, surface:item?.surface || '', reading:item?.info?.reading || ''};
+      });
+      return {
+        paragraphs:document.querySelectorAll('#output .reading-translation-pair').length,
+        selected,
+        tokenCount:cache.length,
+        readingCount:cache.filter(item => Boolean(item.info?.reading)).length,
+        fallback:document.body.dataset.tokenizerFallback || '',
+        exportBreaks:collectRubyUnits().filter(unit => unit.base === '\n').length,
+        exportRows:buildEditablePptRows(collectRubyUnits(), 35).map(row => row.length)
+      };
+    });
+    if(workerState.paragraphs !== 3 || workerState.selected.filter(item => item.reading).length < 2 || workerState.readingCount < 20 || workerState.fallback){
+      throw new Error(`Local Worker integration did not meet the reading baseline: ${JSON.stringify(workerState)}.`);
+    }
+    if(workerState.exportBreaks !== 2 || workerState.exportRows.length > 4 || workerState.exportRows.some(length => length === 0)){
+      throw new Error(`PPT export introduced layout whitespace or unnecessary pages: ${JSON.stringify(workerState)}.`);
+    }
+    const historyRestore = await page.evaluate(async () => {
+      const item = READING_HISTORY.find(entry => /三菱UFJ/.test(entry.text || ''));
+      if(!item) return {found:false};
+      await restoreHistoryArticle(item.id);
+      return {
+        found:true,
+        mode:document.body.dataset.tokenizerMode,
+        paragraphs:document.querySelectorAll('#output .reading-translation-pair').length
+      };
+    });
+    if(!historyRestore.found || historyRestore.mode !== 'kuromoji-worker' || historyRestore.paragraphs !== 3){
+      throw new Error(`Reading history did not restore through the Worker path: ${JSON.stringify(historyRestore)}.`);
+    }
+    await page.evaluate(() => {
+      const tokenId = window.KUROMOJI_TOKEN_CACHE.findIndex(item => item?.surface === '三菱');
+      document.querySelector(`#output ruby[data-token-id="${tokenId}"]`)?.click();
+    });
+    await page.waitForFunction(() => /みつびし/.test(document.querySelector('#detailArea')?.textContent || ''));
+    await page.locator('#detailArea .add-vocab-tool').click();
+    const savedWorkerWord = await page.evaluate(() => getAllVocab().find(item => item.word === '三菱'));
+    if(savedWorkerWord?.reading !== 'みつびし'){
+      throw new Error(`Worker word was not saved with its reading: ${JSON.stringify(savedWorkerWord)}.`);
+    }
+    const fallbackState = await page.evaluate(async text => {
+      LOCAL_KUROMOJI_WORKER_CLIENT?.terminate();
+      LOCAL_KUROMOJI_WORKER_CLIENT = KuromojiWorkerClient.createClient({
+        workerUrl:'workers/missing-kuromoji-worker.js',
+        timeoutMs:1000
+      });
+      document.getElementById('inputText').value = text;
+      await renderText();
+      return {
+        mode:document.body.dataset.tokenizerMode,
+        fallback:document.body.dataset.tokenizerFallback || '',
+        paragraphs:document.querySelectorAll('#output .reading-translation-pair').length,
+        noticeVisible:Boolean(document.querySelector('#output .fallback-notice'))
+      };
+    }, pasted);
+    if(fallbackState.mode !== 'built-in' || fallbackState.fallback !== 'true' || fallbackState.paragraphs !== 3 || !fallbackState.noticeVisible){
+      throw new Error(`Worker failure did not preserve the built-in reading path: ${JSON.stringify(fallbackState)}.`);
+    }
+    await page.evaluate(async text => {
+      document.getElementById('inputText').value = text;
+      await renderText();
+    }, SAMPLE_TEXT);
+    return {...state('state: real pasted text'), workerState, historyRestore, savedWorkerWord, fallbackState};
+  });
+
   await step('word detail and vocab add', async () => {
-    await page.locator('#output ruby[data-word="毎朝"]').click();
+    await page.evaluate(() => {
+      const tokenId = window.KUROMOJI_TOKEN_CACHE.findIndex(item => item?.surface === '毎朝');
+      document.querySelector(`#output ruby[data-token-id="${tokenId}"]`)?.click();
+    });
     await page.locator('#detailArea .add-vocab-tool').click();
     await page.locator('#vocabListPage').waitFor({ state: 'attached', timeout: 3000 });
     await screenshot('03-word-added');
@@ -300,8 +445,8 @@ async function runAudit() {
     return state('state: flashcard');
   });
 
-  await step('typing practice', async () => {
-    await page.locator('.app-sidebar button[data-view="retell"]').click();
+  if(AUDIT_HIDDEN_LEGACY_MODULES) await step('typing practice', async () => {
+    await page.evaluate(() => switchWorkspace('retell'));
     await page.locator('#startTypingPracticeBtn').click();
     await page.locator('#typingInput').fill('私は学生です。');
     await page.locator('#typingPracticeModule button[onclick="checkTypingAnswer()"]').click();
@@ -309,7 +454,7 @@ async function runAudit() {
     return state('state: typing');
   });
 
-  await step('Safari audio-only retell fallback', async () => {
+  if(AUDIT_HIDDEN_LEGACY_MODULES) await step('Safari audio-only retell fallback', async () => {
     await page.evaluate(() => {
       Object.defineProperty(window, 'SpeechRecognition', {value:undefined, configurable:true});
       Object.defineProperty(window, 'webkitSpeechRecognition', {value:undefined, configurable:true});
@@ -338,8 +483,8 @@ async function runAudit() {
     return {audioPlayback:true, ttsReading};
   });
 
-  await step('history page', async () => {
-    await page.locator('.app-sidebar button[data-view="history"]').click();
+  if(AUDIT_HIDDEN_LEGACY_MODULES) await step('history page', async () => {
+    await page.evaluate(() => switchWorkspace('history'));
     await screenshot('06-history');
     return state('state: history');
   });
@@ -348,16 +493,16 @@ async function runAudit() {
     await page.locator('button.nav-vocab').click();
     const exitButton = page.locator('.vocab-review-exit');
     if (await exitButton.isVisible().catch(() => false)) await exitButton.click();
-    await page.locator('#vocabListPage .vocab-action-button[aria-label^="删除"]').click();
+    await page.locator('#vocabListPage .vocab-action-button[aria-label^="删除"]').first().click();
     await page.locator('#deleteConfirmModal.active').waitFor({ state: 'visible', timeout: 3000 });
     await screenshot('07-delete-confirm');
     return state('state: delete confirm');
   });
 
-  await step('grammar add and persistence', async () => {
+  if(AUDIT_HIDDEN_LEGACY_MODULES) await step('grammar add and persistence', async () => {
     const cancelButton = page.locator('#deleteConfirmCancel');
     if (await cancelButton.isVisible().catch(() => false)) await cancelButton.click();
-    await page.locator('.app-sidebar button[data-view="grammar"]').click();
+    await page.evaluate(() => switchWorkspace('grammar'));
     await page.locator('.grammar-add-trigger').click();
     await page.locator('#grammarCustomTitle').fill('〜てから');
     await page.locator('#grammarCustomLevel').selectOption('N4');
@@ -378,7 +523,7 @@ async function runAudit() {
     return state('state: grammar persisted');
   });
 
-  await step('grammar delete icon and delete flow', async () => {
+  if(AUDIT_HIDDEN_LEGACY_MODULES) await step('grammar delete icon and delete flow', async () => {
     const deleteButton = page.locator('#grammarBookList button[onclick^="removeGrammarNote"]').first();
     await deleteButton.waitFor({ state: 'visible', timeout: 3000 });
     const geometry = await deleteButton.evaluate(element => {
@@ -435,13 +580,56 @@ async function runAudit() {
     return { rejected: normalized.length, protocols: ['javascript:', 'data:', 'whitespace-obfuscated javascript:'] };
   });
 
+  await step('hidden module data remains intact', async () => {
+    const result = await page.evaluate(() => {
+      const keys = ['reading_grammar_book', 'reading_practice_history', 'reading_history'];
+      const before = Object.fromEntries(keys.map(key => [key, localStorage.getItem(key)]));
+      switchWorkspace('reading');
+      switchWorkspace('vocab');
+      switchWorkspace('settings');
+      switchWorkspace('reading');
+      const after = Object.fromEntries(keys.map(key => [key, localStorage.getItem(key)]));
+      return {before, after};
+    });
+    if(JSON.stringify(result.before) !== JSON.stringify(result.after)) throw new Error(`Hidden module data changed during public navigation: ${JSON.stringify(result)}.`);
+    return {keys:Object.keys(result.before), unchanged:true};
+  });
+  }
+
+  // Start responsive checks in a fresh context so the long functional trace
+  // cannot exhaust Chromium before the mobile/desktop viewport pass begins.
+  if(!AUDIT_FUNCTIONAL_ONLY){
+    if(!AUDIT_RESPONSIVE_ONLY){
+      await context.tracing.stop();
+      await context.close();
+      context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+      await context.tracing.start({ screenshots: true, snapshots: true, sources: true });
+      page = await context.newPage();
+      page.on('console', message => {
+        if (!['error', 'warning', 'warn'].includes(message.type())) return;
+        report.console.push({ type: message.type(), text: message.text(), location: message.location() });
+      });
+      page.on('pageerror', error => report.console.push({ type: 'pageerror', text: error.message }));
+      page.on('requestfailed', request => {
+        const url = request.url();
+        if (url.includes('fonts.googleapis.com') || url.includes('fonts.gstatic.com')) return;
+        report.console.push({ type: 'requestfailed', text: `${request.method()} ${url} ${request.failure()?.errorText || ''}`.trim() });
+      });
+    }
+
   for (const viewport of VIEWPORTS) {
+    process.stdout.write(`- viewport ${viewport.name}... `);
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    process.stdout.write('size ');
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+    process.stdout.write('goto ');
     await page.evaluate(() => localStorage.clear());
     await page.reload({ waitUntil: 'domcontentloaded' });
+    process.stdout.write('reload ');
     await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
+    process.stdout.write('ready ');
     const publicPdfEntryCount = await page.getByText('上传 PDF', { exact: true }).count();
+    process.stdout.write('pdf ');
     if (publicPdfEntryCount !== 0) {
       throw new Error(`Viewport ${viewport.name} still exposes ${publicPdfEntryCount} public PDF upload entr${publicPdfEntryCount === 1 ? 'y' : 'ies'}.`);
     }
@@ -466,9 +654,11 @@ async function runAudit() {
       }
       if (viewport.name === 'mobile-390') await screenshot('viewport-mobile-390-home');
     }
+    process.stdout.write('hero ');
     const moreMenu = page.locator('.hero-more-menu');
     await moreMenu.locator('summary').click();
     await moreMenu.locator('.hero-menu-popover').waitFor({ state: 'visible', timeout: 3000 });
+    process.stdout.write('menu ');
     if (viewport.width <= 720) {
       const moreMenuBounds = await moreMenu.locator('.hero-menu-popover').boundingBox();
       if (!moreMenuBounds
@@ -480,6 +670,7 @@ async function runAudit() {
     await page.locator('#heroInputText').fill(SAMPLE_TEXT);
     await page.locator('button[onclick="analyzeFromHero()"]', { hasText: '开始阅读' }).click();
     await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });
+    process.stdout.write('reading ');
     if (viewport.width <= 720) {
       const toolbarLayout = await page.evaluate(() => {
         const toolbar = document.querySelector('#readerToolbar');
@@ -544,6 +735,12 @@ async function runAudit() {
       await mobileMenuButton.waitFor({ state: 'visible', timeout: 3000 });
       await mobileMenuButton.click();
       await page.locator('#menuPanel.active').waitFor({ state: 'visible', timeout: 3000 });
+      const mobileNavLabels = await page.evaluate(() => [...document.querySelectorAll('#menuPanel .nav-item')]
+        .filter(node => node.dataset.view !== 'settings' && !node.hidden && getComputedStyle(node).display !== 'none')
+        .map(node => node.textContent.trim()));
+      if(JSON.stringify(mobileNavLabels) !== JSON.stringify(['阅读', '生词本'])) throw new Error(`Viewport ${viewport.name} exposes unexpected mobile navigation: ${JSON.stringify(mobileNavLabels)}.`);
+      const mobileSettingsVisible = await page.locator('#menuPanel .menu-settings-entry').isVisible();
+      if(!mobileSettingsVisible) throw new Error(`Viewport ${viewport.name} does not expose settings at the bottom of the menu.`);
       if(viewport.name === 'mobile-390'){
         await page.waitForTimeout(380);
         await screenshot('viewport-mobile-390-menu');
@@ -555,6 +752,51 @@ async function runAudit() {
       await vocabNav.click();
     }
     await page.waitForFunction(() => document.body.dataset.view === 'vocab');
+    const vocabLayout = await page.evaluate(() => {
+      const workbar = document.querySelector('.vocab-workbar');
+      const search = document.querySelector('.vocab-search-shell');
+      const reviewButton = document.querySelector('.vocab-workbar button');
+      const manageButton = document.querySelector('.vocab-management-menu');
+      const list = document.querySelector('.vocab-page-list');
+      const row = document.querySelector('#vocabListPage .vocab-table-row');
+      const actions = row?.querySelector('.vocab-row-actions');
+      const workbarRect = workbar?.getBoundingClientRect();
+      const searchRect = search?.getBoundingClientRect();
+      const reviewRect = reviewButton?.getBoundingClientRect();
+      const manageRect = manageButton?.getBoundingClientRect();
+      const listRect = list?.getBoundingClientRect();
+      const actionsRect = actions?.getBoundingClientRect();
+      return {
+        documentOverflowX: document.documentElement.scrollWidth > window.innerWidth + 2,
+        listOverflowX: Boolean(list && list.scrollWidth > list.clientWidth + 2),
+        rowOverflowX: Boolean(row && row.scrollWidth > row.clientWidth + 2),
+        actionsInsideList: Boolean(listRect && actionsRect && actionsRect.right <= listRect.right + 1 && actionsRect.left >= listRect.left - 1),
+        actionsInsideViewport: Boolean(actionsRect && actionsRect.right <= window.innerWidth + 1 && actionsRect.left >= -1),
+        actionsVisible: actions ? getComputedStyle(actions).opacity !== '0' : false,
+        workbarRect: workbarRect ? {left:workbarRect.left, right:workbarRect.right, width:workbarRect.width} : null,
+        searchRect: searchRect ? {left:searchRect.left, right:searchRect.right, top:searchRect.top, bottom:searchRect.bottom, width:searchRect.width} : null,
+        reviewRect: reviewRect ? {left:reviewRect.left, right:reviewRect.right, top:reviewRect.top, bottom:reviewRect.bottom, width:reviewRect.width} : null,
+        manageRect: manageRect ? {left:manageRect.left, right:manageRect.right, top:manageRect.top, bottom:manageRect.bottom, width:manageRect.width} : null,
+        firstRowAligned: Boolean(searchRect && manageRect && Math.abs(searchRect.top - manageRect.top) <= 2),
+        reviewOnSecondRow: Boolean(reviewRect && searchRect && manageRect && reviewRect.top >= Math.max(searchRect.bottom, manageRect.bottom) - 1),
+        reviewMatchesContentWidth: Boolean(reviewRect && searchRect && manageRect
+          && Math.abs(reviewRect.left - searchRect.left) <= 2
+          && Math.abs(reviewRect.right - manageRect.right) <= 2),
+        listRect: listRect ? {left:listRect.left, right:listRect.right, width:listRect.width} : null,
+        rowRect: row ? (() => { const rect = row.getBoundingClientRect(); return {left:rect.left, right:rect.right, width:rect.width}; })() : null,
+        actionsRect: actionsRect ? {left:actionsRect.left, right:actionsRect.right, width:actionsRect.width} : null,
+        rowGrid: row ? getComputedStyle(row).gridTemplateColumns : null
+      };
+    });
+    const actionsClipped = viewport.width > 720 ? !vocabLayout.actionsInsideList : !vocabLayout.actionsInsideViewport;
+    if(vocabLayout.documentOverflowX || vocabLayout.listOverflowX || vocabLayout.rowOverflowX || actionsClipped || !vocabLayout.actionsVisible){
+      throw new Error(`Viewport ${viewport.name} vocab table clips or scrolls its actions: ${JSON.stringify(vocabLayout)}.`);
+    }
+    if(['mobile-390', 'mobile-430'].includes(viewport.name)
+      && (!vocabLayout.firstRowAligned || !vocabLayout.reviewOnSecondRow || !vocabLayout.reviewMatchesContentWidth)){
+      throw new Error(`Viewport ${viewport.name} mobile vocab workbar hierarchy regressed: ${JSON.stringify(vocabLayout)}.`);
+    }
+    if(viewport.width > 720) await screenshot(`viewport-${viewport.name}-vocab`);
     await page.locator('#vocabPrimaryAction').click();
     const mobileFlash = page.locator('#flashArea .flash-stage');
     await mobileFlash.waitFor({state:'visible', timeout:3000});
@@ -589,6 +831,8 @@ async function runAudit() {
         message: `Horizontal overflow: ${viewportState.viewport.scrollWidth}px > ${viewportState.viewport.width}px`
       });
     }
+    process.stdout.write('ok\n');
+  }
   }
 
   const appLogs = report.console.filter(entry => {
@@ -596,7 +840,9 @@ async function runAudit() {
     const isOptionalFontRequest = text.includes('fonts.googleapis.com') || text.includes('fonts.gstatic.com');
     const isOptionalKuromojiRequest = text.includes('cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/');
     const isExpectedTokenizerFallback = text.includes('kuromoji 加载失败,已退回内置词库')
-      || text.includes('kuromoji 初始化失败,已退回内置词库');
+      || text.includes('kuromoji 初始化失败,已退回内置词库')
+      || text.includes('本地 Kuromoji Worker 分析失败，已退回内置词库')
+      || text.includes('/workers/missing-kuromoji-worker.js');
     return !isOptionalFontRequest && !isOptionalKuromojiRequest && !isExpectedTokenizerFallback;
   });
   const failedSteps = report.steps.filter(item => item.ok === false);

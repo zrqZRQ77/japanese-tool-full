@@ -592,5 +592,167 @@
     "level": "trap",
     "pos": "易误解词",
     "meaning": "没关系、没问题 —— 字面拆解无法猜出含义"
+  },
+  "産学連携": {
+    "reading": "さんがくれんけい",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "产学合作、产业界与高校的合作"
+  },
+  "明らか": {
+    "reading": "あきらか",
+    "level": "kuromoji",
+    "pos": "形容动词",
+    "meaning": "清楚、明确"
+  },
+  "企業": {
+    "reading": "きぎょう",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "企业"
+  },
+  "大学": {
+    "reading": "だいがく",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "大学"
+  },
+  "共同出願": {
+    "reading": "きょうどうしゅつがん",
+    "level": "kuromoji",
+    "pos": "名词・动词",
+    "meaning": "共同申请（专利）"
+  },
+  "出願": {
+    "reading": "しゅつがん",
+    "level": "kuromoji",
+    "pos": "名词・动词",
+    "meaning": "提交申请；申请专利"
+  },
+  "特許": {
+    "reading": "とっきょ",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "专利"
+  },
+  "国際競争力": {
+    "reading": "こくさいきょうそうりょく",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "国际竞争力"
+  },
+  "分析": {
+    "reading": "ぶんせき",
+    "level": "kuromoji",
+    "pos": "名词・动词",
+    "meaning": "分析"
+  },
+  "主要": {
+    "reading": "しゅよう",
+    "level": "kuromoji",
+    "pos": "形容动词",
+    "meaning": "主要、重要"
+  },
+  "最低": {
+    "reading": "さいてい",
+    "level": "kuromoji",
+    "pos": "名词・形容动词",
+    "meaning": "最低"
+  },
+  "政権": {
+    "reading": "せいけん",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "政权、执政政府"
+  },
+  "戦略技術": {
+    "reading": "せんりゃくぎじゅつ",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "战略技术"
+  },
+  "人工知能": {
+    "reading": "じんこうちのう",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "人工智能"
+  },
+  "分野": {
+    "reading": "ぶんや",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "领域"
+  },
+  "欧米": {
+    "reading": "おうべい",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "欧美"
+  },
+  "下回る": {
+    "reading": "したまわる",
+    "level": "kuromoji",
+    "pos": "动词",
+    "meaning": "低于、少于"
+  },
+  "実用": {
+    "reading": "じつよう",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "实际应用"
+  },
+  "生かす": {
+    "reading": "いかす",
+    "level": "kuromoji",
+    "pos": "动词",
+    "meaning": "发挥作用、有效利用"
+  },
+  "知財戦略": {
+    "reading": "ちざいせんりゃく",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "知识产权战略"
+  },
+  "見直す": {
+    "reading": "みなおす",
+    "level": "kuromoji",
+    "pos": "动词",
+    "meaning": "重新审视、修订"
+  },
+  "必要": {
+    "reading": "ひつよう",
+    "level": "kuromoji",
+    "pos": "名词・形容动词",
+    "meaning": "必要、需要"
+  },
+  "知財": {
+    "reading": "ちざい",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "知识产权（知识财产）"
+  },
+  "情報会社": {
+    "reading": "じょうほうがいしゃ",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "信息服务公司"
+  },
+  "協力": {
+    "reading": "きょうりょく",
+    "level": "kuromoji",
+    "pos": "名词・动词",
+    "meaning": "合作、协助"
+  },
+  "公開": {
+    "reading": "こうかい",
+    "level": "kuromoji",
+    "pos": "名词・动词",
+    "meaning": "公开、发布"
+  },
+  "世界": {
+    "reading": "せかい",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "世界"
   }
 }
