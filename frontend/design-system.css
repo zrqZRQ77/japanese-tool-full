@@ -13408,6 +13408,24 @@ body.first-visit .hero-flow .hero-flow-item .hero-flashcard-actions span {
   box-shadow: none !important;
 }
 
+.dictionary-source-note {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: var(--type-size-caption);
+  line-height: 1.45;
+}
+
+.dictionary-source-note a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.dictionary-source-note a:hover {
+  color: var(--polish-primary);
+}
+
 .next-step-bar {
   display: flex;
   align-items: center;

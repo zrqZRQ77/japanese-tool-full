@@ -1,0 +1,348 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "20260713",
+  "generatedAt": "2026-07-15T05:55:03.312Z",
+  "sourceProject": "scriptin/jmdict-simplified",
+  "sourceRelease": "https://github.com/scriptin/jmdict-simplified/releases/tag/3.6.2+20260713141310",
+  "sourceVersion": "3.6.2",
+  "dictionaryDate": "2026-07-13",
+  "dictionaryRevisions": [
+    "1.09",
+    "1.08",
+    "1.07",
+    "1.06",
+    "1.05",
+    "1.04"
+  ],
+  "languages": [
+    "eng"
+  ],
+  "commonOnly": true,
+  "sourceEntryCount": 22617,
+  "indexedEntryCount": 22617,
+  "formCount": 50580,
+  "shardCount": 64,
+  "totalBytes": 7785763,
+  "shards": [
+    {
+      "file": "shard-00.json",
+      "keys": 827,
+      "bytes": 128456
+    },
+    {
+      "file": "shard-01.json",
+      "keys": 758,
+      "bytes": 116796
+    },
+    {
+      "file": "shard-02.json",
+      "keys": 817,
+      "bytes": 124517
+    },
+    {
+      "file": "shard-03.json",
+      "keys": 766,
+      "bytes": 115940
+    },
+    {
+      "file": "shard-04.json",
+      "keys": 831,
+      "bytes": 127273
+    },
+    {
+      "file": "shard-05.json",
+      "keys": 787,
+      "bytes": 123026
+    },
+    {
+      "file": "shard-06.json",
+      "keys": 760,
+      "bytes": 118405
+    },
+    {
+      "file": "shard-07.json",
+      "keys": 815,
+      "bytes": 123361
+    },
+    {
+      "file": "shard-08.json",
+      "keys": 768,
+      "bytes": 116844
+    },
+    {
+      "file": "shard-09.json",
+      "keys": 769,
+      "bytes": 124626
+    },
+    {
+      "file": "shard-10.json",
+      "keys": 809,
+      "bytes": 127315
+    },
+    {
+      "file": "shard-11.json",
+      "keys": 769,
+      "bytes": 116903
+    },
+    {
+      "file": "shard-12.json",
+      "keys": 811,
+      "bytes": 124311
+    },
+    {
+      "file": "shard-13.json",
+      "keys": 797,
+      "bytes": 125165
+    },
+    {
+      "file": "shard-14.json",
+      "keys": 844,
+      "bytes": 130823
+    },
+    {
+      "file": "shard-15.json",
+      "keys": 797,
+      "bytes": 124910
+    },
+    {
+      "file": "shard-16.json",
+      "keys": 754,
+      "bytes": 112437
+    },
+    {
+      "file": "shard-17.json",
+      "keys": 841,
+      "bytes": 130126
+    },
+    {
+      "file": "shard-18.json",
+      "keys": 782,
+      "bytes": 120196
+    },
+    {
+      "file": "shard-19.json",
+      "keys": 740,
+      "bytes": 113926
+    },
+    {
+      "file": "shard-20.json",
+      "keys": 791,
+      "bytes": 120499
+    },
+    {
+      "file": "shard-21.json",
+      "keys": 830,
+      "bytes": 128912
+    },
+    {
+      "file": "shard-22.json",
+      "keys": 793,
+      "bytes": 120762
+    },
+    {
+      "file": "shard-23.json",
+      "keys": 758,
+      "bytes": 118016
+    },
+    {
+      "file": "shard-24.json",
+      "keys": 734,
+      "bytes": 114875
+    },
+    {
+      "file": "shard-25.json",
+      "keys": 827,
+      "bytes": 126489
+    },
+    {
+      "file": "shard-26.json",
+      "keys": 851,
+      "bytes": 129721
+    },
+    {
+      "file": "shard-27.json",
+      "keys": 746,
+      "bytes": 112715
+    },
+    {
+      "file": "shard-28.json",
+      "keys": 786,
+      "bytes": 120841
+    },
+    {
+      "file": "shard-29.json",
+      "keys": 766,
+      "bytes": 116026
+    },
+    {
+      "file": "shard-30.json",
+      "keys": 791,
+      "bytes": 123541
+    },
+    {
+      "file": "shard-31.json",
+      "keys": 815,
+      "bytes": 126237
+    },
+    {
+      "file": "shard-32.json",
+      "keys": 779,
+      "bytes": 121939
+    },
+    {
+      "file": "shard-33.json",
+      "keys": 822,
+      "bytes": 125956
+    },
+    {
+      "file": "shard-34.json",
+      "keys": 785,
+      "bytes": 121619
+    },
+    {
+      "file": "shard-35.json",
+      "keys": 858,
+      "bytes": 132007
+    },
+    {
+      "file": "shard-36.json",
+      "keys": 754,
+      "bytes": 114097
+    },
+    {
+      "file": "shard-37.json",
+      "keys": 785,
+      "bytes": 122649
+    },
+    {
+      "file": "shard-38.json",
+      "keys": 814,
+      "bytes": 123181
+    },
+    {
+      "file": "shard-39.json",
+      "keys": 778,
+      "bytes": 120248
+    },
+    {
+      "file": "shard-40.json",
+      "keys": 806,
+      "bytes": 124376
+    },
+    {
+      "file": "shard-41.json",
+      "keys": 790,
+      "bytes": 120642
+    },
+    {
+      "file": "shard-42.json",
+      "keys": 740,
+      "bytes": 112998
+    },
+    {
+      "file": "shard-43.json",
+      "keys": 776,
+      "bytes": 119220
+    },
+    {
+      "file": "shard-44.json",
+      "keys": 791,
+      "bytes": 120531
+    },
+    {
+      "file": "shard-45.json",
+      "keys": 833,
+      "bytes": 129247
+    },
+    {
+      "file": "shard-46.json",
+      "keys": 762,
+      "bytes": 118274
+    },
+    {
+      "file": "shard-47.json",
+      "keys": 769,
+      "bytes": 117585
+    },
+    {
+      "file": "shard-48.json",
+      "keys": 803,
+      "bytes": 122927
+    },
+    {
+      "file": "shard-49.json",
+      "keys": 830,
+      "bytes": 127212
+    },
+    {
+      "file": "shard-50.json",
+      "keys": 775,
+      "bytes": 117575
+    },
+    {
+      "file": "shard-51.json",
+      "keys": 798,
+      "bytes": 122766
+    },
+    {
+      "file": "shard-52.json",
+      "keys": 730,
+      "bytes": 110490
+    },
+    {
+      "file": "shard-53.json",
+      "keys": 850,
+      "bytes": 131047
+    },
+    {
+      "file": "shard-54.json",
+      "keys": 785,
+      "bytes": 120508
+    },
+    {
+      "file": "shard-55.json",
+      "keys": 797,
+      "bytes": 123004
+    },
+    {
+      "file": "shard-56.json",
+      "keys": 794,
+      "bytes": 122376
+    },
+    {
+      "file": "shard-57.json",
+      "keys": 788,
+      "bytes": 124733
+    },
+    {
+      "file": "shard-58.json",
+      "keys": 773,
+      "bytes": 116651
+    },
+    {
+      "file": "shard-59.json",
+      "keys": 755,
+      "bytes": 113076
+    },
+    {
+      "file": "shard-60.json",
+      "keys": 815,
+      "bytes": 124666
+    },
+    {
+      "file": "shard-61.json",
+      "keys": 823,
+      "bytes": 129045
+    },
+    {
+      "file": "shard-62.json",
+      "keys": 702,
+      "bytes": 109689
+    },
+    {
+      "file": "shard-63.json",
+      "keys": 790,
+      "bytes": 121439
+    }
+  ]
+}

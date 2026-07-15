@@ -388,6 +388,15 @@ async function runAudit() {
     if(workerState.paragraphs !== 3 || workerState.selected.filter(item => item.reading).length < 2 || workerState.readingCount < 20 || workerState.fallback){
       throw new Error(`Local Worker integration did not meet the reading baseline: ${JSON.stringify(workerState)}.`);
     }
+    const jmdictToken = page.locator('#output ruby.w-kuromoji').filter({hasText:'グループ'}).first();
+    await jmdictToken.waitFor({state:'visible', timeout:3000});
+    await jmdictToken.click();
+    const jmdictMeaning = page.locator('#detailArea .detail-meaning');
+    await jmdictMeaning.getByText(/英文释义/).waitFor({state:'visible', timeout:5000});
+    const jmdictDetail = await page.locator('#detailArea').textContent();
+    if(!/JMdict \/ EDRDG/.test(jmdictDetail || '')){
+      throw new Error(`Offline dictionary attribution is missing: ${JSON.stringify(jmdictDetail)}.`);
+    }
     if(workerState.exportBreaks !== 2 || workerState.exportRows.length > 4 || workerState.exportRows.some(length => length === 0)){
       throw new Error(`PPT export introduced layout whitespace or unnecessary pages: ${JSON.stringify(workerState)}.`);
     }

@@ -754,5 +754,71 @@
     "level": "kuromoji",
     "pos": "名词",
     "meaning": "世界"
+  },
+  "時価": {
+    "reading": "じか",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "市场价格、当前市值"
+  },
+  "時価総額": {
+    "reading": "じかそうがく",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "市值、市场总价值"
+  },
+  "総額": {
+    "reading": "そうがく",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "总额、合计金额"
+  },
+  "金融機関": {
+    "reading": "きんゆうきかん",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "金融机构"
+  },
+  "半導体": {
+    "reading": "はんどうたい",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "半导体"
+  },
+  "メモリー": {
+    "reading": "めもりー",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "存储器、内存；记忆"
+  },
+  "上昇": {
+    "reading": "じょうしょう",
+    "level": "kuromoji",
+    "pos": "名词・动词",
+    "meaning": "上升、上涨"
+  },
+  "首位": {
+    "reading": "しゅい",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "首位、第一名"
+  },
+  "浮上": {
+    "reading": "ふじょう",
+    "level": "kuromoji",
+    "pos": "名词・动词",
+    "meaning": "浮现、上升；进入领先位置"
+  },
+  "大手": {
+    "reading": "おおて",
+    "level": "kuromoji",
+    "pos": "名词",
+    "meaning": "大型企业、行业龙头"
+  },
+  "上回る": {
+    "reading": "うわまわる",
+    "level": "kuromoji",
+    "pos": "动词",
+    "meaning": "超过、高于"
   }
 }

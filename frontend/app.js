@@ -866,6 +866,11 @@ let SAMPLE_FLOW_VISITED_VOCAB = false;
 let SAMPLE_FLOW_VISITED_PRACTICE = false;
 let SAMPLE_FLOW_INITIAL_VOCAB_COUNT = 0;
 let DATA_READY = null;
+const JMDICT_COMMON_DATA_VERSION = '20260713';
+const JMDICT_COMMON_BASE_URL = `data/jmdict-common/${JMDICT_COMMON_DATA_VERSION}`;
+const JMDICT_COMMON_SHARD_COUNT = 64;
+const JMDICT_COMMON_SHARD_CACHE = new Map();
+const JMDICT_COMMON_SOURCE_URL = 'https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project';
 
 const FALLBACK_SAMPLE_ARTICLES = [
   {
@@ -3689,6 +3694,91 @@ function katakanaToHiragana(str){
   return (str || '').replace(/[\u30a1-\u30f6]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0x60));
 }
 
+function jmdictCommonShardFor(value){
+  let hash = 2166136261;
+  const text = String(value || '');
+  for(let index = 0; index < text.length; index += 1){
+    hash ^= text.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0) % JMDICT_COMMON_SHARD_COUNT;
+}
+
+async function loadJmdictCommonShard(index){
+  const normalizedIndex = Number(index);
+  if(JMDICT_COMMON_SHARD_CACHE.has(normalizedIndex)) return JMDICT_COMMON_SHARD_CACHE.get(normalizedIndex);
+  const fileName = `shard-${String(normalizedIndex).padStart(2, '0')}.json`;
+  const request = fetch(`${JMDICT_COMMON_BASE_URL}/${fileName}`)
+    .then(response=>{
+      if(!response.ok) throw new Error(`Dictionary shard returned ${response.status}.`);
+      return response.json();
+    })
+    .catch(error=>{
+      JMDICT_COMMON_SHARD_CACHE.delete(normalizedIndex);
+      throw error;
+    });
+  JMDICT_COMMON_SHARD_CACHE.set(normalizedIndex, request);
+  return request;
+}
+
+async function lookupJmdictCommon(candidates){
+  const terms = [...new Set((Array.isArray(candidates) ? candidates : [candidates])
+    .map(value=>String(value || '').trim())
+    .filter(Boolean))];
+  for(const term of terms){
+    try{
+      const shard = await loadJmdictCommonShard(jmdictCommonShardFor(term));
+      const entries = Array.isArray(shard?.[term]) ? shard[term] : [];
+      if(entries.length) return {term, entry:entries[0]};
+    }catch(error){
+      console.warn('离线词典分片加载失败', error);
+      return null;
+    }
+  }
+  return null;
+}
+
+function jmdictEnglishMeaning(entry){
+  const glosses = [...new Set((entry?.g || []).map(value=>String(value || '').trim()).filter(Boolean))].slice(0, 5);
+  return glosses.length ? `英文释义：${glosses.join('；')}` : '';
+}
+
+function dictionarySourceNoteHtml(){
+  return `<small class="dictionary-source-note">来源：<a href="${JMDICT_COMMON_SOURCE_URL}" target="_blank" rel="noopener noreferrer">JMdict / EDRDG</a></small>`;
+}
+
+function jmdictMeaningHtml(entry){
+  const meaning = jmdictEnglishMeaning(entry);
+  if(!meaning) return '';
+  return `<span>${escapeHtml(meaning)}</span>${dictionarySourceNoteHtml()}`;
+}
+
+function storedJmdictMeaningHtml(info){
+  const meaning = String(info?.meaning || '').trim();
+  return meaning ? `<span>${escapeHtml(meaning)}</span>${dictionarySourceNoteHtml()}` : '';
+}
+
+function tokenSnapshotValue(surface, info){
+  return encodeURIComponent(JSON.stringify({
+    surface,
+    reading:info?.reading || '',
+    meaning:info?.meaning || '',
+    level:info?.level || 'kuromoji',
+    pos:info?.pos || '未收录词'
+  })).replace(/'/g, '%27');
+}
+
+function refreshVisibleTokenDetail(target, surface, info){
+  if(!target?.isConnected) return;
+  const detailBox = target.closest('.detail-box');
+  const readingNode = detailBox?.querySelector('.detail-reading-text');
+  if(readingNode && info.reading && readingNode.textContent.trim() === '暂无读音') readingNode.textContent = info.reading;
+  const saveButton = detailBox?.querySelector('.add-vocab-tool');
+  if(saveButton){
+    saveButton.setAttribute('onclick', `addTokenSnapshotToVocab('${tokenSnapshotValue(surface, info)}')`);
+  }
+}
+
 function dictionaryEntryFor(word){
   return DICT[word] || FALLBACK_DICTIONARY[word] || null;
 }
@@ -4962,13 +5052,7 @@ function showTokenDetail(tokenId, el){
   if(!token) return;
   const { surface, info } = token;
   const detailAction = readingDetailAction(surface, info);
-  const tokenSnapshot = encodeURIComponent(JSON.stringify({
-    surface,
-    reading:info.reading || '',
-    meaning:info.meaning || '',
-    level:info.level || 'kuromoji',
-    pos:info.pos || '未收录词'
-  }));
+  const tokenSnapshot = tokenSnapshotValue(surface, info);
   const addAction = detailAction.action || (detailAction.type === 'vocab' ? `addTokenSnapshotToVocab('${tokenSnapshot}')` : '');
   const needsLookup = info.source === 'kuromoji' || info.source === 'fallback';
   const area = document.getElementById('detailArea');
@@ -4982,13 +5066,31 @@ function showTokenDetail(tokenId, el){
     </div>
   `;
   renderSampleFlow();
-  if(needsLookup && !detailAction.point) autoLookupTokenMeaning(surface, tokenId);
+  if(needsLookup && !detailAction.point) autoLookupTokenMeaning(surface, tokenId, token);
 }
 
-async function autoLookupTokenMeaning(word, tokenId){
+async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
   const target = document.getElementById(`tokenMeaning-${tokenId}`);
-  if(!target) return;
-  target.innerHTML = '<span style="color:var(--ink-soft);">本地词库暂未收录这个词，可以先收藏后补充释义。</span>';
+  if(!target || !tokenRecord) return;
+  const { surface, info } = tokenRecord;
+  const candidates = [word, info.lookupWord, info.baseForm, tokenRecord.token?.basic_form];
+  const result = await lookupJmdictCommon(candidates);
+  if(!target.isConnected) return;
+  if(!result?.entry){
+    target.innerHTML = '<span style="color:var(--ink-soft);">本地中文词库和离线常用词典都暂未收录这个词，可以先收藏后补充释义。</span>';
+    return;
+  }
+  const meaning = jmdictEnglishMeaning(result.entry);
+  if(!meaning){
+    target.innerHTML = '<span style="color:var(--ink-soft);">已找到词条，但当前版本没有可显示的释义。</span>';
+    return;
+  }
+  info.reading = info.reading || katakanaToHiragana(result.entry.r || '');
+  info.meaning = meaning;
+  info.lookupWord = result.term || info.lookupWord || surface;
+  info.source = 'jmdict';
+  target.innerHTML = jmdictMeaningHtml(result.entry);
+  refreshVisibleTokenDetail(target, surface, info);
 }
 
 function showFootnoteDetail(id){

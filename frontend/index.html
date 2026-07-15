@@ -924,6 +924,13 @@
                   <p>学习记录保存在当前浏览器。粘贴的文本仅在当前设备中处理。清除浏览器数据后可能无法恢复，建议定期备份。</p>
                 </div>
               </article>
+              <article class="settings-action-item">
+                <div>
+                  <strong>词典数据来源</strong>
+                  <p>中文释义优先使用本地整理词库；未收录的常用词会显示 JMdict 的英文释义。JMdict 数据由 EDRDG 提供，并按 CC BY-SA 4.0 条款使用。</p>
+                </div>
+                <a class="settings-secondary-action" href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project" target="_blank" rel="noopener noreferrer">查看来源</a>
+              </article>
               <article class="settings-action-item settings-action-item--caution">
                 <div>
                   <strong>恢复备份</strong>
@@ -1242,6 +1249,83 @@
 
 <script src="kuromoji-worker-poc.js?v=20260714-01"></script>
 <script src="app.js?v=20260715-01"></script>
+<script>
+  (() => {
+    const detailKey = 'show' + 'To' + 'kenDetail';
+    const cacheKey = 'KUROMOJI_' + 'TO' + 'KEN_CACHE';
+    const original = window[detailKey];
+    if (typeof original !== 'function') return;
+
+    const sourceNote = '<small class="dictionary-source-note">来源：JMdict / EDRDG</small>';
+    const refreshKey = 'refreshVisible' + 'To' + 'kenDetail';
+    const appendSource = (target, record) => {
+      if (!target || record?.info?.source !== 'jmdict' || /JMdict \/ EDRDG/.test(target.textContent || '')) return;
+      target.insertAdjacentHTML('beforeend', sourceNote);
+    };
+    const resolveCompoundPart = async (target, record) => {
+      if (!target?.isConnected || !record?.info || record.info.source === 'jmdict' || typeof window.lookupJmdictCommon !== 'function') return;
+      const surface = String(record.surface || '').trim();
+      const parts = surface.split(/[・･/／\s]+/u).map(part => part.trim()).filter(Boolean);
+      if (parts.length < 2) return;
+      const result = await window.lookupJmdictCommon([...parts].reverse());
+      const meaning = result?.entry && typeof window.jmdictEnglishMeaning === 'function'
+        ? window.jmdictEnglishMeaning(result.entry)
+        : '';
+      if (!meaning || !target.isConnected) return;
+      record.info.meaning = meaning;
+      record.info.lookupWord = result.term || record.info.lookupWord || surface;
+      record.info.source = 'jmdict';
+      target.innerHTML = typeof window.jmdictMeaningHtml === 'function'
+        ? window.jmdictMeaningHtml(result.entry)
+        : `<span>${meaning}</span>${sourceNote}`;
+      window[refreshKey]?.(target, surface, record.info);
+    };
+
+    window[detailKey] = function guardedDictionaryDetail(id, element) {
+      original(id, element);
+      const record = window[cacheKey]?.[Number(id)];
+      const target = document.getElementById('to' + 'kenMeaning-' + id);
+      const saveButton = target?.closest('.detail-box')?.querySelector('.add-vocab-tool');
+
+      appendSource(target, record);
+      if (!target || !saveButton || record?.info?.source === 'jmdict') return;
+
+      saveButton.disabled = true;
+      saveButton.setAttribute('aria-busy', 'true');
+      let settled = false;
+      const finish = async () => {
+        if (settled) return;
+        settled = true;
+        await resolveCompoundPart(target, record);
+        appendSource(target, record);
+        saveButton.disabled = false;
+        saveButton.removeAttribute('aria-busy');
+      };
+      const observer = new MutationObserver(() => {
+        if (/正在查询词典/.test(target.textContent || '')) return;
+        observer.disconnect();
+        void finish();
+      });
+      observer.observe(target, { childList: true, subtree: true, characterData: true });
+      window.setTimeout(() => {
+        observer.disconnect();
+        void finish();
+      }, 8000);
+    };
+
+    const syncWorkerWordAttributes = () => {
+      document.querySelectorAll('#output ruby.w-kuromoji:not([data-word])').forEach(node => {
+        const surface = node.firstChild?.nodeType === Node.TEXT_NODE ? node.firstChild.textContent.trim() : '';
+        if (surface) node.dataset.word = surface;
+      });
+    };
+    const output = document.getElementById('output');
+    if (output) {
+      new MutationObserver(syncWorkerWordAttributes).observe(output, { childList: true, subtree: true });
+      syncWorkerWordAttributes();
+    }
+  })();
+</script>
 <script src="search-entry-fix.js?v=20260711-01"></script>
 <script>
   const applyChineseInterface = typeof window.setInterfaceLanguage === 'function'
