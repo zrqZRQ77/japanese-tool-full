@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "sourceName": "Yomeru 离线中文词库（人工整理）",
+  "generatedMethod": "由项目现有人工词库与第二轮人工校订补充词条合并，离线构建；不是 JMdict 原始中文释义，也不使用浏览器运行时翻译 API。",
+  "license": "Project-maintained content",
+  "entries": {
+    "読書": {
+      "reading": "どくしょ",
+      "pos": "名词・动词",
+      "meaning": "读书、阅读"
+    },
+    "来月": {
+      "reading": "らいげつ",
+      "pos": "名词",
+      "meaning": "下个月"
+    },
+    "新聞": {
+      "reading": "しんぶん",
+      "pos": "名词",
+      "meaning": "报纸；新闻报道"
+    },
+    "利用時間": {
+      "reading": "りようじかん",
+      "pos": "名词",
+      "meaning": "可使用时间、开放使用时段"
+    },
+    "開きます": {
+      "reading": "ひらきます",
+      "pos": "动词",
+      "meaning": "开设、开放；打开（「開く」的礼貌形）",
+      "aliases": ["ひらきます"]
+    },
+    "読書室": {
+      "reading": "どくしょしつ",
+      "pos": "名词",
+      "meaning": "阅览室、读书室"
+    },
+    "午前": {
+      "reading": "ごぜん",
+      "pos": "名词",
+      "meaning": "上午、午前"
+    },
+    "午後": {
+      "reading": "ごご",
+      "pos": "名词",
+      "meaning": "下午、午后"
+    },
+    "市": {
+      "reading": "し",
+      "pos": "名词",
+      "meaning": "市、城市（行政区划）"
+    },
+    "利用": {
+      "reading": "りよう",
+      "pos": "名词・动词",
+      "meaning": "利用、使用"
+    },
+    "市場": {
+      "reading": "しじょう",
+      "pos": "名词",
+      "meaning": "市场"
+    },
+    "価値": {
+      "reading": "かち",
+      "pos": "名词",
+      "meaning": "价值"
+    },
+    "機関": {
+      "reading": "きかん",
+      "pos": "名词",
+      "meaning": "机构、机关"
+    },
+    "導体": {
+      "reading": "どうたい",
+      "pos": "名词",
+      "meaning": "导体"
+    },
+    "記憶": {
+      "reading": "きおく",
+      "pos": "名词・动词",
+      "meaning": "记忆"
+    },
+    "増加": {
+      "reading": "ぞうか",
+      "pos": "名词・动词",
+      "meaning": "增加、增长"
+    },
+    "順位": {
+      "reading": "じゅんい",
+      "pos": "名词",
+      "meaning": "名次、排名"
+    },
+    "企業": {
+      "reading": "きぎょう",
+      "pos": "名词",
+      "meaning": "企业、公司"
+    },
+    "大企業": {
+      "reading": "だいきぎょう",
+      "pos": "名词",
+      "meaning": "大型企业"
+    },
+    "合計": {
+      "reading": "ごうけい",
+      "pos": "名词・动词",
+      "meaning": "合计、总计"
+    }
+  }
+}

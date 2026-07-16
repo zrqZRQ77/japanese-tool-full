@@ -3,6 +3,7 @@
   "scripts": {
     "build": "node scripts/build-frontend.mjs",
     "dictionary:build": "node scripts/build-jmdict-common.mjs",
+    "learning-data:build": "node scripts/build-learning-indexes.mjs",
     "test": "npm run build"
   }
 }
