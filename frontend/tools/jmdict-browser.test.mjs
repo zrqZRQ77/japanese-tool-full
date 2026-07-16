@@ -65,6 +65,10 @@ try {
     await new Promise(resolveDelay => setTimeout(resolveDelay, 300));
     await route.continue();
   });
+  await page.route('**/data/chinese-definitions/**/shard-*.json', async route => {
+    await new Promise(resolveDelay => setTimeout(resolveDelay, 300));
+    await route.continue();
+  });
 
   await page.goto(baseUrl, { waitUntil: 'networkidle' });
   await page.evaluate(async () => {
@@ -72,7 +76,7 @@ try {
     enterReadingFromHero();
     await loadSample('life');
     await toggleReaderSmartSegmentation();
-    document.getElementById('inputText').value = '三菱UFJフィナンシャル・グループの時価総額が上昇した。\n金融機関が首位に浮上した。\n半導体メモリー大手を上回った。';
+    document.getElementById('inputText').value = '三菱UFJフィナンシャル・グループの時価総額が上昇した。\n金融機関が首位に浮上した。\n半導体メモリー大手を上回った。\n図書館で読書をする。';
     await renderText();
   });
 
@@ -142,15 +146,43 @@ try {
     return items.find(item => item.word === word) || null;
   }, selectedWord);
   assert.ok(saved?.reading, 'Saved dictionary word must keep its reading.');
-  assert.match(saved?.meaning || '', /英文释义/);
+  assert.ok(saved?.meaning, 'Saved dictionary word must keep its final meaning.');
+  assert.equal(saved?.meaningLanguage, 'en');
+  assert.equal(saved?.meaningSource, 'jmdict');
 
   await wordNode.click();
   const secondDetail = (await detail.textContent()) || '';
   assert.match(secondDetail, /英文释义/);
   assert.match(secondDetail, /词典来源：JMdict/);
 
+  const chineseWordNode = page.locator('#output ruby.w-kuromoji').filter({ hasText: '読書' }).first();
+  await chineseWordNode.waitFor({ state: 'visible', timeout: 15000 });
+  await chineseWordNode.click();
+  const chineseSaveButton = page.locator('#detailArea .add-vocab-tool');
+  await chineseSaveButton.click();
+  await detail.getByText(/中文释义：读书、阅读/).waitFor({ state: 'visible', timeout: 10000 });
+  assert.match((await detail.textContent()) || '', /释义来源：Yomeru 离线中文词库/);
+  assert.match((await detail.textContent()) || '', /JLPT 参考等级：N3/);
+  await page.waitForFunction(() => {
+    const items = JSON.parse(localStorage.getItem('reading_vocab_list') || '[]');
+    return items.some(item => item.word === '読書' && item.meaningSource === 'offline-chinese');
+  }, null, {timeout:5000});
+  const savedChinese = await page.evaluate(() => {
+    const items = JSON.parse(localStorage.getItem('reading_vocab_list') || '[]');
+    return items.find(item => item.word === '読書') || null;
+  });
+  assert.equal(savedChinese?.meaning, '读书、阅读');
+  assert.equal(savedChinese?.meaningLanguage, 'zh');
+  assert.equal(savedChinese?.meaningSource, 'offline-chinese');
+  assert.equal(savedChinese?.level, 'N3');
+  assert.equal(savedChinese?.levelSource, 'jlpt-reference');
+
+  await chineseWordNode.click();
+  assert.match((await detail.textContent()) || '', /中文释义：读书、阅读/);
+  assert.match((await detail.textContent()) || '', /释义来源：Yomeru 离线中文词库/);
+
   assert.equal(requests.some(url => /jisho\.org|api\/v1\/search\/words/i.test(url)), false, 'Online dictionary API request detected.');
-  process.stdout.write('JMdict browser flow passed: Worker lookup, saved reading/meaning, cached attribution, no online API.\n');
+  process.stdout.write('Offline dictionary browser flow passed: Chinese priority, JMdict fallback, queued saves, reference levels, stable attribution, no online API.\n');
 } finally {
   await browser?.close();
   await new Promise(resolveClose => server.close(resolveClose));

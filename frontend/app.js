@@ -871,6 +871,12 @@ const JMDICT_COMMON_BASE_URL = `data/jmdict-common/${JMDICT_COMMON_DATA_VERSION}
 const JMDICT_COMMON_SHARD_COUNT = 64;
 const JMDICT_COMMON_SHARD_CACHE = new Map();
 const JMDICT_COMMON_SOURCE_URL = 'https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project';
+const LEARNING_DATA_VERSION = '20260716';
+const CHINESE_DEFINITIONS_BASE_URL = `data/chinese-definitions/${LEARNING_DATA_VERSION}`;
+const CHINESE_DEFINITIONS_SHARD_COUNT = 16;
+const CHINESE_DEFINITIONS_SHARD_CACHE = new Map();
+const JLPT_REFERENCE_URL = `data/jlpt-reference/${LEARNING_DATA_VERSION}/index.json`;
+let JLPT_REFERENCE_READY = null;
 
 const FALLBACK_SAMPLE_ARTICLES = [
   {
@@ -987,7 +993,7 @@ async function fetchJson(path){
 
 async function loadLearningData(){
   if(location.protocol === 'file:'){
-    DICT = {...FALLBACK_DICTIONARY};
+    DICT = prepareCuratedDictionary(FALLBACK_DICTIONARY);
     SAMPLE_ARTICLES = [...FALLBACK_SAMPLE_ARTICLES];
     SAMPLE_TEXT = FALLBACK_SAMPLE_TEXT;
     TYPING_PROMPTS = [...FALLBACK_TYPING_PROMPTS];
@@ -1001,9 +1007,10 @@ async function loadLearningData(){
     fetchJson(DATA_FILES.typingPrompts),
     fetchJson(DATA_FILES.grammarPoints)
   ]);
-  DICT = dictionaryResult.status === 'fulfilled' && dictionaryResult.value
+  DICT = prepareCuratedDictionary(dictionaryResult.status === 'fulfilled' && dictionaryResult.value
     ? dictionaryResult.value
-    : {...FALLBACK_DICTIONARY};
+    : FALLBACK_DICTIONARY);
+  await applyJlptReferenceToDictionary(DICT);
   SAMPLE_ARTICLES = sampleResult.status === 'fulfilled' && Array.isArray(sampleResult.value?.samples) && sampleResult.value.samples.length
     ? sampleResult.value.samples.slice(0, 3)
     : [...FALLBACK_SAMPLE_ARTICLES];
@@ -1017,6 +1024,25 @@ async function loadLearningData(){
   const failed = [dictionaryResult, sampleResult, typingResult, grammarResult].filter(result => result.status === 'rejected');
   if(failed.length){
     console.warn('部分学习数据加载失败,已使用本地兜底数据', failed.map(result => result.reason));
+  }
+}
+
+function prepareCuratedDictionary(dictionary){
+  return Object.fromEntries(Object.entries(dictionary || {}).map(([word, item])=>[word, {
+    ...item,
+    meaning:cleanStoredMeaning(item?.meaning),
+    meaningLanguage:'zh',
+    meaningSource:'offline-chinese'
+  }]));
+}
+
+async function applyJlptReferenceToDictionary(dictionary){
+  const index = await loadJlptReferenceIndex();
+  if(!index) return;
+  for(const [word, info] of Object.entries(dictionary || {})){
+    const level = dictionaryLookupForms([word, info.reading]).map(form=>index[form]).find(normalizeVisibleVocabLevel) || '';
+    info.level = normalizeVisibleVocabLevel(level);
+    info.levelSource = 'jlpt-reference';
   }
 }
 
@@ -3694,14 +3720,91 @@ function katakanaToHiragana(str){
   return (str || '').replace(/[\u30a1-\u30f6]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0x60));
 }
 
-function jmdictCommonShardFor(value){
+function offlineShardFor(value, count){
   let hash = 2166136261;
   const text = String(value || '');
   for(let index = 0; index < text.length; index += 1){
     hash ^= text.charCodeAt(index);
     hash = Math.imul(hash, 16777619);
   }
-  return (hash >>> 0) % JMDICT_COMMON_SHARD_COUNT;
+  return (hash >>> 0) % count;
+}
+
+function dictionaryLookupForms(candidates){
+  const values = (Array.isArray(candidates) ? candidates : [candidates])
+    .map(value=>String(value || '').trim())
+    .filter(Boolean);
+  return [...new Set(values.flatMap(value=>[value, katakanaToHiragana(value)]).filter(Boolean))];
+}
+
+async function loadChineseDefinitionShard(index){
+  const normalizedIndex = Number(index);
+  if(CHINESE_DEFINITIONS_SHARD_CACHE.has(normalizedIndex)) return CHINESE_DEFINITIONS_SHARD_CACHE.get(normalizedIndex);
+  const fileName = `shard-${String(normalizedIndex).padStart(2, '0')}.json`;
+  const request = fetch(`${CHINESE_DEFINITIONS_BASE_URL}/${fileName}`)
+    .then(response=>{
+      if(!response.ok) throw new Error(`Chinese definition shard returned ${response.status}.`);
+      return response.json();
+    })
+    .catch(error=>{
+      CHINESE_DEFINITIONS_SHARD_CACHE.delete(normalizedIndex);
+      throw error;
+    });
+  CHINESE_DEFINITIONS_SHARD_CACHE.set(normalizedIndex, request);
+  return request;
+}
+
+async function lookupOfflineChinese(candidates, surface = ''){
+  const terms = dictionaryLookupForms(candidates);
+  for(const term of terms){
+    try{
+      const shard = await loadChineseDefinitionShard(offlineShardFor(term, CHINESE_DEFINITIONS_SHARD_COUNT));
+      const entries = Array.isArray(shard?.[term]) ? shard[term] : [];
+      if(entries.length) return {term, entry:entries[0]};
+    }catch(error){
+      console.warn('离线中文词库分片加载失败', error);
+      return null;
+    }
+  }
+  const parts = String(surface || '').split(/[・･/／\s]+/u).map(part=>part.trim()).filter(Boolean);
+  return parts.length > 1 ? lookupOfflineChinese([...parts].reverse()) : null;
+}
+
+function loadJlptReferenceIndex(){
+  if(!JLPT_REFERENCE_READY){
+    JLPT_REFERENCE_READY = fetch(JLPT_REFERENCE_URL)
+      .then(response=>{
+        if(!response.ok) throw new Error(`JLPT reference returned ${response.status}.`);
+        return response.json();
+      })
+      .catch(error=>{
+        JLPT_REFERENCE_READY = null;
+        console.warn('JLPT 参考等级加载失败', error);
+        return null;
+      });
+  }
+  return JLPT_REFERENCE_READY;
+}
+
+async function lookupJlptReference(candidates){
+  const index = await loadJlptReferenceIndex();
+  if(!index) return '';
+  for(const term of dictionaryLookupForms(candidates)){
+    const level = normalizeVisibleVocabLevel(index[term]);
+    if(level) return level;
+  }
+  return '';
+}
+
+async function enrichInfoWithJlpt(candidates, info){
+  const level = await lookupJlptReference(candidates);
+  info.level = level;
+  info.levelSource = 'jlpt-reference';
+  return level;
+}
+
+function jmdictCommonShardFor(value){
+  return offlineShardFor(value, JMDICT_COMMON_SHARD_COUNT);
 }
 
 async function loadJmdictCommonShard(index){
@@ -3722,9 +3825,7 @@ async function loadJmdictCommonShard(index){
 }
 
 async function lookupJmdictCommon(candidates){
-  const terms = [...new Set((Array.isArray(candidates) ? candidates : [candidates])
-    .map(value=>String(value || '').trim())
-    .filter(Boolean))];
+  const terms = dictionaryLookupForms(candidates);
   for(const term of terms){
     try{
       const shard = await loadJmdictCommonShard(jmdictCommonShardFor(term));
@@ -3751,7 +3852,7 @@ async function lookupJmdictCommonWithCompoundFallback(candidates, surface){
 
 function jmdictEnglishMeaning(entry){
   const glosses = [...new Set((entry?.g || []).map(value=>String(value || '').trim()).filter(Boolean))].slice(0, 5);
-  return glosses.length ? `英文释义：${glosses.join('；')}` : '';
+  return glosses.join('；');
 }
 
 function dictionarySourceNoteHtml(){
@@ -3761,12 +3862,28 @@ function dictionarySourceNoteHtml(){
 function jmdictMeaningHtml(entry){
   const meaning = jmdictEnglishMeaning(entry);
   if(!meaning) return '';
-  return `<span>${escapeHtml(meaning)}</span>${dictionarySourceNoteHtml()}`;
+  return `<span>英文释义：${escapeHtml(meaning)}</span>${dictionarySourceNoteHtml()}`;
 }
 
 function storedJmdictMeaningHtml(info){
-  const meaning = String(info?.meaning || '').trim();
-  return meaning ? `<span>${escapeHtml(meaning)}</span>${dictionarySourceNoteHtml()}` : '';
+  const meaning = cleanStoredMeaning(info?.meaning);
+  return meaning ? `<span>英文释义：${escapeHtml(meaning)}</span>${dictionarySourceNoteHtml()}` : '';
+}
+
+function cleanStoredMeaning(meaning){
+  return String(meaning || '').trim().replace(/^(?:中文释义|英文释义)：\s*/u, '');
+}
+
+function chineseMeaningHtml(info){
+  const meaning = cleanStoredMeaning(info?.meaning);
+  if(!meaning) return '';
+  return `<span>中文释义：${escapeHtml(meaning)}</span><small class="dictionary-source-note">释义来源：Yomeru 离线中文词库</small>`;
+}
+
+function storedMeaningHtml(info){
+  if(info?.meaningLanguage === 'zh' || info?.meaningSource === 'offline-chinese') return chineseMeaningHtml(info);
+  if(info?.meaningLanguage === 'en' || info?.meaningSource === 'jmdict') return storedJmdictMeaningHtml(info);
+  return escapeHtml(cleanStoredMeaning(info?.meaning) || '释义待补充');
 }
 
 function tokenSnapshotValue(surface, info){
@@ -3774,7 +3891,10 @@ function tokenSnapshotValue(surface, info){
     surface,
     reading:info?.reading || '',
     meaning:info?.meaning || '',
+    meaningLanguage:info?.meaningLanguage || '',
+    meaningSource:info?.meaningSource || '',
     level:normalizeVisibleVocabLevel(info?.level),
+    levelSource:info?.levelSource || '',
     pos:info?.pos || '未收录词'
   })).replace(/'/g, '%27');
 }
@@ -3808,6 +3928,8 @@ function refreshVisibleTokenDetail(target, surface, info, tokenId){
   const detailBox = target.closest('.detail-box');
   const readingNode = detailBox?.querySelector('.detail-reading-text');
   if(readingNode && info.reading && readingNode.textContent.trim() === '暂无读音') readingNode.textContent = info.reading;
+  const levelNode = detailBox?.querySelector('.detail-badge-level');
+  if(levelNode) levelNode.textContent = `JLPT 参考等级：${formatVisibleVocabLevel(info.level)}`;
   syncTokenSaveButton(detailBox, tokenId, info);
 }
 
@@ -3826,7 +3948,12 @@ function requestTokenVocabSave(tokenId){
     info.reading || '',
     info.meaning || '释义待补充',
     info.level || '',
-    info.pos || '已识别词'
+    info.pos || '已识别词',
+    {
+      meaningLanguage:info.meaningLanguage || '',
+      meaningSource:info.meaningSource || '',
+      levelSource:info.levelSource || ''
+    }
   );
   if(saved || vocabData.some(item=>vocabIdentityKey(item.word) === vocabIdentityKey(surface))){
     info.lookupState = 'saved';
@@ -5003,7 +5130,7 @@ function readingDetailAction(surface, info = {}){
 
 function detailBadgesHtml(level, part){
   const badges = [];
-  if(level) badges.push(`<span class="detail-badge detail-badge-level">${escapeHtml(level)}</span>`);
+  badges.push(`<span class="detail-badge detail-badge-level">JLPT 参考等级：${escapeHtml(formatVisibleVocabLevel(level))}</span>`);
   if(part) badges.push(`<span class="detail-badge">${escapeHtml(part)}</span>`);
   return badges.length ? `<div class="detail-badges">${badges.join('')}</div>` : '';
 }
@@ -5102,12 +5229,17 @@ function setDetailHeadActions(html = ''){
   if(target) target.innerHTML = html;
 }
 
-function showDetail(word, el){
+let DETAIL_REQUEST_GENERATION = 0;
+
+async function showDetail(word, el){
   if(IS_ANNOTATION_EDITING) return;
+  const generation = ++DETAIL_REQUEST_GENERATION;
   selectReadingWord(el);
 
   const info = DICT[word];
   if(!info) return;
+  await enrichInfoWithJlpt([word, info.reading], info);
+  if(generation !== DETAIL_REQUEST_GENERATION) return;
   const detailAction = readingDetailAction(word, info);
   const addAction = detailAction.action || (detailAction.type === 'vocab' ? `addToVocab('${word}')` : '');
   const area = document.getElementById('detailArea');
@@ -5116,8 +5248,8 @@ function showDetail(word, el){
   area.innerHTML = `
     <div class="detail-box detail-selected-box">
       ${detailWordHeaderHtml(word, addAction, `speakEncodedJapanese('${encodeURIComponent(word)}', this, false)`, detailAction.type)}
-      ${detailMetaHtml(word, info.reading, formatVisibleVocabLevel(info.level), info.pos)}
-      ${detailDefinitionHtml(detailAction.point ? escapeHtml(detailAction.point.explain) : escapeHtml(info.meaning))}
+      ${detailMetaHtml(word, info.reading, info.level, info.pos)}
+      ${detailDefinitionHtml(detailAction.point ? escapeHtml(detailAction.point.explain) : storedMeaningHtml(info))}
     </div>
   `;
   renderSampleFlow();
@@ -5125,6 +5257,7 @@ function showDetail(word, el){
 
 function showTokenDetail(tokenId, el){
   if(IS_ANNOTATION_EDITING) return;
+  DETAIL_REQUEST_GENERATION += 1;
   selectReadingWord(el);
 
   const token = window.KUROMOJI_TOKEN_CACHE[tokenId];
@@ -5140,15 +5273,13 @@ function showTokenDetail(tokenId, el){
   area.innerHTML = `
     <div class="detail-box detail-selected-box">
       ${detailWordHeaderHtml(surface, addAction, `speakEncodedJapanese('${encodeURIComponent(surface)}', this, false)`, detailAction.type)}
-      ${detailMetaHtml(surface, info.reading, formatVisibleVocabLevel(info.level), info.pos, token)}
+      ${detailMetaHtml(surface, info.reading, info.level, info.pos, token)}
       ${detailDefinitionHtml(
         detailAction.point
           ? escapeHtml(detailAction.point.explain)
           : needsLookup
             ? '正在查询词典……'
-            : info.source === 'jmdict'
-              ? storedJmdictMeaningHtml(info)
-              : escapeHtml(info.meaning),
+            : storedMeaningHtml(info),
         `tokenMeaning-${tokenId}`
       )}
     </div>
@@ -5163,15 +5294,39 @@ async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
   if(!target || !tokenRecord) return;
   const { surface, info } = tokenRecord;
   const candidates = [word, info.lookupWord, info.baseForm, tokenRecord.token?.basic_form];
+  let chineseResult = null;
   let result = null;
   try{
-    result = await lookupJmdictCommonWithCompoundFallback(candidates, surface);
+    [chineseResult] = await Promise.all([
+      lookupOfflineChinese(candidates, surface),
+      enrichInfoWithJlpt(candidates, info)
+    ]);
   }catch(error){
     console.warn('离线词典查询失败', error);
   }
   if(!target.isConnected) return;
+  if(chineseResult?.entry?.m){
+    info.reading = info.reading || katakanaToHiragana(chineseResult.entry.r || '');
+    info.meaning = chineseResult.entry.m;
+    info.meaningLanguage = 'zh';
+    info.meaningSource = 'offline-chinese';
+    info.lookupWord = chineseResult.term || info.lookupWord || surface;
+    info.source = 'offline-chinese';
+    info.lookupState = 'ready';
+    target.innerHTML = chineseMeaningHtml(info);
+    refreshVisibleTokenDetail(target, surface, info, tokenId);
+    finishPendingTokenVocabSave(tokenId, tokenRecord);
+    return;
+  }
+  try{
+    result = await lookupJmdictCommonWithCompoundFallback(candidates, surface);
+  }catch(error){
+    console.warn('JMdict 离线词典查询失败', error);
+  }
   if(!result?.entry){
     info.meaning = '释义待补充';
+    info.meaningLanguage = '';
+    info.meaningSource = '';
     info.lookupState = 'failed';
     target.innerHTML = '<span style="color:var(--ink-soft);">暂未查到可靠释义，可以先收藏，之后再补充。</span>';
     refreshVisibleTokenDetail(target, surface, info, tokenId);
@@ -5182,6 +5337,8 @@ async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
   if(!meaning){
     info.reading = info.reading || katakanaToHiragana(result.entry.r || '');
     info.meaning = '释义待补充';
+    info.meaningLanguage = '';
+    info.meaningSource = '';
     info.lookupState = 'failed';
     target.innerHTML = '<span style="color:var(--ink-soft);">已找到词条，但当前没有可显示的释义，可以先收藏。</span>';
     refreshVisibleTokenDetail(target, surface, info, tokenId);
@@ -5190,6 +5347,8 @@ async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
   }
   info.reading = info.reading || katakanaToHiragana(result.entry.r || '');
   info.meaning = meaning;
+  info.meaningLanguage = 'en';
+  info.meaningSource = 'jmdict';
   info.lookupWord = result.term || info.lookupWord || surface;
   info.source = 'jmdict';
   info.lookupState = 'ready';
@@ -6767,12 +6926,26 @@ function vocabIdentityKey(word){
 }
 
 function normalizeVocabItem(item = {}){
+  const rawMeaning = cleanStoredMeaning(item.meaning);
+  const legacySource = String(item.meaningSource || '');
+  const meaningLanguage = ['zh', 'en'].includes(item.meaningLanguage)
+    ? item.meaningLanguage
+    : legacySource === 'jmdict' || /^英文释义：/u.test(String(item.meaning || ''))
+      ? 'en'
+      : rawMeaning && hasCjk(rawMeaning) ? 'zh' : '';
+  const meaningSource = ['offline-chinese', 'jmdict', 'manual'].includes(legacySource)
+    ? legacySource
+    : rawMeaning ? 'manual' : '';
+  const level = normalizeVisibleVocabLevel(item.level);
   return {
     ...item,
     word:String(item.word || '').trim(),
     reading:String(item.reading || '').trim(),
-    meaning:displayVocabMeaning(item.meaning),
-    level:normalizeVisibleVocabLevel(item.level),
+    meaning:displayVocabMeaning(rawMeaning),
+    meaningLanguage,
+    meaningSource,
+    level,
+    levelSource:level ? String(item.levelSource || 'legacy') : '',
     pos:String(item.pos || '自选内容').trim() || '自选内容',
     sourceTitle:String(item.sourceTitle || '').trim(),
     sourceUrl:String(item.sourceUrl || '').trim(),
@@ -6823,10 +6996,15 @@ async function saveVocab(){
   }catch(e){ console.error('保存生词本失败', e); }
 }
 
-function addToVocab(word){
+async function addToVocab(word){
   const info = DICT[word];
   if(!info) return;
-  addCustomToVocab(word, info.reading, info.meaning, info.level, info.pos);
+  await enrichInfoWithJlpt([word, info.reading], info);
+  addCustomToVocab(word, info.reading, info.meaning, info.level, info.pos, {
+    meaningLanguage:info.meaningLanguage,
+    meaningSource:info.meaningSource,
+    levelSource:info.levelSource
+  });
 }
 
 function addTokenToVocab(tokenId){
@@ -6844,7 +7022,8 @@ function addTokenSnapshotToVocab(encodedSnapshot){
       snapshot.reading,
       snapshot.meaning,
       snapshot.level,
-      snapshot.pos
+      snapshot.pos,
+      snapshot
     );
   }catch(error){
     console.warn('词语快照无效，未加入生词本', error);
@@ -6860,7 +7039,7 @@ function displayVocabMeaning(meaning, fallback = '释义待补充'){
   return String(meaning || '').trim() || fallback;
 }
 
-function addCustomToVocab(word, reading = '', meaning = '用户添加', level = '', pos = '自选内容'){
+function addCustomToVocab(word, reading = '', meaning = '用户添加', level = '', pos = '自选内容', metadata = {}){
   const normalized = String(word || '').trim();
   if(!normalized) return false;
   if(vocabData.find(v=>vocabIdentityKey(v.word) === vocabIdentityKey(normalized))){
@@ -6870,7 +7049,9 @@ function addCustomToVocab(word, reading = '', meaning = '用户添加', level = 
   const cleanMeaning = displayVocabMeaning(meaning, '用户添加');
   vocabData.unshift(normalizeVocabItem({
     word:normalized, reading, meaning:cleanMeaning,
-    level, pos,
+    meaningLanguage:metadata.meaningLanguage || '',
+    meaningSource:metadata.meaningSource || (cleanMeaning ? 'manual' : ''),
+    level, levelSource:metadata.levelSource || '', pos,
     sourceTitle:currentVocabSourceTitle(),
     sourceUrl:CURRENT_ARTICLE_URL || '',
     repetition:0, interval:0, dueAt: Date.now(),
@@ -6942,7 +7123,8 @@ function filteredVocabForPage(){
   return vocabData.filter(v=>{
     if(!vocabMatchesFilter(v, VOCAB_FILTER, now)) return false;
     if(statusFilter !== 'all' && vocabMasteryKey(v, Number(v?.dueAt || 0) <= now) !== statusFilter) return false;
-    if(jlptFilter !== 'all' && normalizeVisibleVocabLevel(v.level) !== jlptFilter) return false;
+    if(jlptFilter === 'ungraded' && normalizeVisibleVocabLevel(v.level)) return false;
+    if(jlptFilter !== 'all' && jlptFilter !== 'ungraded' && normalizeVisibleVocabLevel(v.level) !== jlptFilter) return false;
     if(sourceFilter !== 'all' && encodeURIComponent(vocabSourceLabel(v)) !== sourceFilter) return false;
     if(!keyword) return true;
     const haystack = `${v.word || ''} ${v.reading || ''} ${v.meaning || ''} ${v.pos || ''} ${formatVisibleVocabLevel(v.level)} ${vocabSourceLabel(v)}`.toLowerCase();
@@ -6960,7 +7142,7 @@ function setVocabFilter(filter){
 }
 
 function setVocabJlptFilter(level){
-  VOCAB_JLPT_FILTER = ['all', 'N5', 'N4', 'N3', 'N2', 'N1'].includes(level) ? level : 'all';
+  VOCAB_JLPT_FILTER = ['all', 'N5', 'N4', 'N3', 'N2', 'N1', 'ungraded'].includes(level) ? level : 'all';
   syncVocabHeaderFilters();
   document.querySelectorAll('.vocab-level-filter').forEach(button=>{
     button.classList.toggle('active', button.dataset.level === VOCAB_JLPT_FILTER);
@@ -7026,7 +7208,7 @@ function renderVocabFilterSummary(filteredCount){
   };
   const chips = [];
   if(VOCAB_FILTER !== 'all') chips.push({label: statusLabels[VOCAB_FILTER] || VOCAB_FILTER, tone: VOCAB_FILTER});
-  if(jlptValue !== 'all') chips.push({label: jlptValue, tone: 'level'});
+  if(jlptValue !== 'all') chips.push({label: jlptValue === 'ungraded' ? '暂无参考等级' : jlptValue, tone: 'level'});
   if(searchValue) chips.push({label: `搜索: ${searchValue}`, tone: 'neutral'});
   if(active){
     active.innerHTML = chips.length
@@ -7140,6 +7322,8 @@ function submitVocabEdit(event){
   VOCAB_EDIT_TARGET.word = word;
   VOCAB_EDIT_TARGET.reading = reading;
   VOCAB_EDIT_TARGET.meaning = meaning;
+  VOCAB_EDIT_TARGET.meaningLanguage = hasCjk(meaning) ? 'zh' : VOCAB_EDIT_TARGET.meaningLanguage || '';
+  VOCAB_EDIT_TARGET.meaningSource = 'manual';
   saveVocab();
   closeVocabEditDialog();
   renderVocab();
@@ -7330,7 +7514,7 @@ function exportVocabCsv() {
 function exportVocabCsvFile() {
   // 添加 BOM 头 \uFEFF，防止 Excel 打开时出现中文乱码。
   let csvContent = "\uFEFF";
-  csvContent += "单词,假名,释义,词性,等级,来源,来源链接,复习状态,下次复习时间（按复习结果自动安排）\n";
+  csvContent += "单词,假名,释义,释义语言,释义来源,词性,参考等级,等级来源,来源,来源链接,复习状态,下次复习时间（按复习结果自动安排）\n";
   
   const csvField = value => `"${String(value || '').replace(/"/g, '""')}"`;
   const now = Date.now();
@@ -7340,8 +7524,11 @@ function exportVocabCsvFile() {
       v.word,
       v.reading,
       displayVocabMeaning(v.meaning),
+      v.meaningLanguage,
+      v.meaningSource,
       v.pos,
       formatVisibleVocabLevel(v.level),
+      v.levelSource,
       vocabSourceLabel(v),
       v.sourceUrl,
       mastery.label,
@@ -7364,12 +7551,15 @@ function exportAnkiTsv(){
     clean(v.word),
     clean(v.reading),
     clean(displayVocabMeaning(v.meaning)),
+    clean(v.meaningLanguage),
+    clean(v.meaningSource),
     clean(v.pos),
     clean(formatVisibleVocabLevel(v.level)),
+    clean(v.levelSource),
     clean(vocabSourceLabel(v)),
     clean(v.sourceUrl || '')
   ].join('\t'));
-  const header = '# 正面\t假名\t释义\t词性\t等级\t来源\t来源链接\n';
+  const header = '# 正面\t假名\t释义\t释义语言\t释义来源\t词性\t参考等级\t等级来源\t来源\t来源链接\n';
   downloadTextFile(`dokedo-anki-${todayStamp()}.tsv`, header + lines.join('\n'), 'text/tab-separated-values;charset=utf-8;');
   setVocabExportStatus(`已导出 ${vocabData.length} 个词，可在 Anki 中选择「导入文件」。`);
 }
@@ -7657,6 +7847,7 @@ function renderCard(){
         <div class="flash-card-detail-group">
           <div class="flash-main-reading">${escapeHtml(v.reading || '读音待补充')}</div>
           <div class="flash-main-meaning">${escapeHtml(displayVocabMeaning(v.meaning))}</div>
+          <div class="flash-main-level">参考等级：${escapeHtml(formatVisibleVocabLevel(v.level))}</div>
         </div>
       </div>
     `

@@ -129,10 +129,27 @@ assertCheck(
   'tokenizer metadata stays in source fields instead of vocabulary level fields'
 );
 assertCheck(
-  /function normalizeVocabItem\(item = \{\}\)[\s\S]*?level:normalizeVisibleVocabLevel\(item\.level\)/.test(appJs)
+  /function normalizeVocabItem\(item = \{\}\)[\s\S]*?const level = normalizeVisibleVocabLevel\(item\.level\)[\s\S]*?levelSource:level \? String\(item\.levelSource \|\| 'legacy'\) : ''/.test(appJs)
     && /async function loadVocab\(\)[\s\S]*?const rawSnapshot = JSON\.stringify\(vocabData\);[\s\S]*?if\(JSON\.stringify\(vocabData\) !== rawSnapshot\) saveVocab\(\)/.test(appJs)
     && /function addCustomToVocab\(word, reading = '', meaning = '用户添加', level = ''/.test(appJs),
   'legacy vocabulary levels migrate to the ungraded state and persist after loading'
+);
+assertCheck(
+  appJs.includes("const LEARNING_DATA_VERSION = '20260716'")
+    && appJs.includes('async function lookupOfflineChinese')
+    && appJs.includes('async function lookupJlptReference')
+    && /async function autoLookupTokenMeaning[\s\S]*?lookupOfflineChinese\(candidates, surface\)[\s\S]*?if\(chineseResult\?\.entry\?\.m\)[\s\S]*?lookupJmdictCommonWithCompoundFallback\(candidates, surface\)/.test(appJs)
+    && appJs.includes('释义来源：Yomeru 离线中文词库')
+    && appJs.includes('JLPT 参考等级：')
+    && indexHtml.includes('data-level="ungraded"'),
+  'offline Chinese meanings and reference levels are integrated ahead of JMdict fallback'
+);
+assertCheck(
+  /meaningLanguage:[\s\S]*?meaningSource:[\s\S]*?levelSource:/.test(appJs)
+    && /VOCAB_EDIT_TARGET\.meaningSource = 'manual'/.test(appJs)
+    && appJs.includes('参考等级,等级来源')
+    && indexHtml.includes('暂无参考等级</button>'),
+  'vocabulary metadata, manual edits, ungraded filter, and reference-level export labels stay consistent'
 );
 assertCheck(
   /function exportVocabCsvFile\(\)[\s\S]*?formatVisibleVocabLevel\(v\.level\)/.test(appJs)

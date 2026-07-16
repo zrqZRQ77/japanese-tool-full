@@ -90,7 +90,14 @@ function extractBetween(startMarker, endMarker) {
   }));
   context.KUROMOJI_TOKEN_CACHE = [{ surface: '新しい語' }];
   vm.runInContext(`addTokenSnapshotToVocab('${oldDetailSnapshot}')`, context);
-  assert.deepEqual(saved[0], ['古い語', 'ふるいご', '旧详情', 'N3', '名词']);
+  assert.deepEqual(saved[0], [
+    '古い語',
+    'ふるいご',
+    '旧详情',
+    'N3',
+    '名词',
+    { surface:'古い語', reading:'ふるいご', meaning:'旧详情', level:'N3', pos:'名词' }
+  ]);
 }
 
 process.stdout.write('Kuromoji article race and immutable detail snapshot tests passed.\n');
