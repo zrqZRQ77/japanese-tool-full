@@ -9,11 +9,11 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260716-03">
-<link rel="stylesheet" href="design-system.css?v=20260716-03">
-<link rel="stylesheet" href="grammar-layout.css?v=20260716-03">
-<link rel="stylesheet" href="typography.css?v=20260716-03">
-<link rel="stylesheet" href="hero-menu-refresh.css?v=20260714-01">
+<link rel="stylesheet" href="styles.css?v=20260716-04">
+<link rel="stylesheet" href="design-system.css?v=20260716-04">
+<link rel="stylesheet" href="grammar-layout.css?v=20260716-04">
+<link rel="stylesheet" href="typography.css?v=20260716-04">
+<link rel="stylesheet" href="hero-menu-refresh.css?v=20260716-04">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260710-01"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
@@ -330,7 +330,7 @@
           </div>
 
           <div class="next-step-bar" id="nextStepBar" style="display:none;">
-            <span class="next-step-copy">完成阅读后，可以用这篇文章生成练习。</span>
+            <span class="next-step-copy">点击正文中的词语，可以查看读音、释义并加入生词本。</span>
             <button class="btn-primary reading-practice-action" id="readingNextAction" onclick="openGuidedStep('practice')" hidden data-mvp-hidden="practice">去练习</button>
           </div>
 
@@ -869,7 +869,7 @@
                 <div class="settings-tts-controls">
                   <details class="settings-choice-menu" id="ttsRateMenu">
                     <summary class="settings-choice-trigger" onclick="closeOtherSettingsChoiceMenus(this.closest('details'))">
-                      <span class="settings-choice-title">朗读速度</span>
+                      <span class="settings-choice-title" id="ttsRateCurrentLabel">自然速度（-6%）</span>
                     </summary>
                     <div class="settings-choice-options" role="menu" aria-label="日语朗读速度选项">
                       <button type="button" role="menuitemradio" data-value="0.68" onclick="selectTtsRate('0.68')"><span>慢速</span></button>
@@ -895,7 +895,7 @@
                 <div class="settings-tts-controls">
                   <details class="settings-choice-menu settings-choice-menu--voice" id="ttsVoiceMenu">
                     <summary class="settings-choice-trigger" onclick="closeOtherSettingsChoiceMenus(this.closest('details'))">
-                      <span class="settings-choice-title">朗读音色</span>
+                      <span class="settings-choice-title" id="ttsVoiceCurrentLabel">系统日语音色</span>
                     </summary>
                     <div class="settings-choice-options settings-choice-options--voice" id="ttsVoiceOptions" role="menu" aria-label="日语朗读音色选项"></div>
                   </details>
@@ -1249,7 +1249,7 @@
 <div class="icon-button-hint" id="iconButtonHint" role="tooltip" aria-hidden="true"></div>
 
 <script src="kuromoji-worker-poc.js?v=20260714-01"></script>
-<script src="app.js?v=20260716-03"></script>
+<script src="app.js?v=20260716-04"></script>
 <script>
   (() => {
     const syncWorkerWordAttributes = () => {
@@ -1284,6 +1284,9 @@
   function syncTtsRateMenu() {
     const select = document.getElementById('ttsRateSelect');
     if (!select) return;
+    const currentLabel = document.getElementById('ttsRateCurrentLabel');
+    const selectedOption = select.options[select.selectedIndex];
+    if (currentLabel && selectedOption) currentLabel.textContent = selectedOption.textContent;
     document.querySelectorAll('#ttsRateMenu [data-value]').forEach(button => {
       const selected = button.dataset.value === String(select.value);
       button.classList.toggle('is-selected', selected);
@@ -1337,6 +1340,11 @@
     }
 
     optionsHost.replaceChildren(...options.map(option => voiceOptionButton(option, recommendedName)));
+    const currentLabel = document.getElementById('ttsVoiceCurrentLabel');
+    const selectedOption = select.options[select.selectedIndex];
+    if (currentLabel) {
+      currentLabel.textContent = selectedOption?.textContent.replace(/\s*·\s*推荐\s*$/u, '') || '系统日语音色';
+    }
     optionsHost.querySelectorAll('button').forEach(button => {
       const selected = button.dataset.value === select.value;
       button.classList.toggle('is-selected', selected);

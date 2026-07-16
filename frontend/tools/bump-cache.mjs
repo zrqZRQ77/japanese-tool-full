@@ -32,10 +32,11 @@ const currentCss = indexHtml.match(/styles\.css\?v=([^"']+)/)?.[1] || '';
 const currentDesignSystem = indexHtml.match(/design-system\.css\?v=([^"']+)/)?.[1] || '';
 const currentGrammarLayout = indexHtml.match(/grammar-layout\.css\?v=([^"']+)/)?.[1] || '';
 const currentTypography = indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1] || '';
+const currentHeroMenu = indexHtml.match(/hero-menu-refresh\.css\?v=([^"']+)/)?.[1] || '';
 const currentJs = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
-const current = [currentCss, currentDesignSystem, currentGrammarLayout, currentTypography, currentJs].filter(Boolean).every(value => value === currentCss)
+const current = [currentCss, currentDesignSystem, currentGrammarLayout, currentTypography, currentHeroMenu, currentJs].filter(Boolean).every(value => value === currentCss)
   ? currentCss
-  : currentJs || currentCss || currentDesignSystem || currentGrammarLayout || currentTypography;
+  : currentJs || currentCss || currentDesignSystem || currentGrammarLayout || currentTypography || currentHeroMenu;
 const version = nextVersion(current, requested);
 
 const updated = indexHtml
@@ -43,6 +44,7 @@ const updated = indexHtml
   .replace(/design-system\.css\?v=[^"']+/g, `design-system.css?v=${version}`)
   .replace(/grammar-layout\.css\?v=[^"']+/g, `grammar-layout.css?v=${version}`)
   .replace(/typography\.css\?v=[^"']+/g, `typography.css?v=${version}`)
+  .replace(/hero-menu-refresh\.css\?v=[^"']+/g, `hero-menu-refresh.css?v=${version}`)
   .replace(/app\.js\?v=[^"']+/g, `app.js?v=${version}`);
 
 if (updated === indexHtml) {

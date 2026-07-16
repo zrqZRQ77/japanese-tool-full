@@ -88,3 +88,44 @@ iOS：`26.4.2`
 6. 390/430 宽度无横向溢出、白屏、自动刷新或布局回归；桌面端同步抽查。
 
 当前状态：自动化门禁 PASS；真实设备第二轮结果 `PENDING`。Production 保持不变，发布状态 `HOLD`。
+
+## 第二轮真实设备验收结果（2026-07-16）
+
+### 候选版本
+
+- Preview：`https://japanese-tool-6uuktjcym-zrq-projects1.vercel.app`
+- Deployment ID：`dpl_5rmgnmSGekWbFk5HAN2HDSwAN66t`
+- Deployment Target：`preview`
+- Deployment Status：`Ready`
+- 部署记录提交：`12e14ab`
+- Production：`https://yomeru.japanese-hub.com`
+- Production 操作：无
+- 发布状态：`HOLD`
+
+### 验收设备
+
+- Mac Safari：PASS
+- iPhone Safari：PASS
+
+### 已确认 PASS 的功能
+
+1. 离线中文释义：`新しい` 显示“新的”，`読書` 显示“读书、阅读”，`本`、`時間`、`新聞` 等词能显示中文；中文命中时优先于 JMdict 英文，并明确标注“Yomeru 离线中文词库”。结果：PASS。
+2. JMdict 英文回退：`学習`、`スペース`、`無償` 等中文未命中词能显示本地 JMdict 英文释义；浏览器运行时未调用 Jisho、在线翻译或其他在线词典 API。结果：PASS。
+3. JLPT 参考等级：页面使用“JLPT 参考等级”；`新しい=N5`、`読書=N3`、`学習=N3`，`三菱` 显示“暂无参考等级”，且未伪装为官方 JLPT 词表或显示 tokenizer 内部来源。结果：PASS。
+4. 生词本：收藏、最终中文或英文回退释义、N5–N1 或“暂无参考等级”均正确，详情与生词本一致，旧技术字段未显示。结果：PASS。
+5. 查询期间自动收藏：查询完成后自动保存最终释义，不保存加载占位文字，不产生重复收藏。结果：PASS。
+6. 假名：`三菱=みつびし`、`UFJ` 无错误假名；Mac Safari 第二次生成成功，iPhone Safari 正常，编辑与显示功能未被词典修改破坏。核心功能：PASS。Mac Safari 第一次冷启动曾出现一次加载失败，第二次重试成功；该稳定性问题继续修复，不否定核心功能验收。
+7. 日语朗读：Mac/iPhone Safari 单词与整篇文章朗读均正常；iPhone 能连续分段朗读，未出现只读第一句、无声或白屏。结果：PASS。
+8. 手机与桌面布局：Mac/iPhone Safari 页面、生词本、详情和正文正常，无明显横向溢出、白屏、严重遮挡或不可操作按钮。结果：PASS。
+9. 内部字段保护：用户界面未发现 `kuromoji`、`worker`、`tokenizer`、`fallback`。结果：PASS。
+
+### 本轮发现但尚待修复的问题
+
+- `UI-COPY-READING-001`：阅读页仍承诺不存在的文章练习入口。状态：本地修复中。
+- `SAFARI-COLD-START-001`：Mac Safari 第一次生成假名曾失败，第二次重试成功。状态：核心功能通过，本地稳定性补丁修复中。
+- `UI-TTS-SETTINGS-001`：朗读速度与音色的标题、当前值和试听按钮布局重复且松散。状态：本地轻量布局修复中。
+- `DICT-AUXILIARY-MASU-001`：助动词 `ます` 错配 JMdict 名词 “measuring container” 并显示 N3。状态：本地词典歧义补丁修复中。
+
+### 发布结论
+
+第二轮中文释义、JMdict 回退、JLPT 参考等级、生词本、朗读、假名和移动端核心功能已通过真实设备验收。完成上述四项补丁并生成新 Preview 前，不部署 Production、不修改正式域名或 Production alias、不合并到 `main`。发布状态：`HOLD`。

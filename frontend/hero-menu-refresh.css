@@ -357,17 +357,24 @@ body.first-visit .hero-beta-pill {
 
 /* Settings dropdowns use the same quiet menu language as the homepage and vocab tools. */
 body[data-view="settings"] .settings-tts-controls {
+  width: min(100%, 390px);
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  justify-self: end;
+  gap: 8px;
   overflow: visible;
 }
 
 body[data-view="settings"] .settings-choice-menu {
   position: relative;
-  width: 172px;
+  width: 220px;
   max-width: 100%;
 }
 
 body[data-view="settings"] .settings-choice-menu--voice {
-  width: 172px;
+  width: 280px;
 }
 
 body[data-view="settings"] .settings-choice-trigger {
@@ -423,6 +430,17 @@ body[data-view="settings"] .settings-choice-title {
   color: var(--color-text);
   font-size: var(--type-size-body);
   font-weight: 650;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body[data-view="settings"] .settings-tts-controls > .settings-secondary-action {
+  width: auto !important;
+  min-width: 68px !important;
+  min-height: 44px !important;
+  height: 44px;
+  margin: 0 !important;
 }
 
 body[data-view="settings"] .settings-choice-options {
@@ -497,7 +515,18 @@ body[data-view="settings"] .settings-choice-badge {
 @media (max-width: 720px) {
   body[data-view="settings"] .settings-choice-menu,
   body[data-view="settings"] .settings-choice-menu--voice {
-    width: min(172px, 100%);
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  body[data-view="settings"] .settings-tts-controls {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body[data-view="settings"] .settings-tts-controls > .settings-secondary-action {
+    width: 100% !important;
   }
 }
 

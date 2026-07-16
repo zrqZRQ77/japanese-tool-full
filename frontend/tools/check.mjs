@@ -44,8 +44,9 @@ function cacheVersions(indexHtml) {
   const designSystem = indexHtml.match(/design-system\.css\?v=([^"']+)/)?.[1] || '';
   const grammarLayout = indexHtml.match(/grammar-layout\.css\?v=([^"']+)/)?.[1] || '';
   const typography = indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1] || '';
+  const heroMenu = indexHtml.match(/hero-menu-refresh\.css\?v=([^"']+)/)?.[1] || '';
   const js = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
-  return { css, designSystem, grammarLayout, typography, js };
+  return { css, designSystem, grammarLayout, typography, heroMenu, js };
 }
 
 function duplicateIds(indexHtml) {
@@ -72,12 +73,13 @@ const appJs = readFileSync(resolve(FRONTEND_DIR, 'app.js'), 'utf8');
 const stylesCss = readFileSync(resolve(FRONTEND_DIR, 'styles.css'), 'utf8');
 const designSystemCss = readFileSync(resolve(FRONTEND_DIR, 'design-system.css'), 'utf8');
 const grammarLayoutCss = readFileSync(resolve(FRONTEND_DIR, 'grammar-layout.css'), 'utf8');
+const heroMenuCss = readFileSync(resolve(FRONTEND_DIR, 'hero-menu-refresh.css'), 'utf8');
 const kuromojiWorkerPocJs = readFileSync(resolve(FRONTEND_DIR, 'kuromoji-worker-poc.js'), 'utf8');
 const kuromojiWorkerJs = readFileSync(resolve(FRONTEND_DIR, 'vendor/kuromoji/20260714-01/kuromoji-tokenizer.worker.js'), 'utf8');
 const dictionary = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/dictionary.json'), 'utf8'));
 const inlineSource = `${appJs}\n${indexHtml}`;
 const globalSearchSource = appJs.match(/const GLOBAL_SEARCH_ITEMS = \[[\s\S]*?\n\];/)?.[0] || '';
-const { css, designSystem, grammarLayout, typography, js } = cacheVersions(indexHtml);
+const { css, designSystem, grammarLayout, typography, heroMenu, js } = cacheVersions(indexHtml);
 const duplicateIdList = duplicateIds(indexHtml);
 const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['index.html', indexHtml],
@@ -220,6 +222,20 @@ assertCheck(
   'furigana flow prewarms locally, exposes progress, and records performance metrics'
 );
 assertCheck(
+  /const maxAttempts = 2;/.test(appJs)
+    && appJs.includes('首次加载未完成，正在自动重试……')
+    && appJs.includes('假名生成没有完成，请点击重新生成。')
+    && !appJs.includes('showFallbackNotice()'),
+  'Safari cold-start analysis retries once before showing one final error'
+);
+assertCheck(
+  /function isAuxiliaryMasuToken/.test(appJs)
+    && appJs.includes("meaning:'礼貌助动词，用于构成动词的礼貌表达'")
+    && /source:'grammar-function'/.test(appJs)
+    && /dictionaryEntryFor\(surface\) \|\| shouldMergePoliteVerbTokens\(parts\)/.test(appJs),
+  'auxiliary ます bypasses homophone dictionary metadata while polite verbs remain merged'
+);
+assertCheck(
   /function\s+resetLevelTest\s*\(\)[\s\S]*?safeStorage\.removeItem\('reading_level_result'\)/.test(appJs)
     && !/function\s+resetLevelTest\s*\(\)[\s\S]*?localStorage\.removeItem\('reading_level_result'\)/.test(appJs),
   'level-test reset uses safe storage'
@@ -263,6 +279,11 @@ assertCheck(
   'reading export formats match the public MVP boundary'
 );
 assertCheck(
+  indexHtml.includes('点击正文中的词语，可以查看读音、释义并加入生词本。')
+    && !indexHtml.includes('完成阅读后，可以用这篇文章生成练习。'),
+  'reader guidance describes the available word-detail and vocabulary actions'
+);
+assertCheck(
   /function collectRubyUnits\(\)[\s\S]*?\.reading-translation-pair \.reading-japanese/.test(appJs)
     && /if\(current\.length\) rows\.push\(current\)/.test(appJs)
     && appJs.includes('const lineX = outerMarginX;'),
@@ -281,8 +302,16 @@ assertCheck(
     && /setTimeout\(\(\)=>speakCurrentTtsChunk\(session, true\), 80\)/.test(appJs),
   'TTS retains utterances, chunks long text, prefers Japanese voices on iOS, and retries with the system voice'
 );
+assertCheck(
+  indexHtml.includes('id="ttsRateCurrentLabel"')
+    && indexHtml.includes('id="ttsVoiceCurrentLabel"')
+    && indexHtml.includes("currentLabel.textContent = selectedOption.textContent")
+    && /settings-tts-controls[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\) auto/.test(heroMenuCss)
+    && /@media \(max-width: 480px\)[\s\S]*?settings-tts-controls[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\)/.test(heroMenuCss),
+  'TTS setting summaries show selected values and controls fit desktop and mobile layouts'
+);
 assertCheck(hardcodedFontSizes.length === 0, `no hardcoded px font sizes outside typography.css${hardcodedFontSizes.length ? `: ${hardcodedFontSizes.join(', ')}` : ''}`);
-assertCheck(css && designSystem && grammarLayout && typography && js && css === designSystem && css === grammarLayout && css === typography && css === js, 'CSS and JS cache versions match');
+assertCheck(css && designSystem && grammarLayout && typography && heroMenu && js && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === js, 'CSS and JS cache versions match');
 assertCheck(/^\d{8}-\d{2}$/.test(css), 'cache version format is YYYYMMDD-NN');
 
 if (process.exitCode) {

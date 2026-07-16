@@ -476,8 +476,32 @@ async function runAudit() {
       clear:/清除本机学习数据/.test(document.querySelector('.settings-section')?.textContent || '')
     }));
     if(!dataActions.backup || !dataActions.restore || !dataActions.clear) throw new Error(`Settings data actions missing: ${JSON.stringify(dataActions)}.`);
+    const ttsSettings = await page.evaluate(() => {
+      const controls = [...document.querySelectorAll('.settings-tts-controls')].filter(node => getComputedStyle(node).display !== 'none');
+      const geometry = controls.map(node => {
+        const menu = node.querySelector('.settings-choice-menu');
+        const button = node.querySelector('.settings-secondary-action');
+        const menuRect = menu?.getBoundingClientRect();
+        const buttonRect = button?.getBoundingClientRect();
+        return {
+          sameRow:Boolean(menuRect && buttonRect && Math.abs(menuRect.top - buttonRect.top) <= 2),
+          equalHeight:Boolean(menuRect && buttonRect && Math.abs(menuRect.height - buttonRect.height) <= 2),
+          insideViewport:Boolean(buttonRect && buttonRect.right <= innerWidth + 1 && menuRect.left >= -1)
+        };
+      });
+      return {
+        rateLabel:document.getElementById('ttsRateCurrentLabel')?.textContent || '',
+        voiceLabel:document.getElementById('ttsVoiceCurrentLabel')?.textContent || '',
+        overflow:document.documentElement.scrollWidth > innerWidth + 2,
+        geometry
+      };
+    });
+    if(ttsSettings.rateLabel !== '自然速度（-6%）' || /朗读速度|朗读音色/.test(`${ttsSettings.rateLabel} ${ttsSettings.voiceLabel}`)
+      || ttsSettings.overflow || ttsSettings.geometry.some(item => !item.sameRow || !item.equalHeight || !item.insideViewport)){
+      throw new Error(`TTS setting controls do not show their selected values in one desktop row: ${JSON.stringify(ttsSettings)}.`);
+    }
     await page.locator('.app-sidebar .nav-item[data-view="reading"]').click();
-    return {publicState, dataActions};
+    return {publicState, dataActions, ttsSettings};
   });
 
   await step('public sample uses pasted-text analysis path', async () => {
@@ -609,29 +633,93 @@ async function runAudit() {
       throw new Error(`Saved Worker word is not user-safe in the vocabulary page: ${JSON.stringify(savedWorkerRow)}.`);
     }
     await page.evaluate(() => switchWorkspace('reading'));
-    const fallbackState = await page.evaluate(async text => {
-      LOCAL_KUROMOJI_WORKER_CLIENT?.terminate();
-      LOCAL_KUROMOJI_WORKER_CLIENT = KuromojiWorkerClient.createClient({
-        workerUrl:'workers/missing-kuromoji-worker.js',
-        timeoutMs:1000
-      });
-      document.getElementById('inputText').value = text;
-      await renderText();
-      return {
-        mode:document.body.dataset.tokenizerMode,
-        fallback:document.body.dataset.tokenizerFallback || '',
-        paragraphs:document.querySelectorAll('#output .reading-translation-pair').length,
-        noticeVisible:Boolean(document.querySelector('#output .fallback-notice'))
-      };
+    const retryState = await page.evaluate(async text => {
+      const originalGetClient = getLocalKuromojiWorkerClient;
+      const originalSetStatus = setTokenizerStatus;
+      const successfulResult = await originalGetClient().analyze(text);
+      const statuses = [];
+      let firstScenarioCalls = 0;
+      let failureScenarioCalls = 0;
+      const fakeClient = analyze => ({analyze, terminate(){}});
+      try{
+        setTokenizerStatus = (message, state, options) => {
+          statuses.push({message, state});
+          return originalSetStatus(message, state, options);
+        };
+        getLocalKuromojiWorkerClient = () => {
+          firstScenarioCalls += 1;
+          return firstScenarioCalls === 1
+            ? fakeClient(async()=>{ throw new Error('simulated first cold-start failure'); })
+            : fakeClient(async()=>successfulResult);
+        };
+        document.getElementById('inputText').value = text;
+        await renderText();
+        const recovered = {
+          mode:document.body.dataset.tokenizerMode,
+          fallback:document.body.dataset.tokenizerFallback || '',
+          finalStatus:document.getElementById('tokenizerStatus')?.textContent || '',
+          interimCount:statuses.filter(item => item.message === '首次加载未完成，正在自动重试……' && item.state === 'loading').length
+        };
+
+        statuses.length = 0;
+        getLocalKuromojiWorkerClient = () => {
+          failureScenarioCalls += 1;
+          return fakeClient(async()=>{ throw new Error(`simulated terminal failure ${failureScenarioCalls}`); });
+        };
+        await renderText();
+        const failed = {
+          mode:document.body.dataset.tokenizerMode,
+          fallback:document.body.dataset.tokenizerFallback || '',
+          finalStatus:document.getElementById('tokenizerStatus')?.textContent || '',
+          finalErrorCount:statuses.filter(item => item.message === '假名生成没有完成，请点击重新生成。' && item.state === 'error').length,
+          noticeVisible:Boolean(document.querySelector('#output .fallback-notice')),
+          retryFlag:TOKENIZER_LAST_ATTEMPT_FAILED
+        };
+
+        getLocalKuromojiWorkerClient = originalGetClient;
+        await toggleReaderSmartSegmentation();
+        const manualRetry = {
+          mode:document.body.dataset.tokenizerMode,
+          fallback:document.body.dataset.tokenizerFallback || '',
+          retryFlag:TOKENIZER_LAST_ATTEMPT_FAILED
+        };
+        return {firstScenarioCalls, failureScenarioCalls, recovered, failed, manualRetry};
+      }finally{
+        getLocalKuromojiWorkerClient = originalGetClient;
+        setTokenizerStatus = originalSetStatus;
+      }
     }, pasted);
-    if(fallbackState.mode !== 'built-in' || fallbackState.fallback !== 'true' || fallbackState.paragraphs !== 3 || !fallbackState.noticeVisible){
-      throw new Error(`Worker failure did not preserve the built-in reading path: ${JSON.stringify(fallbackState)}.`);
+    if(retryState.firstScenarioCalls !== 2 || retryState.recovered.mode !== 'kuromoji-worker' || retryState.recovered.fallback || retryState.recovered.interimCount !== 1){
+      throw new Error(`Cold-start retry did not recover exactly once: ${JSON.stringify(retryState)}.`);
     }
-    await page.evaluate(async text => {
-      document.getElementById('inputText').value = text;
-      await renderText();
-    }, SAMPLE_TEXT);
-    return {...state('state: real pasted text'), workerState, historyRestore, savedWorkerWord, fallbackState};
+    if(retryState.failureScenarioCalls !== 2 || retryState.failed.mode !== 'built-in' || retryState.failed.fallback !== 'true'
+      || retryState.failed.finalErrorCount !== 1 || retryState.failed.noticeVisible || !retryState.failed.retryFlag){
+      throw new Error(`Terminal Worker failure was not reported once after two attempts: ${JSON.stringify(retryState)}.`);
+    }
+    if(retryState.manualRetry.mode !== 'kuromoji-worker' || retryState.manualRetry.fallback || retryState.manualRetry.retryFlag){
+      throw new Error(`Manual furigana retry did not recover after the final error: ${JSON.stringify(retryState)}.`);
+    }
+
+    const auxiliaryMasuState = await page.evaluate(() => {
+      const token = {
+        surface_form:'ます', basic_form:'ます', reading:'マス',
+        pos:'助動詞', pos_detail_1:'*', conjugated_type:'特殊・マス', conjugated_form:'基本形'
+      };
+      const info = getTokenInfo(token);
+      const merged = ['あり', '開き', '起き'].map(stem => mergeDictionaryCompounds([
+        {surface_form:stem, basic_form:stem, reading:stem, pos:'動詞'},
+        token
+      ]).map(item => item.surface_form));
+      return {info, merged, grammarUnit:isGrammarReadingUnit(info)};
+    });
+    if(auxiliaryMasuState.info.meaning !== '礼貌助动词，用于构成动词的礼貌表达'
+      || auxiliaryMasuState.info.pos !== '助动词' || auxiliaryMasuState.info.level
+      || /measuring container/i.test(auxiliaryMasuState.info.meaning)
+      || !auxiliaryMasuState.grammarUnit
+      || JSON.stringify(auxiliaryMasuState.merged) !== JSON.stringify([['あります'], ['開きます'], ['起きます']])){
+      throw new Error(`Auxiliary ます context handling failed: ${JSON.stringify(auxiliaryMasuState)}.`);
+    }
+    return {...state('state: real pasted text'), workerState, historyRestore, savedWorkerWord, retryState, auxiliaryMasuState};
   });
 
   await step('word detail and vocab add', async () => {
@@ -1031,6 +1119,31 @@ async function runAudit() {
     } else if (!viewportState.nav || viewportState.nav.width <= 0 || viewportState.nav.height <= 0) {
       throw new Error(`Viewport ${viewport.name} navigation is not visible.`);
     }
+    const settingsLayout = await page.evaluate(() => {
+      switchWorkspace('settings');
+      const controls = [...document.querySelectorAll('.settings-tts-controls')].filter(node => getComputedStyle(node).display !== 'none');
+      return {
+        overflow:document.documentElement.scrollWidth > innerWidth + 2,
+        labels:[
+          document.getElementById('ttsRateCurrentLabel')?.textContent || '',
+          document.getElementById('ttsVoiceCurrentLabel')?.textContent || ''
+        ],
+        rows:controls.map(node => {
+          const menuRect = node.querySelector('.settings-choice-menu')?.getBoundingClientRect();
+          const buttonRect = node.querySelector('.settings-secondary-action')?.getBoundingClientRect();
+          return {
+            sameRow:Boolean(menuRect && buttonRect && Math.abs(menuRect.top - buttonRect.top) <= 2),
+            insideViewport:Boolean(menuRect && buttonRect && menuRect.left >= -1 && buttonRect.right <= innerWidth + 1)
+          };
+        })
+      };
+    });
+    if(settingsLayout.overflow || settingsLayout.rows.some(item => !item.insideViewport)
+      || (viewport.width > 480 && settingsLayout.rows.some(item => !item.sameRow))
+      || /朗读速度|朗读音色/.test(settingsLayout.labels.join(' '))){
+      throw new Error(`Viewport ${viewport.name} TTS settings layout regressed: ${JSON.stringify(settingsLayout)}.`);
+    }
+    await page.evaluate(() => switchWorkspace('vocab'));
     if (!viewportState.content || viewportState.content.width <= 0 || viewportState.content.height <= 0) {
       throw new Error(`Viewport ${viewport.name} app content is not visible.`);
     }
@@ -1054,7 +1167,9 @@ async function runAudit() {
     const isExpectedTokenizerFallback = text.includes('kuromoji 加载失败,已退回内置词库')
       || text.includes('kuromoji 初始化失败,已退回内置词库')
       || text.includes('本地 Kuromoji Worker 分析失败，已退回内置词库')
-      || text.includes('/workers/missing-kuromoji-worker.js');
+      || text.includes('/workers/missing-kuromoji-worker.js')
+      || text.includes('simulated first cold-start failure')
+      || text.includes('simulated terminal failure');
     return !isOptionalFontRequest && !isOptionalKuromojiRequest && !isExpectedTokenizerFallback;
   });
   const failedSteps = report.steps.filter(item => item.ok === false);

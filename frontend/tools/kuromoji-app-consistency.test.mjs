@@ -100,4 +100,43 @@ function extractBetween(startMarker, endMarker) {
   ]);
 }
 
-process.stdout.write('Kuromoji article race and immutable detail snapshot tests passed.\n');
+{
+  const context = vm.createContext({
+    DICT: {
+      ます:{meaning:'measuring container', level:'N3'},
+      あります:{reading:'あります', meaning:'有'},
+      開きます:{reading:'ひらきます', meaning:'打开'},
+      起きます:{reading:'おきます', meaning:'起床'}
+    },
+    FALLBACK_DICTIONARY:{},
+    String,
+    katakanaToHiragana:value=>String(value),
+    console
+  });
+  const dictionaryFunctions = extractBetween(
+    'function dictionaryEntryFor(word){',
+    '\nfunction renderWithKuromoji(raw'
+  );
+  vm.runInContext(dictionaryFunctions, context);
+  const auxiliary = vm.runInContext(`getTokenInfo({
+    surface_form:'ます', basic_form:'ます', reading:'マス',
+    pos:'助動詞', pos_detail_1:'*', conjugated_type:'特殊・マス', conjugated_form:'基本形'
+  })`, context);
+  assert.equal(auxiliary.meaning, '礼貌助动词，用于构成动词的礼貌表达');
+  assert.equal(auxiliary.pos, '助动词');
+  assert.equal(auxiliary.level, '');
+  assert.equal(auxiliary.source, 'grammar-function');
+  assert.doesNotMatch(auxiliary.meaning, /measuring container/i);
+
+  for(const [stem, expected] of [['あり', 'あります'], ['開き', '開きます'], ['起き', '起きます']]){
+    context.__tokens = [
+      {surface_form:stem, basic_form:stem, reading:stem, pos:'動詞'},
+      {surface_form:'ます', basic_form:'ます', reading:'マス', pos:'助動詞', conjugated_type:'特殊・マス'}
+    ];
+    const merged = vm.runInContext('mergeDictionaryCompounds(__tokens)', context);
+    assert.equal(merged.length, 1);
+    assert.equal(merged[0].surface_form, expected);
+  }
+}
+
+process.stdout.write('Kuromoji race, immutable detail snapshot, and auxiliary ます tests passed.\n');

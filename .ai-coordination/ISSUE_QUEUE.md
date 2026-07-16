@@ -4,6 +4,43 @@
 
 ## 当前问题
 
+### UI-COPY-READING-001
+
+- 来源：第二轮 Mac/iPhone Safari 真实设备验收（2026-07-16）
+- 等级：P2
+- 状态：FIXING
+- 涉及文件：`frontend/index.html`、`frontend/tools/check.mjs`
+- 发现：阅读页显示“完成阅读后，可以用这篇文章生成练习。”，但当前公开页面没有对应文章练习生成入口。
+- 预期结果：只描述当前真实可用的词语详情、读音、释义和收藏操作；不删除隐藏练习模块代码。
+
+### SAFARI-COLD-START-001
+
+- 来源：第二轮 Mac Safari 真实设备验收（2026-07-16）
+- 等级：P0
+- 状态：FIXING
+- 涉及文件：`frontend/app.js`、Kuromoji 与 UI 自动化测试
+- 发现：第一次生成假名曾显示红色错误，第二次手动重试成功。
+- 预期结果：首次失败自动重试一次；中间显示非红色提示；第二次仍失败才显示唯一最终错误；保留手动重试，禁止无限循环或并行 Worker。
+- 外部状态：核心假名功能 PASS；新 Preview 仍需 Mac Safari 冷启动定向复测。
+
+### UI-TTS-SETTINGS-001
+
+- 来源：第二轮真实设备验收（2026-07-16）
+- 等级：P2
+- 状态：FIXING
+- 涉及文件：`frontend/index.html`、`frontend/app.js`、`frontend/hero-menu-refresh.css`、UI 审计
+- 发现：设置项标题与下拉框文本重复，下拉框和试听按钮未形成紧凑同行布局，桌面右侧留白过多。
+- 预期结果：下拉框直接显示实际当前速度/音色；桌面与试听按钮同行并等高；390/430 无横向溢出。
+
+### DICT-AUXILIARY-MASU-001
+
+- 来源：第二轮词语详情真实设备验收（2026-07-16）
+- 等级：P1
+- 状态：FIXING
+- 涉及文件：`frontend/app.js`、Kuromoji 一致性测试、UI 审计
+- 发现：上下文中的礼貌助动词 `ます` 错配为 JMdict 名词 “measuring container; measuring box; square on a grid”，并错误显示 JLPT N3。
+- 预期结果：优先使用 Kuromoji 上下文词性；显示礼貌助动词说明、助动词、暂无参考等级且不提供收藏；`あります`、`開きます`、`起きます` 保持整词。
+
 ### PERF-SAFARI-001
 
 - 来源：用户 Mac Safari 真实 Preview 验收（2026-07-15）

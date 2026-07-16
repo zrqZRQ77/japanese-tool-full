@@ -320,7 +320,9 @@ async function toggleParagraphTranslation(){
 async function toggleReaderSmartSegmentation(){
   const input = document.getElementById('useKuromoji');
   if(!input) return;
-  input.checked = !input.checked;
+  const retryFailedAttempt = input.checked && TOKENIZER_LAST_ATTEMPT_FAILED;
+  if(!retryFailedAttempt) input.checked = !input.checked;
+  TOKENIZER_LAST_ATTEMPT_FAILED = false;
   document.getElementById('rubyToggleBtn')?.classList.toggle('is-active', input.checked);
   if(input.checked){
     startTokenizerProgress();
@@ -1100,6 +1102,7 @@ let LOCAL_KUROMOJI_PREWARM_TIMER = 0;
 let TOKENIZER_STATUS_HIDE_TIMER = 0;
 let TOKENIZER_PROGRESS_TIMERS = [];
 let LOCAL_KUROMOJI_RENDER_GENERATION = 0;
+let TOKENIZER_LAST_ATTEMPT_FAILED = false;
 let SOURCE_ANALYSIS_GENERATION = 0;
 window.KUROMOJI_TOKEN_CACHE = [];
 let RUBY_OVERRIDES = {};
@@ -2246,14 +2249,11 @@ function finishTokenizerProgress(message, state = 'ready'){
   setTokenizerStatus(message, state, state === 'ready' ? {autoHideMs:6000} : {});
 }
 
-function showFallbackNotice(){
-  const out = document.getElementById('output');
-  if(!out || out.querySelector('.fallback-notice')) return;
-  const notice = document.createElement('div');
-  notice.className = 'fallback-notice';
-  notice.style.cssText = 'background:var(--danger-soft);border:1px solid rgba(200,72,67,.28);color:var(--danger);padding:8px 12px;border-radius:6px;font-size:13px;margin-bottom:10px;';
-  notice.textContent = '智能分词加载失败，当前只用内置小词库标注，覆盖的词会比平时少很多。可以刷新页面重试。';
-  out.prepend(notice);
+function resetLocalKuromojiWorkerClient(){
+  LOCAL_KUROMOJI_WORKER_CLIENT?.terminate();
+  LOCAL_KUROMOJI_WORKER_CLIENT = null;
+  LOCAL_KUROMOJI_PREWARM_PROMISE = null;
+  LOCAL_KUROMOJI_PREWARM_STATE = 'idle';
 }
 
 function getLocalKuromojiWorkerClient(){
@@ -2269,17 +2269,22 @@ function getLocalKuromojiWorkerClient(){
   return LOCAL_KUROMOJI_WORKER_CLIENT;
 }
 
-async function analyzeWithLocalKuromojiWorker(raw){
-  try{
-    return await getLocalKuromojiWorkerClient().analyze(raw);
-  }catch(error){
-    console.warn('本地 Kuromoji Worker 分析失败，已退回内置词库', error);
-    LOCAL_KUROMOJI_WORKER_CLIENT?.terminate();
-    LOCAL_KUROMOJI_WORKER_CLIENT = null;
-    LOCAL_KUROMOJI_PREWARM_PROMISE = null;
-    LOCAL_KUROMOJI_PREWARM_STATE = 'idle';
-    return {ok:false, mode:'fallback', error:error?.message || String(error)};
+async function analyzeWithLocalKuromojiWorker(raw, options = {}){
+  const maxAttempts = 2;
+  let finalError = null;
+  for(let attempt = 1; attempt <= maxAttempts; attempt += 1){
+    try{
+      return await getLocalKuromojiWorkerClient().analyze(raw);
+    }catch(error){
+      finalError = error;
+      console.warn(`本地假名分析第 ${attempt} 次未完成`, error);
+      resetLocalKuromojiWorkerClient();
+      const canRetry = attempt < maxAttempts && (typeof options.canRetry !== 'function' || options.canRetry());
+      if(!canRetry) break;
+      setTokenizerStatus('首次加载未完成，正在自动重试……', 'loading');
+    }
   }
+  return {ok:false, mode:'fallback', error:finalError?.message || String(finalError || '')};
 }
 
 function rememberLocalTokenizerMetrics(metrics = {}, phase = 'analysis'){
@@ -2305,6 +2310,7 @@ function tokenizerElapsedLabel(metrics = {}){
 }
 
 function finishLocalTokenizerSuccess(result){
+  TOKENIZER_LAST_ATTEMPT_FAILED = false;
   LOCAL_KUROMOJI_PREWARM_STATE = 'ready';
   const metrics = rememberLocalTokenizerMetrics(result?.metrics || {}, 'analysis');
   const elapsedLabel = tokenizerElapsedLabel(metrics);
@@ -3584,7 +3590,10 @@ async function renderText(){
   if(useLocalKuromojiWorker){
     renderWithDictionary(raw, out, statsBar);
     if(!document.getElementById('rubyToggleBtn')?.classList.contains('is-loading')) startTokenizerProgress();
-    const workerResult = await analyzeWithLocalKuromojiWorker(raw);
+    const workerResult = await analyzeWithLocalKuromojiWorker(raw, {
+      canRetry:()=>renderGeneration === LOCAL_KUROMOJI_RENDER_GENERATION
+        && normalizeReadingInput(document.getElementById('inputText')?.value || '').trim() === raw
+    });
     const currentRaw = normalizeReadingInput(document.getElementById('inputText')?.value || '').trim();
     if(renderGeneration !== LOCAL_KUROMOJI_RENDER_GENERATION || currentRaw !== raw) return;
     if(workerResult.ok){
@@ -3596,8 +3605,8 @@ async function renderText(){
       return;
     }
     document.body.dataset.tokenizerFallback = 'true';
-    finishTokenizerProgress('假名生成没有完成，当前使用基础词库；可以稍后重试。', 'error');
-    showFallbackNotice();
+    TOKENIZER_LAST_ATTEMPT_FAILED = true;
+    finishTokenizerProgress('假名生成没有完成，请点击重新生成。', 'error');
     saveCurrentArticleToHistory();
     return;
   }
@@ -3973,6 +3982,19 @@ function dictionaryEntryFor(word){
   return DICT[word] || FALLBACK_DICTIONARY[word] || null;
 }
 
+function isAuxiliaryMasuToken(token = {}){
+  const surface = String(token.surface_form || '');
+  const part = [token.pos, token.pos_detail_1, token.conjugated_type, token.conjugated_form]
+    .filter(value=>value && value !== '*')
+    .join('・');
+  return surface === 'ます' && /助動詞|助动词/.test(part) && /マス|ます|礼貌/.test(part);
+}
+
+function shouldMergePoliteVerbTokens(parts){
+  if(parts.length !== 2 || !isAuxiliaryMasuToken(parts[1])) return false;
+  return /動詞|动词/.test(String(parts[0]?.pos || ''));
+}
+
 function mergeDictionaryCompounds(rawTokens){
   const merged = [];
   for(let i = 0; i < rawTokens.length; i += 1){
@@ -3982,7 +4004,7 @@ function mergeDictionaryCompounds(rawTokens){
       const parts = rawTokens.slice(i, i + size);
       if(parts.some(token => !token.surface_form || /^\s+$/.test(token.surface_form))) continue;
       const surface = parts.map(token => token.surface_form).join('');
-      if(dictionaryEntryFor(surface)){
+      if(dictionaryEntryFor(surface) || shouldMergePoliteVerbTokens(parts)){
         compound = {
           ...parts[0],
           surface_form: surface,
@@ -4001,6 +4023,21 @@ function mergeDictionaryCompounds(rawTokens){
 function getTokenInfo(token){
   const surface = token.surface_form;
   const base = token.basic_form && token.basic_form !== '*' ? token.basic_form : surface;
+  if(isAuxiliaryMasuToken(token)){
+    return {
+      reading:'ます',
+      level:'',
+      levelSource:'',
+      pos:'助动词',
+      meaning:'礼貌助动词，用于构成动词的礼貌表达',
+      meaningLanguage:'',
+      meaningSource:'',
+      dictWord:surface,
+      baseForm:base,
+      lookupWord:surface,
+      source:'grammar-function'
+    };
+  }
   const dictInfo = dictionaryEntryFor(surface) || dictionaryEntryFor(base);
   if(dictInfo){
     const dictWord = dictionaryEntryFor(surface) ? surface : base;
@@ -5566,6 +5603,7 @@ function setPreferredTtsRate(value){
   safeStorage.setItem('reading_tts_rate', String(normalized));
   const select = document.getElementById('ttsRateSelect');
   if(select) select.value = String(normalized);
+  window.syncTtsRateMenu?.();
   stopTts();
   showToast('日语朗读速度已更新。', 'success');
 }
@@ -5575,6 +5613,7 @@ function initTtsSettings(){
   if(select){
     const saved = Number(safeStorage.getItem('reading_tts_rate'));
     select.value = String(Number.isFinite(saved) && saved >= 0.6 && saved <= 1 ? saved : DEFAULT_TTS_RATE);
+    window.syncTtsRateMenu?.();
   }
 }
 
@@ -5819,6 +5858,7 @@ function populateVoiceOptions(){
     const best = andrew || hattori || recommended[0] || allVoices[0];
     if(best){ select.value = best.name; safeStorage.setItem('reading_tts_voice', best.name); }
   }
+  window.syncTtsVoiceMenu?.();
 }
 
 function setPreferredVoice(name, notify = true){

@@ -4,7 +4,7 @@
 - 当前分支：`stabilize/safari-dictionary-20260715`
 - 起点提交：`main / b84b3cd5a345132fd27db90efa295f8791049f36`
 - 正式线上地址：`https://yomeru.japanese-hub.com`
-- 当前 Preview：`https://japanese-tool-diueoo9o6-zrq-projects1.vercel.app`
+- 当前 Preview：`https://japanese-tool-6uuktjcym-zrq-projects1.vercel.app`
 - 公开 MVP：仅粘贴日语文本；不恢复 PDF 公开入口
 - 当前真实状态：Mac Safari 功能可用但首次假名等待数分钟；iPhone Safari 核心流 PASS
 - 当前 P0：Safari 首次加载反馈与性能；词典覆盖不足
@@ -28,3 +28,12 @@
 - Preview：`https://japanese-tool-6uuktjcym-zrq-projects1.vercel.app`；Deployment ID `dpl_5rmgnmSGekWbFk5HAN2HDSwAN66t`；target=`preview`；status=`Ready`。
 - Production：未部署、未修改 alias/域名，`https://yomeru.japanese-hub.com` 保持不变。
 - 当前结论：`HOLD`；下一步仅为第二轮 Mac/iPhone Safari 真机验收。
+
+## 2026-07-16 第二轮真实设备验收后补丁
+
+- Mac Safari 与 iPhone Safari 核心功能验收：PASS。
+- 已确认：离线中文优先、JMdict 英文回退、JLPT 参考等级、查询中自动收藏、生词本、假名、单词/全文朗读、移动端布局和内部字段保护。
+- Mac Safari 冷启动事实：第一次假名生成曾失败一次，第二次重试成功；核心功能通过，但首次冷启动稳定性仍需补丁。
+- 当前本地补丁：`UI-COPY-READING-001`、`SAFARI-COLD-START-001`、`UI-TTS-SETTINGS-001`、`DICT-AUXILIARY-MASU-001`。
+- Production：未部署、未修改 alias/域名，`https://yomeru.japanese-hub.com` 保持不变。
+- 当前结论：`HOLD`；四项补丁通过完整门禁后只部署新的 Preview，再由 Mac/iPhone Safari 定向复测。
