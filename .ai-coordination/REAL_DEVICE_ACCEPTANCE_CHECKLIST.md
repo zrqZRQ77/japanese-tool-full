@@ -129,3 +129,20 @@ iOS：`26.4.2`
 ### 发布结论
 
 第二轮中文释义、JMdict 回退、JLPT 参考等级、生词本、朗读、假名和移动端核心功能已通过真实设备验收。完成上述四项补丁并生成新 Preview 前，不部署 Production、不修改正式域名或 Production alias、不合并到 `main`。发布状态：`HOLD`。
+
+## 验收后补丁 Preview 定向复测
+
+- Preview：`https://japanese-tool-o9vdyyfbm-zrq-projects1.vercel.app`
+- Deployment ID：`dpl_5FFrbuh8CVs7YGLo2sKzhmYCGD7Q`
+- 候选提交：`f36e73d63c23`
+- 候选 SHA-256：`68f9616849d578d63b5d16d496dc082c7cc40f9e08246bba991fcb1c9a9b4403`
+- 状态：`Ready / preview`
+
+只需定向复测：
+
+1. Mac Safari 清除该 Preview 网站数据后首次生成假名，确认首次异常会自动重试，页面不先显示红色错误；若两次均失败，只显示“假名生成没有完成，请点击重新生成。”，点击后可手动重试。
+2. 点击上下文中的 `ます`，确认显示“礼貌助动词，用于构成动词的礼貌表达”、助动词、暂无参考等级，且没有收藏按钮；同时抽查 `あります`、`開きます`、`起きます` 保持整词。
+3. 阅读完成区确认新文案为“点击正文中的词语，可以查看读音、释义并加入生词本。”。
+4. Mac/iPhone 设置页确认速度与音色下拉框显示当前实际值；Mac 与试听按钮同行，iPhone 无横向溢出。
+
+Production 仍为 `dpl_HYpzrVrM4KGnKNfHjKVqDokkjGfw`，未修改正式域名或 Production alias。发布状态继续 `HOLD`。

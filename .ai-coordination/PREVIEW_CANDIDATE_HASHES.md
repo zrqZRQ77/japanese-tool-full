@@ -80,3 +80,27 @@
 - Deployment status: `Ready`
 - Production action: `none`; Production deployment remains unchanged.
 - Release status: `HOLD — second-round Mac/iPhone Safari real-device acceptance remains open`
+
+## Post-acceptance patch candidate — 2026-07-16
+
+- Candidate ID: `preview-candidate-20260716-round-03-f36e73d-68f96168`
+- Branch: `stabilize/safari-dictionary-20260715`
+- Patch commit: `f36e73d63c23`
+- Cache version: `20260716-04`
+- Kuromoji asset version: `20260714-01` (unchanged)
+- Dist file count: `146`
+- Vercel static file count: `146`
+- Missing from Vercel static: `[]`
+- Extra in Vercel static: `[]`
+- SHA-256 mismatches: `[]`
+- Candidate aggregate SHA-256: `68f9616849d578d63b5d16d496dc082c7cc40f9e08246bba991fcb1c9a9b4403`
+- Comparison result: `PASS — relative paths and every file SHA-256 are identical`
+- Functional audit: `frontend/audit-screenshots/2026-07-16T16-03-50-298Z/ui-audit-report.md`
+- Responsive audit: `frontend/audit-screenshots/2026-07-16T16-04-44-128Z/ui-audit-report.md`
+- Preview URL: `https://japanese-tool-o9vdyyfbm-zrq-projects1.vercel.app`
+- Deployment ID: `dpl_5FFrbuh8CVs7YGLo2sKzhmYCGD7Q`
+- Deployment target: `preview`
+- Deployment status: `Ready`
+- Direct HTTP resource probe: `PENDING — current execution network timed out; Vercel control-plane inspect succeeded`
+- Production action: `none`; Production remains `dpl_HYpzrVrM4KGnKNfHjKVqDokkjGfw` and `Ready`.
+- Release status: `HOLD — waiting for targeted Mac/iPhone Safari retest of the four post-acceptance patches`
