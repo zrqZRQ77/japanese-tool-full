@@ -40,14 +40,14 @@ iOS：`26.4.2`
    - 收藏结果没有重复；
    - 读音和释义与详情一致。
 
-记录：
+记录（用户于 2026-07-16 完成真实 iPhone Safari 复测）：
 
-- 单词朗读：PASS / FAIL
-- 整篇文章朗读：PASS / FAIL
-- 查询中自动收藏：PASS / FAIL
-- 查询失败后收藏：PASS / FAIL
-- 来源与等级文案：PASS / FAIL
-- 备注或截图：
+- 单词朗读：PASS
+- 整篇文章朗读：PASS
+- 查询中自动收藏：PASS
+- 查询失败后收藏：自动化 PASS，真实设备本轮未单独反馈
+- 来源与等级文案：PASS
+- 备注：用户确认以上四项实际表现均正常。
 
 ## Mac Safari 补充复测
 
@@ -67,4 +67,4 @@ iOS：`26.4.2`
 
 ## 发布门槛
 
-真实 iPhone Safari 朗读与自动收藏完成复测前，继续保持 `HOLD`。不得部署 Production、修改正式域名、修改 Production alias 或合并到 `main`。
+第一轮 iPhone Safari 真实设备验收已通过。当前继续保持 `HOLD`，原因是第二轮中文释义覆盖与 JLPT 参考等级数据尚未完成。不得部署 Production、修改正式域名、修改 Production alias 或合并到 `main`。

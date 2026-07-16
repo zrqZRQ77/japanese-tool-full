@@ -39,6 +39,14 @@
 - Target: `preview`
 - Deployment status: `Ready`
 
+## Real-device acceptance
+
+- iPhone Safari single-word speech: PASS
+- iPhone Safari full-article continuous speech: PASS
+- Save requested during dictionary lookup completes automatically: PASS
+- Visible source and reference-level wording: PASS
+- First-round real-device acceptance: PASS
+
 ## Release guardrails
 
 - Deployment target: Preview only
@@ -46,4 +54,4 @@
 - Production deployment ID: `dpl_HYpzrVrM4KGnKNfHjKVqDokkjGfw`
 - Production status: `Ready` and unchanged
 - Production action: none
-- Release status: `HOLD`
+- Release status: `HOLD` — waiting for the second-round Chinese-definition and JLPT reference-data work
