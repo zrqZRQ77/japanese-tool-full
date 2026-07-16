@@ -3618,7 +3618,7 @@ function fallbackTokenInfo(surface){
   const override = RUBY_OVERRIDES[surface];
   return {
     reading:override && !override.hidden ? override.reading : '',
-    level:'kuromoji',
+    level:'',
     pos:'未收录词',
     meaning:'本地词库暂未收录，可以先收藏并补充读音或释义。',
     dictWord:surface,
@@ -3763,7 +3763,7 @@ function tokenSnapshotValue(surface, info){
     surface,
     reading:info?.reading || '',
     meaning:info?.meaning || '',
-    level:info?.level || 'kuromoji',
+    level:normalizeVisibleVocabLevel(info?.level),
     pos:info?.pos || '未收录词'
   })).replace(/'/g, '%27');
 }
@@ -3823,7 +3823,7 @@ function getTokenInfo(token){
   const pos = [token.pos, token.pos_detail_1].filter(v=>v && v !== '*').join('・') || '已识别词';
   return {
     reading,
-    level:'kuromoji',
+    level:'',
     pos,
     meaning:'暂无释义，可稍后补充。',
     dictWord: surface,
@@ -3866,7 +3866,8 @@ function renderWithKuromojiTokens(raw, tokens, out, statsBar, mode = 'kuromoji')
     if(/^[。、！？「」『』（）\(\)、,.!?]+$/.test(surface)) return escapeHtml(surface);
 
     const info = getTokenInfo(token);
-    counts[info.level] = (counts[info.level] || 0) + 1;
+    const analysisBucket = internalTokenAnalysisBucket(info);
+    counts[analysisBucket] = (counts[analysisBucket] || 0) + 1;
     tokenChars += surface.length;
     if(info.source === 'DICT') dictChars += surface.length;
 
@@ -3874,9 +3875,9 @@ function renderWithKuromojiTokens(raw, tokens, out, statsBar, mode = 'kuromoji')
       ? 'w-trap'
       : info.level === 'particle'
         ? 'w-particle'
-        : info.level === 'kuromoji'
+        : info.source === 'kuromoji' || info.source === 'fallback'
           ? 'w-kuromoji'
-          : 'w-' + info.level.toLowerCase();
+          : 'w-' + (normalizeVisibleVocabLevel(info.level) || 'ungraded').toLowerCase();
     window.KUROMOJI_TOKEN_CACHE[i] = { surface, info, token };
     return renderWordNode(surface, info.reading, cls, {"data-token-id":i}, `showTokenDetail(${i}, this)`);
   }).join('');
@@ -4693,7 +4694,22 @@ function chunkRows(rows, rowsPerPage){
   return chunks.length ? chunks : [[]];
 }
 
-const LEVEL_LABEL = {N5:'N5',N4:'N4',N3:'N3',particle:'助词',trap:'易误解词',kuromoji:'已识别词'};
+function normalizeVisibleVocabLevel(value){
+  const normalized = String(value || '').trim().toUpperCase();
+  return /^N[1-5]$/.test(normalized) ? normalized : '';
+}
+
+function formatVisibleVocabLevel(value){
+  return normalizeVisibleVocabLevel(value) || '未分级';
+}
+
+function internalTokenAnalysisBucket(info = {}){
+  const jlptLevel = normalizeVisibleVocabLevel(info.level);
+  if(jlptLevel) return jlptLevel;
+  if(info.level === 'particle' || info.level === 'trap') return info.level;
+  if(info.source === 'kuromoji' || info.source === 'fallback') return 'kuromoji';
+  return 'ungraded';
+}
 const LEVEL_COLOR = {N5:'var(--n5)',N4:'var(--n4)',N3:'var(--n3)',particle:'var(--particle)',trap:'var(--trap)',kuromoji:'var(--km)'};
 const LEVEL_BG = {N5:'var(--n5-bg)',N4:'var(--n4-bg)',N3:'var(--n3-bg)',particle:'var(--particle-bg)',trap:'var(--trap-bg)',kuromoji:'var(--km-bg)'};
 
@@ -5037,7 +5053,7 @@ function showDetail(word, el){
   area.innerHTML = `
     <div class="detail-box detail-selected-box">
       ${detailWordHeaderHtml(word, addAction, `speakEncodedJapanese('${encodeURIComponent(word)}', this, false)`, detailAction.type)}
-      ${detailMetaHtml(word, info.reading, LEVEL_LABEL[info.level], info.pos)}
+      ${detailMetaHtml(word, info.reading, formatVisibleVocabLevel(info.level), info.pos)}
       ${detailDefinitionHtml(detailAction.point ? escapeHtml(detailAction.point.explain) : escapeHtml(info.meaning))}
     </div>
   `;
@@ -5061,7 +5077,7 @@ function showTokenDetail(tokenId, el){
   area.innerHTML = `
     <div class="detail-box detail-selected-box">
       ${detailWordHeaderHtml(surface, addAction, `speakEncodedJapanese('${encodeURIComponent(surface)}', this, false)`, detailAction.type)}
-      ${detailMetaHtml(surface, info.reading, LEVEL_LABEL[info.level], info.pos, token)}
+      ${detailMetaHtml(surface, info.reading, formatVisibleVocabLevel(info.level), info.pos, token)}
       ${detailDefinitionHtml(detailAction.point ? escapeHtml(detailAction.point.explain) : (needsLookup ? '正在查询词典……' : escapeHtml(info.meaning)), `tokenMeaning-${tokenId}`)}
     </div>
   `;
@@ -6520,7 +6536,7 @@ function normalizeVocabItem(item = {}){
     word:String(item.word || '').trim(),
     reading:String(item.reading || '').trim(),
     meaning:displayVocabMeaning(item.meaning),
-    level:String(item.level || 'N5').trim() || 'N5',
+    level:normalizeVisibleVocabLevel(item.level),
     pos:String(item.pos || '自选内容').trim() || '自选内容',
     sourceTitle:String(item.sourceTitle || '').trim(),
     sourceUrl:String(item.sourceUrl || '').trim(),
@@ -6608,7 +6624,7 @@ function displayVocabMeaning(meaning, fallback = '释义待补充'){
   return String(meaning || '').trim() || fallback;
 }
 
-function addCustomToVocab(word, reading = '', meaning = '用户添加', level = 'kuromoji', pos = '自选内容'){
+function addCustomToVocab(word, reading = '', meaning = '用户添加', level = '', pos = '自选内容'){
   const normalized = String(word || '').trim();
   if(!normalized) return false;
   if(vocabData.find(v=>vocabIdentityKey(v.word) === vocabIdentityKey(normalized))){
@@ -6690,10 +6706,10 @@ function filteredVocabForPage(){
   return vocabData.filter(v=>{
     if(!vocabMatchesFilter(v, VOCAB_FILTER, now)) return false;
     if(statusFilter !== 'all' && vocabMasteryKey(v, Number(v?.dueAt || 0) <= now) !== statusFilter) return false;
-    if(jlptFilter !== 'all' && String(v.level || '') !== jlptFilter) return false;
+    if(jlptFilter !== 'all' && normalizeVisibleVocabLevel(v.level) !== jlptFilter) return false;
     if(sourceFilter !== 'all' && encodeURIComponent(vocabSourceLabel(v)) !== sourceFilter) return false;
     if(!keyword) return true;
-    const haystack = `${v.word || ''} ${v.reading || ''} ${v.meaning || ''} ${v.pos || ''} ${v.level || ''} ${vocabSourceLabel(v)}`.toLowerCase();
+    const haystack = `${v.word || ''} ${v.reading || ''} ${v.meaning || ''} ${v.pos || ''} ${formatVisibleVocabLevel(v.level)} ${vocabSourceLabel(v)}`.toLowerCase();
     return haystack.includes(keyword);
   });
 }
@@ -6809,7 +6825,9 @@ function vocabListMarkup(items){
         <span class="vocab-meaning${meaningTone}">${escapeHtml(meaning)}</span>
       </div>
       <div class="vocab-cell vocab-cell-level">
-        ${v.level ? `<span class="vocab-level-chip level-${escapeHtml(String(v.level).toLowerCase())}">${escapeHtml(v.level)}</span>` : '<span class="vocab-level-chip muted">未分级</span>'}
+        ${normalizeVisibleVocabLevel(v.level)
+          ? `<span class="vocab-level-chip level-${escapeHtml(normalizeVisibleVocabLevel(v.level).toLowerCase())}">${escapeHtml(formatVisibleVocabLevel(v.level))}</span>`
+          : `<span class="vocab-level-chip muted">${escapeHtml(formatVisibleVocabLevel(v.level))}</span>`}
       </div>
       <div class="vocab-cell vocab-cell-mastery">
         <span class="vocab-mastery ${mastery.tone}">${mastery.label}</span>
@@ -7087,7 +7105,7 @@ function exportVocabCsvFile() {
       v.reading,
       displayVocabMeaning(v.meaning),
       v.pos,
-      v.level,
+      formatVisibleVocabLevel(v.level),
       vocabSourceLabel(v),
       v.sourceUrl,
       mastery.label,
@@ -7111,7 +7129,7 @@ function exportAnkiTsv(){
     clean(v.reading),
     clean(displayVocabMeaning(v.meaning)),
     clean(v.pos),
-    clean(v.level),
+    clean(formatVisibleVocabLevel(v.level)),
     clean(vocabSourceLabel(v)),
     clean(v.sourceUrl || '')
   ].join('\t'));

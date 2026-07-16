@@ -274,6 +274,56 @@ async function runAudit() {
     return state('state: initial');
   });
 
+  await step('legacy vocabulary levels migrate without exposing internal metadata', async () => {
+    const legacyItems = [
+      {word:'旧語一', reading:'きゅうごいち', meaning:'旧数据一', level:'kuromoji'},
+      {word:'旧語二', reading:'きゅうごに', meaning:'旧数据二', level:'worker'},
+      {word:'旧語三', reading:'きゅうごさん', meaning:'旧数据三', level:'tokenizer'},
+      {word:'旧語四', reading:'きゅうごよん', meaning:'旧数据四', level:'fallback'},
+      {word:'既知語', reading:'きちご', meaning:'合法等级', level:'N3'}
+    ];
+    await page.evaluate(items => localStorage.setItem('reading_vocab_list', JSON.stringify(items)), legacyItems);
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.waitForFunction(() => typeof getAllVocab === 'function' && getAllVocab().length === 5, null, {timeout:5000});
+    await page.evaluate(() => switchWorkspace('vocab'));
+    const migration = await page.evaluate(() => {
+      const downloads = {};
+      const originalDownload = window.downloadTextFile;
+      window.downloadTextFile = (filename, content) => { downloads[filename] = String(content); };
+      exportVocabCsvFile();
+      exportAnkiTsv();
+      window.downloadTextFile = originalDownload;
+      reviewAllVocab();
+      flipCard();
+      return {
+        stored:JSON.parse(localStorage.getItem('reading_vocab_list') || '[]').map(item => ({word:item.word, level:item.level})),
+        vocabText:document.querySelector('#vocabListPage')?.innerText || '',
+        flashText:document.querySelector('#flashArea')?.innerText || '',
+        visibleText:document.body.innerText || '',
+        downloads
+      };
+    });
+    const forbidden = /kuromoji|worker|tokenizer|fallback/i;
+    const migratedInternal = migration.stored.filter(item => /^旧語/.test(item.word));
+    const preservedJlpt = migration.stored.find(item => item.word === '既知語');
+    const exportText = Object.values(migration.downloads).join('\n');
+    if(migratedInternal.length !== 4 || migratedInternal.some(item => item.level !== '')){
+      throw new Error(`Legacy internal levels were not migrated: ${JSON.stringify(migration.stored)}.`);
+    }
+    if(preservedJlpt?.level !== 'N3') throw new Error(`Valid JLPT level was damaged: ${JSON.stringify(preservedJlpt)}.`);
+    if((migration.vocabText.match(/未分级/g) || []).length < 4 || !/N3/.test(migration.vocabText)){
+      throw new Error(`Vocabulary page did not render migrated levels correctly: ${JSON.stringify(migration.vocabText)}.`);
+    }
+    if(forbidden.test(migration.vocabText) || forbidden.test(migration.flashText) || forbidden.test(exportText) || forbidden.test(migration.visibleText)){
+      throw new Error(`Internal metadata is visible after migration: ${JSON.stringify(migration)}.`);
+    }
+    if(!/未分级/.test(exportText)) throw new Error(`Exports did not format unknown levels as ungraded: ${JSON.stringify(migration.downloads)}.`);
+    await page.evaluate(() => localStorage.clear());
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.waitForLoadState('networkidle', {timeout:8000}).catch(() => {});
+    return migration;
+  });
+
   await step('homepage keeps settings out of the primary task', async () => {
     if (await page.locator('.mvp-settings-button').isVisible()) throw new Error('Legacy floating settings entry is still visible.');
   });
@@ -397,6 +447,9 @@ async function runAudit() {
     if(!/JMdict \/ EDRDG/.test(jmdictDetail || '')){
       throw new Error(`Offline dictionary attribution is missing: ${JSON.stringify(jmdictDetail)}.`);
     }
+    if(!/未分级/.test(jmdictDetail || '') || /kuromoji|worker|tokenizer|fallback/i.test(jmdictDetail || '')){
+      throw new Error(`Word detail exposed internal metadata or missed the ungraded label: ${JSON.stringify(jmdictDetail)}.`);
+    }
     if(workerState.exportBreaks !== 2 || workerState.exportRows.length > 4 || workerState.exportRows.some(length => length === 0)){
       throw new Error(`PPT export introduced layout whitespace or unnecessary pages: ${JSON.stringify(workerState)}.`);
     }
@@ -423,6 +476,19 @@ async function runAudit() {
     if(savedWorkerWord?.reading !== 'みつびし'){
       throw new Error(`Worker word was not saved with its reading: ${JSON.stringify(savedWorkerWord)}.`);
     }
+    if(savedWorkerWord?.level !== ''){
+      throw new Error(`Worker word retained internal level metadata: ${JSON.stringify(savedWorkerWord)}.`);
+    }
+    const savedWorkerRow = await page.evaluate(() => {
+      switchWorkspace('vocab');
+      const row = [...document.querySelectorAll('#vocabListPage .vocab-table-row')]
+        .find(item => /三菱/.test(item.textContent || ''));
+      return row?.innerText || '';
+    });
+    if(!/未分级/.test(savedWorkerRow) || /kuromoji|worker|tokenizer|fallback/i.test(savedWorkerRow)){
+      throw new Error(`Saved Worker word is not user-safe in the vocabulary page: ${JSON.stringify(savedWorkerRow)}.`);
+    }
+    await page.evaluate(() => switchWorkspace('reading'));
     const fallbackState = await page.evaluate(async text => {
       LOCAL_KUROMOJI_WORKER_CLIENT?.terminate();
       LOCAL_KUROMOJI_WORKER_CLIENT = KuromojiWorkerClient.createClient({

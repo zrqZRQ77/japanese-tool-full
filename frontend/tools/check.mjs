@@ -34,6 +34,11 @@ function assertCheck(condition, message) {
   process.exitCode = 1;
 }
 
+
+function simpleFunctionSource(source, name) {
+  return source.match(new RegExp(`function\\s+${name}\\s*\\([^)]*\\)\\s*\\{[\\s\\S]*?\\n\\}`))?.[0] || '';
+}
+
 function cacheVersions(indexHtml) {
   const css = indexHtml.match(/styles\.css\?v=([^"']+)/)?.[1] || '';
   const designSystem = indexHtml.match(/design-system\.css\?v=([^"']+)/)?.[1] || '';
@@ -90,6 +95,16 @@ const requiredKuromojiPocFiles = [
   'vendor/kuromoji/LICENSE-2.0.txt'
 ];
 const requiredFunctions = ['switchWorkspace', 'addCustomGrammarNote', 'removeGrammarNote', 'renderGrammarBook'];
+const levelHelpersSource = [
+  simpleFunctionSource(appJs, 'normalizeVisibleVocabLevel'),
+  simpleFunctionSource(appJs, 'formatVisibleVocabLevel')
+].join('\n');
+let levelHelpers = null;
+try {
+  levelHelpers = Function(`${levelHelpersSource}; return { normalizeVisibleVocabLevel, formatVisibleVocabLevel };`)();
+} catch {}
+const internalLevelSamples = ['kuromoji', 'worker', 'tokenizer', 'fallback', 'particle', 'trap', '已识别词', '待整理'];
+const validJlptSamples = ['N5', 'N4', 'N3', 'N2', 'N1'];
 
 run('app.js syntax', 'node', ['--check', 'app.js']);
 run('git whitespace diff', 'git', ['diff', '--check'], { optional: true });
@@ -99,6 +114,31 @@ assertCheck(!/(?:上传 PDF|选择的 PDF|pdfModeSelect|pdfCleanupSelect|排版�
 assertCheck(requiredFiles.every(file => existsSync(resolve(FRONTEND_DIR, file))), 'required frontend files exist');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
+assertCheck(
+  levelHelpers
+    && validJlptSamples.every(level => levelHelpers.normalizeVisibleVocabLevel(level) === level)
+    && internalLevelSamples.every(level => levelHelpers.normalizeVisibleVocabLevel(level) === '')
+    && internalLevelSamples.every(level => levelHelpers.formatVisibleVocabLevel(level) === '未分级'),
+  'visible vocabulary level formatter preserves JLPT values and hides internal metadata'
+);
+assertCheck(
+  !/level\s*:\s*['"](?:kuromoji|worker|tokenizer|fallback)['"]/.test(appJs)
+    && /function fallbackTokenInfo\(surface\)[\s\S]*?level:''[\s\S]*?source:'fallback'/.test(appJs)
+    && /function getTokenInfo\(token\)[\s\S]*?level:''[\s\S]*?source:'kuromoji'/.test(appJs)
+    && /function tokenSnapshotValue\(surface, info\)[\s\S]*?level:normalizeVisibleVocabLevel\(info\?\.level\)/.test(appJs),
+  'tokenizer metadata stays in source fields instead of vocabulary level fields'
+);
+assertCheck(
+  /function normalizeVocabItem\(item = \{\}\)[\s\S]*?level:normalizeVisibleVocabLevel\(item\.level\)/.test(appJs)
+    && /async function loadVocab\(\)[\s\S]*?const rawSnapshot = JSON\.stringify\(vocabData\);[\s\S]*?if\(JSON\.stringify\(vocabData\) !== rawSnapshot\) saveVocab\(\)/.test(appJs)
+    && /function addCustomToVocab\(word, reading = '', meaning = '用户添加', level = ''/.test(appJs),
+  'legacy vocabulary levels migrate to the ungraded state and persist after loading'
+);
+assertCheck(
+  /function exportVocabCsvFile\(\)[\s\S]*?formatVisibleVocabLevel\(v\.level\)/.test(appJs)
+    && /function exportAnkiTsv\(\)[\s\S]*?formatVisibleVocabLevel\(v\.level\)/.test(appJs),
+  'CSV and Anki exports use user-visible vocabulary levels'
+);
 assertCheck(
   globalSearchSource.includes("label:'开始阅读'")
     && globalSearchSource.includes("label:'整理生词本'")
