@@ -81,6 +81,14 @@ try {
   await firstUnknownWord.click();
   await page.waitForFunction(() => document.body.dataset['to' + 'kenizerMode'] === 'kuromoji-worker', null, { timeout: 60000 });
 
+  await page.evaluate(() => {
+    const originalLookup = lookupJmdictCommon;
+    window.__restoreDictionaryLookup = ()=>{ lookupJmdictCommon = originalLookup; delete window.__restoreDictionaryLookup; };
+    lookupJmdictCommon = async candidates => {
+      await new Promise(resolve=>setTimeout(resolve, 500));
+      return originalLookup(candidates);
+    };
+  });
   const wordNode = page.locator('#output ruby.w-kuromoji').filter({ hasText: 'グループ' }).first();
   await wordNode.waitFor({ state: 'visible', timeout: 15000 });
   const selectedWord = await wordNode.evaluate(node => node.firstChild?.textContent?.trim() || '');
@@ -88,7 +96,11 @@ try {
 
   const saveButton = page.locator('#detailArea .add-vocab-tool');
   await saveButton.waitFor({ state: 'visible', timeout: 3000 });
-  assert.equal(await saveButton.isDisabled(), true, 'Save must be disabled while the offline shard is loading.');
+  assert.equal(await saveButton.isDisabled(), false, 'Save must remain clickable while the offline shard is loading.');
+  await saveButton.click();
+  assert.equal(await saveButton.isDisabled(), true, 'Queued save must become disabled after the user requests automatic saving.');
+  assert.equal(await saveButton.getAttribute('aria-busy'), 'true');
+  assert.match((await saveButton.getAttribute('aria-label')) || '', /自动加入生词本/);
 
   const detail = page.locator('#detailArea');
   try {
@@ -116,10 +128,15 @@ try {
     const shardRequests = requests.filter(url => /data\/jmdict-common/.test(url));
     throw new Error(`Worker dictionary lookup did not resolve: ${JSON.stringify({ debugState, shardRequests, original:error.message })}`);
   }
-  assert.match((await detail.textContent()) || '', /JMdict \/ EDRDG/);
-  assert.equal(await saveButton.isDisabled(), false, 'Save must be enabled after the lookup finishes.');
+  await page.waitForFunction(word => {
+    const items = JSON.parse(localStorage.getItem('reading_vocab_list') || '[]');
+    return items.some(item => item.word === word);
+  }, selectedWord, {timeout:5000});
+  await page.evaluate(() => window.__restoreDictionaryLookup?.());
+  assert.match((await detail.textContent()) || '', /词典来源：JMdict/);
+  assert.equal(await saveButton.isDisabled(), true, 'Automatically saved word must not be saved twice.');
+  assert.match((await saveButton.getAttribute('aria-label')) || '', /已加入生词本/);
 
-  await saveButton.click();
   const saved = await page.evaluate(word => {
     const items = JSON.parse(localStorage.getItem('reading_vocab_list') || '[]');
     return items.find(item => item.word === word) || null;
@@ -130,7 +147,7 @@ try {
   await wordNode.click();
   const secondDetail = (await detail.textContent()) || '';
   assert.match(secondDetail, /英文释义/);
-  assert.match(secondDetail, /JMdict \/ EDRDG/);
+  assert.match(secondDetail, /词典来源：JMdict/);
 
   assert.equal(requests.some(url => /jisho\.org|api\/v1\/search\/words/i.test(url)), false, 'Online dictionary API request detected.');
   process.stdout.write('JMdict browser flow passed: Worker lookup, saved reading/meaning, cached attribution, no online API.\n');

@@ -118,7 +118,7 @@ assertCheck(
   levelHelpers
     && validJlptSamples.every(level => levelHelpers.normalizeVisibleVocabLevel(level) === level)
     && internalLevelSamples.every(level => levelHelpers.normalizeVisibleVocabLevel(level) === '')
-    && internalLevelSamples.every(level => levelHelpers.formatVisibleVocabLevel(level) === '未分级'),
+    && internalLevelSamples.every(level => levelHelpers.formatVisibleVocabLevel(level) === '暂无参考等级'),
   'visible vocabulary level formatter preserves JLPT values and hides internal metadata'
 );
 assertCheck(
@@ -138,6 +138,19 @@ assertCheck(
   /function exportVocabCsvFile\(\)[\s\S]*?formatVisibleVocabLevel\(v\.level\)/.test(appJs)
     && /function exportAnkiTsv\(\)[\s\S]*?formatVisibleVocabLevel\(v\.level\)/.test(appJs),
   'CSV and Anki exports use user-visible vocabulary levels'
+);
+assertCheck(
+  /function requestTokenVocabSave\(tokenId\)[\s\S]*?info\.pendingVocabSave = true[\s\S]*?释义加载完成后会自动加入生词本/.test(appJs)
+    && /function finishPendingTokenVocabSave\(tokenId, tokenRecord\)[\s\S]*?requestTokenVocabSave\(tokenId\)/.test(appJs)
+    && /async function autoLookupTokenMeaning[\s\S]*?info\.lookupState = 'ready'[\s\S]*?finishPendingTokenVocabSave\(tokenId, tokenRecord\)/.test(appJs)
+    && /info\.meaning = '释义待补充'[\s\S]*?info\.lookupState = 'failed'/.test(appJs),
+  'dictionary lookup supports queued saving and safe failed-lookup placeholders'
+);
+assertCheck(
+  /词典来源：<a[\s\S]*?>JMdict<\/a>/.test(appJs)
+    && /aria-label="JMdict，由 EDRDG 维护"/.test(appJs)
+    && !/>JMdict \/ EDRDG<\//.test(appJs),
+  'dictionary attribution stays available without dominating the word detail'
 );
 assertCheck(
   globalSearchSource.includes("label:'开始阅读'")
@@ -244,9 +257,12 @@ assertCheck(
 );
 assertCheck(
   appJs.includes('const DEFAULT_TTS_RATE = 0.94;')
-    && appJs.includes('utterance.pitch = 0.98;')
-    && appJs.includes('/AndrewMultilingual/i'),
-  'TTS prefers an available Andrew Multilingual voice with the requested browser-safe tuning'
+    && appJs.includes('let CURRENT_TTS_UTTERANCE = null;')
+    && appJs.includes('function splitJapaneseSpeechChunks')
+    && /CURRENT_TTS_UTTERANCE = utterance[\s\S]*?window\.speechSynthesis\.speak\(utterance\)/.test(appJs)
+    && /function sortedJapaneseVoices\(strictJapanese = isIOSWebKit\(\)\)[\s\S]*?voices\.filter\(voice=>\/\^ja/.test(appJs)
+    && /setTimeout\(\(\)=>speakCurrentTtsChunk\(session, true\), 80\)/.test(appJs),
+  'TTS retains utterances, chunks long text, prefers Japanese voices on iOS, and retries with the system voice'
 );
 assertCheck(hardcodedFontSizes.length === 0, `no hardcoded px font sizes outside typography.css${hardcodedFontSizes.length ? `: ${hardcodedFontSizes.join(', ')}` : ''}`);
 assertCheck(css && designSystem && grammarLayout && typography && js && css === designSystem && css === grammarLayout && css === typography && css === js, 'CSS and JS cache versions match');

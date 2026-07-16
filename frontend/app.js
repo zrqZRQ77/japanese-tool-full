@@ -3738,13 +3738,24 @@ async function lookupJmdictCommon(candidates){
   return null;
 }
 
+async function lookupJmdictCommonWithCompoundFallback(candidates, surface){
+  const direct = await lookupJmdictCommon(candidates);
+  if(direct?.entry) return direct;
+  const parts = String(surface || '')
+    .split(/[・･/／\s]+/u)
+    .map(part=>part.trim())
+    .filter(Boolean);
+  if(parts.length < 2) return null;
+  return lookupJmdictCommon([...parts].reverse());
+}
+
 function jmdictEnglishMeaning(entry){
   const glosses = [...new Set((entry?.g || []).map(value=>String(value || '').trim()).filter(Boolean))].slice(0, 5);
   return glosses.length ? `英文释义：${glosses.join('；')}` : '';
 }
 
 function dictionarySourceNoteHtml(){
-  return `<small class="dictionary-source-note">来源：<a href="${JMDICT_COMMON_SOURCE_URL}" target="_blank" rel="noopener noreferrer">JMdict / EDRDG</a></small>`;
+  return `<small class="dictionary-source-note">词典来源：<a href="${JMDICT_COMMON_SOURCE_URL}" target="_blank" rel="noopener noreferrer" aria-label="JMdict，由 EDRDG 维护">JMdict</a></small>`;
 }
 
 function jmdictMeaningHtml(entry){
@@ -3768,15 +3779,67 @@ function tokenSnapshotValue(surface, info){
   })).replace(/'/g, '%27');
 }
 
-function refreshVisibleTokenDetail(target, surface, info){
+function syncTokenSaveButton(detailBox, tokenId, info){
+  const saveButton = detailBox?.querySelector('.add-vocab-tool');
+  if(!saveButton) return;
+  saveButton.setAttribute('onclick', `requestTokenVocabSave(${tokenId})`);
+  if(info?.lookupState === 'loading' && info?.pendingVocabSave){
+    saveButton.disabled = true;
+    saveButton.setAttribute('aria-busy', 'true');
+    saveButton.setAttribute('aria-label', '释义加载完成后自动加入生词本');
+    saveButton.dataset.tooltip = '释义加载完成后自动收藏';
+    return;
+  }
+  if(info?.lookupState === 'saved'){
+    saveButton.disabled = true;
+    saveButton.removeAttribute('aria-busy');
+    saveButton.setAttribute('aria-label', '已加入生词本');
+    saveButton.dataset.tooltip = '已加入生词本';
+    return;
+  }
+  saveButton.disabled = false;
+  saveButton.removeAttribute('aria-busy');
+  saveButton.setAttribute('aria-label', '加入生词本');
+  saveButton.dataset.tooltip = info?.lookupState === 'loading' ? '加载完成后自动收藏' : '加入生词本';
+}
+
+function refreshVisibleTokenDetail(target, surface, info, tokenId){
   if(!target?.isConnected) return;
   const detailBox = target.closest('.detail-box');
   const readingNode = detailBox?.querySelector('.detail-reading-text');
   if(readingNode && info.reading && readingNode.textContent.trim() === '暂无读音') readingNode.textContent = info.reading;
-  const saveButton = detailBox?.querySelector('.add-vocab-tool');
-  if(saveButton){
-    saveButton.setAttribute('onclick', `addTokenSnapshotToVocab('${tokenSnapshotValue(surface, info)}')`);
+  syncTokenSaveButton(detailBox, tokenId, info);
+}
+
+function requestTokenVocabSave(tokenId){
+  const tokenRecord = window.KUROMOJI_TOKEN_CACHE && window.KUROMOJI_TOKEN_CACHE[tokenId];
+  if(!tokenRecord) return false;
+  const { surface, info } = tokenRecord;
+  if(info.lookupState === 'loading'){
+    info.pendingVocabSave = true;
+    syncTokenSaveButton(document.getElementById(`tokenMeaning-${tokenId}`)?.closest('.detail-box'), tokenId, info);
+    showToast('释义加载完成后会自动加入生词本。', 'info');
+    return true;
   }
+  const saved = addCustomToVocab(
+    surface,
+    info.reading || '',
+    info.meaning || '释义待补充',
+    info.level || '',
+    info.pos || '已识别词'
+  );
+  if(saved || vocabData.some(item=>vocabIdentityKey(item.word) === vocabIdentityKey(surface))){
+    info.lookupState = 'saved';
+    info.pendingVocabSave = false;
+    syncTokenSaveButton(document.getElementById(`tokenMeaning-${tokenId}`)?.closest('.detail-box'), tokenId, info);
+  }
+  return saved;
+}
+
+function finishPendingTokenVocabSave(tokenId, tokenRecord){
+  if(!tokenRecord?.info?.pendingVocabSave) return;
+  tokenRecord.info.pendingVocabSave = false;
+  requestTokenVocabSave(tokenId);
 }
 
 function dictionaryEntryFor(word){
@@ -4700,7 +4763,7 @@ function normalizeVisibleVocabLevel(value){
 }
 
 function formatVisibleVocabLevel(value){
-  return normalizeVisibleVocabLevel(value) || '未分级';
+  return normalizeVisibleVocabLevel(value) || '暂无参考等级';
 }
 
 function internalTokenAnalysisBucket(info = {}){
@@ -5068,9 +5131,9 @@ function showTokenDetail(tokenId, el){
   if(!token) return;
   const { surface, info } = token;
   const detailAction = readingDetailAction(surface, info);
-  const tokenSnapshot = tokenSnapshotValue(surface, info);
-  const addAction = detailAction.action || (detailAction.type === 'vocab' ? `addTokenSnapshotToVocab('${tokenSnapshot}')` : '');
   const needsLookup = info.source === 'kuromoji' || info.source === 'fallback';
+  if(needsLookup) info.lookupState = 'loading';
+  const addAction = detailAction.action || (detailAction.type === 'vocab' ? `requestTokenVocabSave(${tokenId})` : '');
   const area = document.getElementById('detailArea');
   setReadingDetailVisible(true);
   setDetailHeadActions();
@@ -5078,9 +5141,19 @@ function showTokenDetail(tokenId, el){
     <div class="detail-box detail-selected-box">
       ${detailWordHeaderHtml(surface, addAction, `speakEncodedJapanese('${encodeURIComponent(surface)}', this, false)`, detailAction.type)}
       ${detailMetaHtml(surface, info.reading, formatVisibleVocabLevel(info.level), info.pos, token)}
-      ${detailDefinitionHtml(detailAction.point ? escapeHtml(detailAction.point.explain) : (needsLookup ? '正在查询词典……' : escapeHtml(info.meaning)), `tokenMeaning-${tokenId}`)}
+      ${detailDefinitionHtml(
+        detailAction.point
+          ? escapeHtml(detailAction.point.explain)
+          : needsLookup
+            ? '正在查询词典……'
+            : info.source === 'jmdict'
+              ? storedJmdictMeaningHtml(info)
+              : escapeHtml(info.meaning),
+        `tokenMeaning-${tokenId}`
+      )}
     </div>
   `;
+  syncTokenSaveButton(area.querySelector('.detail-box'), tokenId, info);
   renderSampleFlow();
   if(needsLookup && !detailAction.point) autoLookupTokenMeaning(surface, tokenId, token);
 }
@@ -5090,23 +5163,39 @@ async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
   if(!target || !tokenRecord) return;
   const { surface, info } = tokenRecord;
   const candidates = [word, info.lookupWord, info.baseForm, tokenRecord.token?.basic_form];
-  const result = await lookupJmdictCommon(candidates);
+  let result = null;
+  try{
+    result = await lookupJmdictCommonWithCompoundFallback(candidates, surface);
+  }catch(error){
+    console.warn('离线词典查询失败', error);
+  }
   if(!target.isConnected) return;
   if(!result?.entry){
-    target.innerHTML = '<span style="color:var(--ink-soft);">本地中文词库和离线常用词典都暂未收录这个词，可以先收藏后补充释义。</span>';
+    info.meaning = '释义待补充';
+    info.lookupState = 'failed';
+    target.innerHTML = '<span style="color:var(--ink-soft);">暂未查到可靠释义，可以先收藏，之后再补充。</span>';
+    refreshVisibleTokenDetail(target, surface, info, tokenId);
+    finishPendingTokenVocabSave(tokenId, tokenRecord);
     return;
   }
   const meaning = jmdictEnglishMeaning(result.entry);
   if(!meaning){
-    target.innerHTML = '<span style="color:var(--ink-soft);">已找到词条，但当前版本没有可显示的释义。</span>';
+    info.reading = info.reading || katakanaToHiragana(result.entry.r || '');
+    info.meaning = '释义待补充';
+    info.lookupState = 'failed';
+    target.innerHTML = '<span style="color:var(--ink-soft);">已找到词条，但当前没有可显示的释义，可以先收藏。</span>';
+    refreshVisibleTokenDetail(target, surface, info, tokenId);
+    finishPendingTokenVocabSave(tokenId, tokenRecord);
     return;
   }
   info.reading = info.reading || katakanaToHiragana(result.entry.r || '');
   info.meaning = meaning;
   info.lookupWord = result.term || info.lookupWord || surface;
   info.source = 'jmdict';
+  info.lookupState = 'ready';
   target.innerHTML = jmdictMeaningHtml(result.entry);
-  refreshVisibleTokenDetail(target, surface, info);
+  refreshVisibleTokenDetail(target, surface, info, tokenId);
+  finishPendingTokenVocabSave(tokenId, tokenRecord);
 }
 
 function showFootnoteDetail(id){
@@ -5246,7 +5335,20 @@ function speakSelectedText(trigger, showControls = true){
 }
 
 let CURRENT_TTS_TRIGGER = null;
+let CURRENT_TTS_UTTERANCE = null;
+let CURRENT_TTS_QUEUE = [];
+let CURRENT_TTS_INDEX = 0;
+let CURRENT_TTS_SESSION = 0;
+let CURRENT_TTS_STARTED = false;
+let CURRENT_TTS_DEFAULT_RETRY = false;
+let CURRENT_TTS_START_TIMER = 0;
 const DEFAULT_TTS_RATE = 0.94;
+
+function isIOSWebKit(){
+  const userAgent = String(navigator.userAgent || '');
+  return /iPad|iPhone|iPod/i.test(userAgent)
+    || (navigator.platform === 'MacIntel' && Number(navigator.maxTouchPoints || 0) > 1);
+}
 
 function normalizeJapaneseSpeechText(text){
   return String(text || '')
@@ -5257,6 +5359,41 @@ function normalizeJapaneseSpeechText(text){
     .replace(/([。！？!?])(?=[^\s])/g, '$1 ')
     .replace(/丁寧/g, 'ていねい')
     .trim();
+}
+
+function splitJapaneseSpeechChunks(text, maxChars = isIOSWebKit() ? 90 : 180){
+  const normalized = normalizeJapaneseSpeechText(text);
+  if(!normalized) return [];
+  const sentences = normalized.match(/[^。！？!?]+[。！？!?]?/g) || [normalized];
+  const chunks = [];
+  let current = '';
+  const pushLong = value => {
+    let remaining = value.trim();
+    while(remaining.length > maxChars){
+      let cut = remaining.lastIndexOf('、', maxChars);
+      if(cut < Math.floor(maxChars * 0.45)) cut = maxChars;
+      chunks.push(remaining.slice(0, cut + (remaining[cut] === '、' ? 1 : 0)).trim());
+      remaining = remaining.slice(cut + (remaining[cut] === '、' ? 1 : 0)).trim();
+    }
+    if(remaining) current = remaining;
+  };
+  sentences.forEach(sentence=>{
+    const value = sentence.trim();
+    if(!value) return;
+    if(value.length > maxChars){
+      if(current){ chunks.push(current); current = ''; }
+      pushLong(value);
+      return;
+    }
+    if(current && current.length + value.length > maxChars){
+      chunks.push(current);
+      current = value;
+      return;
+    }
+    current += value;
+  });
+  if(current) chunks.push(current);
+  return chunks.filter(Boolean);
 }
 
 function getPreferredTtsRate(){
@@ -5282,31 +5419,111 @@ function initTtsSettings(){
   }
 }
 
+function clearTtsStartTimer(){
+  clearTimeout(CURRENT_TTS_START_TIMER);
+  CURRENT_TTS_START_TIMER = 0;
+}
+
+function updateTtsControlStatus(message){
+  const status = document.getElementById('ttsControlStatus');
+  if(status) status.textContent = message;
+}
+
+function speakCurrentTtsChunk(session, useDefaultVoice = false){
+  if(session !== CURRENT_TTS_SESSION) return;
+  if(CURRENT_TTS_INDEX >= CURRENT_TTS_QUEUE.length){
+    finishTts();
+    return;
+  }
+  const value = CURRENT_TTS_QUEUE[CURRENT_TTS_INDEX];
+  const utterance = new SpeechSynthesisUtterance(value);
+  CURRENT_TTS_UTTERANCE = utterance;
+  CURRENT_TTS_STARTED = false;
+  utterance.lang = 'ja-JP';
+  utterance.rate = getPreferredTtsRate();
+  utterance.pitch = 0.98;
+  const jaVoice = useDefaultVoice ? null : chooseJapaneseVoice();
+  if(jaVoice) utterance.voice = jaVoice;
+  utterance.onstart = ()=>{
+    if(session !== CURRENT_TTS_SESSION) return;
+    CURRENT_TTS_STARTED = true;
+    clearTtsStartTimer();
+    setTtsActive(CURRENT_TTS_TRIGGER);
+    updateTtsControlStatus(CURRENT_TTS_QUEUE.length > 1
+      ? `正在朗读 ${CURRENT_TTS_INDEX + 1} / ${CURRENT_TTS_QUEUE.length}`
+      : '正在朗读');
+  };
+  utterance.onend = ()=>{
+    if(session !== CURRENT_TTS_SESSION) return;
+    clearTtsStartTimer();
+    CURRENT_TTS_INDEX += 1;
+    CURRENT_TTS_DEFAULT_RETRY = false;
+    CURRENT_TTS_UTTERANCE = null;
+    setTimeout(()=>speakCurrentTtsChunk(session, false), isIOSWebKit() ? 50 : 0);
+  };
+  utterance.onerror = event=>{
+    if(session !== CURRENT_TTS_SESSION) return;
+    clearTtsStartTimer();
+    const reason = String(event?.error || 'unknown');
+    if(!CURRENT_TTS_DEFAULT_RETRY && utterance.voice && !/canceled|interrupted/i.test(reason)){
+      CURRENT_TTS_DEFAULT_RETRY = true;
+      utterance.onerror = null;
+      utterance.onend = null;
+      window.speechSynthesis.cancel();
+      CURRENT_TTS_UTTERANCE = null;
+      setTimeout(()=>speakCurrentTtsChunk(session, true), 80);
+      return;
+    }
+    console.warn('日语朗读失败', reason);
+    showToast('朗读没有成功，请检查手机音量后再试。', 'warning');
+    finishTts();
+  };
+  updateTtsControlStatus('正在准备朗读…');
+  window.speechSynthesis.speak(utterance);
+  clearTtsStartTimer();
+  CURRENT_TTS_START_TIMER = setTimeout(()=>{
+    if(session !== CURRENT_TTS_SESSION || CURRENT_TTS_STARTED) return;
+    if(!CURRENT_TTS_DEFAULT_RETRY && utterance.voice){
+      CURRENT_TTS_DEFAULT_RETRY = true;
+      utterance.onerror = null;
+      utterance.onend = null;
+      window.speechSynthesis.cancel();
+      CURRENT_TTS_UTTERANCE = null;
+      setTimeout(()=>speakCurrentTtsChunk(session, true), 80);
+      return;
+    }
+    showToast('朗读启动较慢，请再点一次朗读按钮。', 'warning');
+    finishTts();
+  }, 3000);
+}
+
 function speakJapanese(text, trigger = null, showControls = true){
   const value = normalizeJapaneseSpeechText(text);
   if(!value) return;
-  if(!('speechSynthesis' in window)){
+  if(!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance !== 'function'){
     showToast('当前浏览器不支持发音功能。', 'warning');
     return;
   }
-  if(window.speechSynthesis.speaking || window.speechSynthesis.paused){
+  if(CURRENT_TTS_UTTERANCE || window.speechSynthesis.speaking || window.speechSynthesis.paused){
     if(showControls){
       showTtsControlMenu(CURRENT_TTS_TRIGGER || trigger);
       return;
     }
-    window.speechSynthesis.cancel();
-    finishTts();
+    stopTts();
   }
-  const utterance = new SpeechSynthesisUtterance(value);
-  utterance.lang = 'ja-JP';
-  utterance.rate = getPreferredTtsRate(value);
-  utterance.pitch = 0.98;
-  const jaVoice = chooseJapaneseVoice();
-  if(jaVoice) utterance.voice = jaVoice;
-  utterance.onstart = ()=>setTtsActive(trigger);
-  utterance.onend = finishTts;
-  utterance.onerror = finishTts;
-  window.speechSynthesis.speak(utterance);
+  CURRENT_TTS_SESSION += 1;
+  CURRENT_TTS_TRIGGER = trigger || null;
+  CURRENT_TTS_QUEUE = splitJapaneseSpeechChunks(value);
+  CURRENT_TTS_INDEX = 0;
+  CURRENT_TTS_DEFAULT_RETRY = false;
+  if(!CURRENT_TTS_QUEUE.length) return;
+  if(CURRENT_TTS_TRIGGER){
+    CURRENT_TTS_TRIGGER.classList.add('is-speaking');
+    CURRENT_TTS_TRIGGER.setAttribute('aria-busy', 'true');
+    CURRENT_TTS_TRIGGER.setAttribute('aria-pressed', 'true');
+  }
+  if(isIOSWebKit()) showToast('正在准备日语朗读…', 'info');
+  speakCurrentTtsChunk(CURRENT_TTS_SESSION, false);
 }
 
 function speakEncodedJapanese(encoded, trigger, showControls = true){
@@ -5314,9 +5531,13 @@ function speakEncodedJapanese(encoded, trigger, showControls = true){
 }
 
 function setTtsActive(trigger){
-  finishTts();
-  CURRENT_TTS_TRIGGER = trigger || null;
+  document.querySelectorAll('.reader-speech-tool.is-speaking, .reader-speech-tool.is-paused').forEach(button=>{
+    if(button !== trigger) button.classList.remove('is-speaking', 'is-paused');
+  });
+  CURRENT_TTS_TRIGGER = trigger || CURRENT_TTS_TRIGGER || null;
   CURRENT_TTS_TRIGGER?.classList.add('is-speaking');
+  CURRENT_TTS_TRIGGER?.classList.remove('is-paused');
+  CURRENT_TTS_TRIGGER?.removeAttribute('aria-busy');
   CURRENT_TTS_TRIGGER?.setAttribute('aria-pressed', 'true');
   const pauseBtn = document.getElementById('ttsPauseBtn');
   if(pauseBtn) pauseBtn.textContent = '暂停';
@@ -5344,11 +5565,18 @@ function hideTtsControlMenu(){
 }
 
 function finishTts(){
+  clearTtsStartTimer();
   document.querySelectorAll('.reader-speech-tool.is-speaking, .reader-speech-tool.is-paused').forEach(button=>{
     button.classList.remove('is-speaking', 'is-paused');
     button.removeAttribute('aria-pressed');
+    button.removeAttribute('aria-busy');
   });
   CURRENT_TTS_TRIGGER = null;
+  CURRENT_TTS_UTTERANCE = null;
+  CURRENT_TTS_QUEUE = [];
+  CURRENT_TTS_INDEX = 0;
+  CURRENT_TTS_STARTED = false;
+  CURRENT_TTS_DEFAULT_RETRY = false;
   hideTtsControlMenu();
 }
 
@@ -5373,6 +5601,7 @@ function toggleTtsPause(){
 }
 
 function stopTts(){
+  CURRENT_TTS_SESSION += 1;
   if('speechSynthesis' in window) window.speechSynthesis.cancel();
   finishTts();
 }
@@ -5382,7 +5611,8 @@ const EXCLUDED_VOICE_PATTERN = /(Compact|Novelty|Shelley|Sandy|Rocko|Reed|Grandp
 
 function japaneseVoiceScore(voice){
   let score = 0;
-  if(/AndrewMultilingual/i.test(voice.name)) score += 220;
+  if(/^ja[-_]/i.test(voice.lang)) score += 260;
+  if(/AndrewMultilingual/i.test(voice.name)) score += 60;
   if(voice.localService) score += 40;
   if(/Kyoko/i.test(voice.name)) score += 140;
   if(/(Otoya|Siri|Nanami|Nozomi|Haruka|Ichiro)/i.test(voice.name)) score += 125;
@@ -5394,16 +5624,19 @@ function japaneseVoiceScore(voice){
   return score;
 }
 
-function sortedJapaneseVoices(){
+function sortedJapaneseVoices(strictJapanese = isIOSWebKit()){
   if(!('speechSynthesis' in window)) return [];
-  const japanese = window.speechSynthesis.getVoices().filter(voice=>/^ja[-_]/i.test(voice.lang) || /AndrewMultilingual/i.test(voice.name));
-  const natural = japanese.filter(voice=>!EXCLUDED_VOICE_PATTERN.test(voice.name));
-  return (natural.length ? natural : japanese).sort((a, b)=>japaneseVoiceScore(b) - japaneseVoiceScore(a) || a.name.localeCompare(b.name));
+  const voices = window.speechSynthesis.getVoices();
+  const japanese = voices.filter(voice=>/^ja[-_]/i.test(voice.lang));
+  const multilingual = strictJapanese ? [] : voices.filter(voice=>/AndrewMultilingual/i.test(voice.name) && !japanese.includes(voice));
+  const candidates = [...japanese, ...multilingual];
+  const natural = candidates.filter(voice=>!EXCLUDED_VOICE_PATTERN.test(voice.name));
+  return (natural.length ? natural : candidates).sort((a, b)=>japaneseVoiceScore(b) - japaneseVoiceScore(a) || a.name.localeCompare(b.name));
 }
 
 function populateVoiceOptions(){
   if(!('speechSynthesis' in window)) return;
-  const allVoices = sortedJapaneseVoices();
+  const allVoices = sortedJapaneseVoices(isIOSWebKit());
   const field = document.getElementById('ttsVoiceField');
   const select = document.getElementById('ttsVoiceSelect');
   if(!select || !allVoices.length){ if(field) field.style.display = 'none'; return; }
@@ -5413,9 +5646,10 @@ function populateVoiceOptions(){
   const andrew = allVoices.find(voice=>/AndrewMultilingual/i.test(voice.name));
   const hattori = allVoices.find(voice=>/Hattori/i.test(voice.name));
   let preferred = safeStorage.getItem('reading_tts_voice') || '';
-  if(safeStorage.getItem('reading_tts_voice_quality_version') !== '4'){
-    if(!preferred && (andrew || hattori)) preferred = (andrew || hattori).name;
-    safeStorage.setItem('reading_tts_voice_quality_version', '4');
+  if(safeStorage.getItem('reading_tts_voice_quality_version') !== '5'){
+    const japanesePreferred = allVoices.find(voice=>/^ja[-_]/i.test(voice.lang));
+    if(!preferred && (japanesePreferred || hattori || andrew)) preferred = (japanesePreferred || hattori || andrew).name;
+    safeStorage.setItem('reading_tts_voice_quality_version', '5');
   }
   const optionHtml = v => `<option value="${escapeHtml(v.name)}" ${v.name===preferred?'selected':''}>${escapeHtml(v.name)}${recommendedNames.has(v.name)?' · 推荐':''}</option>`;
   select.innerHTML = (recommended.length ? recommended.map(optionHtml).join('') : '')
@@ -5440,14 +5674,16 @@ function previewJapaneseVoice(){
 }
 
 function chooseJapaneseVoice(){
-  const japanese = sortedJapaneseVoices();
+  const japanese = sortedJapaneseVoices(isIOSWebKit());
   if(!japanese.length) return null;
   const preferred = safeStorage.getItem('reading_tts_voice');
   if(preferred){
     const match = japanese.find(voice=>voice.name === preferred);
     if(match) return match;
   }
-  return japanese.find(voice=>/AndrewMultilingual/i.test(voice.name)) || japanese.find(voice=>/Hattori/i.test(voice.name)) || japanese[0];
+  return japanese.find(voice=>/^ja[-_]/i.test(voice.lang) && /(?:Kyoko|Otoya|Siri|Nanami|Nozomi|Haruka|Ichiro|Hattori)/i.test(voice.name))
+    || japanese.find(voice=>/^ja[-_]/i.test(voice.lang))
+    || japanese[0];
 }
 
 function renderTypingPractice(){

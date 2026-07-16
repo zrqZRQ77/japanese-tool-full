@@ -9,10 +9,10 @@
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260716-01">
-<link rel="stylesheet" href="design-system.css?v=20260716-01">
-<link rel="stylesheet" href="grammar-layout.css?v=20260716-01">
-<link rel="stylesheet" href="typography.css?v=20260716-01">
+<link rel="stylesheet" href="styles.css?v=20260716-02">
+<link rel="stylesheet" href="design-system.css?v=20260716-02">
+<link rel="stylesheet" href="grammar-layout.css?v=20260716-02">
+<link rel="stylesheet" href="typography.css?v=20260716-02">
 <link rel="stylesheet" href="hero-menu-refresh.css?v=20260714-01">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260710-01"></script>
@@ -1248,80 +1248,18 @@
 <div class="icon-button-hint" id="iconButtonHint" role="tooltip" aria-hidden="true"></div>
 
 <script src="kuromoji-worker-poc.js?v=20260714-01"></script>
-<script src="app.js?v=20260716-01"></script>
+<script src="app.js?v=20260716-02"></script>
 <script>
   (() => {
-    const detailKey = 'show' + 'To' + 'kenDetail';
-    const cacheKey = 'KUROMOJI_' + 'TO' + 'KEN_CACHE';
-    const original = window[detailKey];
-    if (typeof original !== 'function') return;
-
-    const sourceNote = '<small class="dictionary-source-note">来源：JMdict / EDRDG</small>';
-    const refreshKey = 'refreshVisible' + 'To' + 'kenDetail';
-    const appendSource = (target, record) => {
-      if (!target || record?.info?.source !== 'jmdict' || /JMdict \/ EDRDG/.test(target.textContent || '')) return;
-      target.insertAdjacentHTML('beforeend', sourceNote);
-    };
-    const resolveCompoundPart = async (target, record) => {
-      if (!target?.isConnected || !record?.info || record.info.source === 'jmdict' || typeof window.lookupJmdictCommon !== 'function') return;
-      const surface = String(record.surface || '').trim();
-      const parts = surface.split(/[・･/／\s]+/u).map(part => part.trim()).filter(Boolean);
-      if (parts.length < 2) return;
-      const result = await window.lookupJmdictCommon([...parts].reverse());
-      const meaning = result?.entry && typeof window.jmdictEnglishMeaning === 'function'
-        ? window.jmdictEnglishMeaning(result.entry)
-        : '';
-      if (!meaning || !target.isConnected) return;
-      record.info.meaning = meaning;
-      record.info.lookupWord = result.term || record.info.lookupWord || surface;
-      record.info.source = 'jmdict';
-      target.innerHTML = typeof window.jmdictMeaningHtml === 'function'
-        ? window.jmdictMeaningHtml(result.entry)
-        : `<span>${meaning}</span>${sourceNote}`;
-      window[refreshKey]?.(target, surface, record.info);
-    };
-
-    window[detailKey] = function guardedDictionaryDetail(id, element) {
-      original(id, element);
-      const record = window[cacheKey]?.[Number(id)];
-      const target = document.getElementById('to' + 'kenMeaning-' + id);
-      const saveButton = target?.closest('.detail-box')?.querySelector('.add-vocab-tool');
-
-      appendSource(target, record);
-      if (!target || !saveButton || record?.info?.source === 'jmdict') return;
-
-      saveButton.disabled = true;
-      saveButton.setAttribute('aria-busy', 'true');
-      let settled = false;
-      const finish = async () => {
-        if (settled) return;
-        settled = true;
-        await resolveCompoundPart(target, record);
-        appendSource(target, record);
-        saveButton.disabled = false;
-        saveButton.removeAttribute('aria-busy');
-      };
-      const observer = new MutationObserver(() => {
-        if (/正在查询词典/.test(target.textContent || '')) return;
-        observer.disconnect();
-        void finish();
-      });
-      observer.observe(target, { childList: true, subtree: true, characterData: true });
-      window.setTimeout(() => {
-        observer.disconnect();
-        void finish();
-      }, 8000);
-    };
-
     const syncWorkerWordAttributes = () => {
       document.querySelectorAll('#output ruby.w-kuromoji:not([data-word])').forEach(node => {
         const surface = node.firstChild?.nodeType === Node.TEXT_NODE ? node.firstChild.textContent.trim() : '';
-        if (surface) node.dataset.word = surface;
+        if(surface) node.dataset.word = surface;
       });
     };
     const output = document.getElementById('output');
-    if (output) {
-      new MutationObserver(syncWorkerWordAttributes).observe(output, { childList: true, subtree: true });
+    if(output){
+      new MutationObserver(syncWorkerWordAttributes).observe(output, {childList:true, subtree:true});
       syncWorkerWordAttributes();
     }
   })();

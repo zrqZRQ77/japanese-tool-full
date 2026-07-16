@@ -54,7 +54,8 @@ for (const config of [rootVercel, frontendVercel]) {
 assert.ok(appJs.includes('SOURCE_ANALYSIS_GENERATION'));
 assert.ok(appJs.includes("if(analysisGeneration !== SOURCE_ANALYSIS_GENERATION) return;"));
 assert.ok(appJs.includes('resetReadingDetailPanel();\n  window.KUROMOJI_TOKEN_CACHE = [];'));
-assert.ok(appJs.includes("addTokenSnapshotToVocab('"));
+assert.ok(appJs.includes('function requestTokenVocabSave(tokenId)'));
+assert.ok(appJs.includes('requestTokenVocabSave(${tokenId})'));
 assert.ok(appJs.includes('function addTokenSnapshotToVocab(encodedSnapshot)'));
 
 process.stdout.write('Kuromoji build, cache, race gate, and detail snapshot tests passed.\n');

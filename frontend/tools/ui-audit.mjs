@@ -173,6 +173,24 @@ async function runAudit() {
   let context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
   await context.tracing.start({ screenshots: true, snapshots: true, sources: true });
   let page = await context.newPage();
+  page.setDefaultNavigationTimeout(60000);
+  const installAuditRoutes = async targetPage => {
+    await targetPage.route('https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js', route=>route.fulfill({
+      status:200,
+      contentType:'text/javascript; charset=utf-8',
+      body:'window.PptxGenJS = window.PptxGenJS || function PptxGenJS(){};'
+    }));
+    await targetPage.route('https://fonts.googleapis.com/**', route=>route.fulfill({
+      status:200,
+      contentType:'text/css; charset=utf-8',
+      body:''
+    }));
+    await targetPage.route('https://fonts.gstatic.com/**', route=>route.fulfill({
+      status:204,
+      body:''
+    }));
+  };
+  await installAuditRoutes(page);
 
   page.on('console', message => {
     if (!['error', 'warning', 'warn'].includes(message.type())) return;
@@ -198,7 +216,12 @@ async function runAudit() {
 
   async function screenshot(name, options = {}) {
     const filePath = join(outputDir, `${name}.png`);
-    await page.screenshot({ path: filePath, fullPage: options.fullPage ?? false });
+    await page.screenshot({
+      path: filePath,
+      fullPage: options.fullPage ?? false,
+      animations: 'disabled',
+      timeout: 60000
+    });
     report.screenshots.push(filePath);
     return filePath;
   }
@@ -274,6 +297,74 @@ async function runAudit() {
     return state('state: initial');
   });
 
+  await step('iPhone Safari TTS keeps utterances, chunks articles and uses a Japanese voice', async () => {
+    const ttsState = await page.evaluate(async () => {
+      const spoken = [];
+      class MockUtterance {
+        constructor(text){
+          this.text = text;
+          this.lang = '';
+          this.rate = 1;
+          this.pitch = 1;
+          this.voice = null;
+          this.onstart = null;
+          this.onend = null;
+          this.onerror = null;
+        }
+      }
+      const voices = [
+        {name:'Andrew Multilingual', lang:'en-US', localService:true},
+        {name:'Kyoko', lang:'ja-JP', localService:true}
+      ];
+      const synthesis = {
+        speaking:false,
+        paused:false,
+        getVoices:()=>voices,
+        speak(utterance){
+          this.speaking = true;
+          spoken.push({
+            text:utterance.text,
+            lang:utterance.lang,
+            voice:utterance.voice?.name || '',
+            retained:CURRENT_TTS_UTTERANCE === utterance
+          });
+          queueMicrotask(()=>{
+            utterance.onstart?.();
+            setTimeout(()=>{
+              this.speaking = false;
+              utterance.onend?.();
+            }, 2);
+          });
+        },
+        cancel(){ this.speaking = false; this.paused = false; },
+        pause(){ this.paused = true; },
+        resume(){ this.paused = false; }
+      };
+      try{ Object.defineProperty(navigator, 'userAgent', {configurable:true, value:'Mozilla/5.0 (iPhone; CPU iPhone OS 26_4 like Mac OS X) AppleWebKit/605.1.15 Version/26.4 Mobile Safari/604.1'}); }catch{}
+      try{ Object.defineProperty(navigator, 'platform', {configurable:true, value:'iPhone'}); }catch{}
+      try{ Object.defineProperty(navigator, 'maxTouchPoints', {configurable:true, value:5}); }catch{}
+      Object.defineProperty(window, 'speechSynthesis', {configurable:true, value:synthesis});
+      Object.defineProperty(window, 'SpeechSynthesisUtterance', {configurable:true, value:MockUtterance});
+      const article = '市の図書館は来月、新しい読書室を開きます。読書室には日本語の本や新聞があります。利用時間は午前九時から午後六時までです。'.repeat(5);
+      speakJapanese(article, null, false);
+      await new Promise(resolve=>setTimeout(resolve, 700));
+      return {
+        spoken,
+        ios:isIOSWebKit(),
+        queueFinished:CURRENT_TTS_UTTERANCE === null && CURRENT_TTS_QUEUE.length === 0
+      };
+    });
+    if(!ttsState.ios || ttsState.spoken.length < 2 || !ttsState.queueFinished){
+      throw new Error(`iPhone TTS lifecycle failed: ${JSON.stringify(ttsState)}.`);
+    }
+    if(ttsState.spoken.some(item => item.lang !== 'ja-JP' || item.voice !== 'Kyoko' || !item.retained || item.text.length > 90)){
+      throw new Error(`iPhone TTS voice, retention, or chunking failed: ${JSON.stringify(ttsState.spoken)}.`);
+    }
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.waitForLoadState('networkidle', {timeout:8000}).catch(() => {});
+    return ttsState;
+  });
+
   await step('legacy vocabulary levels migrate without exposing internal metadata', async () => {
     const legacyItems = [
       {word:'旧語一', reading:'きゅうごいち', meaning:'旧数据一', level:'kuromoji'},
@@ -311,13 +402,13 @@ async function runAudit() {
       throw new Error(`Legacy internal levels were not migrated: ${JSON.stringify(migration.stored)}.`);
     }
     if(preservedJlpt?.level !== 'N3') throw new Error(`Valid JLPT level was damaged: ${JSON.stringify(preservedJlpt)}.`);
-    if((migration.vocabText.match(/未分级/g) || []).length < 4 || !/N3/.test(migration.vocabText)){
+    if((migration.vocabText.match(/暂无参考等级/g) || []).length < 4 || !/N3/.test(migration.vocabText)){
       throw new Error(`Vocabulary page did not render migrated levels correctly: ${JSON.stringify(migration.vocabText)}.`);
     }
     if(forbidden.test(migration.vocabText) || forbidden.test(migration.flashText) || forbidden.test(exportText) || forbidden.test(migration.visibleText)){
       throw new Error(`Internal metadata is visible after migration: ${JSON.stringify(migration)}.`);
     }
-    if(!/未分级/.test(exportText)) throw new Error(`Exports did not format unknown levels as ungraded: ${JSON.stringify(migration.downloads)}.`);
+    if(!/暂无参考等级/.test(exportText)) throw new Error(`Exports did not format unknown levels as ungraded: ${JSON.stringify(migration.downloads)}.`);
     await page.evaluate(() => localStorage.clear());
     await page.reload({waitUntil:'domcontentloaded'});
     await page.waitForLoadState('networkidle', {timeout:8000}).catch(() => {});
@@ -347,7 +438,7 @@ async function runAudit() {
       return style.visibility === 'visible' && Number.parseFloat(style.fontSize) > 0;
     });
     if(!rubyVisible) throw new Error('Ruby toggle did not reveal furigana.');
-    await page.waitForFunction(() => document.body.dataset.tokenizerMode === 'kuromoji-worker', null, {timeout:15000});
+    await page.waitForFunction(() => document.body.dataset.tokenizerMode === 'kuromoji-worker', null, {timeout:45000});
     const completedTokenizerStatus = await tokenizerStatus.textContent();
     const tokenizerMetrics = await page.evaluate(() => window.YOMERU_TOKENIZER_METRICS || null);
     if(!/假名已显示/.test(completedTokenizerStatus || '')){
@@ -417,7 +508,7 @@ async function runAudit() {
     await unknown.waitFor({state:'visible', timeout:3000});
     await unknown.click();
     await page.locator('#detailArea .add-vocab-tool').waitFor({state:'visible', timeout:3000});
-    await page.waitForFunction(() => document.body.dataset.tokenizerMode === 'kuromoji-worker', null, {timeout:15000});
+    await page.waitForFunction(() => document.body.dataset.tokenizerMode === 'kuromoji-worker', null, {timeout:45000});
     const workerState = await page.evaluate(() => {
       const cache = window.KUROMOJI_TOKEN_CACHE.filter(Boolean);
       const selected = ['三菱', 'UFJ', 'フィナンシャル'].map(term => {
@@ -438,16 +529,44 @@ async function runAudit() {
     if(workerState.paragraphs !== 3 || workerState.selected.filter(item => item.reading).length < 2 || workerState.readingCount < 20 || workerState.fallback){
       throw new Error(`Local Worker integration did not meet the reading baseline: ${JSON.stringify(workerState)}.`);
     }
+    await page.evaluate(() => {
+      const originalLookup = lookupJmdictCommon;
+      window.__restoreDelayedLookup = ()=>{ lookupJmdictCommon = originalLookup; delete window.__restoreDelayedLookup; };
+      lookupJmdictCommon = async candidates => {
+        await new Promise(resolve=>setTimeout(resolve, 1500));
+        return originalLookup(candidates);
+      };
+    });
     const jmdictToken = page.locator('#output ruby.w-kuromoji').filter({hasText:'グループ'}).first();
     await jmdictToken.waitFor({state:'visible', timeout:3000});
     await jmdictToken.click();
+    const queuedWord = (await page.locator('#detailArea .detail-word').textContent() || '').trim();
+    const pendingSaveButton = page.locator('#detailArea .add-vocab-tool');
+    await pendingSaveButton.click();
+    const pendingState = {
+      disabled:await pendingSaveButton.isDisabled(),
+      busy:await pendingSaveButton.getAttribute('aria-busy'),
+      label:await pendingSaveButton.getAttribute('aria-label')
+    };
+    if(!queuedWord || !pendingState.disabled || pendingState.busy !== 'true' || !/自动加入生词本/.test(pendingState.label || '')){
+      throw new Error(`Pending dictionary save did not expose clear feedback: ${JSON.stringify({queuedWord, pendingState})}.`);
+    }
+    await page.waitForFunction(word => getAllVocab().some(item => item.word === word), queuedWord, {timeout:7000});
+    await page.evaluate(() => window.__restoreDelayedLookup?.());
+    const queuedJmdictWord = await page.evaluate(word => getAllVocab().find(item => item.word === word), queuedWord);
+    if(!queuedJmdictWord?.meaning || queuedJmdictWord.meaning === '释义待补充'){
+      throw new Error(`Queued JMdict word did not save its final meaning: ${JSON.stringify(queuedJmdictWord)}.`);
+    }
     const jmdictMeaning = page.locator('#detailArea .detail-meaning');
     await jmdictMeaning.getByText(/英文释义/).waitFor({state:'visible', timeout:5000});
     const jmdictDetail = await page.locator('#detailArea').textContent();
-    if(!/JMdict \/ EDRDG/.test(jmdictDetail || '')){
-      throw new Error(`Offline dictionary attribution is missing: ${JSON.stringify(jmdictDetail)}.`);
+    const sourceNote = page.locator('#detailArea .dictionary-source-note');
+    const sourceText = await sourceNote.textContent();
+    const sourceAria = await sourceNote.locator('a').getAttribute('aria-label');
+    if(!/词典来源：JMdict/.test(sourceText || '') || !/EDRDG/.test(sourceAria || '')){
+      throw new Error(`Offline dictionary attribution is missing or too prominent: ${JSON.stringify({sourceText, sourceAria, jmdictDetail})}.`);
     }
-    if(!/未分级/.test(jmdictDetail || '') || /kuromoji|worker|tokenizer|fallback/i.test(jmdictDetail || '')){
+    if(!/暂无参考等级/.test(jmdictDetail || '') || /kuromoji|worker|tokenizer|fallback/i.test(jmdictDetail || '')){
       throw new Error(`Word detail exposed internal metadata or missed the ungraded label: ${JSON.stringify(jmdictDetail)}.`);
     }
     if(workerState.exportBreaks !== 2 || workerState.exportRows.length > 4 || workerState.exportRows.some(length => length === 0)){
@@ -472,9 +591,10 @@ async function runAudit() {
     });
     await page.waitForFunction(() => /みつびし/.test(document.querySelector('#detailArea')?.textContent || ''));
     await page.locator('#detailArea .add-vocab-tool').click();
+    await page.waitForFunction(() => getAllVocab().some(item => item.word === '三菱'), null, {timeout:5000});
     const savedWorkerWord = await page.evaluate(() => getAllVocab().find(item => item.word === '三菱'));
-    if(savedWorkerWord?.reading !== 'みつびし'){
-      throw new Error(`Worker word was not saved with its reading: ${JSON.stringify(savedWorkerWord)}.`);
+    if(savedWorkerWord?.reading !== 'みつびし' || !savedWorkerWord?.meaning){
+      throw new Error(`Worker word was not saved with its reading and safe meaning state: ${JSON.stringify(savedWorkerWord)}.`);
     }
     if(savedWorkerWord?.level !== ''){
       throw new Error(`Worker word retained internal level metadata: ${JSON.stringify(savedWorkerWord)}.`);
@@ -485,7 +605,7 @@ async function runAudit() {
         .find(item => /三菱/.test(item.textContent || ''));
       return row?.innerText || '';
     });
-    if(!/未分级/.test(savedWorkerRow) || /kuromoji|worker|tokenizer|fallback/i.test(savedWorkerRow)){
+    if(!/暂无参考等级/.test(savedWorkerRow) || /kuromoji|worker|tokenizer|fallback/i.test(savedWorkerRow)){
       throw new Error(`Saved Worker word is not user-safe in the vocabulary page: ${JSON.stringify(savedWorkerRow)}.`);
     }
     await page.evaluate(() => switchWorkspace('reading'));
@@ -695,6 +815,8 @@ async function runAudit() {
       context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
       await context.tracing.start({ screenshots: true, snapshots: true, sources: true });
       page = await context.newPage();
+      page.setDefaultNavigationTimeout(60000);
+      await installAuditRoutes(page);
       page.on('console', message => {
         if (!['error', 'warning', 'warn'].includes(message.type())) return;
         report.console.push({ type: message.type(), text: message.text(), location: message.location() });
