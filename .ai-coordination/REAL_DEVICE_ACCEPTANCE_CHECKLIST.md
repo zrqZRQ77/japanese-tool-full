@@ -68,3 +68,21 @@ iOS：`26.4.2`
 ## 发布门槛
 
 第一轮 iPhone Safari 真实设备验收已通过。当前继续保持 `HOLD`，原因是第二轮中文释义覆盖与 JLPT 参考等级数据尚未完成。不得部署 Production、修改正式域名、修改 Production alias 或合并到 `main`。
+
+## 第二轮候选真机清单
+
+- 候选 ID：`preview-candidate-20260716-round-02-f680f92-df4d415c`
+- 应用提交：`f680f92`
+- 整体 SHA-256：`df4d415c3f0cbc9658044232ab119022df491d6a4c0f10a4a37fb38ef3ccff39`
+- Preview：`PENDING — 尚未获执行环境的再次外部上传授权`
+
+部署 Preview 后，在 iPhone Safari 与 Mac Safari 各执行：
+
+1. 点击 `読書`、`来月`，确认首先显示中文释义与 `释义来源：Yomeru 离线中文词库`。
+2. 点击中文未命中的词，确认只在未命中后显示 `英文释义` 与 `词典来源：JMdict`。
+3. 在释义加载中点击收藏，确认最终保存中文释义、`meaningLanguage=zh`、离线中文来源及参考等级。
+4. 确认 `読書=N3`、`来月=N5`；专业词未命中时显示 `暂无参考等级`，不猜测等级。
+5. 确认生词本、闪卡、CSV、TSV、完整备份恢复不出现 Worker/tokenizer 等技术字段。
+6. 390/430 宽度无横向溢出、白屏、自动刷新或布局回归；桌面端同步抽查。
+
+当前状态：自动化门禁 PASS；真实设备第二轮结果 `PENDING`。Production 保持不变，发布状态 `HOLD`。

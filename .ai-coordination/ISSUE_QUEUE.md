@@ -378,3 +378,27 @@
 预期结果：
 处理结论：
 ```
+
+### DICT-COVERAGE-002
+
+- 来源：第二轮离线中文与 JLPT 参考数据任务
+- 基线：`stabilize/safari-dictionary-20260715 / aa0da55`
+- 等级：P0
+- 状态：VERIFIED
+- 涉及文件：`frontend/app.js`、`frontend/data/chinese-definitions/20260716/`、`frontend/data/jlpt-reference/20260716/`
+- 发现：第一轮未收录词只允许 JMdict 英文回退，且等级字段缺少独立可追溯参考源。
+- 证据层级：可重复数据构建、静态测试、本地 Chromium 动态测试、响应式审计
+- 证据位置：提交 `2d449f0`、`f680f92`；`frontend/audit-screenshots/2026-07-16T14-08-06-523Z/`
+- 处理结论：中文分片优先、JMdict 次级回退；JLPT 冲突形不猜测；详情、收藏、筛选、闪卡、CSV/TSV/备份字段一致，全部自动化 PASS。
+
+### DEPLOY-PREVIEW-002
+
+- 来源：第二轮 Preview 候选发布
+- 基线：应用提交 `f680f92` / 候选 SHA-256 `df4d415c3f0cbc9658044232ab119022df491d6a4c0f10a4a37fb38ef3ccff39`
+- 等级：P1
+- 状态：NEW
+- 涉及文件：`.vercel/output/`、协调状态文件
+- 发现：prebuilt 构建与 146 文件逐项哈希门禁均已通过，但外部上传保护要求用户再次明确授权后才允许部署 Preview。
+- 证据层级：本地构建与执行环境发布保护
+- 预期结果：仅运行 `npx vercel deploy --prebuilt`，记录 Preview URL、Deployment ID、target=`preview`、status=`Ready`；不得使用 `--prod`。
+- 处理结论：PENDING；Production 未触碰，禁止绕过保护。

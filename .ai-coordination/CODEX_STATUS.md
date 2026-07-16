@@ -15,3 +15,16 @@
 - 下一步：独立处理词典覆盖，不混入其他 UI 或导出功能
 - 停止规则：真实产品失败、不可逆文件归属冲突或需要真实设备操作时暂停
 - 最后更新时间：2026-07-15 CST
+
+## 2026-07-16 第二轮状态
+
+- 总体实现：完成；应用候选提交 `f680f92`，数据提交 `2d449f0`。
+- 离线中文：156 词条、281 查询形、16 分片、32,807 字节；中文优先于 JMdict，浏览器运行时无翻译 API。
+- JLPT 参考：8,131 源行、13,385 个无冲突查询形、排除 533 个跨等级冲突形；仅显示“参考等级”。
+- 生词数据：已加入 `meaningLanguage`、`meaningSource`、`levelSource`，旧数据迁移、手工释义保护、未分级筛选、闪卡与导出一致性已覆盖。
+- 缓存版本：`20260716-03`；Kuromoji 版本化目录保持 `20260714-01`。
+- 自动化：`check`、`test:kuromoji`、`test:dictionary`、`audit:ui`、学习数据构建、前端构建、Vercel prebuilt 全部 PASS。
+- 构建一致性：`dist/` 与 Vercel static 各 146 文件，零路径/hash 差异；聚合 SHA-256 `df4d415c3f0cbc9658044232ab119022df491d6a4c0f10a4a37fb38ef3ccff39`。
+- Preview：`PENDING`；上传动作被外部发布保护拦截，需用户再次明确授权上传 146 个 prebuilt 文件。
+- Production：未部署、未修改 alias/域名，`https://yomeru.japanese-hub.com` 保持不变。
+- 当前结论：`HOLD`；下一步仅为 Preview 上传及第二轮 Mac/iPhone Safari 真机验收。

@@ -55,3 +55,25 @@
 - Production status: `Ready` and unchanged
 - Production action: none
 - Release status: `HOLD` — waiting for the second-round Chinese-definition and JLPT reference-data work
+
+## Second-round candidate — 2026-07-16
+
+- Candidate ID: `preview-candidate-20260716-round-02-f680f92-df4d415c`
+- Branch: `stabilize/safari-dictionary-20260715`
+- Data commit: `2d449f0`
+- Application commit: `f680f92`
+- Cache version: `20260716-03`
+- Chinese data version: `20260716`
+- JLPT reference data version: `20260716`
+- Dist file count: `146`
+- Vercel static file count: `146`
+- Missing from Vercel static: `[]`
+- Extra in Vercel static: `[]`
+- SHA-256 mismatches: `[]`
+- Candidate aggregate SHA-256: `df4d415c3f0cbc9658044232ab119022df491d6a4c0f10a4a37fb38ef3ccff39`
+- Comparison result: `PASS — relative paths and every file SHA-256 are identical`
+- Functional audit: `frontend/audit-screenshots/2026-07-16T14-08-06-523Z/ui-audit-report.md`
+- Responsive audit: `frontend/audit-screenshots/2026-07-16T14-08-25-338Z/ui-audit-report.md`
+- Preview deployment: `PENDING — external upload protection requires renewed explicit user approval`
+- Production action: `none`; Production deployment remains unchanged.
+- Release status: `HOLD — Preview URL/Deployment ID and second-round real-device acceptance remain open`
