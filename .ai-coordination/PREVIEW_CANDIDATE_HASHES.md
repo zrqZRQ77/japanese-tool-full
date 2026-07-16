@@ -1,16 +1,25 @@
 # Preview Candidate Hashes
 
 - Branch: `stabilize/safari-dictionary-20260715`
-- Candidate code commit: `9c4da88585534db716a70acacb09e77f68da7bc5`
-- Build time (UTC): `2026-07-16T08:24:12Z`
-- Cache version: `20260716-01`
+- Candidate code commit: `2e24c4f`
+- Build time (UTC): `2026-07-16T10:31:25Z`
+- Cache version: `20260716-02`
 - Dist file count: `123`
 - Vercel static file count: `123`
 - Missing from Vercel static: `[]`
 - Extra in Vercel static: `[]`
 - SHA-256 mismatches: `[]`
-- Candidate aggregate SHA-256: `261b4c457b4288672eb1139fb0421cfc83215c2016bf20a67cc709a6918f6823`
+- Candidate aggregate SHA-256: `fe8bf67279f8ac05f066281283df247ae95a2c66209fc10334c9bc26eb07424e`
 - Comparison result: `PASS — relative paths and every file SHA-256 are identical`
+
+## First-round fixes
+
+- iPhone Safari speech retains the current utterance, splits long articles into short chunks, prioritizes real Japanese voices, and retries once with the system voice.
+- A save request made while a dictionary meaning is loading is queued and completed automatically with the final reading and meaning.
+- Failed dictionary lookups can still be saved safely as `释义待补充`.
+- Compound JMdict fallback is part of the main application flow.
+- Visible attribution is simplified to `词典来源：JMdict`; EDRDG remains in the accessible label and licence documentation.
+- Unknown JLPT data is displayed as `暂无参考等级`.
 
 ## Automation results
 
@@ -19,14 +28,14 @@
 - `frontend/npm run test:kuromoji`: PASS
 - `frontend/npm run test:dictionary`: PASS
 - `frontend/npm run audit:ui`: PASS
-  - Functional report: `frontend/audit-screenshots/2026-07-16T08-20-39-820Z/ui-audit-report.md`
-  - Responsive report: `frontend/audit-screenshots/2026-07-16T08-21-42-951Z/ui-audit-report.md`
+  - Functional report: `frontend/audit-screenshots/2026-07-16T10-28-23-240Z/ui-audit-report.md`
+  - Responsive report: `frontend/audit-screenshots/2026-07-16T10-28-37-749Z/ui-audit-report.md`
 - `npx vercel build`: PASS
 
 ## Preview deployment
 
-- Preview URL: `https://japanese-tool-7y2vsc4r9-zrq-projects1.vercel.app`
-- Deployment ID: `dpl_73jSyHz3LzSBapovuQDziPEtck3H`
+- Preview URL: `https://japanese-tool-nlctq0019-zrq-projects1.vercel.app`
+- Deployment ID: `dpl_EGRZueDbgJzrJVnXR17SsVacAzpZ`
 - Target: `preview`
 - Deployment status: `Ready`
 
