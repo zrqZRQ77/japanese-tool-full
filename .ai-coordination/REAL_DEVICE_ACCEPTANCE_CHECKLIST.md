@@ -74,7 +74,9 @@ iOS：`26.4.2`
 - 候选 ID：`preview-candidate-20260716-round-02-f680f92-df4d415c`
 - 应用提交：`f680f92`
 - 整体 SHA-256：`df4d415c3f0cbc9658044232ab119022df491d6a4c0f10a4a37fb38ef3ccff39`
-- Preview：`PENDING — 尚未获执行环境的再次外部上传授权`
+- Preview：`https://japanese-tool-6uuktjcym-zrq-projects1.vercel.app`
+- Preview Deployment ID：`dpl_5rmgnmSGekWbFk5HAN2HDSwAN66t`
+- Preview 状态：`Ready`
 
 部署 Preview 后，在 iPhone Safari 与 Mac Safari 各执行：
 

@@ -25,6 +25,6 @@
 - 缓存版本：`20260716-03`；Kuromoji 版本化目录保持 `20260714-01`。
 - 自动化：`check`、`test:kuromoji`、`test:dictionary`、`audit:ui`、学习数据构建、前端构建、Vercel prebuilt 全部 PASS。
 - 构建一致性：`dist/` 与 Vercel static 各 146 文件，零路径/hash 差异；聚合 SHA-256 `df4d415c3f0cbc9658044232ab119022df491d6a4c0f10a4a37fb38ef3ccff39`。
-- Preview：`PENDING`；上传动作被外部发布保护拦截，需用户再次明确授权上传 146 个 prebuilt 文件。
+- Preview：`https://japanese-tool-6uuktjcym-zrq-projects1.vercel.app`；Deployment ID `dpl_5rmgnmSGekWbFk5HAN2HDSwAN66t`；target=`preview`；status=`Ready`。
 - Production：未部署、未修改 alias/域名，`https://yomeru.japanese-hub.com` 保持不变。
-- 当前结论：`HOLD`；下一步仅为 Preview 上传及第二轮 Mac/iPhone Safari 真机验收。
+- 当前结论：`HOLD`；下一步仅为第二轮 Mac/iPhone Safari 真机验收。

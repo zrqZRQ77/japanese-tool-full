@@ -74,6 +74,9 @@
 - Comparison result: `PASS — relative paths and every file SHA-256 are identical`
 - Functional audit: `frontend/audit-screenshots/2026-07-16T14-08-06-523Z/ui-audit-report.md`
 - Responsive audit: `frontend/audit-screenshots/2026-07-16T14-08-25-338Z/ui-audit-report.md`
-- Preview deployment: `PENDING — external upload protection requires renewed explicit user approval`
+- Preview URL: `https://japanese-tool-6uuktjcym-zrq-projects1.vercel.app`
+- Deployment ID: `dpl_5rmgnmSGekWbFk5HAN2HDSwAN66t`
+- Deployment target: `preview`
+- Deployment status: `Ready`
 - Production action: `none`; Production deployment remains unchanged.
-- Release status: `HOLD — Preview URL/Deployment ID and second-round real-device acceptance remain open`
+- Release status: `HOLD — second-round Mac/iPhone Safari real-device acceptance remains open`

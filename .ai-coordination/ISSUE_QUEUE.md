@@ -396,9 +396,9 @@
 - 来源：第二轮 Preview 候选发布
 - 基线：应用提交 `f680f92` / 候选 SHA-256 `df4d415c3f0cbc9658044232ab119022df491d6a4c0f10a4a37fb38ef3ccff39`
 - 等级：P1
-- 状态：NEW
+- 状态：VERIFIED
 - 涉及文件：`.vercel/output/`、协调状态文件
 - 发现：prebuilt 构建与 146 文件逐项哈希门禁均已通过，但外部上传保护要求用户再次明确授权后才允许部署 Preview。
 - 证据层级：本地构建与执行环境发布保护
 - 预期结果：仅运行 `npx vercel deploy --prebuilt`，记录 Preview URL、Deployment ID、target=`preview`、status=`Ready`；不得使用 `--prod`。
-- 处理结论：PENDING；Production 未触碰，禁止绕过保护。
+- 处理结论：用户再次明确授权后已运行 `npx vercel deploy --prebuilt`；Preview `https://japanese-tool-6uuktjcym-zrq-projects1.vercel.app`，Deployment ID `dpl_5rmgnmSGekWbFk5HAN2HDSwAN66t`，target=`preview`，status=`Ready`。Production 未触碰。
