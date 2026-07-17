@@ -3,7 +3,7 @@
 > 创建时间：2026-07-17  
 > 当前分支：`stabilize/safari-dictionary-20260715`  
 > 创建时 HEAD：`f371e46`  
-> 当前状态：阶段二“统一词典查询计划”已完成；阶段三“统一详情、收藏和等级继承”待开始  
+> 当前状态：阶段三“统一详情、收藏和等级继承”已完成；阶段四“建立批量语言测试集”待开始  
 > 发布约束：Production 保持不变，发布状态继续 `HOLD`
 
 ## 一、计划目的
@@ -428,3 +428,17 @@ npx vercel build
 - 构建一致性：170/170 文件，零路径或 hash 差异；聚合 SHA-256 `370888f6c8e864b72f9b1c768da52a0d879d3e18251a7f9af6dcfd34bcd43fee`。
 - 部署：未部署 Preview；Production 未操作；状态继续 `HOLD`。
 - 下一步：执行阶段三，统一详情页与收藏数据中的正文形、原形、原形读音、词性和活用字段，并保持旧数据兼容。
+
+### 2026-07-17 阶段三完成
+
+- 代码提交：`e00bb53`（`refactor: unify lexical detail and vocabulary records`）。
+- 已完成：统一 `buildLexicalDetailRecord()`、收藏元数据映射、查询命中记录和旧生词字段迁移。
+- 详情字段：正文形/读音、原形/原形读音、主/细分词性、活用类型/活用形、释义来源、JLPT 来源、实际命中词和命中类型。
+- 收藏字段：`word`、`reading`、`baseForm`、`baseReading`、`partOfSpeech`、`partOfSpeechDetail`、`conjugationType`、`conjugationForm`、`lookupMatchedTerm`、`lookupMatchedKind`；旧 `pos` 字段继续同步保留。
+- 兼容规则：旧生词加载时自动补齐 schemaVersion=1 的词汇字段并重新持久化；编辑普通词时原形随正文更新，编辑活用词时保留原形和原形读音。
+- 浏览器证据：`寝ます` 详情显示 `寝る（ねる）` 与词形；收藏后保留原形、原形读音、动词词性、活用、原形命中和 N5。
+- 缓存版本：`20260717-05`；缓存升级工具已覆盖全部词汇模块脚本。
+- 门禁：`check`、`test:kuromoji`、`test:dictionary`、`audit:ui`、学习数据构建、前端构建、Vercel prebuilt 全部 PASS。
+- 构建一致性：173/173 文件，零路径或 hash 差异；聚合 SHA-256 `2d8b6ace3f7e8ab6f6cbe5c1bcfea9d88ec6153e5e7f1818a5c0ac71a300d022`。
+- 部署：未部署 Preview；Production 未操作；状态继续 `HOLD`。
+- 下一步：执行阶段四，建立第一版 200–300 个固定语言案例和分层测试集。

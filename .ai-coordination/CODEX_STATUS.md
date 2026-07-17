@@ -85,3 +85,19 @@
 - 构建一致性：`dist/` 与 Vercel static 各 170 文件，缺失/多余/hash 不一致均为 0；聚合 SHA-256 `370888f6c8e864b72f9b1c768da52a0d879d3e18251a7f9af6dcfd34bcd43fee`。
 - Preview：本阶段未部署；Production、正式域名和 alias 未操作。
 - 当前结论：阶段二完成；下一步进入阶段三“统一详情、收藏和等级继承”。发布状态继续 `HOLD`。
+
+## 2026-07-17 统一详情与收藏记录阶段三
+
+- 阶段提交：`e00bb53`（`refactor: unify lexical detail and vocabulary records`）。
+- 前端缓存版本：`20260717-05`；学习数据版本仍为 `20260717`；Kuromoji 资源版本仍为 `20260714-01`。
+- 已建立统一详情记录：正文形/读音、原形/原形读音、主/细分词性、活用类型/活用形、释义与来源、JLPT 与来源、实际查询命中词及命中类型。
+- 收藏、生词快照、自动收藏、内置词收藏和手动编辑均保存统一字段；旧 `pos` 字段继续与 `partOfSpeech` 同步，保持旧代码与备份兼容。
+- 旧生词迁移：加载时自动补齐 `lexicalSchemaVersion=1`、`baseForm`、`baseReading`、词性和活用字段，并在发生变化后重新持久化。
+- 编辑兼容：普通词的原形随正文编辑更新；活用词编辑正文时保留独立原形和原形读音。
+- 专项测试：`frontend/tools/lexical-record.test.mjs`；浏览器审计确认 `寝ます → 寝る（ねる）` 详情及收藏字段完整。
+- 自动化：`check`、`test:kuromoji`、`test:dictionary`、功能 UI 审计、390/430/1280/1440/1920 响应式审计、学习数据构建、前端构建和 Vercel prebuilt 全部 PASS。
+- 功能审计：`frontend/audit-screenshots/2026-07-17T08-09-11-416Z/ui-audit-report.md`。
+- 响应式审计：`frontend/audit-screenshots/2026-07-17T08-09-25-606Z/ui-audit-report.md`。
+- 构建一致性：`dist/` 与 Vercel static 各 173 文件，缺失/多余/hash 不一致均为 0；聚合 SHA-256 `2d8b6ace3f7e8ab6f6cbe5c1bcfea9d88ec6153e5e7f1818a5c0ac71a300d022`。
+- Preview：本阶段未部署；Production、正式域名和 alias 未操作。
+- 当前结论：阶段三完成；下一步进入阶段四“建立批量语言测试集”。发布状态继续 `HOLD`。
