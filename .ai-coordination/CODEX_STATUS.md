@@ -101,3 +101,14 @@
 - 构建一致性：`dist/` 与 Vercel static 各 173 文件，缺失/多余/hash 不一致均为 0；聚合 SHA-256 `2d8b6ace3f7e8ab6f6cbe5c1bcfea9d88ec6153e5e7f1818a5c0ac71a300d022`。
 - Preview：本阶段未部署；Production、正式域名和 alias 未操作。
 - 当前结论：阶段三完成；下一步进入阶段四“建立批量语言测试集”。发布状态继续 `HOLD`。
+
+## 2026-07-17 固定语言语料与分层测试阶段四
+
+- 代码提交：`1dbb1e6`（`test: add versioned language quality corpus`）。
+- 语料版本：`20260717-01`；总数 260，分类为 40/60/30/30/25/25/20/30。
+- 测试层：纯函数 260、真实 Worker 32、离线中文/JMdict/JLPT 40、浏览器 UI 16、Safari 人工待验 12。
+- `npm run test:language-corpus` 已新增并接入 `npm test` 与 `verify:all`；快速 `check` 未增加浏览器负担；阶段五 `audit:language` 尚未实施。
+- 门禁：`check`、`test:language-corpus`、`test:kuromoji`、`test:dictionary`、学习数据构建、前端构建、Vercel prebuilt 均 PASS。UI 功能与 390/430/1280/1440/1920 响应式审计的最终独立报告均 PASS；组合执行曾遇本机请求中止噪声，失败步骤与 Issues 为 0。
+- UI 证据：`frontend/audit-screenshots/2026-07-17T10-45-11-070Z/`、`frontend/audit-screenshots/2026-07-17T10-47-52-664Z/`。
+- 构建一致性：`dist/` 与 `.vercel/output/static/` 各 173 文件；缺失 0、多余 0、SHA-256 不一致 0；生产 bundle 未变化，聚合 SHA-256 保持 `2d8b6ace3f7e8ab6f6cbe5c1bcfea9d88ec6153e5e7f1818a5c0ac71a300d022`。
+- 当前结论：阶段四完成；下一步为阶段五独立语言质量审计。未部署、未修改域名或 alias，发布状态继续 `HOLD`。

@@ -442,3 +442,18 @@ npx vercel build
 - 构建一致性：173/173 文件，零路径或 hash 差异；聚合 SHA-256 `2d8b6ace3f7e8ab6f6cbe5c1bcfea9d88ec6153e5e7f1818a5c0ac71a300d022`。
 - 部署：未部署 Preview；Production 未操作；状态继续 `HOLD`。
 - 下一步：执行阶段四，建立第一版 200–300 个固定语言案例和分层测试集。
+
+### 2026-07-17 阶段四完成
+
+- 代码提交：`1dbb1e6`（`test: add versioned language quality corpus`）。
+- 固定语料版本：`20260717-01`；共 260 个完全确定案例，数据与清单位于 `frontend/test-data/language-corpus/20260717-01/`，不写入生产词库，也不在测试运行时随机生成。
+- 分类数量：基础词和简单句 40；动词活用 60；形容词和形容动词 30；功能词 30；同音/多义/词性歧义 25；复合词与固定搭配 25；专有名词/数字/英文混排 20；新闻与真实文章片段 30。
+- 分层数量：结构与纯函数 260；真实 Kuromoji Worker 32；离线中文/JMdict/JLPT 40；浏览器 UI 16；Safari 人工清单 12（状态仅为 `PENDING`，未伪造自动通过）。
+- 指定活用覆盖：`読む`、`書く`、`行く`、`待つ`、`寝る`、`食べる`、`する`、`来る`、`高い`、`静か` 的要求形态均进入固定案例；32 个 Worker 子集覆盖全部题目指定的代表性活用。
+- 新命令：`npm run test:language-corpus`；已接入 `npm test` 与 `verify:all`，未接入快速 `check`。阶段五的 `audit:language` 未提前实施。
+- 预期校准原则：以真实 Worker 和当前离线索引为准；未收录等级使用空值，未命中复合词使用 `unknown`，未向生产词库虚构释义或等级。
+- 自动化：`check`、`test:language-corpus`、`test:kuromoji`、`test:dictionary`、学习数据构建、前端构建和 Vercel prebuilt 均 PASS。UI 功能与五视口审计分别最终 PASS；组合审计曾因本机请求被中止返回 `CHECK NEEDED`，但失败步骤与 Issues 均为 0，独立重试通过。
+- UI 证据：功能 `frontend/audit-screenshots/2026-07-17T10-45-11-070Z/ui-audit-report.md`；响应式 `frontend/audit-screenshots/2026-07-17T10-47-52-664Z/ui-audit-report.md`。
+- 构建一致性：`dist/` 与 Vercel static 各 173 文件，缺失/多余/hash 不一致均为 0；测试数据不进入生产 bundle，阶段三候选聚合 SHA-256 保持 `2d8b6ace3f7e8ab6f6cbe5c1bcfea9d88ec6153e5e7f1818a5c0ac71a300d022`。
+- 部署：未部署 Preview 或 Production；正式域名、alias 和现有 Preview 均未操作；发布状态继续 `HOLD`。
+- 下一步：阶段五新增独立 `audit:language` 量化审计与报告输出，复用本阶段固定语料，不修改公开 UI。

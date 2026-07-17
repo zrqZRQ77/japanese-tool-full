@@ -516,3 +516,28 @@
 - 证据层级：本地构建与执行环境发布保护
 - 预期结果：仅运行 `npx vercel deploy --prebuilt`，记录 Preview URL、Deployment ID、target=`preview`、status=`Ready`；不得使用 `--prod`。
 - 处理结论：用户再次明确授权后已运行 `npx vercel deploy --prebuilt`；Preview `https://japanese-tool-6uuktjcym-zrq-projects1.vercel.app`，Deployment ID `dpl_5rmgnmSGekWbFk5HAN2HDSwAN66t`，target=`preview`，status=`Ready`。Production 未触碰。
+
+### LANGUAGE-CORPUS-001
+
+- 来源：词形系统重构阶段四
+- 基线：`stabilize/safari-dictionary-20260715 / d8fef33`
+- 等级：P1
+- 状态：VERIFIED
+- 涉及文件：`frontend/test-data/language-corpus/20260717-01/`、`frontend/tools/language-corpus.test.mjs`、`frontend/tools/language-corpus-browser.test.mjs`、`frontend/package.json`
+- 发现：此前只有专项回归，没有覆盖基础词、活用、功能词、歧义、复合词、专名混排和新闻文本的固定批量语言基线。
+- 复现方式或证据：`npm run test:language-corpus`。
+- 证据层级：确定性数据校验、纯函数测试、真实 Kuromoji Worker、本地离线索引、Chromium UI。
+- 预期结果：260 个固定案例满足完整 schema、唯一性与分类计数；代表性子集进入真实 Worker、词典/JLPT 与 UI 层；未知值不猜测。
+- 处理结论：260 个案例与 260/32/40/16 分层自动测试全部通过；12 个 Safari 案例只登记为人工 `PENDING`；代码提交为 `1dbb1e6`。
+
+### LANGUAGE-SAFARI-001
+
+- 来源：词形系统重构阶段四
+- 基线：语料版本 `20260717-01`
+- 等级：P2
+- 状态：DEFERRED
+- 涉及文件：`frontend/test-data/language-corpus/20260717-01/cases.json`、`manifest.json`
+- 发现：Codex 自动化环境不能替代真实 Mac/iPhone Safari 的语言案例验收。
+- 证据层级：人工验收清单占位，不是自动化 PASS。
+- 预期结果：后续 Preview 在真实 Safari 按清单执行并记录 PASS/FAIL、设备与现象。
+- 处理结论：当前 12 个 `safari-manual` 案例状态保持 `PENDING`；阶段四不伪造结果，不部署 Preview 或 Production。
