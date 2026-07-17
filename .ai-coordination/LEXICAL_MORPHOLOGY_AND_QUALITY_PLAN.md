@@ -473,3 +473,18 @@ npx vercel build
 - 构建一致性：`dist/` 与 Vercel static 各 173 文件，缺失/多余/hash 不一致均为 0；生产 bundle 聚合 SHA-256 保持 `2d8b6ace3f7e8ab6f6cbe5c1bcfea9d88ec6153e5e7f1818a5c0ac71a300d022`。
 - 发布：未部署 Preview 或 Production，未修改正式域名或 alias；结论继续 `HOLD / NO-GO`。
 - 下一步：阶段六先按通用规则处理 9 个上下文读音问题，再执行不少于 20 篇文章、1000 个可点击 token 和真实 Safari 定向复测。
+
+### 2026-07-17 阶段六自动化与文章压力测试完成（Safari 人工复测待授权 Preview）
+
+- 代码提交：`b649f65`（`test: add contextual reading and article stress audit`）。
+- 上下文读音解析已接入 Worker 原始词元进入统一形态模型之前，覆盖小时计数、开门/开店语境、生死对举、日期一日、无人语境、实体市场、`今日中` 和 `避難所`；规则命中信息仅作内部分析，不进入公开 UI。
+- 新增 15 个真实 Worker 正反例，明确验证 `七時/七人`、`ドアが開く/本を開く`、`生と死/生の魚`、`四月一日/一日を過ごす`、`人気のない/人気がある`、`朝の市場/市場を調査` 等边界，不按完整句子添加硬编码。
+- `audit:language` 最终 PASS：260/260 目标定位成功，1148 个实际 token；正文读音 246/246（100%）、原形 177/177（100%）、词性 177/177（100%）、已知中文 60/60（100%）、JLPT 126/126（100%）、已知回归 260/260（100%），严重安全错误均为 0。
+- 固定文章压力集版本 `20260717-01`：20 篇项目原创真实文体片段，覆盖日常生活 4、教育 4、新闻 4、商业财经 3、科技 3、日本机构公告 2；测试数据独立于生产词库。
+- 新命令：`npm run test:contextual-reading`、`npm run audit:articles`；完整 `verify:all` 已接入上下文回归、语言量化审计和文章压力审计，快速 `check` 未增加浏览器负担。
+- 文章审计最终 PASS：真实 Worker 与完整 UI 均产生 2131 个可点击 token，20/20 文章成功，段落重建全部正确，最终 tokenizer mode 为 `kuromoji-worker`，无浏览器错误。
+- 缓存版本：`20260717-06`；Kuromoji 版本化资源继续为 `20260714-01`。
+- 完整门禁：`check`、`test:language-corpus`、`test:kuromoji`、`test:dictionary`、`audit:ui`、`audit:language`、`audit:articles`、学习数据构建、前端构建和 Vercel prebuilt 全部 PASS；390/430/1280/1440/1920 响应式审计无回归。
+- 构建一致性：`dist/` 与 `.vercel/output/static/` 各 173 文件，缺失 0、多余 0、SHA-256 不一致 0；聚合 SHA-256 `da796256f132c92a2bfb2b815dde6bdfcee0475a3189caa64a23e66a816d614c`。
+- Safari：Mac Safari 与 iPhone Safari 定向复测必须基于新 Preview，由真实设备执行；当前没有 Preview 部署授权，因此状态保持 `PENDING`，未用 Chromium 结果替代。
+- 发布：未部署 Preview 或 Production，未修改正式域名或 alias；发布状态继续 `HOLD`。下一步仅在用户授权后部署当前 prebuilt 到 Preview，再完成真实 Safari 定向复测。

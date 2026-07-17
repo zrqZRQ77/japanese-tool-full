@@ -553,17 +553,30 @@
 - 复现方式或证据：`npm run audit:language`；`frontend/language-audit-results/2026-07-17T12-55-10-902Z/`。
 - 证据层级：真实 Kuromoji Worker、本地离线索引、Playwright Chromium、Markdown/JSON 报告。
 - 预期结果：输出 token、读音、原形、词性、中文、JMdict、未命中、JLPT、安全错误和失败案例，并在门槛未满足时返回非零。
-- 处理结论：审计工具已提交为 `e358d13`；全部指标与门槛可重复生成，当前正确返回 `FAIL`，没有伪造 PASS。
+- 处理结论：审计工具已提交为 `e358d13`；阶段六接入通用上下文读音解析后最终报告为 `frontend/language-audit-results/2026-07-17T13-30-11-367Z/`，260/260 已知案例与全部质量门槛 PASS。
 
 ### LANGUAGE-READING-CONTEXT-001
 
 - 来源：阶段五首次全量语言审计
 - 基线：语料 `20260717-01` / 审计提交 `e358d13`
 - 等级：P0
-- 状态：CONFIRMED
-- 涉及文件：Kuromoji 读音结果与后续通用上下文读音规则（阶段六确定具体文件）
+- 状态：VERIFIED
+- 涉及文件：`frontend/app.js`、`frontend/test-data/contextual-reading/20260717-01/`、`frontend/tools/contextual-reading.test.mjs`、`frontend/tools/language-audit.mjs`
 - 发现：正文读音正确率仅 96.34%，未达到 98% 门槛；`七時`、`開く`（2 个语境）、`生`、`一日`、`人気`、`市場`、`今日中`、`避難所` 共 9 个案例可重复失败。
 - 复现方式或证据：运行 `npm run audit:language`，查看最终报告的 Failures 表。
 - 证据层级：260 个固定案例、1148 个真实 Worker token、本地 Chromium 自动化。
 - 预期结果：按通用上下文规则修复，不为单个案例写生产硬编码；正文读音至少 98%，已知回归 100%。
-- 处理结论：阶段五只识别和量化，不提前实施阶段六修复；发布继续 `HOLD / NO-GO`。
+- 处理结论：已在合并与形态分析前按词元上下文统一解析读音，并用 15 个真实 Worker 正反例防止过度匹配。最终正文读音 246/246（100%）、已知回归 260/260（100%）；未向生产词库添加虚构释义或等级。
+
+### LANGUAGE-ARTICLE-STRESS-001
+
+- 来源：词形系统重构阶段六
+- 基线：`stabilize/safari-dictionary-20260715 / a572309`
+- 等级：P1
+- 状态：VERIFIED
+- 涉及文件：`frontend/test-data/article-stress/20260717-01/`、`frontend/tools/article-stress-audit.mjs`、`frontend/package.json`、`frontend/tools/verify-all.mjs`
+- 发现：固定 260 案例通过后仍需验证多文体长文本、累计 1000 个以上可点击 token、段落重建和完整 UI Worker 模式。
+- 复现方式或证据：`npm run audit:articles`；`frontend/article-stress-results/2026-07-17T13-41-21-065Z/`。
+- 证据层级：确定性文章语料、真实 Kuromoji Worker、完整 Chromium UI。
+- 预期结果：不少于 20 篇、覆盖六类文体、不少于 1000 个可点击 token，全部 Worker 成功且 UI 不降级。
+- 处理结论：20 篇、6 类、Worker/UI 各 2131 个可点击 token，20/20 成功，段落重建与 `kuromoji-worker` 模式均 PASS；真实 Safari 不由 Chromium 代替，继续登记在 `LANGUAGE-SAFARI-001`。

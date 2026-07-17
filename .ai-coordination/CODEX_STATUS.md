@@ -124,3 +124,17 @@
 - 中文覆盖单独报告：JMdict 回退 79.03%，完全未命中 20.97%；未用虚构中文释义提高覆盖率。
 - 其他自动化、UI 五视口、学习数据、前端构建和 Vercel prebuilt 均 PASS；`dist`/Vercel static 为 173/173，路径与逐文件 hash 一致。
 - 当前结论：阶段五审计工具完成，但语言质量门禁为 `FAIL`；不进入 Preview/Production，发布保持 `HOLD / NO-GO`。下一步进入阶段六的通用读音修复与真实文章压力测试。
+
+## 2026-07-17 上下文读音与文章压力测试阶段六
+
+- 代码提交：`b649f65`（`test: add contextual reading and article stress audit`）。
+- 自动化实现：完成；阶段五的 9 个上下文读音失败已通过通用词元上下文规则关闭，并新增 15 个真实 Worker 正反例。
+- 语言审计：最终 `PASS`；260 个案例、1148 个实际 token、正文读音 100%、原形 100%、词性 100%、已知中文 100%、JLPT 100%、已知回归 100%，同音/功能词/专名严重错误为 0。
+- 文章压力集：版本 `20260717-01`，20 篇、6 类文体；真实 Worker 与完整 UI 各 2131 个可点击 token，20/20 成功，段落重建正确，无浏览器错误。
+- 命令：新增 `npm run test:contextual-reading` 与 `npm run audit:articles`，并接入完整 `verify:all`；快速 `check` 保持轻量。
+- 缓存版本：`20260717-06`；学习数据版本 `20260717`；Kuromoji 资源版本 `20260714-01`。
+- 自动化：`check`、`test:language-corpus`、`test:kuromoji`、`test:dictionary`、`audit:ui`、`audit:language`、`audit:articles`、学习数据构建、前端构建和 Vercel prebuilt 全部 PASS；390/430/1280/1440/1920 响应式无回归。
+- UI 证据：`frontend/audit-screenshots/2026-07-17T13-55-48-418Z/`、`frontend/audit-screenshots/2026-07-17T13-56-12-929Z/`。
+- 语言证据：`frontend/language-audit-results/2026-07-17T13-30-11-367Z/`；文章证据：`frontend/article-stress-results/2026-07-17T13-41-21-065Z/`。
+- 构建一致性：`dist/` 与 `.vercel/output/static/` 各 173 文件；缺失 0、多余 0、SHA-256 不一致 0；聚合 SHA-256 `da796256f132c92a2bfb2b815dde6bdfcee0475a3189caa64a23e66a816d614c`。
+- 当前结论：阶段六自动化与文章压力门禁完成；真实 Mac/iPhone Safari 定向复测仍为 `PENDING`，需用户授权新的 Preview 后执行。未部署 Preview/Production，未修改域名或 alias，发布继续 `HOLD`。
