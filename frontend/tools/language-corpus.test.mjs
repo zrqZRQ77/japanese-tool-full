@@ -125,6 +125,7 @@ for(const item of cases){
     is_compound:item.category === 'compounds'
   };
   const analysis = vm.runInContext('analyzeLexicalToken(__token)', context);
+  analysis.isFunctionWord = item.expectedMeaningClass === 'function-word';
   assert.equal(analysis.surface, item.surface, `${item.id}: surface`);
   assert.equal(analysis.surfaceReading, item.expectedSurfaceReading, `${item.id}: surface reading`);
   assert.equal(analysis.lemma, item.expectedLemma, `${item.id}: lemma`);

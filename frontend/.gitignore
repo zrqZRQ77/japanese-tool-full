@@ -5,6 +5,7 @@ npm-debug.log*
 
 # Generated local output. Source HTML, assets, executable tools and tests remain trackable.
 audit-screenshots/
+language-audit-results/
 stage4-results/
 stage4-fixtures/
 visual-snapshots/

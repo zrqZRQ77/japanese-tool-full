@@ -131,6 +131,7 @@ try{
           : '',
         conjugationType:item.expectedConjugationType,
         conjugationForm:item.expectedConjugationForm,
+        isFunctionWord:item.expectedMeaningClass === 'function-word',
         isCompound:item.category === 'compounds'
       });
       const plan = buildLexicalLookupPlan(analysis);
