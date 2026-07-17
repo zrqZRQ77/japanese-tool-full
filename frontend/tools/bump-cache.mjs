@@ -34,12 +34,15 @@ const currentGrammarLayout = indexHtml.match(/grammar-layout\.css\?v=([^"']+)/)?
 const currentTypography = indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1] || '';
 const currentHeroMenu = indexHtml.match(/hero-menu-refresh\.css\?v=([^"']+)/)?.[1] || '';
 const currentLexicalLookup = indexHtml.match(/lexical-lookup\.js\?v=([^"']+)/)?.[1] || '';
+const currentLexicalRecord = indexHtml.match(/lexical-record\.js\?v=([^"']+)/)?.[1] || '';
 const currentJs = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
 const currentLexicalIntegration = indexHtml.match(/lexical-lookup-integration\.js\?v=([^"']+)/)?.[1] || '';
-const versionedAssets = [currentCss, currentDesignSystem, currentGrammarLayout, currentTypography, currentHeroMenu, currentLexicalLookup, currentJs, currentLexicalIntegration].filter(Boolean);
+const currentLexicalDetail = indexHtml.match(/lexical-detail-integration\.js\?v=([^"']+)/)?.[1] || '';
+const currentLexicalVocab = indexHtml.match(/lexical-vocab-integration\.js\?v=([^"']+)/)?.[1] || '';
+const versionedAssets = [currentCss, currentDesignSystem, currentGrammarLayout, currentTypography, currentHeroMenu, currentLexicalLookup, currentLexicalRecord, currentJs, currentLexicalIntegration, currentLexicalDetail, currentLexicalVocab].filter(Boolean);
 const current = versionedAssets.length && versionedAssets.every(value => value === versionedAssets[0])
   ? versionedAssets[0]
-  : currentJs || currentLexicalLookup || currentLexicalIntegration || currentCss || currentDesignSystem || currentGrammarLayout || currentTypography || currentHeroMenu;
+  : currentJs || currentLexicalLookup || currentLexicalRecord || currentLexicalIntegration || currentLexicalDetail || currentLexicalVocab || currentCss || currentDesignSystem || currentGrammarLayout || currentTypography || currentHeroMenu;
 const version = nextVersion(current, requested);
 
 const updated = indexHtml
@@ -49,8 +52,11 @@ const updated = indexHtml
   .replace(/typography\.css\?v=[^"']+/g, `typography.css?v=${version}`)
   .replace(/hero-menu-refresh\.css\?v=[^"']+/g, `hero-menu-refresh.css?v=${version}`)
   .replace(/lexical-lookup\.js\?v=[^"']+/g, `lexical-lookup.js?v=${version}`)
+  .replace(/lexical-record\.js\?v=[^"']+/g, `lexical-record.js?v=${version}`)
   .replace(/app\.js\?v=[^"']+/g, `app.js?v=${version}`)
-  .replace(/lexical-lookup-integration\.js\?v=[^"']+/g, `lexical-lookup-integration.js?v=${version}`);
+  .replace(/lexical-lookup-integration\.js\?v=[^"']+/g, `lexical-lookup-integration.js?v=${version}`)
+  .replace(/lexical-detail-integration\.js\?v=[^"']+/g, `lexical-detail-integration.js?v=${version}`)
+  .replace(/lexical-vocab-integration\.js\?v=[^"']+/g, `lexical-vocab-integration.js?v=${version}`);
 
 if (updated === indexHtml) {
   throw new Error('No cache query strings found in index.html.');

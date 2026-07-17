@@ -59,6 +59,22 @@ async function lookupJmdictCommonWithCompoundFallback(input, surface){
   return parts.length > 1 ? lookupJmdictCommon([...parts].reverse()) : null;
 }
 
+function recordLexicalLookupMatch(info, result){
+  const term = String(result?.term || '').trim();
+  const kind = String(result?.candidate?.kind || '');
+  info.lookupMatchedTerm = term;
+  info.lookupMatchedKind = kind;
+  const analysis = info.lexicalAnalysis || null;
+  const matchedReading = katakanaToHiragana(result?.entry?.r || '');
+  if(analysis && matchedReading){
+    if(kind === 'lemma' || term === analysis.lemma){
+      analysis.lemmaReading = analysis.lemmaReading || matchedReading;
+    }else if(kind === 'exactSurface' || term === analysis.surface){
+      analysis.surfaceReading = analysis.surfaceReading || matchedReading;
+    }
+  }
+}
+
 async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
   const target = document.getElementById(`tokenMeaning-${tokenId}`);
   if(!target || !tokenRecord) return;
@@ -85,7 +101,7 @@ async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
     info.meaningLanguage = 'zh';
     info.meaningSource = 'offline-chinese';
     info.lookupWord = chineseResult.term || info.lookupWord || surface;
-    info.lookupMatchedKind = chineseResult.candidate?.kind || '';
+    recordLexicalLookupMatch(info, chineseResult);
     info.source = 'offline-chinese';
     info.lookupState = 'ready';
     target.innerHTML = chineseMeaningHtml(info);
@@ -103,6 +119,7 @@ async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
     info.meaning = properNoun ? '专有名词，离线词库暂未收录可靠释义' : '释义待补充';
     info.meaningLanguage = '';
     info.meaningSource = '';
+    info.lookupMatchedTerm = '';
     info.lookupMatchedKind = '';
     info.lookupState = 'failed';
     target.innerHTML = properNoun
@@ -118,7 +135,7 @@ async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
     info.meaning = '释义待补充';
     info.meaningLanguage = '';
     info.meaningSource = '';
-    info.lookupMatchedKind = result.candidate?.kind || '';
+    recordLexicalLookupMatch(info, result);
     info.lookupState = 'failed';
     target.innerHTML = '<span style="color:var(--ink-soft);">已找到词条，但当前没有可显示的释义，可以先收藏。</span>';
     refreshVisibleTokenDetail(target, surface, info, tokenId);
@@ -130,7 +147,7 @@ async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
   info.meaningLanguage = 'en';
   info.meaningSource = 'jmdict';
   info.lookupWord = result.term || info.lookupWord || surface;
-  info.lookupMatchedKind = result.candidate?.kind || '';
+  recordLexicalLookupMatch(info, result);
   info.source = 'jmdict';
   info.lookupState = 'ready';
   target.innerHTML = jmdictMeaningHtml(result.entry);

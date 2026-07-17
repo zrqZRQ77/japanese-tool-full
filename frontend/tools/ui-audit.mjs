@@ -395,7 +395,16 @@ async function runAudit() {
       reviewAllVocab();
       flipCard();
       return {
-        stored:JSON.parse(localStorage.getItem('reading_vocab_list') || '[]').map(item => ({word:item.word, level:item.level})),
+        stored:JSON.parse(localStorage.getItem('reading_vocab_list') || '[]').map(item => ({
+          word:item.word,
+          reading:item.reading,
+          level:item.level,
+          baseForm:item.baseForm,
+          baseReading:item.baseReading,
+          partOfSpeech:item.partOfSpeech,
+          pos:item.pos,
+          lexicalSchemaVersion:item.lexicalSchemaVersion
+        })),
         vocabText:document.querySelector('#vocabListPage')?.innerText || '',
         flashText:document.querySelector('#flashArea')?.innerText || '',
         visibleText:document.body.innerText || '',
@@ -410,6 +419,13 @@ async function runAudit() {
       throw new Error(`Legacy internal levels were not migrated: ${JSON.stringify(migration.stored)}.`);
     }
     if(preservedJlpt?.level !== 'N3') throw new Error(`Valid JLPT level was damaged: ${JSON.stringify(preservedJlpt)}.`);
+    if(migration.stored.some(item => item.lexicalSchemaVersion !== 1
+      || item.baseForm !== item.word
+      || item.baseReading !== item.reading
+      || !item.partOfSpeech
+      || item.pos !== item.partOfSpeech)){
+      throw new Error(`Legacy vocabulary lexical fields were not migrated: ${JSON.stringify(migration.stored)}.`);
+    }
     if((migration.vocabText.match(/暂无参考等级/g) || []).length < 4 || !/N3/.test(migration.vocabText)){
       throw new Error(`Vocabulary page did not render migrated levels correctly: ${JSON.stringify(migration.vocabText)}.`);
     }
@@ -548,6 +564,24 @@ async function runAudit() {
     await page.evaluate(tokenId => showTokenDetail(tokenId, null), readingState.sleepTokenId);
     await page.waitForFunction(() => /睡觉、就寝/.test(document.querySelector('#detailArea')?.textContent || '')
       && /JLPT 参考等级：N5/.test(document.querySelector('#detailArea')?.textContent || ''), null, {timeout:6000});
+    const sleepDetailText = await page.locator('#detailArea').textContent();
+    if(!/原形\s*寝る（ねる）/.test(sleepDetailText || '') || !/词形/.test(sleepDetailText || '')){
+      throw new Error(`Unified inflection detail is incomplete: ${JSON.stringify(sleepDetailText)}.`);
+    }
+    await page.evaluate(tokenId => requestTokenVocabSave(tokenId), readingState.sleepTokenId);
+    const savedSleep = await page.evaluate(() => getAllVocab().find(item => item.word === '寝ます') || null);
+    if(!savedSleep
+      || savedSleep.lexicalSchemaVersion !== 1
+      || savedSleep.reading !== 'ねます'
+      || savedSleep.baseForm !== '寝る'
+      || savedSleep.baseReading !== 'ねる'
+      || !/動詞|动词/.test(savedSleep.partOfSpeech || '')
+      || !savedSleep.conjugationForm
+      || savedSleep.lookupMatchedTerm !== '寝る'
+      || savedSleep.lookupMatchedKind !== 'lemma'
+      || savedSleep.level !== 'N5'){
+      throw new Error(`Inflected vocabulary metadata was not preserved: ${JSON.stringify(savedSleep)}.`);
+    }
 
     await page.evaluate(async () => {
       document.getElementById('inputText').value = 'この施設は無償で利用できます。';

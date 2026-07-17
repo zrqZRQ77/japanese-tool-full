@@ -46,9 +46,12 @@ function cacheVersions(indexHtml) {
   const typography = indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1] || '';
   const heroMenu = indexHtml.match(/hero-menu-refresh\.css\?v=([^"']+)/)?.[1] || '';
   const lexicalLookup = indexHtml.match(/lexical-lookup\.js\?v=([^"']+)/)?.[1] || '';
+  const lexicalRecord = indexHtml.match(/lexical-record\.js\?v=([^"']+)/)?.[1] || '';
   const js = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
   const lexicalIntegration = indexHtml.match(/lexical-lookup-integration\.js\?v=([^"']+)/)?.[1] || '';
-  return { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, js, lexicalIntegration };
+  const lexicalDetail = indexHtml.match(/lexical-detail-integration\.js\?v=([^"']+)/)?.[1] || '';
+  const lexicalVocab = indexHtml.match(/lexical-vocab-integration\.js\?v=([^"']+)/)?.[1] || '';
+  return { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, js, lexicalIntegration, lexicalDetail, lexicalVocab };
 }
 
 function duplicateIds(indexHtml) {
@@ -73,7 +76,10 @@ function hardcodedFontSizeLocations(sources) {
 const indexHtml = readFileSync(resolve(FRONTEND_DIR, 'index.html'), 'utf8');
 const appJs = readFileSync(resolve(FRONTEND_DIR, 'app.js'), 'utf8');
 const lexicalLookupJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup.js'), 'utf8');
+const lexicalRecordJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-record.js'), 'utf8');
 const lexicalLookupIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup-integration.js'), 'utf8');
+const lexicalDetailIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-detail-integration.js'), 'utf8');
+const lexicalVocabIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-vocab-integration.js'), 'utf8');
 const stylesCss = readFileSync(resolve(FRONTEND_DIR, 'styles.css'), 'utf8');
 const designSystemCss = readFileSync(resolve(FRONTEND_DIR, 'design-system.css'), 'utf8');
 const grammarLayoutCss = readFileSync(resolve(FRONTEND_DIR, 'grammar-layout.css'), 'utf8');
@@ -82,9 +88,9 @@ const kuromojiWorkerPocJs = readFileSync(resolve(FRONTEND_DIR, 'kuromoji-worker-
 const kuromojiWorkerJs = readFileSync(resolve(FRONTEND_DIR, 'vendor/kuromoji/20260714-01/kuromoji-tokenizer.worker.js'), 'utf8');
 const dictionary = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/dictionary.json'), 'utf8'));
 const chineseSupplement = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/chinese-definitions-source.json'), 'utf8'));
-const inlineSource = `${appJs}\n${lexicalLookupJs}\n${lexicalLookupIntegrationJs}\n${indexHtml}`;
+const inlineSource = `${appJs}\n${lexicalLookupJs}\n${lexicalRecordJs}\n${lexicalLookupIntegrationJs}\n${lexicalDetailIntegrationJs}\n${lexicalVocabIntegrationJs}\n${indexHtml}`;
 const globalSearchSource = appJs.match(/const GLOBAL_SEARCH_ITEMS = \[[\s\S]*?\n\];/)?.[0] || '';
-const { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, js, lexicalIntegration } = cacheVersions(indexHtml);
+const { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, js, lexicalIntegration, lexicalDetail, lexicalVocab } = cacheVersions(indexHtml);
 const duplicateIdList = duplicateIds(indexHtml);
 const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['index.html', indexHtml],
@@ -92,7 +98,7 @@ const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['design-system.css', designSystemCss],
   ['grammar-layout.css', grammarLayoutCss]
 ]);
-const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'lexical-lookup.js', 'app.js', 'lexical-lookup-integration.js'];
+const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'lexical-lookup.js', 'lexical-record.js', 'app.js', 'lexical-lookup-integration.js', 'lexical-detail-integration.js', 'lexical-vocab-integration.js'];
 const requiredKuromojiPocFiles = [
   'kuromoji-worker-poc.js',
   'poc/kuromoji-worker-poc.html',
@@ -115,7 +121,10 @@ const validJlptSamples = ['N5', 'N4', 'N3', 'N2', 'N1'];
 
 run('app.js syntax', 'node', ['--check', 'app.js']);
 run('lexical lookup syntax', 'node', ['--check', 'lexical-lookup.js']);
+run('lexical record syntax', 'node', ['--check', 'lexical-record.js']);
 run('lexical lookup integration syntax', 'node', ['--check', 'lexical-lookup-integration.js']);
+run('lexical detail integration syntax', 'node', ['--check', 'lexical-detail-integration.js']);
+run('lexical vocab integration syntax', 'node', ['--check', 'lexical-vocab-integration.js']);
 run('git whitespace diff', 'git', ['diff', '--check'], { optional: true });
 
 assertCheck(!/\b(?:alert|confirm)\s*\(/.test(inlineSource), 'no native alert() / confirm() in app.js or index.html');
@@ -134,14 +143,15 @@ assertCheck(
   !/level\s*:\s*['"](?:kuromoji|worker|tokenizer|fallback)['"]/.test(appJs)
     && /function fallbackTokenInfo\(surface\)[\s\S]*?level:''[\s\S]*?source:'fallback'/.test(appJs)
     && /function getTokenInfo\(token\)[\s\S]*?level:''[\s\S]*?source:'kuromoji'/.test(appJs)
-    && /function tokenSnapshotValue\(surface, info\)[\s\S]*?level:normalizeVisibleVocabLevel\(info\?\.level\)/.test(appJs),
+    && /function tokenSnapshotValue\(surface, info, tokenRecord = null\)[\s\S]*?level:normalizeVisibleVocabLevel\(info\?\.level\)/.test(inlineSource),
   'tokenizer metadata stays in source fields instead of vocabulary level fields'
 );
 assertCheck(
-  /function normalizeVocabItem\(item = \{\}\)[\s\S]*?const level = normalizeVisibleVocabLevel\(item\.level\)[\s\S]*?levelSource:level \? String\(item\.levelSource \|\| 'legacy'\) : ''/.test(appJs)
+  /function normalizeVocabItem\(item = \{\}\)[\s\S]*?normalizeLexicalVocabFields\(item\)[\s\S]*?levelSource:level \? String\(item\.levelSource \|\| 'legacy'\) : ''/.test(appJs)
     && /async function loadVocab\(\)[\s\S]*?const rawSnapshot = JSON\.stringify\(vocabData\);[\s\S]*?if\(JSON\.stringify\(vocabData\) !== rawSnapshot\) saveVocab\(\)/.test(appJs)
-    && /function addCustomToVocab\(word, reading = '', meaning = '用户添加', level = ''/.test(appJs),
-  'legacy vocabulary levels migrate to the ungraded state and persist after loading'
+    && lexicalRecordJs.includes('function normalizeLexicalVocabFields')
+    && lexicalVocabIntegrationJs.includes("function addCustomToVocab(word, reading = '', meaning = '用户添加', level = ''"),
+  'legacy vocabulary and levels migrate to the unified lexical record and persist after loading'
 );
 assertCheck(
   appJs.includes("const LEARNING_DATA_VERSION = '20260717'")
@@ -166,7 +176,19 @@ assertCheck(
   'lexical lookup candidates keep typed priority, source permissions, POS safeguards, and load order'
 );
 assertCheck(
-  /meaningLanguage:[\s\S]*?meaningSource:[\s\S]*?levelSource:/.test(appJs)
+  ['baseForm', 'baseReading', 'partOfSpeech', 'conjugationForm', 'lookupMatchedTerm', 'lookupMatchedKind'].every(field=>lexicalRecordJs.includes(field))
+    && lexicalRecordJs.includes('function buildLexicalDetailRecord')
+    && lexicalRecordJs.includes('function normalizeLexicalVocabFields')
+    && lexicalDetailIntegrationJs.includes('function detailMetaHtml')
+    && lexicalVocabIntegrationJs.includes('lexicalVocabMetadata(surface, info, tokenRecord)')
+    && lexicalLookupIntegrationJs.includes('function recordLexicalLookupMatch')
+    && indexHtml.indexOf('lexical-record.js') < indexHtml.indexOf('app.js')
+    && indexHtml.indexOf('lexical-lookup-integration.js') < indexHtml.indexOf('lexical-detail-integration.js')
+    && indexHtml.indexOf('lexical-detail-integration.js') < indexHtml.indexOf('lexical-vocab-integration.js'),
+  'details, vocabulary saves, lookup matches, and legacy migration share one lexical record'
+);
+assertCheck(
+  /meaningLanguage:[\s\S]*?meaningSource:[\s\S]*?levelSource:/.test(inlineSource)
     && /VOCAB_EDIT_TARGET\.meaningSource = 'manual'/.test(appJs)
     && appJs.includes('参考等级,等级来源')
     && indexHtml.includes('暂无参考等级</button>'),
@@ -344,7 +366,7 @@ assertCheck(
   'TTS setting summaries show selected values and controls fit desktop and mobile layouts'
 );
 assertCheck(hardcodedFontSizes.length === 0, `no hardcoded px font sizes outside typography.css${hardcodedFontSizes.length ? `: ${hardcodedFontSizes.join(', ')}` : ''}`);
-assertCheck(css && designSystem && grammarLayout && typography && heroMenu && lexicalLookup && js && lexicalIntegration && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === lexicalLookup && css === js && css === lexicalIntegration, 'CSS and JS cache versions match');
+assertCheck(css && designSystem && grammarLayout && typography && heroMenu && lexicalLookup && lexicalRecord && js && lexicalIntegration && lexicalDetail && lexicalVocab && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === lexicalLookup && css === lexicalRecord && css === js && css === lexicalIntegration && css === lexicalDetail && css === lexicalVocab, 'CSS and JS cache versions match');
 assertCheck(/^\d{8}-\d{2}$/.test(css), 'cache version format is YYYYMMDD-NN');
 
 if (process.exitCode) {

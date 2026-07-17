@@ -3905,7 +3905,8 @@ function storedMeaningHtml(info){
   return escapeHtml(cleanStoredMeaning(info?.meaning) || '释义待补充');
 }
 
-function tokenSnapshotValue(surface, info){
+function tokenSnapshotValue(surface, info, tokenRecord = null){
+  const lexicalMetadata = lexicalVocabMetadata(surface, info, tokenRecord);
   return encodeURIComponent(JSON.stringify({
     surface,
     reading:info?.reading || '',
@@ -3914,7 +3915,8 @@ function tokenSnapshotValue(surface, info){
     meaningSource:info?.meaningSource || '',
     level:normalizeVisibleVocabLevel(info?.level),
     levelSource:info?.levelSource || '',
-    pos:info?.pos || '未收录词'
+    pos:lexicalMetadata.partOfSpeech || info?.pos || '未收录词',
+    ...lexicalMetadata
   })).replace(/'/g, '%27');
 }
 
@@ -3962,13 +3964,15 @@ function requestTokenVocabSave(tokenId){
     showToast('释义加载完成后会自动加入生词本。', 'info');
     return true;
   }
+  const lexicalMetadata = lexicalVocabMetadata(surface, info, tokenRecord);
   const saved = addCustomToVocab(
     surface,
     info.reading || '',
     info.meaning || '释义待补充',
     info.level || '',
-    info.pos || '已识别词',
+    lexicalMetadata.partOfSpeech || info.pos || '已识别词',
     {
+      ...lexicalMetadata,
       meaningLanguage:info.meaningLanguage || '',
       meaningSource:info.meaningSource || '',
       levelSource:info.levelSource || ''
@@ -7121,16 +7125,18 @@ function normalizeVocabItem(item = {}){
     ? legacySource
     : rawMeaning ? 'manual' : '';
   const level = normalizeVisibleVocabLevel(item.level);
+  const lexicalFields = normalizeLexicalVocabFields(item);
   return {
     ...item,
-    word:String(item.word || '').trim(),
-    reading:String(item.reading || '').trim(),
+    ...lexicalFields,
+    word:lexicalFields.word,
+    reading:lexicalFields.reading,
     meaning:displayVocabMeaning(rawMeaning),
     meaningLanguage,
     meaningSource,
     level,
     levelSource:level ? String(item.levelSource || 'legacy') : '',
-    pos:String(item.pos || '自选内容').trim() || '自选内容',
+    pos:lexicalFields.partOfSpeech,
     sourceTitle:String(item.sourceTitle || '').trim(),
     sourceUrl:String(item.sourceUrl || '').trim(),
     repetition:Number.isFinite(Number(item.repetition)) ? Number(item.repetition) : 0,
