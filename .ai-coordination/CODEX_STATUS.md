@@ -55,4 +55,18 @@
 - 自动化：`check`、`test:kuromoji`、`test:dictionary`、功能 UI 审计、五视口响应式审计与 `npm run build` 全部 PASS。
 - 功能审计：`frontend/audit-screenshots/2026-07-17T03-16-12-069Z/ui-audit-report.md`。
 - 响应式审计：`frontend/audit-screenshots/2026-07-17T03-14-04-833Z/ui-audit-report.md`。
-- 当前状态：本地修复完成，尚未提交、尚未部署新 Preview；Production 未操作，发布状态继续 `HOLD`。
+- 当前状态：修复已提交为 `0b7c829`；形态质量计划已提交为 `5c92e07`；尚未部署新 Preview。Production 未操作，发布状态继续 `HOLD`。
+
+## 2026-07-17 统一词语形态模型阶段一
+
+- 阶段提交：`7194a54`（`refactor: introduce unified lexical analysis model`）。
+- 前端缓存版本：`20260717-02`；学习数据版本仍为 `20260717`；Kuromoji 资源版本仍为 `20260714-01`。
+- 已建立统一 `LexicalAnalysis`：正文形式与读音、原形与原形读音、主/细分词性、活用类型与活用形、功能词、专有名词、复合词及合并前来源标识。
+- 已接入：Kuromoji 与 Worker token、礼貌形/复合词合并、未知词回退、详情页词形展示、语法功能词判断和页面 token 缓存。
+- 强制规则：正文读音优先采用分词器的实际 token 读音；词典原形读音不得覆盖正文读音。
+- 自动化：`check`、`test:kuromoji`、`test:dictionary`、功能 UI 审计、390/430/1280/1440/1920 响应式审计、学习数据构建、前端构建和 Vercel prebuilt 全部 PASS。
+- 功能审计：`frontend/audit-screenshots/2026-07-17T06-49-42-536Z/ui-audit-report.md`。
+- 响应式审计：`frontend/audit-screenshots/2026-07-17T06-50-13-110Z/ui-audit-report.md`。
+- 构建一致性：`dist/` 与 Vercel static 各 168 文件，缺失/多余/hash 不一致均为 0；聚合 SHA-256 `84c752923c4940dc872ba3736786a21a1227f78b6044f0e6cf5b13f9f158e71f`。
+- Preview：本阶段未部署；Production、正式域名和 alias 未操作。
+- 当前结论：阶段一完成；下一步进入阶段二 `buildLexicalLookupPlan()`，统一中文、JLPT 和 JMdict 的查询候选与安全规则。发布状态继续 `HOLD`。

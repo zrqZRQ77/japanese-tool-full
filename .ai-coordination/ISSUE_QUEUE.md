@@ -4,6 +4,17 @@
 
 ## 当前问题
 
+### LEXICAL-MODEL-001
+
+- 来源：词汇形态统一与语言质量计划阶段一（2026-07-17）
+- 等级：P1
+- 状态：FIXED（自动化与真实 Worker 浏览器审计 PASS）
+- 涉及文件：`frontend/app.js`、`frontend/tools/check.mjs`、`frontend/tools/kuromoji-app-consistency.test.mjs`
+- 发现：正文形式、正文读音、原形、原形读音、词性、活用和复合词来源此前分散在多个字段与函数中，难以保证后续中文、JLPT 和 JMdict 使用一致上下文。
+- 预期结果：建立统一 `LexicalAnalysis`，并由正文渲染、详情、功能词判断和合并词共同消费。
+- 处理结论：已提交 `7194a54`；正文读音优先采用 token 实际读音，原形读音不覆盖正文；功能词、专有名词、复合词与来源标识均有模型级回归。
+- 后续边界：查询候选优先级和词性约束属于阶段二 `buildLexicalLookupPlan()`，本项不提前实现。
+
 ### DICT-CHINESE-COVERAGE-002
 
 - 来源：用户截图任务（2026-07-17）

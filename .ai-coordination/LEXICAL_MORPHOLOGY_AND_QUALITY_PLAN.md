@@ -3,7 +3,7 @@
 > 创建时间：2026-07-17  
 > 当前分支：`stabilize/safari-dictionary-20260715`  
 > 创建时 HEAD：`f371e46`  
-> 当前状态：计划已建立，尚未开始本计划中的结构性重构  
+> 当前状态：阶段一“统一词语形态模型”已完成；阶段二“统一词典查询计划”待开始  
 > 发布约束：Production 保持不变，发布状态继续 `HOLD`
 
 ## 一、计划目的
@@ -400,3 +400,17 @@ npx vercel build
 8. 真实文章压力测试达到既定质量门槛；
 9. 现有 Safari、朗读、收藏、生词本、导出和移动端功能无回归；
 10. Production 保持不变，发布结论仍由真实设备验收决定。
+
+## 十四、执行记录
+
+### 2026-07-17 阶段一完成
+
+- 代码提交：`7194a54`（`refactor: introduce unified lexical analysis model`）。
+- 已完成：`normalizeLexicalAnalysis()`、`analyzeLexicalToken()`、`mergeLexicalTokens()`。
+- 模型字段：`surface`、`surfaceReading`、`lemma`、`lemmaReading`、主/细分词性、活用类型、活用形、功能词、专有名词、复合词、来源标识。
+- 接入范围：正文 token、Worker token、未知词、礼貌形/复合词、详情页、语法功能词判断和页面缓存。
+- 缓存版本：`20260717-02`。
+- 门禁：`check`、`test:kuromoji`、`test:dictionary`、`audit:ui`、学习数据构建、前端构建、Vercel prebuilt 全部 PASS。
+- 构建一致性：168/168 文件，零路径或 hash 差异；聚合 SHA-256 `84c752923c4940dc872ba3736786a21a1227f78b6044f0e6cf5b13f9f158e71f`。
+- 部署：未部署 Preview；Production 未操作；状态继续 `HOLD`。
+- 下一步：执行阶段二 `buildLexicalLookupPlan()`，不在阶段一中提前扩充批量词条或重做 UI。
