@@ -3,7 +3,7 @@
 > 创建时间：2026-07-17  
 > 当前分支：`stabilize/safari-dictionary-20260715`  
 > 创建时 HEAD：`f371e46`  
-> 当前状态：阶段一“统一词语形态模型”已完成；阶段二“统一词典查询计划”待开始  
+> 当前状态：阶段二“统一词典查询计划”已完成；阶段三“统一详情、收藏和等级继承”待开始  
 > 发布约束：Production 保持不变，发布状态继续 `HOLD`
 
 ## 一、计划目的
@@ -414,3 +414,17 @@ npx vercel build
 - 构建一致性：168/168 文件，零路径或 hash 差异；聚合 SHA-256 `84c752923c4940dc872ba3736786a21a1227f78b6044f0e6cf5b13f9f158e71f`。
 - 部署：未部署 Preview；Production 未操作；状态继续 `HOLD`。
 - 下一步：执行阶段二 `buildLexicalLookupPlan()`，不在阶段一中提前扩充批量词条或重做 UI。
+
+### 2026-07-17 阶段二完成
+
+- 代码提交：`aee462a`（`refactor: centralize lexical lookup planning`）。
+- 已完成：`buildLexicalLookupPlan()`、`buildCuratedLexicalLookupPlan()`、数据源候选筛选和词性安全条目选择。
+- 候选顺序：正文精确形、原形、分隔复合词、受词性约束的读音、安全回退。
+- 数据源权限：中文和 JMdict 可按规则使用复合词或读音候选；JLPT 只使用可靠正文形和原形，不使用读音、复合词或安全回退猜测。
+- 安全边界：功能词和专有名词禁用读音同音查询；普通纯假名词只在词性严格匹配时允许读音命中；匹配结果记录内部候选类型但不暴露技术字段。
+- 接入范围：离线中文、JLPT、JMdict、内置词条初始化、详情、收藏和查询中自动收藏。
+- 缓存版本：`20260717-04`；缓存升级工具已纳入两个新查询脚本。
+- 门禁：`check`、`test:kuromoji`、`test:dictionary`、`audit:ui`、学习数据构建、前端构建、Vercel prebuilt 全部 PASS。
+- 构建一致性：170/170 文件，零路径或 hash 差异；聚合 SHA-256 `370888f6c8e864b72f9b1c768da52a0d879d3e18251a7f9af6dcfd34bcd43fee`。
+- 部署：未部署 Preview；Production 未操作；状态继续 `HOLD`。
+- 下一步：执行阶段三，统一详情页与收藏数据中的正文形、原形、原形读音、词性和活用字段，并保持旧数据兼容。

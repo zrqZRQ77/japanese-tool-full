@@ -4,6 +4,17 @@
 
 ## 当前问题
 
+### LEXICAL-LOOKUP-PLAN-001
+
+- 来源：词汇形态统一与语言质量计划阶段二（2026-07-17）
+- 等级：P1
+- 状态：FIXED（专项、词典浏览器与完整 UI 自动化 PASS）
+- 涉及文件：`frontend/lexical-lookup.js`、`frontend/lexical-lookup-integration.js`、`frontend/app.js`、查询与浏览器测试
+- 发现：中文、JLPT 和 JMdict 之前分别消费简单字符串数组，候选来源、优先级、数据源权限和词性约束不明确；纯假名与同音词容易产生跨词性误配。
+- 预期结果：建立统一查询计划，按正文精确形、原形、复合词、受约束读音和安全回退查询，并由三个数据源共同消费。
+- 处理结论：已提交 `aee462a`；功能词和专有名词不再使用读音猜测，JLPT 不使用读音/复合词/回退候选，普通纯假名词仅在词性严格匹配时允许读音命中。
+- 自动证据：`frontend/tools/lexical-lookup-plan.test.mjs`、`frontend/tools/jmdict-browser.test.mjs`、功能及五视口 UI 审计均 PASS。
+
 ### LEXICAL-MODEL-001
 
 - 来源：词汇形态统一与语言质量计划阶段一（2026-07-17）

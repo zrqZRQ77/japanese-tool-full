@@ -70,3 +70,18 @@
 - 构建一致性：`dist/` 与 Vercel static 各 168 文件，缺失/多余/hash 不一致均为 0；聚合 SHA-256 `84c752923c4940dc872ba3736786a21a1227f78b6044f0e6cf5b13f9f158e71f`。
 - Preview：本阶段未部署；Production、正式域名和 alias 未操作。
 - 当前结论：阶段一完成；下一步进入阶段二 `buildLexicalLookupPlan()`，统一中文、JLPT 和 JMdict 的查询候选与安全规则。发布状态继续 `HOLD`。
+
+## 2026-07-17 统一词典查询计划阶段二
+
+- 阶段提交：`aee462a`（`refactor: centralize lexical lookup planning`）。
+- 前端缓存版本：`20260717-04`；学习数据版本仍为 `20260717`；Kuromoji 资源版本仍为 `20260714-01`。
+- 已建立 `buildLexicalLookupPlan()`：候选类型为 `exactSurface`、`lemma`、`compound`、`reading`、`fallback`，并记录优先级、词性、数据源权限、读音匹配权限和词性强制匹配规则。
+- 中文释义、JLPT 参考等级和 JMdict 英文回退现在共同消费同一份查询计划；内置词条初始化、详情和收藏也不再使用旧的 `[word, reading]` 查询方式。
+- 安全规则：功能词与专有名词禁用读音同音猜测和 JLPT 继承；普通纯假名词仅在词性严格匹配时允许读音命中；复合词和读音候选不参与 JLPT 猜测。
+- 自动化：`check`、`test:kuromoji`、`test:dictionary`、功能 UI 审计、390/430/1280/1440/1920 响应式审计、学习数据构建、前端构建和 Vercel prebuilt 全部 PASS。
+- 查询计划专项测试：`frontend/tools/lexical-lookup-plan.test.mjs`；真实浏览器词典测试已确认页面 token 保存 schemaVersion=1 的查询计划和实际匹配类型。
+- 功能审计：`frontend/audit-screenshots/2026-07-17T07-37-46-246Z/ui-audit-report.md`。
+- 响应式审计：`frontend/audit-screenshots/2026-07-17T07-37-58-637Z/ui-audit-report.md`。
+- 构建一致性：`dist/` 与 Vercel static 各 170 文件，缺失/多余/hash 不一致均为 0；聚合 SHA-256 `370888f6c8e864b72f9b1c768da52a0d879d3e18251a7f9af6dcfd34bcd43fee`。
+- Preview：本阶段未部署；Production、正式域名和 alias 未操作。
+- 当前结论：阶段二完成；下一步进入阶段三“统一详情、收藏和等级继承”。发布状态继续 `HOLD`。
