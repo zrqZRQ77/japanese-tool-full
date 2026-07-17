@@ -46,3 +46,13 @@
 - Preview：`https://japanese-tool-o9vdyyfbm-zrq-projects1.vercel.app`；Deployment ID `dpl_5FFrbuh8CVs7YGLo2sKzhmYCGD7Q`；target=`preview`；status=`Ready`。
 - Production：`dpl_HYpzrVrM4KGnKNfHjKVqDokkjGfw`，target=`production`，status=`Ready`；正式域名与 alias 未改变。
 - 当前结论：`HOLD`；等待 Mac/iPhone Safari 对四项补丁做定向复测，不发布 Production。
+
+## 2026-07-17 活用形与音色去重本地补丁
+
+- 已完成：`DICT-CHINESE-COVERAGE-002`、`FURIGANA-INFLECTION-001`、`JLPT-INFLECTION-001`、`UI-TTS-VOICE-DEDUP-001`。
+- 学习数据版本：`20260717`；中文索引 158 词条、285 查询形；新增 `寝る`、`無償`。
+- 前端缓存版本：`20260717-01`；Kuromoji 版本化资源仍为 `20260714-01`。
+- 自动化：`check`、`test:kuromoji`、`test:dictionary`、功能 UI 审计、五视口响应式审计与 `npm run build` 全部 PASS。
+- 功能审计：`frontend/audit-screenshots/2026-07-17T03-16-12-069Z/ui-audit-report.md`。
+- 响应式审计：`frontend/audit-screenshots/2026-07-17T03-14-04-833Z/ui-audit-report.md`。
+- 当前状态：本地修复完成，尚未提交、尚未部署新 Preview；Production 未操作，发布状态继续 `HOLD`。

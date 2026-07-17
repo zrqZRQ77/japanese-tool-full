@@ -106,11 +106,13 @@ function extractBetween(startMarker, endMarker) {
       ます:{meaning:'measuring container', level:'N3'},
       あります:{reading:'あります', meaning:'有'},
       開きます:{reading:'ひらきます', meaning:'打开'},
-      起きます:{reading:'おきます', meaning:'起床'}
+      起きます:{reading:'おきます', meaning:'起床'},
+      読む:{reading:'よむ', meaning:'读', level:'N5', levelSource:'jlpt-reference'}
     },
     FALLBACK_DICTIONARY:{},
     String,
-    katakanaToHiragana:value=>String(value),
+    katakanaToHiragana:value=>String(value).replace(/[ァ-ヶ]/g, char=>String.fromCharCode(char.charCodeAt(0) - 0x60)),
+    normalizeVisibleVocabLevel:value=>/^N[1-5]$/.test(String(value || '')) ? value : '',
     console
   });
   const dictionaryFunctions = extractBetween(
@@ -128,15 +130,25 @@ function extractBetween(startMarker, endMarker) {
   assert.equal(auxiliary.source, 'grammar-function');
   assert.doesNotMatch(auxiliary.meaning, /measuring container/i);
 
-  for(const [stem, expected] of [['あり', 'あります'], ['開き', '開きます'], ['起き', '起きます']]){
+  const inflected = vm.runInContext(`getTokenInfo({
+    surface_form:'読ん', basic_form:'読む', reading:'ヨン',
+    pos:'動詞', pos_detail_1:'自立', conjugated_type:'五段・マ行', conjugated_form:'連用タ接続'
+  })`, context);
+  assert.equal(inflected.reading, 'よん');
+  assert.equal(inflected.lookupWord, '読む');
+  assert.equal(inflected.baseForm, '読む');
+  assert.equal(inflected.level, 'N5');
+
+  for(const [stem, base, expected] of [['あり', 'ある', 'あります'], ['開き', '開く', '開きます'], ['起き', '起きる', '起きます']]){
     context.__tokens = [
-      {surface_form:stem, basic_form:stem, reading:stem, pos:'動詞'},
+      {surface_form:stem, basic_form:base, reading:stem, pos:'動詞'},
       {surface_form:'ます', basic_form:'ます', reading:'マス', pos:'助動詞', conjugated_type:'特殊・マス'}
     ];
     const merged = vm.runInContext('mergeDictionaryCompounds(__tokens)', context);
     assert.equal(merged.length, 1);
     assert.equal(merged[0].surface_form, expected);
+    assert.equal(merged[0].basic_form, base);
   }
 }
 
-process.stdout.write('Kuromoji race, immutable detail snapshot, and auxiliary ます tests passed.\n');
+process.stdout.write('Kuromoji race, inflection reading/level, immutable detail snapshot, and auxiliary ます tests passed.\n');

@@ -1,0 +1,421 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "20260717",
+  "generatedAt": "2026-07-17T00:00:00.000Z",
+  "sourceProject": "jamsinclair/open-anki-jlpt-decks",
+  "sourceUrl": "https://github.com/jamsinclair/open-anki-jlpt-decks",
+  "sourceDescription": "Community-maintained JLPT vocabulary reference lists; not an official JLPT vocabulary list.",
+  "license": "MIT",
+  "sourceEntryCount": 8131,
+  "indexedFormCount": 13385,
+  "conflictFormCount": 533,
+  "entryDistribution": {
+    "N5": 718,
+    "N4": 668,
+    "N3": 2140,
+    "N2": 1906,
+    "N1": 2699
+  },
+  "formDistribution": {
+    "N5": 1112,
+    "N4": 1084,
+    "N3": 3301,
+    "N2": 3089,
+    "N1": 4799
+  },
+  "indexBytes": 228056,
+  "indexSha256": "67fa7d49364cc5057f76d106bff14ed8be4242f71c862e37c90c522df329e542",
+  "sourceFiles": [
+    {
+      "file": "n5.csv",
+      "rows": 718,
+      "bytes": 63965,
+      "sha256": "f89abc86b391c4f2b551bbf8910b0de6cd600973b3a9f8d98347513921929ebe"
+    },
+    {
+      "file": "n4.csv",
+      "rows": 668,
+      "bytes": 49627,
+      "sha256": "0e835f40a8d2a1f191d7aa499076002756fa099b95634758376f43c73793e9f6"
+    },
+    {
+      "file": "n3.csv",
+      "rows": 2140,
+      "bytes": 167423,
+      "sha256": "ba071571d344e60b0e1fd11cd2e98a6aaa04515361653ca45147129460531297"
+    },
+    {
+      "file": "n2.csv",
+      "rows": 1906,
+      "bytes": 135869,
+      "sha256": "2d0f1ddd6222881cd9fc2ca701db74300af99b3f1f84d5ac3c18411c20f0c055"
+    },
+    {
+      "file": "n1.csv",
+      "rows": 2699,
+      "bytes": 191444,
+      "sha256": "120911636c019899552aa6d7bd64b036ecef4bedfe272a744f75735c46aae5cd"
+    }
+  ],
+  "sourceReadmeSha256": "cbfed420285d285aaa9e6fae64c4819d59719456627840f3ca52c07360ddb608",
+  "sourceLicenseSha256": "dfb9747630305cda572f2ed4f77586593ead9f886dc784ee3cd4e35a19acd9eb",
+  "conflictExamples": [
+    {
+      "form": "あう",
+      "levels": [
+        "N3",
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "あか",
+      "levels": [
+        "N1",
+        "N5"
+      ]
+    },
+    {
+      "form": "あき",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "開く",
+      "levels": [
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "あく",
+      "levels": [
+        "N3",
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "あける",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "あげる",
+      "levels": [
+        "N3",
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "あさ",
+      "levels": [
+        "N1",
+        "N5"
+      ]
+    },
+    {
+      "form": "明後日",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "明日",
+      "levels": [
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "あたたかい",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "頭",
+      "levels": [
+        "N1",
+        "N5"
+      ]
+    },
+    {
+      "form": "後",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "あと",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "在る",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "ある",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "有る",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "よい",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "いち",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "いつか",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "いま",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "いや",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "いる",
+      "levels": [
+        "N2",
+        "N5"
+      ]
+    },
+    {
+      "form": "上",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "うち",
+      "levels": [
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "うる",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "え",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "えき",
+      "levels": [
+        "N1",
+        "N5"
+      ]
+    },
+    {
+      "form": "～えん",
+      "levels": [
+        "N2",
+        "N5"
+      ]
+    },
+    {
+      "form": "おく",
+      "levels": [
+        "N3",
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "伯父",
+      "levels": [
+        "N2",
+        "N5"
+      ]
+    },
+    {
+      "form": "叔父さん",
+      "levels": [
+        "N2",
+        "N5"
+      ]
+    },
+    {
+      "form": "おじさん",
+      "levels": [
+        "N2",
+        "N5"
+      ]
+    },
+    {
+      "form": "おす",
+      "levels": [
+        "N1",
+        "N5"
+      ]
+    },
+    {
+      "form": "一昨日",
+      "levels": [
+        "N2",
+        "N5"
+      ]
+    },
+    {
+      "form": "おばさん",
+      "levels": [
+        "N2",
+        "N5"
+      ]
+    },
+    {
+      "form": "おりる",
+      "levels": [
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "～かい",
+      "levels": [
+        "N1",
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "かいだん",
+      "levels": [
+        "N1",
+        "N5"
+      ]
+    },
+    {
+      "form": "かう",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "かえす",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "かえる",
+      "levels": [
+        "N3",
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "かかる",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "かく",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "かける",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "方",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "かた",
+      "levels": [
+        "N3",
+        "N5"
+      ]
+    },
+    {
+      "form": "かたかな",
+      "levels": [
+        "N2",
+        "N5"
+      ]
+    },
+    {
+      "form": "～月",
+      "levels": [
+        "N4",
+        "N5"
+      ]
+    },
+    {
+      "form": "かてい",
+      "levels": [
+        "N2",
+        "N3",
+        "N5"
+      ]
+    }
+  ]
+}

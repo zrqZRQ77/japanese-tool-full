@@ -314,7 +314,9 @@ async function runAudit() {
       }
       const voices = [
         {name:'Andrew Multilingual', lang:'en-US', localService:true},
-        {name:'Kyoko', lang:'ja-JP', localService:true}
+        {name:'Kyoko', lang:'ja-JP', localService:true, voiceURI:'com.apple.voice.kyoko'},
+        {name:' Kyoko ', lang:'ja_JP', localService:true, voiceURI:'com.apple.voice.kyoko.duplicate'},
+        {name:'Nanami', lang:'ja-JP', localService:true, voiceURI:'com.apple.voice.nanami'}
       ];
       const synthesis = {
         speaking:false,
@@ -345,12 +347,15 @@ async function runAudit() {
       try{ Object.defineProperty(navigator, 'maxTouchPoints', {configurable:true, value:5}); }catch{}
       Object.defineProperty(window, 'speechSynthesis', {configurable:true, value:synthesis});
       Object.defineProperty(window, 'SpeechSynthesisUtterance', {configurable:true, value:MockUtterance});
+      populateVoiceOptions();
       const article = '市の図書館は来月、新しい読書室を開きます。読書室には日本語の本や新聞があります。利用時間は午前九時から午後六時までです。'.repeat(5);
       speakJapanese(article, null, false);
       await new Promise(resolve=>setTimeout(resolve, 700));
       return {
         spoken,
         ios:isIOSWebKit(),
+        voiceNames:sortedJapaneseVoices(true).map(voice=>voice.name.trim()),
+        optionNames:[...document.querySelectorAll('#ttsVoiceSelect option:not([disabled])')].map(option=>option.value.trim()),
         queueFinished:CURRENT_TTS_UTTERANCE === null && CURRENT_TTS_QUEUE.length === 0
       };
     });
@@ -359,6 +364,9 @@ async function runAudit() {
     }
     if(ttsState.spoken.some(item => item.lang !== 'ja-JP' || item.voice !== 'Kyoko' || !item.retained || item.text.length > 90)){
       throw new Error(`iPhone TTS voice, retention, or chunking failed: ${JSON.stringify(ttsState.spoken)}.`);
+    }
+    if(new Set(ttsState.voiceNames).size !== ttsState.voiceNames.length || new Set(ttsState.optionNames).size !== ttsState.optionNames.length){
+      throw new Error(`Safari TTS voice list contains duplicates: ${JSON.stringify(ttsState)}.`);
     }
     await page.reload({waitUntil:'domcontentloaded'});
     await page.waitForLoadState('networkidle', {timeout:8000}).catch(() => {});
@@ -518,6 +526,38 @@ async function runAudit() {
       await renderText();
     }, SAMPLE_TEXT);
     return sampleResult;
+  });
+
+  await step('inflected readings, base-form levels, and new Chinese meanings stay aligned', async () => {
+    await page.evaluate(async () => loadSample('life'));
+    await page.waitForFunction(() => document.body.dataset.tokenizerMode === 'kuromoji-worker', null, {timeout:45000});
+    const readingState = await page.evaluate(() => {
+      const cache = window.KUROMOJI_TOKEN_CACHE.filter(Boolean);
+      const read = cache.find(item => item.surface === '読ん');
+      const sleep = cache.find(item => item.surface === '寝ます');
+      return {
+        read:{reading:read?.info?.reading || '', lookupWord:read?.info?.lookupWord || '', level:read?.info?.level || ''},
+        sleepTokenId:window.KUROMOJI_TOKEN_CACHE.findIndex(item => item?.surface === '寝ます'),
+        sleepBase:sleep?.info?.baseForm || ''
+      };
+    });
+    if(JSON.stringify(readingState.read) !== JSON.stringify({reading:'よん', lookupWord:'読む', level:'N5'})
+      || readingState.sleepTokenId < 0 || readingState.sleepBase !== '寝る'){
+      throw new Error(`Inflection reading/base-form split failed: ${JSON.stringify(readingState)}.`);
+    }
+    await page.evaluate(tokenId => showTokenDetail(tokenId, null), readingState.sleepTokenId);
+    await page.waitForFunction(() => /睡觉、就寝/.test(document.querySelector('#detailArea')?.textContent || '')
+      && /JLPT 参考等级：N5/.test(document.querySelector('#detailArea')?.textContent || ''), null, {timeout:6000});
+
+    await page.evaluate(async () => {
+      document.getElementById('inputText').value = 'この施設は無償で利用できます。';
+      await renderText();
+    });
+    const freeTokenId = await page.evaluate(() => window.KUROMOJI_TOKEN_CACHE.findIndex(item => item?.surface === '無償'));
+    if(freeTokenId < 0) throw new Error('Worker output did not expose 無償 as a token.');
+    await page.evaluate(tokenId => showTokenDetail(tokenId, null), freeTokenId);
+    await page.waitForFunction(() => /免费、无偿（不收取费用）/.test(document.querySelector('#detailArea')?.textContent || ''), null, {timeout:6000});
+    return {readingState, freeTokenId};
   });
 
   await step('real pasted text uses local Worker with paragraphs, readings and details', async () => {

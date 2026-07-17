@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "20260717",
+  "generatedAt": "2026-07-17T00:00:00.000Z",
+  "sourceName": "Yomeru 离线中文词库（人工整理）",
+  "generatedMethod": "由项目现有人工词库与第二轮人工校订补充词条合并，离线构建；不是 JMdict 原始中文释义，也不使用浏览器运行时翻译 API。",
+  "license": "Project-maintained content",
+  "existingCuratedEntries": 137,
+  "reviewedSupplementEntries": 22,
+  "indexedEntryCount": 158,
+  "formCount": 285,
+  "shardCount": 16,
+  "totalBytes": 33293,
+  "inputSha256": {
+    "dictionary": "69b343c085de93e14e32ee3508509a2971944168acf3e34e53eb07cafb45e45a",
+    "supplement": "e221bfc6e261f355ad47d1689c744a067e95a801dbf467ca959e75b006bf76a1"
+  },
+  "shards": [
+    {
+      "file": "shard-00.json",
+      "keys": 12,
+      "bytes": 1496,
+      "sha256": "8ebb241b44a81734f2f9fbe1c44b932ee9a257fad1149631b10c69a01c088bfe"
+    },
+    {
+      "file": "shard-01.json",
+      "keys": 21,
+      "bytes": 2468,
+      "sha256": "06c0cd3ed507b74515abffa7b8026b375f25de07de6d70443db86e402d1779b9"
+    },
+    {
+      "file": "shard-02.json",
+      "keys": 13,
+      "bytes": 1683,
+      "sha256": "10e5dbc5f4305857cb207490b96013b6c9b629bc07a3040c8ef2cfdfecb53c11"
+    },
+    {
+      "file": "shard-03.json",
+      "keys": 20,
+      "bytes": 2346,
+      "sha256": "a0be3fb2da3121d8c442a68c57edd1a8b22364f4354fbe8fb4ab6b96ec6452b8"
+    },
+    {
+      "file": "shard-04.json",
+      "keys": 19,
+      "bytes": 2228,
+      "sha256": "fcfb63bf2846a5d4ea6e7247dd1830d12783dfc75e5ccff652ee27de4755ca9b"
+    },
+    {
+      "file": "shard-05.json",
+      "keys": 22,
+      "bytes": 2451,
+      "sha256": "02050b10cb54a43d7144d32eedd1d04fd10588e6ac1f99ccabea058bd10b2ba0"
+    },
+    {
+      "file": "shard-06.json",
+      "keys": 16,
+      "bytes": 1932,
+      "sha256": "18d5339e764db06409ea486cad7b4d383754d744041e86c9aab4fca4b1d70b75"
+    },
+    {
+      "file": "shard-07.json",
+      "keys": 18,
+      "bytes": 2074,
+      "sha256": "61c66e1f7ea19c20c96919e8d96d47e89aa456f8446154d7f359d54889bb6c4b"
+    },
+    {
+      "file": "shard-08.json",
+      "keys": 20,
+      "bytes": 2388,
+      "sha256": "ec8b96cc6d290d05b87ef57f29a46e791b0d891dfdda32d3d447b9238c9487a5"
+    },
+    {
+      "file": "shard-09.json",
+      "keys": 18,
+      "bytes": 2254,
+      "sha256": "ea6703dc45f14bb3d9925db2c45d6922e29e358e54d96112ff3a701dd28ccfb6"
+    },
+    {
+      "file": "shard-10.json",
+      "keys": 12,
+      "bytes": 1409,
+      "sha256": "a289799563f030ca40b0cd2c5945e559bac9f427581e85da0192c84c82e4aaf7"
+    },
+    {
+      "file": "shard-11.json",
+      "keys": 16,
+      "bytes": 1788,
+      "sha256": "af0c6e897dbe307b2271c8616a59602564f3f9f54a55bc5bdac88fe0cddbf3c4"
+    },
+    {
+      "file": "shard-12.json",
+      "keys": 23,
+      "bytes": 2535,
+      "sha256": "0c16d0fb306dfa471d144a9533ca6ef289812e7f103721d77653da82bfced3fe"
+    },
+    {
+      "file": "shard-13.json",
+      "keys": 11,
+      "bytes": 1316,
+      "sha256": "118287f650207dd1c7c0599abcb0d09368c7a313981a72a8d7c1e9d941a7ad0f"
+    },
+    {
+      "file": "shard-14.json",
+      "keys": 21,
+      "bytes": 2368,
+      "sha256": "c8e392d81cbdc669df271e8d9cfa9477230b76be6bf81fb63a5b4d3b51b35f22"
+    },
+    {
+      "file": "shard-15.json",
+      "keys": 23,
+      "bytes": 2557,
+      "sha256": "47df936c6763fbafa54e4f9d10c52275969095ae825faca590587adf20af7a25"
+    }
+  ]
+}

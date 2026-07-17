@@ -77,6 +77,7 @@ const heroMenuCss = readFileSync(resolve(FRONTEND_DIR, 'hero-menu-refresh.css'),
 const kuromojiWorkerPocJs = readFileSync(resolve(FRONTEND_DIR, 'kuromoji-worker-poc.js'), 'utf8');
 const kuromojiWorkerJs = readFileSync(resolve(FRONTEND_DIR, 'vendor/kuromoji/20260714-01/kuromoji-tokenizer.worker.js'), 'utf8');
 const dictionary = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/dictionary.json'), 'utf8'));
+const chineseSupplement = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/chinese-definitions-source.json'), 'utf8'));
 const inlineSource = `${appJs}\n${indexHtml}`;
 const globalSearchSource = appJs.match(/const GLOBAL_SEARCH_ITEMS = \[[\s\S]*?\n\];/)?.[0] || '';
 const { css, designSystem, grammarLayout, typography, heroMenu, js } = cacheVersions(indexHtml);
@@ -137,7 +138,7 @@ assertCheck(
   'legacy vocabulary levels migrate to the ungraded state and persist after loading'
 );
 assertCheck(
-  appJs.includes("const LEARNING_DATA_VERSION = '20260716'")
+  appJs.includes("const LEARNING_DATA_VERSION = '20260717'")
     && appJs.includes('async function lookupOfflineChinese')
     && appJs.includes('async function lookupJlptReference')
     && /async function autoLookupTokenMeaning[\s\S]*?lookupOfflineChinese\(candidates, surface\)[\s\S]*?if\(chineseResult\?\.entry\?\.m\)[\s\S]*?lookupJmdictCommonWithCompoundFallback\(candidates, surface\)/.test(appJs)
@@ -294,11 +295,23 @@ assertCheck(
   'article vocabulary has local Chinese meanings for the reported gaps'
 );
 assertCheck(
+  ['寝る', '無償'].every(word => chineseSupplement.entries?.[word]?.meaning)
+    && appJs.includes('这是专有名词，离线词库暂未收录可靠释义；不会根据名称猜测含义。'),
+  'new Chinese coverage and safe proper-noun miss guidance are present'
+);
+assertCheck(
+  /function tokenSurfaceReading/.test(appJs)
+    && /reading:dictWord !== surface && surfaceReading \? surfaceReading : dictInfo\.reading/.test(appJs)
+    && /basic_form: parts\[0\]\.basic_form/.test(appJs),
+  'inflected surface readings stay separate from dictionary base-form lookup and level inheritance'
+);
+assertCheck(
   appJs.includes('const DEFAULT_TTS_RATE = 0.94;')
     && appJs.includes('let CURRENT_TTS_UTTERANCE = null;')
     && appJs.includes('function splitJapaneseSpeechChunks')
     && /CURRENT_TTS_UTTERANCE = utterance[\s\S]*?window\.speechSynthesis\.speak\(utterance\)/.test(appJs)
     && /function sortedJapaneseVoices\(strictJapanese = isIOSWebKit\(\)\)[\s\S]*?voices\.filter\(voice=>\/\^ja/.test(appJs)
+    && /function uniqueSpeechVoices\(voices = \[\]\)/.test(appJs)
     && /setTimeout\(\(\)=>speakCurrentTtsChunk\(session, true\), 80\)/.test(appJs),
   'TTS retains utterances, chunks long text, prefers Japanese voices on iOS, and retries with the system voice'
 );

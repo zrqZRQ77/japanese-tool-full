@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 const TOOL_DIR = dirname(fileURLToPath(import.meta.url));
 const FRONTEND_DIR = resolve(TOOL_DIR, '..');
 const ROOT_DIR = resolve(FRONTEND_DIR, '..');
-const VERSION = '20260716';
+const VERSION = '20260717';
 const CHINESE_DIR = resolve(FRONTEND_DIR, 'data/chinese-definitions', VERSION);
 const JLPT_DIR = resolve(FRONTEND_DIR, 'data/jlpt-reference', VERSION);
 
@@ -57,7 +57,7 @@ assert.deepEqual(
     shards: chineseMetadata.shardCount,
     bytes: chineseMetadata.totalBytes
   },
-  { version: VERSION, existing: 137, supplement: 20, entries: 156, forms: 281, shards: 16, bytes: 32807 }
+  { version: VERSION, existing: 137, supplement: 22, entries: 158, forms: 285, shards: 16, bytes: 33293 }
 );
 
 for (const shard of chineseMetadata.shards) {
@@ -66,7 +66,7 @@ for (const shard of chineseMetadata.shards) {
   assert.equal(sha256(payload), shard.sha256, `${shard.file} hash changed`);
 }
 
-const chineseTerms = ['読書', '来月', '図書館', '新しい', '新聞', '利用時間', '時価総額', '総額', '金融機関', '半導体', 'メモリー', '上昇', '首位', '大手', '開きます', 'あります'];
+const chineseTerms = ['読書', '来月', '図書館', '新しい', '新聞', '利用時間', '時価総額', '総額', '金融機関', '半導体', 'メモリー', '上昇', '首位', '大手', '開きます', 'あります', '寝る', '無償'];
 for (const term of chineseTerms) {
   const entries = await lookupChinese(term, chineseMetadata.shardCount);
   assert.ok(entries[0]?.m, `Offline Chinese index is missing ${term}`);
@@ -102,4 +102,4 @@ execFileSync(process.execPath, ['scripts/build-learning-indexes.mjs'], { cwd: RO
 const after = await outputDigest();
 assert.equal(after, before, 'Learning index build is not byte-for-byte reproducible');
 
-process.stdout.write('Learning indexes passed: 156 Chinese entries, 281 forms, 13,385 JLPT reference forms, reproducible output.\n');
+process.stdout.write('Learning indexes passed: 158 Chinese entries, 285 forms, 13,385 JLPT reference forms, reproducible output.\n');

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = resolve(SCRIPT_DIR, '..');
-const DATA_VERSION = process.env.LEARNING_DATA_VERSION || '20260716';
+const DATA_VERSION = process.env.LEARNING_DATA_VERSION || '20260717';
 const CHINESE_SHARD_COUNT = 16;
 const CHINESE_SOURCE = resolve(ROOT_DIR, 'frontend/data/dictionary.json');
 const CHINESE_SUPPLEMENT_SOURCE = resolve(ROOT_DIR, 'frontend/data/chinese-definitions-source.json');

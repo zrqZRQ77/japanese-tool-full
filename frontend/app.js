@@ -873,7 +873,7 @@ const JMDICT_COMMON_BASE_URL = `data/jmdict-common/${JMDICT_COMMON_DATA_VERSION}
 const JMDICT_COMMON_SHARD_COUNT = 64;
 const JMDICT_COMMON_SHARD_CACHE = new Map();
 const JMDICT_COMMON_SOURCE_URL = 'https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project';
-const LEARNING_DATA_VERSION = '20260716';
+const LEARNING_DATA_VERSION = '20260717';
 const CHINESE_DEFINITIONS_BASE_URL = `data/chinese-definitions/${LEARNING_DATA_VERSION}`;
 const CHINESE_DEFINITIONS_SHARD_COUNT = 16;
 const CHINESE_DEFINITIONS_SHARD_CACHE = new Map();
@@ -3982,6 +3982,18 @@ function dictionaryEntryFor(word){
   return DICT[word] || FALLBACK_DICTIONARY[word] || null;
 }
 
+function tokenSurfaceReading(token = {}){
+  const surface = String(token.surface_form || '');
+  const rawReading = token.reading && token.reading !== '*' ? token.reading : '';
+  return rawReading
+    ? katakanaToHiragana(rawReading)
+    : (/^[\u3040-\u30ffー]+$/u.test(surface) ? katakanaToHiragana(surface) : '');
+}
+
+function isProperNounInfo(info = {}){
+  return /固有名詞|专有名词|專有名詞/.test(String(info.pos || ''));
+}
+
 function isAuxiliaryMasuToken(token = {}){
   const surface = String(token.surface_form || '');
   const part = [token.pos, token.pos_detail_1, token.conjugated_type, token.conjugated_form]
@@ -4008,7 +4020,9 @@ function mergeDictionaryCompounds(rawTokens){
         compound = {
           ...parts[0],
           surface_form: surface,
-          basic_form: surface,
+          basic_form: parts[0].basic_form && parts[0].basic_form !== '*'
+            ? parts[0].basic_form
+            : surface,
           reading: dictionaryEntryFor(surface)?.reading || parts.map(token => token.reading || token.surface_form).join('')
         };
         i += size - 1;
@@ -4041,12 +4055,19 @@ function getTokenInfo(token){
   const dictInfo = dictionaryEntryFor(surface) || dictionaryEntryFor(base);
   if(dictInfo){
     const dictWord = dictionaryEntryFor(surface) ? surface : base;
-    return { ...dictInfo, dictWord, baseForm: base, lookupWord: dictWord, source:'DICT' };
+    const surfaceReading = tokenSurfaceReading(token);
+    return {
+      ...dictInfo,
+      reading:dictWord !== surface && surfaceReading ? surfaceReading : dictInfo.reading,
+      level:dictInfo.level,
+      levelSource:dictInfo.levelSource || (dictInfo.level ? 'jlpt-reference' : ''),
+      dictWord,
+      baseForm:base,
+      lookupWord:dictWord,
+      source:'DICT'
+    };
   }
-  const rawReading = token.reading && token.reading !== '*' ? token.reading : '';
-  const reading = rawReading
-    ? katakanaToHiragana(rawReading)
-    : (/^[\u3040-\u30ffー]+$/u.test(surface) ? katakanaToHiragana(surface) : '');
+  const reading = tokenSurfaceReading(token);
   const pos = [token.pos, token.pos_detail_1].filter(v=>v && v !== '*').join('・') || '已识别词';
   return {
     reading,
@@ -5361,11 +5382,14 @@ async function autoLookupTokenMeaning(word, tokenId, tokenRecord){
     console.warn('JMdict 离线词典查询失败', error);
   }
   if(!result?.entry){
-    info.meaning = '释义待补充';
+    const properNoun = isProperNounInfo(info);
+    info.meaning = properNoun ? '专有名词，离线词库暂未收录可靠释义' : '释义待补充';
     info.meaningLanguage = '';
     info.meaningSource = '';
     info.lookupState = 'failed';
-    target.innerHTML = '<span style="color:var(--ink-soft);">暂未查到可靠释义，可以先收藏，之后再补充。</span>';
+    target.innerHTML = properNoun
+      ? '<span style="color:var(--ink-soft);">这是专有名词，离线词库暂未收录可靠释义；不会根据名称猜测含义。</span>'
+      : '<span style="color:var(--ink-soft);">暂未查到可靠释义，可以先收藏，之后再补充。</span>';
     refreshVisibleTokenDetail(target, surface, info, tokenId);
     finishPendingTokenVocabSave(tokenId, tokenRecord);
     return;
@@ -5822,12 +5846,26 @@ function japaneseVoiceScore(voice){
   return score;
 }
 
+function uniqueSpeechVoices(voices = []){
+  const unique = new Map();
+  for(const voice of voices){
+    const name = String(voice?.name || '').trim().replace(/\s+/g, ' ').toLocaleLowerCase();
+    const lang = String(voice?.lang || '').trim().replace(/_/g, '-').toLocaleLowerCase();
+    const uri = String(voice?.voiceURI || '').trim().toLocaleLowerCase();
+    const key = name ? `name:${name}|lang:${lang}` : `uri:${uri}|lang:${lang}`;
+    if(!unique.has(key) || japaneseVoiceScore(voice) > japaneseVoiceScore(unique.get(key))){
+      unique.set(key, voice);
+    }
+  }
+  return [...unique.values()];
+}
+
 function sortedJapaneseVoices(strictJapanese = isIOSWebKit()){
   if(!('speechSynthesis' in window)) return [];
   const voices = window.speechSynthesis.getVoices();
   const japanese = voices.filter(voice=>/^ja[-_]/i.test(voice.lang));
   const multilingual = strictJapanese ? [] : voices.filter(voice=>/AndrewMultilingual/i.test(voice.name) && !japanese.includes(voice));
-  const candidates = [...japanese, ...multilingual];
+  const candidates = uniqueSpeechVoices([...japanese, ...multilingual]);
   const natural = candidates.filter(voice=>!EXCLUDED_VOICE_PATTERN.test(voice.name));
   return (natural.length ? natural : candidates).sort((a, b)=>japaneseVoiceScore(b) - japaneseVoiceScore(a) || a.name.localeCompare(b.name));
 }
