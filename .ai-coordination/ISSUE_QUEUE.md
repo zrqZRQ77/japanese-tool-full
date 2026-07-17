@@ -541,3 +541,29 @@
 - 证据层级：人工验收清单占位，不是自动化 PASS。
 - 预期结果：后续 Preview 在真实 Safari 按清单执行并记录 PASS/FAIL、设备与现象。
 - 处理结论：当前 12 个 `safari-manual` 案例状态保持 `PENDING`；阶段四不伪造结果，不部署 Preview 或 Production。
+
+### LANGUAGE-AUDIT-001
+
+- 来源：词形系统重构阶段五
+- 基线：`stabilize/safari-dictionary-20260715 / 1626c3f`
+- 等级：P1
+- 状态：VERIFIED
+- 涉及文件：`frontend/tools/language-audit.mjs`、`frontend/package.json`、`frontend/test-data/language-corpus/20260717-01/`
+- 发现：阶段四已有固定案例，但缺少统一量化指标、公开 Beta 门槛、失败清单和可追溯报告。
+- 复现方式或证据：`npm run audit:language`；`frontend/language-audit-results/2026-07-17T12-55-10-902Z/`。
+- 证据层级：真实 Kuromoji Worker、本地离线索引、Playwright Chromium、Markdown/JSON 报告。
+- 预期结果：输出 token、读音、原形、词性、中文、JMdict、未命中、JLPT、安全错误和失败案例，并在门槛未满足时返回非零。
+- 处理结论：审计工具已提交为 `e358d13`；全部指标与门槛可重复生成，当前正确返回 `FAIL`，没有伪造 PASS。
+
+### LANGUAGE-READING-CONTEXT-001
+
+- 来源：阶段五首次全量语言审计
+- 基线：语料 `20260717-01` / 审计提交 `e358d13`
+- 等级：P0
+- 状态：CONFIRMED
+- 涉及文件：Kuromoji 读音结果与后续通用上下文读音规则（阶段六确定具体文件）
+- 发现：正文读音正确率仅 96.34%，未达到 98% 门槛；`七時`、`開く`（2 个语境）、`生`、`一日`、`人気`、`市場`、`今日中`、`避難所` 共 9 个案例可重复失败。
+- 复现方式或证据：运行 `npm run audit:language`，查看最终报告的 Failures 表。
+- 证据层级：260 个固定案例、1148 个真实 Worker token、本地 Chromium 自动化。
+- 预期结果：按通用上下文规则修复，不为单个案例写生产硬编码；正文读音至少 98%，已知回归 100%。
+- 处理结论：阶段五只识别和量化，不提前实施阶段六修复；发布继续 `HOLD / NO-GO`。

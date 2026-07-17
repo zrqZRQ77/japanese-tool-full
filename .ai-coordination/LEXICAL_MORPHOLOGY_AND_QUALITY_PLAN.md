@@ -457,3 +457,19 @@ npx vercel build
 - 构建一致性：`dist/` 与 Vercel static 各 173 文件，缺失/多余/hash 不一致均为 0；测试数据不进入生产 bundle，阶段三候选聚合 SHA-256 保持 `2d8b6ace3f7e8ab6f6cbe5c1bcfea9d88ec6153e5e7f1818a5c0ac71a300d022`。
 - 部署：未部署 Preview 或 Production；正式域名、alias 和现有 Preview 均未操作；发布状态继续 `HOLD`。
 - 下一步：阶段五新增独立 `audit:language` 量化审计与报告输出，复用本阶段固定语料，不修改公开 UI。
+
+### 2026-07-17 阶段五审计实现完成（质量门禁未通过）
+
+- 代码提交：`e358d13`（`test: add language quality audit`）。
+- 新增命令：`npm run audit:language`；对全部 260 个固定案例运行真实 Kuromoji Worker、离线中文、JMdict 和 JLPT 查询，并输出 Markdown/JSON 量化报告与失败清单。
+- 最终报告：`frontend/language-audit-results/2026-07-17T12-55-10-902Z/language-audit-report.md`；报告记录完整提交 `e358d1310c91fe5359ee735c179e67190e224a21`。
+- 规模：1148 个实际 token，260/260 目标案例成功定位；Safari 人工案例 12 个继续标为 `PENDING`，不计入自动 PASS。
+- 指标：正文读音 237/246（96.34%）；原形 177/177（100%）；词性 177/177（100%）；已收录中文 60/60（100%）；JMdict 回退 98/124（79.03%）；完全未命中 26/124（20.97%）；JLPT 126/126（100%）。
+- 严重错误：同音禁配 0、功能词误配 0、专有名词猜测 0；已知案例通过 251/260（96.54%）。
+- 质量门禁：`FAIL`。正文读音低于 98%，已知案例未达到 100%；命令有意返回非零，不得将报告误记为 PASS。
+- 剩余 9 个真实读音问题：`七時`、两处上下文 `開く`、`生`、日期语境 `一日`、`人気`、`市場`、`今日中`、`避難所`。这些问题保留为阶段六输入，没有为提高分数加入生产硬编码。
+- 语料校准：将未收录 JLPT 改为空值、按真实 Worker 记录形容动词词干、把未命中复合词标为 `unknown`；没有向生产词库添加虚构释义或等级。
+- 其他门禁：`check`、`test:language-corpus`、`test:kuromoji`、`test:dictionary`、`audit:ui`、学习数据构建、前端构建、Vercel prebuilt 均 PASS；390/430/1280/1440/1920 无 UI 回归。
+- 构建一致性：`dist/` 与 Vercel static 各 173 文件，缺失/多余/hash 不一致均为 0；生产 bundle 聚合 SHA-256 保持 `2d8b6ace3f7e8ab6f6cbe5c1bcfea9d88ec6153e5e7f1818a5c0ac71a300d022`。
+- 发布：未部署 Preview 或 Production，未修改正式域名或 alias；结论继续 `HOLD / NO-GO`。
+- 下一步：阶段六先按通用规则处理 9 个上下文读音问题，再执行不少于 20 篇文章、1000 个可点击 token 和真实 Safari 定向复测。
