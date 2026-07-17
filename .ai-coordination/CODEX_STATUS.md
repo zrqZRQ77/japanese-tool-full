@@ -138,3 +138,13 @@
 - 语言证据：`frontend/language-audit-results/2026-07-17T13-30-11-367Z/`；文章证据：`frontend/article-stress-results/2026-07-17T13-41-21-065Z/`。
 - 构建一致性：`dist/` 与 `.vercel/output/static/` 各 173 文件；缺失 0、多余 0、SHA-256 不一致 0；聚合 SHA-256 `da796256f132c92a2bfb2b815dde6bdfcee0475a3189caa64a23e66a816d614c`。
 - 当前结论：阶段六自动化与文章压力门禁完成；真实 Mac/iPhone Safari 定向复测仍为 `PENDING`，需用户授权新的 Preview 后执行。未部署 Preview/Production，未修改域名或 alias，发布继续 `HOLD`。
+
+## 2026-07-17 阶段六 Preview 真机候选
+
+- 部署基线 HEAD：`f02241b179b8d9a4132bbd5b958c62c3087dc31f`。
+- 候选内容：173 个 Vercel prebuilt 静态文件；部署前与 `dist/` 路径及逐文件 SHA-256 完全一致。
+- Preview：`https://japanese-tool-epvn8940w-zrq-projects1.vercel.app`。
+- Deployment ID：`dpl_DfNcADhEvtzZCQcRKrBRZ6RRz7V6`。
+- Vercel inspect：target=`preview`；status=`Ready`。
+- Production：未部署；正式域名和 Production alias 未修改。
+- 当前结论：发布继续 `HOLD`；停止自动操作，等待用户在真实 Mac Safari 与 iPhone Safari 上完成阶段六定向验收。
