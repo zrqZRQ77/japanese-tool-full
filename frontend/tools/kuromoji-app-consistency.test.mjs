@@ -128,6 +128,8 @@ function extractBetween(startMarker, endMarker) {
   assert.equal(auxiliary.pos, '助动词');
   assert.equal(auxiliary.level, '');
   assert.equal(auxiliary.source, 'grammar-function');
+  assert.equal(auxiliary.lexicalAnalysis.isFunctionWord, true);
+  assert.equal(auxiliary.lexicalAnalysis.isProperNoun, false);
   assert.doesNotMatch(auxiliary.meaning, /measuring container/i);
 
   const inflected = vm.runInContext(`getTokenInfo({
@@ -138,6 +140,22 @@ function extractBetween(startMarker, endMarker) {
   assert.equal(inflected.lookupWord, '読む');
   assert.equal(inflected.baseForm, '読む');
   assert.equal(inflected.level, 'N5');
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(inflected.lexicalAnalysis)),
+    {
+      surface:'読ん', surfaceReading:'よん', lemma:'読む', lemmaReading:'よむ',
+      partOfSpeech:'動詞', partOfSpeechDetail:'自立',
+      conjugationType:'五段・マ行', conjugationForm:'連用タ接続',
+      isFunctionWord:false, isProperNoun:false, isCompound:false, sourceRefs:['0:0']
+    }
+  );
+
+  const properNoun = vm.runInContext(
+    "getTokenInfo({surface_form:'キッズドア', basic_form:'キッズドア', reading:'キッズドア', pos:'名詞', pos_detail_1:'固有名詞'})",
+    context
+  );
+  assert.equal(properNoun.lexicalAnalysis.isProperNoun, true);
+  assert.equal(properNoun.lexicalAnalysis.isFunctionWord, false);
 
   for(const [stem, base, expected] of [['あり', 'ある', 'あります'], ['開き', '開く', '開きます'], ['起き', '起きる', '起きます']]){
     context.__tokens = [
@@ -148,6 +166,12 @@ function extractBetween(startMarker, endMarker) {
     assert.equal(merged.length, 1);
     assert.equal(merged[0].surface_form, expected);
     assert.equal(merged[0].basic_form, base);
+    assert.equal(merged[0].is_compound, true);
+    assert.deepEqual(JSON.parse(JSON.stringify(merged[0].lexical_source_refs)), ['0:0', '0:1']);
+    context.__mergedToken = merged[0];
+    const mergedInfo = vm.runInContext('getTokenInfo(__mergedToken)', context);
+    assert.equal(mergedInfo.lexicalAnalysis.isCompound, true);
+    assert.equal(mergedInfo.lexicalAnalysis.lemma, base);
   }
 }
 

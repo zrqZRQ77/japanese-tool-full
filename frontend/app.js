@@ -3651,14 +3651,20 @@ function segmentUnknownJapaneseText(text){
 
 function fallbackTokenInfo(surface){
   const override = RUBY_OVERRIDES[surface];
+  const lexicalAnalysis = analyzeLexicalToken({
+    surface_form:surface,
+    basic_form:surface,
+    reading:override && !override.hidden ? override.reading : ''
+  });
   return {
-    reading:override && !override.hidden ? override.reading : '',
+    reading:lexicalAnalysis.surfaceReading,
     level:'',
     pos:'未收录词',
     meaning:'本地词库暂未收录，可以先收藏并补充读音或释义。',
     dictWord:surface,
     baseForm:surface,
     lookupWord:surface,
+    lexicalAnalysis,
     source:'fallback'
   };
 }
@@ -3704,7 +3710,8 @@ function renderWithDictionary(raw, out, statsBar){
         window.KUROMOJI_TOKEN_CACHE[tokenId] = {
           surface:part.segment,
           info,
-          token:{surface_form:part.segment, basic_form:part.segment}
+          token:{surface_form:part.segment, basic_form:part.segment},
+          analysis:info.lexicalAnalysis
         };
         html += renderWordNode(part.segment, info.reading, 'w-kuromoji', {"data-token-id":tokenId}, `showTokenDetail(${tokenId}, this)`);
       });
@@ -3990,8 +3997,81 @@ function tokenSurfaceReading(token = {}){
     : (/^[\u3040-\u30ffー]+$/u.test(surface) ? katakanaToHiragana(surface) : '');
 }
 
+function lexicalValue(value){
+  const normalized = String(value ?? '').trim();
+  return normalized === '*' ? '' : normalized;
+}
+
+function normalizeLexicalAnalysis(input = {}){
+  const surface = lexicalValue(input.surface);
+  const lemma = lexicalValue(input.lemma) || surface;
+  const surfaceReading = katakanaToHiragana(lexicalValue(input.surfaceReading));
+  const lemmaReading = katakanaToHiragana(
+    lexicalValue(input.lemmaReading) || (lemma === surface ? surfaceReading : '')
+  );
+  const partOfSpeech = lexicalValue(input.partOfSpeech);
+  const partOfSpeechDetail = lexicalValue(input.partOfSpeechDetail);
+  const conjugationType = lexicalValue(input.conjugationType);
+  const conjugationForm = lexicalValue(input.conjugationForm);
+  const grammaticalContext = [partOfSpeech, partOfSpeechDetail, conjugationType, conjugationForm]
+    .filter(Boolean)
+    .join('・');
+  const sourceRefs = Array.isArray(input.sourceRefs)
+    ? [...new Set(input.sourceRefs.map(value=>lexicalValue(value)).filter(Boolean))]
+    : [];
+  return {
+    surface,
+    surfaceReading,
+    lemma,
+    lemmaReading,
+    partOfSpeech,
+    partOfSpeechDetail,
+    conjugationType,
+    conjugationForm,
+    isFunctionWord: input.isFunctionWord === undefined
+      ? /助詞|助词|助動詞|助动词|系動詞|系动词|接続詞|接续词|連体詞|连体词/.test(grammaticalContext)
+      : Boolean(input.isFunctionWord),
+    isProperNoun: input.isProperNoun === undefined
+      ? /固有名詞|专有名词|專有名詞/.test(grammaticalContext)
+      : Boolean(input.isProperNoun),
+    isCompound:Boolean(input.isCompound),
+    sourceRefs
+  };
+}
+
+function lexicalSourceRefs(token = {}, index = 0){
+  if(Array.isArray(token.lexical_source_refs) && token.lexical_source_refs.length){
+    return token.lexical_source_refs;
+  }
+  const paragraph = Number.isFinite(Number(token.paragraph_index)) ? Number(token.paragraph_index) : 0;
+  const position = Number.isFinite(Number(token.word_position)) ? Number(token.word_position) : index;
+  return [`${paragraph}:${position}`];
+}
+
+function analyzeLexicalToken(token = {}, index = 0){
+  const surface = lexicalValue(token.surface_form || token.surface);
+  const lemma = lexicalValue(token.basic_form || token.lemma) || surface;
+  const exactInfo = dictionaryEntryFor(surface);
+  const lemmaInfo = dictionaryEntryFor(lemma);
+  const rawReading = tokenSurfaceReading(token);
+  return normalizeLexicalAnalysis({
+    surface,
+    surfaceReading:rawReading || lexicalValue(exactInfo?.reading),
+    lemma,
+    lemmaReading:lexicalValue(lemmaInfo?.reading) || (lemma === surface ? rawReading : ''),
+    partOfSpeech:token.pos,
+    partOfSpeechDetail:token.pos_detail_1 || token.posDetail,
+    conjugationType:token.conjugated_type || token.conjugatedType,
+    conjugationForm:token.conjugated_form || token.conjugatedForm,
+    isCompound:token.is_compound,
+    sourceRefs:lexicalSourceRefs(token, index)
+  });
+}
+
+
 function isProperNounInfo(info = {}){
-  return /固有名詞|专有名词|專有名詞/.test(String(info.pos || ''));
+  return Boolean(info.lexicalAnalysis?.isProperNoun)
+    || /固有名詞|专有名词|專有名詞/.test(String(info.pos || ''));
 }
 
 function isAuxiliaryMasuToken(token = {}){
@@ -4007,39 +4087,54 @@ function shouldMergePoliteVerbTokens(parts){
   return /動詞|动词/.test(String(parts[0]?.pos || ''));
 }
 
-function mergeDictionaryCompounds(rawTokens){
+function mergeLexicalTokens(rawTokens){
+  const tokens = (Array.isArray(rawTokens) ? rawTokens : []).map((token, index)=>({
+    ...token,
+    is_compound:Boolean(token?.is_compound),
+    lexical_source_refs:lexicalSourceRefs(token, index)
+  }));
   const merged = [];
-  for(let i = 0; i < rawTokens.length; i += 1){
+  for(let i = 0; i < tokens.length; i += 1){
     let compound = null;
     for(const size of [4, 3, 2]){
-      if(i + size > rawTokens.length) continue;
-      const parts = rawTokens.slice(i, i + size);
+      if(i + size > tokens.length) continue;
+      const parts = tokens.slice(i, i + size);
       if(parts.some(token => !token.surface_form || /^\s+$/.test(token.surface_form))) continue;
       const surface = parts.map(token => token.surface_form).join('');
-      if(dictionaryEntryFor(surface) || shouldMergePoliteVerbTokens(parts)){
+      const exactEntry = dictionaryEntryFor(surface);
+      if(exactEntry || shouldMergePoliteVerbTokens(parts)){
         compound = {
           ...parts[0],
-          surface_form: surface,
-          basic_form: parts[0].basic_form && parts[0].basic_form !== '*'
-            ? parts[0].basic_form
-            : surface,
-          reading: dictionaryEntryFor(surface)?.reading || parts.map(token => token.reading || token.surface_form).join('')
+          surface_form:surface,
+          basic_form:lexicalValue(parts[0].basic_form) || surface,
+          reading:lexicalValue(exactEntry?.reading)
+            || parts.map(token=>lexicalValue(token.reading) || token.surface_form).join(''),
+          is_compound:true,
+          lexical_source_refs:[...new Set(parts.flatMap(token=>token.lexical_source_refs || []))]
         };
         i += size - 1;
         break;
       }
     }
-    merged.push(compound || rawTokens[i]);
+    merged.push(compound || tokens[i]);
   }
   return merged;
 }
 
+function mergeDictionaryCompounds(rawTokens){
+  return mergeLexicalTokens(rawTokens);
+}
+
 function getTokenInfo(token){
-  const surface = token.surface_form;
-  const base = token.basic_form && token.basic_form !== '*' ? token.basic_form : surface;
+  const lexicalAnalysis = analyzeLexicalToken(token);
+  const surface = lexicalAnalysis.surface;
+  const base = lexicalAnalysis.lemma;
+  const tokenPos = [lexicalAnalysis.partOfSpeech, lexicalAnalysis.partOfSpeechDetail]
+    .filter(Boolean)
+    .join('・') || '已识别词';
   if(isAuxiliaryMasuToken(token)){
     return {
-      reading:'ます',
+      reading:lexicalAnalysis.surfaceReading || 'ます',
       level:'',
       levelSource:'',
       pos:'助动词',
@@ -4049,34 +4144,36 @@ function getTokenInfo(token){
       dictWord:surface,
       baseForm:base,
       lookupWord:surface,
+      lexicalAnalysis,
       source:'grammar-function'
     };
   }
-  const dictInfo = dictionaryEntryFor(surface) || dictionaryEntryFor(base);
+  const surfaceEntry = dictionaryEntryFor(surface);
+  const dictInfo = surfaceEntry || dictionaryEntryFor(base);
   if(dictInfo){
-    const dictWord = dictionaryEntryFor(surface) ? surface : base;
-    const surfaceReading = tokenSurfaceReading(token);
+    const dictWord = surfaceEntry ? surface : base;
     return {
       ...dictInfo,
-      reading:dictWord !== surface && surfaceReading ? surfaceReading : dictInfo.reading,
+      reading:lexicalAnalysis.surfaceReading || dictInfo.reading,
       level:dictInfo.level,
       levelSource:dictInfo.levelSource || (dictInfo.level ? 'jlpt-reference' : ''),
+      pos:dictInfo.pos || tokenPos,
       dictWord,
       baseForm:base,
       lookupWord:dictWord,
+      lexicalAnalysis,
       source:'DICT'
     };
   }
-  const reading = tokenSurfaceReading(token);
-  const pos = [token.pos, token.pos_detail_1].filter(v=>v && v !== '*').join('・') || '已识别词';
   return {
-    reading,
+    reading:lexicalAnalysis.surfaceReading,
     level:'',
-    pos,
+    pos:tokenPos,
     meaning:'暂无释义，可稍后补充。',
-    dictWord: surface,
-    baseForm: base,
-    lookupWord: base,
+    dictWord:surface,
+    baseForm:base,
+    lookupWord:base,
+    lexicalAnalysis,
     source:'kuromoji'
   };
 }
@@ -4126,7 +4223,7 @@ function renderWithKuromojiTokens(raw, tokens, out, statsBar, mode = 'kuromoji')
         : info.source === 'kuromoji' || info.source === 'fallback'
           ? 'w-kuromoji'
           : 'w-' + (normalizeVisibleVocabLevel(info.level) || 'ungraded').toLowerCase();
-    window.KUROMOJI_TOKEN_CACHE[i] = { surface, info, token };
+    window.KUROMOJI_TOKEN_CACHE[i] = { surface, info, token, analysis:info.lexicalAnalysis };
     return renderWordNode(surface, info.reading, cls, {"data-token-id":i}, `showTokenDetail(${i}, this)`);
   }).join('');
 
@@ -5170,7 +5267,9 @@ function grammarPointForReadingUnit(surface){
 }
 
 function isGrammarReadingUnit(info = {}){
-  return info.level === 'particle' || /助词|助詞|助动词|助動詞/.test(String(info.pos || ''));
+  return Boolean(info.lexicalAnalysis?.isFunctionWord)
+    || info.level === 'particle'
+    || /助词|助詞|助动词|助動詞/.test(String(info.pos || ''));
 }
 
 function readingDetailAction(surface, info = {}){
@@ -5197,9 +5296,13 @@ function detailInflectionHtml(tokenRecord){
   const token = tokenRecord?.token || {};
   const info = tokenRecord?.info || {};
   const surface = tokenRecord?.surface || '';
-  const baseForm = info.baseForm && info.baseForm !== '*' ? info.baseForm : '';
-  const conjugatedType = token.conjugated_type && token.conjugated_type !== '*' ? token.conjugated_type : '';
-  const conjugatedForm = token.conjugated_form && token.conjugated_form !== '*' ? token.conjugated_form : '';
+  const analysis = tokenRecord?.analysis || info.lexicalAnalysis
+    || (token.surface_form ? analyzeLexicalToken(token) : null);
+  const baseForm = analysis?.lemma || (info.baseForm && info.baseForm !== '*' ? info.baseForm : '');
+  const conjugatedType = analysis?.conjugationType
+    || (token.conjugated_type && token.conjugated_type !== '*' ? token.conjugated_type : '');
+  const conjugatedForm = analysis?.conjugationForm
+    || (token.conjugated_form && token.conjugated_form !== '*' ? token.conjugated_form : '');
   const rows = [];
   if(baseForm && baseForm !== surface){
     rows.push(`<span><b>原形</b>${escapeHtml(baseForm)}</span>`);

@@ -233,7 +233,7 @@ assertCheck(
   /function isAuxiliaryMasuToken/.test(appJs)
     && appJs.includes("meaning:'礼貌助动词，用于构成动词的礼貌表达'")
     && /source:'grammar-function'/.test(appJs)
-    && /dictionaryEntryFor\(surface\) \|\| shouldMergePoliteVerbTokens\(parts\)/.test(appJs),
+    && /const exactEntry = dictionaryEntryFor\(surface\);[\s\S]*?if\(exactEntry \|\| shouldMergePoliteVerbTokens\(parts\)\)/.test(appJs),
   'auxiliary ます bypasses homophone dictionary metadata while polite verbs remain merged'
 );
 assertCheck(
@@ -300,9 +300,11 @@ assertCheck(
   'new Chinese coverage and safe proper-noun miss guidance are present'
 );
 assertCheck(
-  /function tokenSurfaceReading/.test(appJs)
-    && /reading:dictWord !== surface && surfaceReading \? surfaceReading : dictInfo\.reading/.test(appJs)
-    && /basic_form: parts\[0\]\.basic_form/.test(appJs),
+  /function normalizeLexicalAnalysis/.test(appJs)
+    && /function analyzeLexicalToken/.test(appJs)
+    && /function mergeLexicalTokens/.test(appJs)
+    && /reading:lexicalAnalysis\.surfaceReading \|\| dictInfo\.reading/.test(appJs)
+    && /basic_form:lexicalValue\(parts\[0\]\.basic_form\)/.test(appJs),
   'inflected surface readings stay separate from dictionary base-form lookup and level inheritance'
 );
 assertCheck(
