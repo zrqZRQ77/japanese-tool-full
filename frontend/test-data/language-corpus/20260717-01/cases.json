@@ -1,0 +1,6159 @@
+[
+  {
+    "id": "LQ-001",
+    "category": "basic",
+    "sentence": "私は学生です。",
+    "surface": "私",
+    "expectedSurfaceReading": "わたし",
+    "expectedLemma": "私",
+    "expectedLemmaReading": "わたし",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-002",
+    "category": "basic",
+    "sentence": "本を読みます。",
+    "surface": "本",
+    "expectedSurfaceReading": "ほん",
+    "expectedLemma": "本",
+    "expectedLemmaReading": "ほん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-003",
+    "category": "basic",
+    "sentence": "学校へ行きます。",
+    "surface": "学校",
+    "expectedSurfaceReading": "がっこう",
+    "expectedLemma": "学校",
+    "expectedLemmaReading": "がっこう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-004",
+    "category": "basic",
+    "sentence": "今日は晴れです。",
+    "surface": "今日",
+    "expectedSurfaceReading": "きょう",
+    "expectedLemma": "今日",
+    "expectedLemmaReading": "きょう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-005",
+    "category": "basic",
+    "sentence": "時間を確認します。",
+    "surface": "時間",
+    "expectedSurfaceReading": "じかん",
+    "expectedLemma": "時間",
+    "expectedLemmaReading": "じかん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-006",
+    "category": "basic",
+    "sentence": "友達と話します。",
+    "surface": "友達",
+    "expectedSurfaceReading": "ともだち",
+    "expectedLemma": "友達",
+    "expectedLemmaReading": "ともだち",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-007",
+    "category": "basic",
+    "sentence": "図書館で勉強します。",
+    "surface": "図書館",
+    "expectedSurfaceReading": "としょかん",
+    "expectedLemma": "図書館",
+    "expectedLemmaReading": "としょかん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-008",
+    "category": "basic",
+    "sentence": "新聞を読みました。",
+    "surface": "新聞",
+    "expectedSurfaceReading": "しんぶん",
+    "expectedLemma": "新聞",
+    "expectedLemmaReading": "しんぶん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-009",
+    "category": "basic",
+    "sentence": "来月旅行します。",
+    "surface": "来月",
+    "expectedSurfaceReading": "らいげつ",
+    "expectedLemma": "来月",
+    "expectedLemmaReading": "らいげつ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-010",
+    "category": "basic",
+    "sentence": "先生に質問します。",
+    "surface": "先生",
+    "expectedSurfaceReading": "せんせい",
+    "expectedLemma": "先生",
+    "expectedLemmaReading": "せんせい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-011",
+    "category": "basic",
+    "sentence": "朝ごはんを食べます。",
+    "surface": "朝ごはん",
+    "expectedSurfaceReading": "あさごはん",
+    "expectedLemma": "朝ごはん",
+    "expectedLemmaReading": "あさごはん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-012",
+    "category": "basic",
+    "sentence": "映画を見ます。",
+    "surface": "映画",
+    "expectedSurfaceReading": "えいが",
+    "expectedLemma": "映画",
+    "expectedLemmaReading": "えいが",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-013",
+    "category": "basic",
+    "sentence": "週末は休みます。",
+    "surface": "週末",
+    "expectedSurfaceReading": "しゅうまつ",
+    "expectedLemma": "週末",
+    "expectedLemmaReading": "しゅうまつ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-014",
+    "category": "basic",
+    "sentence": "新しい本を買います。",
+    "surface": "新しい",
+    "expectedSurfaceReading": "あたらしい",
+    "expectedLemma": "新しい",
+    "expectedLemmaReading": "あたらしい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-015",
+    "category": "basic",
+    "sentence": "親切な人です。",
+    "surface": "親切",
+    "expectedSurfaceReading": "しんせつ",
+    "expectedLemma": "親切",
+    "expectedLemmaReading": "しんせつ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-016",
+    "category": "basic",
+    "sentence": "丁寧に説明します。",
+    "surface": "丁寧",
+    "expectedSurfaceReading": "ていねい",
+    "expectedLemma": "丁寧",
+    "expectedLemmaReading": "ていねい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-017",
+    "category": "basic",
+    "sentence": "予定を決めます。",
+    "surface": "予定",
+    "expectedSurfaceReading": "よてい",
+    "expectedLemma": "予定",
+    "expectedLemmaReading": "よてい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-018",
+    "category": "basic",
+    "sentence": "部屋に猫がいます。",
+    "surface": "猫",
+    "expectedSurfaceReading": "ねこ",
+    "expectedLemma": "猫",
+    "expectedLemmaReading": "ねこ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-019",
+    "category": "basic",
+    "sentence": "公園を歩きます。",
+    "surface": "公園",
+    "expectedSurfaceReading": "こうえん",
+    "expectedLemma": "公園",
+    "expectedLemmaReading": "こうえん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-020",
+    "category": "basic",
+    "sentence": "水を飲みます。",
+    "surface": "水",
+    "expectedSurfaceReading": "みず",
+    "expectedLemma": "水",
+    "expectedLemmaReading": "みず",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-021",
+    "category": "basic",
+    "sentence": "駅で待ちます。",
+    "surface": "駅",
+    "expectedSurfaceReading": "えき",
+    "expectedLemma": "駅",
+    "expectedLemmaReading": "えき",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-022",
+    "category": "basic",
+    "sentence": "電車に乗ります。",
+    "surface": "電車",
+    "expectedSurfaceReading": "でんしゃ",
+    "expectedLemma": "電車",
+    "expectedLemmaReading": "でんしゃ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-023",
+    "category": "basic",
+    "sentence": "家に帰ります。",
+    "surface": "家",
+    "expectedSurfaceReading": "いえ",
+    "expectedLemma": "家",
+    "expectedLemmaReading": "いえ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-024",
+    "category": "basic",
+    "sentence": "日本語を学びます。",
+    "surface": "日本語",
+    "expectedSurfaceReading": "にほんご",
+    "expectedLemma": "日本語",
+    "expectedLemmaReading": "にほんご",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-025",
+    "category": "basic",
+    "sentence": "毎朝七時に起きます。",
+    "surface": "毎朝",
+    "expectedSurfaceReading": "まいあさ",
+    "expectedLemma": "毎朝",
+    "expectedLemmaReading": "まいあさ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-026",
+    "category": "basic",
+    "sentence": "七時に出発します。",
+    "surface": "七時",
+    "expectedSurfaceReading": "しちじ",
+    "expectedLemma": "七時",
+    "expectedLemmaReading": "しちじ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-027",
+    "category": "basic",
+    "sentence": "音楽を聞きます。",
+    "surface": "音楽",
+    "expectedSurfaceReading": "おんがく",
+    "expectedLemma": "音楽",
+    "expectedLemmaReading": "おんがく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-028",
+    "category": "basic",
+    "sentence": "写真を撮ります。",
+    "surface": "写真",
+    "expectedSurfaceReading": "しゃしん",
+    "expectedLemma": "写真",
+    "expectedLemmaReading": "しゃしん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-029",
+    "category": "basic",
+    "sentence": "料理を作ります。",
+    "surface": "料理",
+    "expectedSurfaceReading": "りょうり",
+    "expectedLemma": "料理",
+    "expectedLemmaReading": "りょうり",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-030",
+    "category": "basic",
+    "sentence": "仕事が終わりました。",
+    "surface": "仕事",
+    "expectedSurfaceReading": "しごと",
+    "expectedLemma": "仕事",
+    "expectedLemmaReading": "しごと",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-031",
+    "category": "basic",
+    "sentence": "昨日は雨でした。",
+    "surface": "昨日",
+    "expectedSurfaceReading": "きのう",
+    "expectedLemma": "昨日",
+    "expectedLemmaReading": "きのう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-032",
+    "category": "basic",
+    "sentence": "明日は休みです。",
+    "surface": "明日",
+    "expectedSurfaceReading": "あした",
+    "expectedLemma": "明日",
+    "expectedLemmaReading": "あした",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-033",
+    "category": "basic",
+    "sentence": "午前九時に開きます。",
+    "surface": "午前",
+    "expectedSurfaceReading": "ごぜん",
+    "expectedLemma": "午前",
+    "expectedLemmaReading": "ごぜん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-034",
+    "category": "basic",
+    "sentence": "午後六時に閉まります。",
+    "surface": "午後",
+    "expectedSurfaceReading": "ごご",
+    "expectedLemma": "午後",
+    "expectedLemmaReading": "ごご",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-035",
+    "category": "basic",
+    "sentence": "机の上にあります。",
+    "surface": "机",
+    "expectedSurfaceReading": "つくえ",
+    "expectedLemma": "机",
+    "expectedLemmaReading": "つくえ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-036",
+    "category": "basic",
+    "sentence": "小さな犬がいます。",
+    "surface": "犬",
+    "expectedSurfaceReading": "いぬ",
+    "expectedLemma": "犬",
+    "expectedLemmaReading": "いぬ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-037",
+    "category": "basic",
+    "sentence": "手紙を書きます。",
+    "surface": "手紙",
+    "expectedSurfaceReading": "てがみ",
+    "expectedLemma": "手紙",
+    "expectedLemmaReading": "てがみ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-038",
+    "category": "basic",
+    "sentence": "日本へ来ました。",
+    "surface": "日本",
+    "expectedSurfaceReading": "にほん",
+    "expectedLemma": "日本",
+    "expectedLemmaReading": "にほん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-039",
+    "category": "basic",
+    "sentence": "質問に答えます。",
+    "surface": "質問",
+    "expectedSurfaceReading": "しつもん",
+    "expectedLemma": "質問",
+    "expectedLemmaReading": "しつもん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-040",
+    "category": "basic",
+    "sentence": "窓を開けます。",
+    "surface": "窓",
+    "expectedSurfaceReading": "まど",
+    "expectedLemma": "窓",
+    "expectedLemmaReading": "まど",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-041",
+    "category": "verbs",
+    "sentence": "毎晩、本を読む。",
+    "surface": "読む",
+    "expectedSurfaceReading": "よむ",
+    "expectedLemma": "読む",
+    "expectedLemmaReading": "よむ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・マ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-042",
+    "category": "verbs",
+    "sentence": "本を読んで寝ます。",
+    "surface": "読ん",
+    "expectedSurfaceReading": "よん",
+    "expectedLemma": "読む",
+    "expectedLemmaReading": "よむ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・マ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-043",
+    "category": "verbs",
+    "sentence": "昨日、本を読んだ。",
+    "surface": "読んだ",
+    "expectedSurfaceReading": "よんだ",
+    "expectedLemma": "読む",
+    "expectedLemmaReading": "よむ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・マ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-044",
+    "category": "verbs",
+    "sentence": "記事を読んでください。",
+    "surface": "読んで",
+    "expectedSurfaceReading": "よんで",
+    "expectedLemma": "読む",
+    "expectedLemmaReading": "よむ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・マ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-045",
+    "category": "verbs",
+    "sentence": "今日は新聞を読まない。",
+    "surface": "読まない",
+    "expectedSurfaceReading": "よまない",
+    "expectedLemma": "読む",
+    "expectedLemmaReading": "よむ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・マ行",
+    "expectedConjugationForm": "未然形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-046",
+    "category": "verbs",
+    "sentence": "手紙を書く。",
+    "surface": "書く",
+    "expectedSurfaceReading": "かく",
+    "expectedLemma": "書く",
+    "expectedLemmaReading": "かく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行イ音便",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-047",
+    "category": "verbs",
+    "sentence": "名前を書いてください。",
+    "surface": "書いて",
+    "expectedSurfaceReading": "かいて",
+    "expectedLemma": "書く",
+    "expectedLemmaReading": "かく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行イ音便",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-048",
+    "category": "verbs",
+    "sentence": "昨日、日記を書いた。",
+    "surface": "書いた",
+    "expectedSurfaceReading": "かいた",
+    "expectedLemma": "書く",
+    "expectedLemmaReading": "かく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行イ音便",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-049",
+    "category": "verbs",
+    "sentence": "学校へ行く。",
+    "surface": "行く",
+    "expectedSurfaceReading": "いく",
+    "expectedLemma": "行く",
+    "expectedLemmaReading": "いく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行促音便",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-050",
+    "category": "verbs",
+    "sentence": "昨日、駅へ行った。",
+    "surface": "行った",
+    "expectedSurfaceReading": "いった",
+    "expectedLemma": "行く",
+    "expectedLemmaReading": "いく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行促音便",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-051",
+    "category": "verbs",
+    "sentence": "毎日学校へ行きます。",
+    "surface": "行きます",
+    "expectedSurfaceReading": "いきます",
+    "expectedLemma": "行く",
+    "expectedLemmaReading": "いく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行促音便",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-052",
+    "category": "verbs",
+    "sentence": "ここで待つ。",
+    "surface": "待つ",
+    "expectedSurfaceReading": "まつ",
+    "expectedLemma": "待つ",
+    "expectedLemmaReading": "まつ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・タ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-053",
+    "category": "verbs",
+    "sentence": "少し待ってください。",
+    "surface": "待って",
+    "expectedSurfaceReading": "まって",
+    "expectedLemma": "待つ",
+    "expectedLemmaReading": "まつ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・タ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-054",
+    "category": "verbs",
+    "sentence": "一時間待った。",
+    "surface": "待った",
+    "expectedSurfaceReading": "まった",
+    "expectedLemma": "待つ",
+    "expectedLemmaReading": "まつ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・タ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-055",
+    "category": "verbs",
+    "sentence": "十一時に寝る。",
+    "surface": "寝る",
+    "expectedSurfaceReading": "ねる",
+    "expectedLemma": "寝る",
+    "expectedLemmaReading": "ねる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-056",
+    "category": "verbs",
+    "sentence": "毎晩十一時に寝ます。",
+    "surface": "寝ます",
+    "expectedSurfaceReading": "ねます",
+    "expectedLemma": "寝る",
+    "expectedLemmaReading": "ねる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-057",
+    "category": "verbs",
+    "sentence": "昼は寝ない。",
+    "surface": "寝ない",
+    "expectedSurfaceReading": "ねない",
+    "expectedLemma": "寝る",
+    "expectedLemmaReading": "ねる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "未然形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-058",
+    "category": "verbs",
+    "sentence": "昨日は早く寝た。",
+    "surface": "寝た",
+    "expectedSurfaceReading": "ねた",
+    "expectedLemma": "寝る",
+    "expectedLemmaReading": "ねる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-059",
+    "category": "verbs",
+    "sentence": "朝ごはんを食べる。",
+    "surface": "食べる",
+    "expectedSurfaceReading": "たべる",
+    "expectedLemma": "食べる",
+    "expectedLemmaReading": "たべる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-060",
+    "category": "verbs",
+    "sentence": "毎朝パンを食べます。",
+    "surface": "食べます",
+    "expectedSurfaceReading": "たべます",
+    "expectedLemma": "食べる",
+    "expectedLemmaReading": "たべる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-061",
+    "category": "verbs",
+    "sentence": "この魚は食べられる。",
+    "surface": "食べられる",
+    "expectedSurfaceReading": "たべられる",
+    "expectedLemma": "食べる",
+    "expectedLemmaReading": "たべる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "未然形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-062",
+    "category": "verbs",
+    "sentence": "宿題をする。",
+    "surface": "する",
+    "expectedSurfaceReading": "する",
+    "expectedLemma": "する",
+    "expectedLemmaReading": "する",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "サ変・スル",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-063",
+    "category": "verbs",
+    "sentence": "毎日勉強します。",
+    "surface": "します",
+    "expectedSurfaceReading": "します",
+    "expectedLemma": "する",
+    "expectedLemmaReading": "する",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "サ変・スル",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-064",
+    "category": "verbs",
+    "sentence": "昨日掃除した。",
+    "surface": "した",
+    "expectedSurfaceReading": "した",
+    "expectedLemma": "する",
+    "expectedLemmaReading": "する",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "サ変・スル",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-065",
+    "category": "verbs",
+    "sentence": "先生は学生に練習させる。",
+    "surface": "させる",
+    "expectedSurfaceReading": "させる",
+    "expectedLemma": "する",
+    "expectedLemmaReading": "する",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "サ変・スル",
+    "expectedConjugationForm": "未然レル接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-066",
+    "category": "verbs",
+    "sentence": "友達が来る。",
+    "surface": "来る",
+    "expectedSurfaceReading": "くる",
+    "expectedLemma": "来る",
+    "expectedLemmaReading": "くる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "カ変・来ル",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-067",
+    "category": "verbs",
+    "sentence": "来週、日本へ来ます。",
+    "surface": "来ます",
+    "expectedSurfaceReading": "きます",
+    "expectedLemma": "来る",
+    "expectedLemmaReading": "くる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "カ変・来ル",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-068",
+    "category": "verbs",
+    "sentence": "今日は来ない。",
+    "surface": "来ない",
+    "expectedSurfaceReading": "こない",
+    "expectedLemma": "来る",
+    "expectedLemmaReading": "くる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "カ変・来ル",
+    "expectedConjugationForm": "未然形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-069",
+    "category": "verbs",
+    "sentence": "昨日は来なかった。",
+    "surface": "来なかった",
+    "expectedSurfaceReading": "こなかった",
+    "expectedLemma": "来る",
+    "expectedLemmaReading": "くる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "カ変・来ル",
+    "expectedConjugationForm": "未然形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-070",
+    "category": "verbs",
+    "sentence": "水を飲む。",
+    "surface": "飲む",
+    "expectedSurfaceReading": "のむ",
+    "expectedLemma": "飲む",
+    "expectedLemmaReading": "のむ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・マ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-071",
+    "category": "verbs",
+    "sentence": "薬を飲んだ。",
+    "surface": "飲んだ",
+    "expectedSurfaceReading": "のんだ",
+    "expectedLemma": "飲む",
+    "expectedLemmaReading": "のむ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・マ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-072",
+    "category": "verbs",
+    "sentence": "音楽を聞く。",
+    "surface": "聞く",
+    "expectedSurfaceReading": "きく",
+    "expectedLemma": "聞く",
+    "expectedLemmaReading": "きく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行イ音便",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-073",
+    "category": "verbs",
+    "sentence": "先生に聞いてみる。",
+    "surface": "聞いて",
+    "expectedSurfaceReading": "きいて",
+    "expectedLemma": "聞く",
+    "expectedLemmaReading": "きく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行イ音便",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-074",
+    "category": "verbs",
+    "sentence": "家へ帰る。",
+    "surface": "帰る",
+    "expectedSurfaceReading": "かえる",
+    "expectedLemma": "帰る",
+    "expectedLemmaReading": "かえる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-075",
+    "category": "verbs",
+    "sentence": "昨日帰った。",
+    "surface": "帰った",
+    "expectedSurfaceReading": "かえった",
+    "expectedLemma": "帰る",
+    "expectedLemmaReading": "かえる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-076",
+    "category": "verbs",
+    "sentence": "写真を撮る。",
+    "surface": "撮る",
+    "expectedSurfaceReading": "とる",
+    "expectedLemma": "撮る",
+    "expectedLemmaReading": "とる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-077",
+    "category": "verbs",
+    "sentence": "写真を撮った。",
+    "surface": "撮った",
+    "expectedSurfaceReading": "とった",
+    "expectedLemma": "撮る",
+    "expectedLemmaReading": "とる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-078",
+    "category": "verbs",
+    "sentence": "駅で会う。",
+    "surface": "会う",
+    "expectedSurfaceReading": "あう",
+    "expectedLemma": "会う",
+    "expectedLemmaReading": "あう",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ワ行促音便",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-079",
+    "category": "verbs",
+    "sentence": "昨日友達に会った。",
+    "surface": "会った",
+    "expectedSurfaceReading": "あった",
+    "expectedLemma": "会う",
+    "expectedLemmaReading": "あう",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ワ行促音便",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-080",
+    "category": "verbs",
+    "sentence": "窓を開ける。",
+    "surface": "開ける",
+    "expectedSurfaceReading": "あける",
+    "expectedLemma": "開ける",
+    "expectedLemmaReading": "あける",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-081",
+    "category": "verbs",
+    "sentence": "店を開きます。",
+    "surface": "開きます",
+    "expectedSurfaceReading": "ひらきます",
+    "expectedLemma": "開く",
+    "expectedLemmaReading": "ひらく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行イ音便",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-082",
+    "category": "verbs",
+    "sentence": "ドアが開く。",
+    "surface": "開く",
+    "expectedSurfaceReading": "あく",
+    "expectedLemma": "開く",
+    "expectedLemmaReading": "あく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行イ音便",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-083",
+    "category": "verbs",
+    "sentence": "電車に乗る。",
+    "surface": "乗る",
+    "expectedSurfaceReading": "のる",
+    "expectedLemma": "乗る",
+    "expectedLemmaReading": "のる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-084",
+    "category": "verbs",
+    "sentence": "電車に乗った。",
+    "surface": "乗った",
+    "expectedSurfaceReading": "のった",
+    "expectedLemma": "乗る",
+    "expectedLemmaReading": "のる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-085",
+    "category": "verbs",
+    "sentence": "毎朝起きる。",
+    "surface": "起きる",
+    "expectedSurfaceReading": "おきる",
+    "expectedLemma": "起きる",
+    "expectedLemmaReading": "おきる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-086",
+    "category": "verbs",
+    "sentence": "七時に起きます。",
+    "surface": "起きます",
+    "expectedSurfaceReading": "おきます",
+    "expectedLemma": "起きる",
+    "expectedLemmaReading": "おきる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-087",
+    "category": "verbs",
+    "sentence": "椅子に座る。",
+    "surface": "座る",
+    "expectedSurfaceReading": "すわる",
+    "expectedLemma": "座る",
+    "expectedLemmaReading": "すわる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-088",
+    "category": "verbs",
+    "sentence": "椅子に座った。",
+    "surface": "座った",
+    "expectedSurfaceReading": "すわった",
+    "expectedLemma": "座る",
+    "expectedLemmaReading": "すわる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-089",
+    "category": "verbs",
+    "sentence": "荷物を持つ。",
+    "surface": "持つ",
+    "expectedSurfaceReading": "もつ",
+    "expectedLemma": "持つ",
+    "expectedLemmaReading": "もつ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・タ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-090",
+    "category": "verbs",
+    "sentence": "荷物を持っている。",
+    "surface": "持って",
+    "expectedSurfaceReading": "もって",
+    "expectedLemma": "持つ",
+    "expectedLemmaReading": "もつ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・タ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-091",
+    "category": "verbs",
+    "sentence": "日本語を話す。",
+    "surface": "話す",
+    "expectedSurfaceReading": "はなす",
+    "expectedLemma": "話す",
+    "expectedLemmaReading": "はなす",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・サ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-092",
+    "category": "verbs",
+    "sentence": "ゆっくり話した。",
+    "surface": "話した",
+    "expectedSurfaceReading": "はなした",
+    "expectedLemma": "話す",
+    "expectedLemmaReading": "はなす",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・サ行",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-093",
+    "category": "verbs",
+    "sentence": "雨が降る。",
+    "surface": "降る",
+    "expectedSurfaceReading": "ふる",
+    "expectedLemma": "降る",
+    "expectedLemmaReading": "ふる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-094",
+    "category": "verbs",
+    "sentence": "雨が降った。",
+    "surface": "降った",
+    "expectedSurfaceReading": "ふった",
+    "expectedLemma": "降る",
+    "expectedLemmaReading": "ふる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-095",
+    "category": "verbs",
+    "sentence": "仕事が終わる。",
+    "surface": "終わる",
+    "expectedSurfaceReading": "おわる",
+    "expectedLemma": "終わる",
+    "expectedLemmaReading": "おわる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-096",
+    "category": "verbs",
+    "sentence": "仕事が終わった。",
+    "surface": "終わった",
+    "expectedSurfaceReading": "おわった",
+    "expectedLemma": "終わる",
+    "expectedLemmaReading": "おわる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-097",
+    "category": "verbs",
+    "sentence": "本を買う。",
+    "surface": "買う",
+    "expectedSurfaceReading": "かう",
+    "expectedLemma": "買う",
+    "expectedLemmaReading": "かう",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ワ行促音便",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-098",
+    "category": "verbs",
+    "sentence": "本を買った。",
+    "surface": "買った",
+    "expectedSurfaceReading": "かった",
+    "expectedLemma": "買う",
+    "expectedLemmaReading": "かう",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ワ行促音便",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-099",
+    "category": "verbs",
+    "sentence": "名前を呼ぶ。",
+    "surface": "呼ぶ",
+    "expectedSurfaceReading": "よぶ",
+    "expectedLemma": "呼ぶ",
+    "expectedLemmaReading": "よぶ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・バ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-100",
+    "category": "verbs",
+    "sentence": "名前を呼んだ。",
+    "surface": "呼んだ",
+    "expectedSurfaceReading": "よんだ",
+    "expectedLemma": "呼ぶ",
+    "expectedLemmaReading": "よぶ",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・バ行",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-101",
+    "category": "adjectives",
+    "sentence": "この山は高い。",
+    "surface": "高い",
+    "expectedSurfaceReading": "たかい",
+    "expectedLemma": "高い",
+    "expectedLemmaReading": "たかい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・アウオ段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-102",
+    "category": "adjectives",
+    "sentence": "値段が高く感じる。",
+    "surface": "高く",
+    "expectedSurfaceReading": "たかく",
+    "expectedLemma": "高い",
+    "expectedLemmaReading": "たかい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・アウオ段",
+    "expectedConjugationForm": "連用テ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-103",
+    "category": "adjectives",
+    "sentence": "昨日は高かった。",
+    "surface": "高かった",
+    "expectedSurfaceReading": "たかかった",
+    "expectedLemma": "高い",
+    "expectedLemmaReading": "たかい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・アウオ段",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-104",
+    "category": "adjectives",
+    "sentence": "この店は高くない。",
+    "surface": "高くない",
+    "expectedSurfaceReading": "たかくない",
+    "expectedLemma": "高い",
+    "expectedLemmaReading": "たかい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・アウオ段",
+    "expectedConjugationForm": "連用テ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-105",
+    "category": "adjectives",
+    "sentence": "図書館は静かだ。",
+    "surface": "静かだ",
+    "expectedSurfaceReading": "しずかだ",
+    "expectedLemma": "静か",
+    "expectedLemmaReading": "しずか",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-106",
+    "category": "adjectives",
+    "sentence": "この部屋は静かです。",
+    "surface": "静かです",
+    "expectedSurfaceReading": "しずかです",
+    "expectedLemma": "静か",
+    "expectedLemmaReading": "しずか",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-107",
+    "category": "adjectives",
+    "sentence": "昨日は静かだった。",
+    "surface": "静かだった",
+    "expectedSurfaceReading": "しずかだった",
+    "expectedLemma": "静か",
+    "expectedLemmaReading": "しずか",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-108",
+    "category": "adjectives",
+    "sentence": "新しい本です。",
+    "surface": "新しい",
+    "expectedSurfaceReading": "あたらしい",
+    "expectedLemma": "新しい",
+    "expectedLemmaReading": "あたらしい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-109",
+    "category": "adjectives",
+    "sentence": "新しく建てました。",
+    "surface": "新しく",
+    "expectedSurfaceReading": "あたらしく",
+    "expectedLemma": "新しい",
+    "expectedLemmaReading": "あたらしい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "連用テ接続",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-110",
+    "category": "adjectives",
+    "sentence": "古い家です。",
+    "surface": "古い",
+    "expectedSurfaceReading": "ふるい",
+    "expectedLemma": "古い",
+    "expectedLemmaReading": "ふるい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-111",
+    "category": "adjectives",
+    "sentence": "家が古かった。",
+    "surface": "古かった",
+    "expectedSurfaceReading": "ふるかった",
+    "expectedLemma": "古い",
+    "expectedLemmaReading": "ふるい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-112",
+    "category": "adjectives",
+    "sentence": "今日は暑い。",
+    "surface": "暑い",
+    "expectedSurfaceReading": "あつい",
+    "expectedLemma": "暑い",
+    "expectedLemmaReading": "あつい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-113",
+    "category": "adjectives",
+    "sentence": "昨日は暑かった。",
+    "surface": "暑かった",
+    "expectedSurfaceReading": "あつかった",
+    "expectedLemma": "暑い",
+    "expectedLemmaReading": "あつい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-114",
+    "category": "adjectives",
+    "sentence": "水が冷たい。",
+    "surface": "冷たい",
+    "expectedSurfaceReading": "つめたい",
+    "expectedLemma": "冷たい",
+    "expectedLemmaReading": "つめたい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・アウオ段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-115",
+    "category": "adjectives",
+    "sentence": "水は冷たくない。",
+    "surface": "冷たくない",
+    "expectedSurfaceReading": "つめたくない",
+    "expectedLemma": "冷たい",
+    "expectedLemmaReading": "つめたい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・アウオ段",
+    "expectedConjugationForm": "連用テ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-116",
+    "category": "adjectives",
+    "sentence": "問題は難しい。",
+    "surface": "難しい",
+    "expectedSurfaceReading": "むずかしい",
+    "expectedLemma": "難しい",
+    "expectedLemmaReading": "むずかしい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-117",
+    "category": "adjectives",
+    "sentence": "試験は難しかった。",
+    "surface": "難しかった",
+    "expectedSurfaceReading": "むずかしかった",
+    "expectedLemma": "難しい",
+    "expectedLemmaReading": "むずかしい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "連用タ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-118",
+    "category": "adjectives",
+    "sentence": "この問題は易しい。",
+    "surface": "易しい",
+    "expectedSurfaceReading": "やさしい",
+    "expectedLemma": "易しい",
+    "expectedLemmaReading": "やさしい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・イ段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-119",
+    "category": "adjectives",
+    "sentence": "説明は簡単だ。",
+    "surface": "簡単だ",
+    "expectedSurfaceReading": "かんたんだ",
+    "expectedLemma": "簡単だ",
+    "expectedLemmaReading": "かんたんだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-120",
+    "category": "adjectives",
+    "sentence": "操作は簡単です。",
+    "surface": "簡単です",
+    "expectedSurfaceReading": "かんたんです",
+    "expectedLemma": "簡単だ",
+    "expectedLemmaReading": "かんたんだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-121",
+    "category": "adjectives",
+    "sentence": "町は便利だ。",
+    "surface": "便利だ",
+    "expectedSurfaceReading": "べんりだ",
+    "expectedLemma": "便利だ",
+    "expectedLemmaReading": "べんりだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-122",
+    "category": "adjectives",
+    "sentence": "この道具は便利です。",
+    "surface": "便利です",
+    "expectedSurfaceReading": "べんりです",
+    "expectedLemma": "便利だ",
+    "expectedLemmaReading": "べんりだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-123",
+    "category": "adjectives",
+    "sentence": "先生は親切だ。",
+    "surface": "親切だ",
+    "expectedSurfaceReading": "しんせつだ",
+    "expectedLemma": "親切だ",
+    "expectedLemmaReading": "しんせつだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-124",
+    "category": "adjectives",
+    "sentence": "先生は親切です。",
+    "surface": "親切です",
+    "expectedSurfaceReading": "しんせつです",
+    "expectedLemma": "親切だ",
+    "expectedLemmaReading": "しんせつだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-125",
+    "category": "adjectives",
+    "sentence": "説明が丁寧だ。",
+    "surface": "丁寧だ",
+    "expectedSurfaceReading": "ていねいだ",
+    "expectedLemma": "丁寧だ",
+    "expectedLemmaReading": "ていねいだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-126",
+    "category": "adjectives",
+    "sentence": "丁寧に話します。",
+    "surface": "丁寧に",
+    "expectedSurfaceReading": "ていねいに",
+    "expectedLemma": "丁寧だ",
+    "expectedLemmaReading": "ていねいだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-127",
+    "category": "adjectives",
+    "sentence": "元気な子です。",
+    "surface": "元気な",
+    "expectedSurfaceReading": "げんきな",
+    "expectedLemma": "元気だ",
+    "expectedLemmaReading": "げんきだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "体言接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-128",
+    "category": "adjectives",
+    "sentence": "今日は元気です。",
+    "surface": "元気です",
+    "expectedSurfaceReading": "げんきです",
+    "expectedLemma": "元気だ",
+    "expectedLemmaReading": "げんきだ",
+    "expectedPartOfSpeech": "形容動詞",
+    "expectedConjugationType": "形容動詞・ダ",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-129",
+    "category": "adjectives",
+    "sentence": "空が青い。",
+    "surface": "青い",
+    "expectedSurfaceReading": "あおい",
+    "expectedLemma": "青い",
+    "expectedLemmaReading": "あおい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・アウオ段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-130",
+    "category": "adjectives",
+    "sentence": "空は青くなった。",
+    "surface": "青く",
+    "expectedSurfaceReading": "あおく",
+    "expectedLemma": "青い",
+    "expectedLemmaReading": "あおい",
+    "expectedPartOfSpeech": "形容詞",
+    "expectedConjugationType": "形容詞・アウオ段",
+    "expectedConjugationForm": "連用テ接続",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-131",
+    "category": "function_words",
+    "sentence": "本を読みます。",
+    "surface": "を",
+    "expectedSurfaceReading": "を",
+    "expectedLemma": "を",
+    "expectedLemmaReading": "を",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [
+      "N3",
+      "量具",
+      "measuring container"
+    ],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-132",
+    "category": "function_words",
+    "sentence": "学校へ行きます。",
+    "surface": "へ",
+    "expectedSurfaceReading": "へ",
+    "expectedLemma": "へ",
+    "expectedLemmaReading": "へ",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-133",
+    "category": "function_words",
+    "sentence": "図書館で勉強します。",
+    "surface": "で",
+    "expectedSurfaceReading": "で",
+    "expectedLemma": "で",
+    "expectedLemmaReading": "で",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-134",
+    "category": "function_words",
+    "sentence": "友達と話します。",
+    "surface": "と",
+    "expectedSurfaceReading": "と",
+    "expectedLemma": "と",
+    "expectedLemmaReading": "と",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-135",
+    "category": "function_words",
+    "sentence": "机の上です。",
+    "surface": "の",
+    "expectedSurfaceReading": "の",
+    "expectedLemma": "の",
+    "expectedLemmaReading": "の",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-136",
+    "category": "function_words",
+    "sentence": "猫がいます。",
+    "surface": "が",
+    "expectedSurfaceReading": "が",
+    "expectedLemma": "が",
+    "expectedLemmaReading": "が",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-137",
+    "category": "function_words",
+    "sentence": "今日は雨です。",
+    "surface": "は",
+    "expectedSurfaceReading": "は",
+    "expectedLemma": "は",
+    "expectedLemmaReading": "は",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-138",
+    "category": "function_words",
+    "sentence": "私も行きます。",
+    "surface": "も",
+    "expectedSurfaceReading": "も",
+    "expectedLemma": "も",
+    "expectedLemmaReading": "も",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-139",
+    "category": "function_words",
+    "sentence": "七時に起きます。",
+    "surface": "に",
+    "expectedSurfaceReading": "に",
+    "expectedLemma": "に",
+    "expectedLemmaReading": "に",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-140",
+    "category": "function_words",
+    "sentence": "本だけ買います。",
+    "surface": "だけ",
+    "expectedSurfaceReading": "だけ",
+    "expectedLemma": "だけ",
+    "expectedLemmaReading": "だけ",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-141",
+    "category": "function_words",
+    "sentence": "水しかありません。",
+    "surface": "しか",
+    "expectedSurfaceReading": "しか",
+    "expectedLemma": "しか",
+    "expectedLemmaReading": "しか",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-142",
+    "category": "function_words",
+    "sentence": "雨から雪になった。",
+    "surface": "から",
+    "expectedSurfaceReading": "から",
+    "expectedLemma": "から",
+    "expectedLemmaReading": "から",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-143",
+    "category": "function_words",
+    "sentence": "九時まで働きます。",
+    "surface": "まで",
+    "expectedSurfaceReading": "まで",
+    "expectedLemma": "まで",
+    "expectedLemmaReading": "まで",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-144",
+    "category": "function_words",
+    "sentence": "彼より背が高い。",
+    "surface": "より",
+    "expectedSurfaceReading": "より",
+    "expectedLemma": "より",
+    "expectedLemmaReading": "より",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-145",
+    "category": "function_words",
+    "sentence": "本を読みます。",
+    "surface": "ます",
+    "expectedSurfaceReading": "ます",
+    "expectedLemma": "ます",
+    "expectedLemmaReading": "ます",
+    "expectedPartOfSpeech": "助動詞",
+    "expectedConjugationType": "特殊・マス",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [
+      "N3",
+      "量具",
+      "measuring container"
+    ],
+    "testLayers": [
+      "pure",
+      "worker"
+    ]
+  },
+  {
+    "id": "LQ-146",
+    "category": "function_words",
+    "sentence": "昨日読みました。",
+    "surface": "ました",
+    "expectedSurfaceReading": "ました",
+    "expectedLemma": "ます",
+    "expectedLemmaReading": "ます",
+    "expectedPartOfSpeech": "助動詞",
+    "expectedConjugationType": "特殊・マス",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-147",
+    "category": "function_words",
+    "sentence": "学生です。",
+    "surface": "です",
+    "expectedSurfaceReading": "です",
+    "expectedLemma": "です",
+    "expectedLemmaReading": "です",
+    "expectedPartOfSpeech": "助動詞",
+    "expectedConjugationType": "特殊・デス",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-148",
+    "category": "function_words",
+    "sentence": "学生でした。",
+    "surface": "でした",
+    "expectedSurfaceReading": "でした",
+    "expectedLemma": "です",
+    "expectedLemmaReading": "です",
+    "expectedPartOfSpeech": "助動詞",
+    "expectedConjugationType": "特殊・デス",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-149",
+    "category": "function_words",
+    "sentence": "本ではない。",
+    "surface": "ない",
+    "expectedSurfaceReading": "ない",
+    "expectedLemma": "ない",
+    "expectedLemmaReading": "ない",
+    "expectedPartOfSpeech": "助動詞",
+    "expectedConjugationType": "特殊・ナイ",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-150",
+    "category": "function_words",
+    "sentence": "本を読んだ。",
+    "surface": "だ",
+    "expectedSurfaceReading": "だ",
+    "expectedLemma": "だ",
+    "expectedLemmaReading": "だ",
+    "expectedPartOfSpeech": "助動詞",
+    "expectedConjugationType": "特殊・ダ",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-151",
+    "category": "function_words",
+    "sentence": "雨だった。",
+    "surface": "だった",
+    "expectedSurfaceReading": "だった",
+    "expectedLemma": "だ",
+    "expectedLemmaReading": "だ",
+    "expectedPartOfSpeech": "助動詞",
+    "expectedConjugationType": "特殊・ダ",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-152",
+    "category": "function_words",
+    "sentence": "食べている。",
+    "surface": "いる",
+    "expectedSurfaceReading": "いる",
+    "expectedLemma": "いる",
+    "expectedLemmaReading": "いる",
+    "expectedPartOfSpeech": "助動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-153",
+    "category": "function_words",
+    "sentence": "行ってみる。",
+    "surface": "みる",
+    "expectedSurfaceReading": "みる",
+    "expectedLemma": "みる",
+    "expectedLemmaReading": "みる",
+    "expectedPartOfSpeech": "助動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-154",
+    "category": "function_words",
+    "sentence": "読めば分かる。",
+    "surface": "ば",
+    "expectedSurfaceReading": "ば",
+    "expectedLemma": "ば",
+    "expectedLemmaReading": "ば",
+    "expectedPartOfSpeech": "助詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-155",
+    "category": "function_words",
+    "sentence": "雨でも行く。",
+    "surface": "でも",
+    "expectedSurfaceReading": "でも",
+    "expectedLemma": "でも",
+    "expectedLemmaReading": "でも",
+    "expectedPartOfSpeech": "接続詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-156",
+    "category": "function_words",
+    "sentence": "しかし、雨だった。",
+    "surface": "しかし",
+    "expectedSurfaceReading": "しかし",
+    "expectedLemma": "しかし",
+    "expectedLemmaReading": "しかし",
+    "expectedPartOfSpeech": "接続詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-157",
+    "category": "function_words",
+    "sentence": "そして家に帰った。",
+    "surface": "そして",
+    "expectedSurfaceReading": "そして",
+    "expectedLemma": "そして",
+    "expectedLemmaReading": "そして",
+    "expectedPartOfSpeech": "接続詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-158",
+    "category": "function_words",
+    "sentence": "この本をください。",
+    "surface": "この",
+    "expectedSurfaceReading": "この",
+    "expectedLemma": "この",
+    "expectedLemmaReading": "この",
+    "expectedPartOfSpeech": "連体詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-159",
+    "category": "function_words",
+    "sentence": "その人は先生です。",
+    "surface": "その",
+    "expectedSurfaceReading": "その",
+    "expectedLemma": "その",
+    "expectedLemmaReading": "その",
+    "expectedPartOfSpeech": "連体詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-160",
+    "category": "function_words",
+    "sentence": "あの店は有名です。",
+    "surface": "あの",
+    "expectedSurfaceReading": "あの",
+    "expectedLemma": "あの",
+    "expectedLemmaReading": "あの",
+    "expectedPartOfSpeech": "連体詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "function-word",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-161",
+    "category": "ambiguity",
+    "sentence": "家に帰る。",
+    "surface": "帰る",
+    "expectedSurfaceReading": "かえる",
+    "expectedLemma": "帰る",
+    "expectedLemmaReading": "かえる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "蛙",
+      "frog"
+    ],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-162",
+    "category": "ambiguity",
+    "sentence": "池に蛙がいる。",
+    "surface": "蛙",
+    "expectedSurfaceReading": "かえる",
+    "expectedLemma": "蛙",
+    "expectedLemmaReading": "かえる",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "返回",
+      "to return"
+    ],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui"
+    ]
+  },
+  {
+    "id": "LQ-163",
+    "category": "ambiguity",
+    "sentence": "橋を渡る。",
+    "surface": "橋",
+    "expectedSurfaceReading": "はし",
+    "expectedLemma": "橋",
+    "expectedLemmaReading": "はし",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "箸",
+      "筷子"
+    ],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-164",
+    "category": "ambiguity",
+    "sentence": "箸を使う。",
+    "surface": "箸",
+    "expectedSurfaceReading": "はし",
+    "expectedLemma": "箸",
+    "expectedLemmaReading": "はし",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "桥",
+      "bridge"
+    ],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-165",
+    "category": "ambiguity",
+    "sentence": "花が咲く。",
+    "surface": "花",
+    "expectedSurfaceReading": "はな",
+    "expectedLemma": "花",
+    "expectedLemmaReading": "はな",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "鼻",
+      "nose"
+    ],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-166",
+    "category": "ambiguity",
+    "sentence": "鼻が痛い。",
+    "surface": "鼻",
+    "expectedSurfaceReading": "はな",
+    "expectedLemma": "鼻",
+    "expectedLemmaReading": "はな",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "花",
+      "flower"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-167",
+    "category": "ambiguity",
+    "sentence": "雨が降る。",
+    "surface": "雨",
+    "expectedSurfaceReading": "あめ",
+    "expectedLemma": "雨",
+    "expectedLemmaReading": "あめ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "飴",
+      "candy"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-168",
+    "category": "ambiguity",
+    "sentence": "飴を食べる。",
+    "surface": "飴",
+    "expectedSurfaceReading": "あめ",
+    "expectedLemma": "飴",
+    "expectedLemmaReading": "あめ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "雨",
+      "rain"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-169",
+    "category": "ambiguity",
+    "sentence": "紙に書く。",
+    "surface": "紙",
+    "expectedSurfaceReading": "かみ",
+    "expectedLemma": "紙",
+    "expectedLemmaReading": "かみ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "神",
+      "god"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-170",
+    "category": "ambiguity",
+    "sentence": "神を祭る。",
+    "surface": "神",
+    "expectedSurfaceReading": "かみ",
+    "expectedLemma": "神",
+    "expectedLemmaReading": "かみ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "纸",
+      "paper"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-171",
+    "category": "ambiguity",
+    "sentence": "髪を切る。",
+    "surface": "髪",
+    "expectedSurfaceReading": "かみ",
+    "expectedLemma": "髪",
+    "expectedLemmaReading": "かみ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "纸",
+      "神"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-172",
+    "category": "ambiguity",
+    "sentence": "木を切る。",
+    "surface": "切る",
+    "expectedSurfaceReading": "きる",
+    "expectedLemma": "切る",
+    "expectedLemmaReading": "きる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・ラ行",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "穿",
+      "wear"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-173",
+    "category": "ambiguity",
+    "sentence": "服を着る。",
+    "surface": "着る",
+    "expectedSurfaceReading": "きる",
+    "expectedLemma": "着る",
+    "expectedLemmaReading": "きる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "切",
+      "cut"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-174",
+    "category": "ambiguity",
+    "sentence": "店が開く。",
+    "surface": "開く",
+    "expectedSurfaceReading": "あく",
+    "expectedLemma": "開く",
+    "expectedLemmaReading": "あく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行イ音便",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "ひらく"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-175",
+    "category": "ambiguity",
+    "sentence": "本を開く。",
+    "surface": "開く",
+    "expectedSurfaceReading": "ひらく",
+    "expectedLemma": "開く",
+    "expectedLemmaReading": "ひらく",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "五段・カ行イ音便",
+    "expectedConjugationForm": "基本形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "あく"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-176",
+    "category": "ambiguity",
+    "sentence": "生の魚です。",
+    "surface": "生",
+    "expectedSurfaceReading": "なま",
+    "expectedLemma": "生",
+    "expectedLemmaReading": "なま",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "せい",
+      "しょう"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-177",
+    "category": "ambiguity",
+    "sentence": "学生の生活。",
+    "surface": "生",
+    "expectedSurfaceReading": "せい",
+    "expectedLemma": "生",
+    "expectedLemmaReading": "せい",
+    "expectedPartOfSpeech": "接尾詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "context-dependent",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "なま"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-178",
+    "category": "ambiguity",
+    "sentence": "一日を過ごす。",
+    "surface": "一日",
+    "expectedSurfaceReading": "いちにち",
+    "expectedLemma": "一日",
+    "expectedLemmaReading": "いちにち",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "ついたち"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-179",
+    "category": "ambiguity",
+    "sentence": "四月一日です。",
+    "surface": "一日",
+    "expectedSurfaceReading": "ついたち",
+    "expectedLemma": "一日",
+    "expectedLemmaReading": "ついたち",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "いちにち"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-180",
+    "category": "ambiguity",
+    "sentence": "人気がある。",
+    "surface": "人気",
+    "expectedSurfaceReading": "にんき",
+    "expectedLemma": "人気",
+    "expectedLemmaReading": "にんき",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "ひとけ"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-181",
+    "category": "ambiguity",
+    "sentence": "人気のない道。",
+    "surface": "人気",
+    "expectedSurfaceReading": "ひとけ",
+    "expectedLemma": "人気",
+    "expectedLemmaReading": "ひとけ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "にんき"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-182",
+    "category": "ambiguity",
+    "sentence": "市場を調査する。",
+    "surface": "市場",
+    "expectedSurfaceReading": "しじょう",
+    "expectedLemma": "市場",
+    "expectedLemmaReading": "しじょう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "いちば"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-183",
+    "category": "ambiguity",
+    "sentence": "朝の市場へ行く。",
+    "surface": "市場",
+    "expectedSurfaceReading": "いちば",
+    "expectedLemma": "市場",
+    "expectedLemmaReading": "いちば",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N4",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "しじょう"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-184",
+    "category": "ambiguity",
+    "sentence": "今日中に終える。",
+    "surface": "今日中",
+    "expectedSurfaceReading": "きょうじゅう",
+    "expectedLemma": "今日中",
+    "expectedLemmaReading": "きょうじゅう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "こんにちちゅう"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-185",
+    "category": "ambiguity",
+    "sentence": "上手に話す。",
+    "surface": "上手",
+    "expectedSurfaceReading": "じょうず",
+    "expectedLemma": "上手",
+    "expectedLemmaReading": "じょうず",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N5",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [
+      "うわて"
+    ],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-186",
+    "category": "compounds",
+    "sentence": "読書室を利用する。",
+    "surface": "読書室",
+    "expectedSurfaceReading": "どくしょしつ",
+    "expectedLemma": "読書室",
+    "expectedLemmaReading": "どくしょしつ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-187",
+    "category": "compounds",
+    "sentence": "利用時間を確認する。",
+    "surface": "利用時間",
+    "expectedSurfaceReading": "りようじかん",
+    "expectedLemma": "利用時間",
+    "expectedLemmaReading": "りようじかん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui"
+    ]
+  },
+  {
+    "id": "LQ-188",
+    "category": "compounds",
+    "sentence": "金融機関が発表した。",
+    "surface": "金融機関",
+    "expectedSurfaceReading": "きんゆうきかん",
+    "expectedLemma": "金融機関",
+    "expectedLemmaReading": "きんゆうきかん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-189",
+    "category": "compounds",
+    "sentence": "時価総額が増えた。",
+    "surface": "時価総額",
+    "expectedSurfaceReading": "じかそうがく",
+    "expectedLemma": "時価総額",
+    "expectedLemmaReading": "じかそうがく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-190",
+    "category": "compounds",
+    "sentence": "半導体メモリーを生産する。",
+    "surface": "半導体メモリー",
+    "expectedSurfaceReading": "はんどうたいめもりー",
+    "expectedLemma": "半導体メモリー",
+    "expectedLemmaReading": "はんどうたいめもりー",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "unknown",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-191",
+    "category": "compounds",
+    "sentence": "国際競争力を高める。",
+    "surface": "国際競争力",
+    "expectedSurfaceReading": "こくさいきょうそうりょく",
+    "expectedLemma": "国際競争力",
+    "expectedLemmaReading": "こくさいきょうそうりょく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-192",
+    "category": "compounds",
+    "sentence": "知財戦略を見直す。",
+    "surface": "知財戦略",
+    "expectedSurfaceReading": "ちざいせんりゃく",
+    "expectedLemma": "知財戦略",
+    "expectedLemmaReading": "ちざいせんりゃく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-193",
+    "category": "compounds",
+    "sentence": "産学連携を進める。",
+    "surface": "産学連携",
+    "expectedSurfaceReading": "さんがくれんけい",
+    "expectedLemma": "産学連携",
+    "expectedLemmaReading": "さんがくれんけい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-194",
+    "category": "compounds",
+    "sentence": "人工知能を研究する。",
+    "surface": "人工知能",
+    "expectedSurfaceReading": "じんこうちのう",
+    "expectedLemma": "人工知能",
+    "expectedLemmaReading": "じんこうちのう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-195",
+    "category": "compounds",
+    "sentence": "情報通信技術を活用する。",
+    "surface": "情報通信技術",
+    "expectedSurfaceReading": "じょうほうつうしんぎじゅつ",
+    "expectedLemma": "情報通信技術",
+    "expectedLemmaReading": "じょうほうつうしんぎじゅつ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-196",
+    "category": "compounds",
+    "sentence": "少子高齢化が進む。",
+    "surface": "少子高齢化",
+    "expectedSurfaceReading": "しょうしこうれいか",
+    "expectedLemma": "少子高齢化",
+    "expectedLemmaReading": "しょうしこうれいか",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-197",
+    "category": "compounds",
+    "sentence": "地球温暖化を防ぐ。",
+    "surface": "地球温暖化",
+    "expectedSurfaceReading": "ちきゅうおんだんか",
+    "expectedLemma": "地球温暖化",
+    "expectedLemmaReading": "ちきゅうおんだんか",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-198",
+    "category": "compounds",
+    "sentence": "経済成長が続く。",
+    "surface": "経済成長",
+    "expectedSurfaceReading": "けいざいせいちょう",
+    "expectedLemma": "経済成長",
+    "expectedLemmaReading": "けいざいせいちょう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-199",
+    "category": "compounds",
+    "sentence": "労働市場が変化する。",
+    "surface": "労働市場",
+    "expectedSurfaceReading": "ろうどうしじょう",
+    "expectedLemma": "労働市場",
+    "expectedLemmaReading": "ろうどうしじょう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-200",
+    "category": "compounds",
+    "sentence": "公共交通機関を使う。",
+    "surface": "公共交通機関",
+    "expectedSurfaceReading": "こうきょうこうつうきかん",
+    "expectedLemma": "公共交通機関",
+    "expectedLemmaReading": "こうきょうこうつうきかん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-201",
+    "category": "compounds",
+    "sentence": "研究開発費を増やす。",
+    "surface": "研究開発費",
+    "expectedSurfaceReading": "けんきゅうかいはつひ",
+    "expectedLemma": "研究開発費",
+    "expectedLemmaReading": "けんきゅうかいはつひ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-202",
+    "category": "compounds",
+    "sentence": "医療保険制度を改革する。",
+    "surface": "医療保険制度",
+    "expectedSurfaceReading": "いりょうほけんせいど",
+    "expectedLemma": "医療保険制度",
+    "expectedLemmaReading": "いりょうほけんせいど",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-203",
+    "category": "compounds",
+    "sentence": "自然災害に備える。",
+    "surface": "自然災害",
+    "expectedSurfaceReading": "しぜんさいがい",
+    "expectedLemma": "自然災害",
+    "expectedLemmaReading": "しぜんさいがい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-204",
+    "category": "compounds",
+    "sentence": "再生可能エネルギーを使う。",
+    "surface": "再生可能エネルギー",
+    "expectedSurfaceReading": "さいせいかのうえねるぎー",
+    "expectedLemma": "再生可能エネルギー",
+    "expectedLemmaReading": "さいせいかのうえねるぎー",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-205",
+    "category": "compounds",
+    "sentence": "電子部品を輸出する。",
+    "surface": "電子部品",
+    "expectedSurfaceReading": "でんしぶひん",
+    "expectedLemma": "電子部品",
+    "expectedLemmaReading": "でんしぶひん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-206",
+    "category": "compounds",
+    "sentence": "地方自治体が支援する。",
+    "surface": "地方自治体",
+    "expectedSurfaceReading": "ちほうじちたい",
+    "expectedLemma": "地方自治体",
+    "expectedLemmaReading": "ちほうじちたい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-207",
+    "category": "compounds",
+    "sentence": "大学院生が発表する。",
+    "surface": "大学院生",
+    "expectedSurfaceReading": "だいがくいんせい",
+    "expectedLemma": "大学院生",
+    "expectedLemmaReading": "だいがくいんせい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-208",
+    "category": "compounds",
+    "sentence": "外国人観光客が増えた。",
+    "surface": "外国人観光客",
+    "expectedSurfaceReading": "がいこくじんかんこうきゃく",
+    "expectedLemma": "外国人観光客",
+    "expectedLemmaReading": "がいこくじんかんこうきゃく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-209",
+    "category": "compounds",
+    "sentence": "高速道路が開通した。",
+    "surface": "高速道路",
+    "expectedSurfaceReading": "こうそくどうろ",
+    "expectedLemma": "高速道路",
+    "expectedLemmaReading": "こうそくどうろ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-210",
+    "category": "compounds",
+    "sentence": "携帯電話を充電する。",
+    "surface": "携帯電話",
+    "expectedSurfaceReading": "けいたいでんわ",
+    "expectedLemma": "携帯電話",
+    "expectedLemmaReading": "けいたいでんわ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-211",
+    "category": "proper_mixed",
+    "sentence": "三菱UFJ銀行を利用する。",
+    "surface": "三菱",
+    "expectedSurfaceReading": "みつびし",
+    "expectedLemma": "三菱",
+    "expectedLemmaReading": "みつびし",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "proper-noun-unresolved",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [
+      "猜测"
+    ],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-212",
+    "category": "proper_mixed",
+    "sentence": "三菱UFJ銀行を利用する。",
+    "surface": "UFJ",
+    "expectedSurfaceReading": "",
+    "expectedLemma": "UFJ",
+    "expectedLemmaReading": "",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui"
+    ]
+  },
+  {
+    "id": "LQ-213",
+    "category": "proper_mixed",
+    "sentence": "東京大学で研究する。",
+    "surface": "東京大学",
+    "expectedSurfaceReading": "とうきょうだいがく",
+    "expectedLemma": "東京大学",
+    "expectedLemmaReading": "とうきょうだいがく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "proper-noun-unresolved",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-214",
+    "category": "proper_mixed",
+    "sentence": "大阪市が発表した。",
+    "surface": "大阪市",
+    "expectedSurfaceReading": "おおさかし",
+    "expectedLemma": "大阪市",
+    "expectedLemmaReading": "おおさかし",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "proper-noun-unresolved",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-215",
+    "category": "proper_mixed",
+    "sentence": "山田太郎さんが話した。",
+    "surface": "山田太郎",
+    "expectedSurfaceReading": "やまだたろう",
+    "expectedLemma": "山田太郎",
+    "expectedLemmaReading": "やまだたろう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "proper-noun-unresolved",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-216",
+    "category": "proper_mixed",
+    "sentence": "NHKが報じた。",
+    "surface": "NHK",
+    "expectedSurfaceReading": "",
+    "expectedLemma": "NHK",
+    "expectedLemmaReading": "",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-217",
+    "category": "proper_mixed",
+    "sentence": "OpenAIの技術を紹介する。",
+    "surface": "OpenAI",
+    "expectedSurfaceReading": "",
+    "expectedLemma": "OpenAI",
+    "expectedLemmaReading": "",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-218",
+    "category": "proper_mixed",
+    "sentence": "iPhone 17を使う。",
+    "surface": "iPhone",
+    "expectedSurfaceReading": "",
+    "expectedLemma": "iPhone",
+    "expectedLemmaReading": "",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-219",
+    "category": "proper_mixed",
+    "sentence": "2026年7月17日です。",
+    "surface": "2026",
+    "expectedSurfaceReading": "にせんにじゅうろく",
+    "expectedLemma": "2026",
+    "expectedLemmaReading": "にせんにじゅうろく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-220",
+    "category": "proper_mixed",
+    "sentence": "価格は3,500円です。",
+    "surface": "3,500",
+    "expectedSurfaceReading": "さんぜんごひゃく",
+    "expectedLemma": "3,500",
+    "expectedLemmaReading": "さんぜんごひゃく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-221",
+    "category": "proper_mixed",
+    "sentence": "G7の主要国が協議した。",
+    "surface": "G7",
+    "expectedSurfaceReading": "じーせぶん",
+    "expectedLemma": "G7",
+    "expectedLemmaReading": "じーせぶん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-222",
+    "category": "proper_mixed",
+    "sentence": "AI技術を活用する。",
+    "surface": "AI",
+    "expectedSurfaceReading": "えーあい",
+    "expectedLemma": "AI",
+    "expectedLemmaReading": "えーあい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-223",
+    "category": "proper_mixed",
+    "sentence": "CPUの性能を測る。",
+    "surface": "CPU",
+    "expectedSurfaceReading": "しーぴーゆー",
+    "expectedLemma": "CPU",
+    "expectedLemmaReading": "しーぴーゆー",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-224",
+    "category": "proper_mixed",
+    "sentence": "Wi-Fiに接続する。",
+    "surface": "Wi-Fi",
+    "expectedSurfaceReading": "わいふぁい",
+    "expectedLemma": "Wi-Fi",
+    "expectedLemmaReading": "わいふぁい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-225",
+    "category": "proper_mixed",
+    "sentence": "東京都千代田区にある。",
+    "surface": "千代田区",
+    "expectedSurfaceReading": "ちよだく",
+    "expectedLemma": "千代田区",
+    "expectedLemmaReading": "ちよだく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "proper-noun-unresolved",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-226",
+    "category": "proper_mixed",
+    "sentence": "富士山に登る。",
+    "surface": "富士山",
+    "expectedSurfaceReading": "ふじさん",
+    "expectedLemma": "富士山",
+    "expectedLemmaReading": "ふじさん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "proper-noun-unresolved",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-227",
+    "category": "proper_mixed",
+    "sentence": "JR東日本が運行する。",
+    "surface": "JR東日本",
+    "expectedSurfaceReading": "じぇいあーるひがしにほん",
+    "expectedLemma": "JR東日本",
+    "expectedLemmaReading": "じぇいあーるひがしにほん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "proper-noun-unresolved",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-228",
+    "category": "proper_mixed",
+    "sentence": "キッズドアが支援した。",
+    "surface": "キッズドア",
+    "expectedSurfaceReading": "きっずどあ",
+    "expectedLemma": "キッズドア",
+    "expectedLemmaReading": "きっずどあ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "proper-noun-unresolved",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-229",
+    "category": "proper_mixed",
+    "sentence": "ChatGPTを利用する。",
+    "surface": "ChatGPT",
+    "expectedSurfaceReading": "",
+    "expectedLemma": "ChatGPT",
+    "expectedLemmaReading": "",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-230",
+    "category": "proper_mixed",
+    "sentence": "第1四半期の結果です。",
+    "surface": "第1四半期",
+    "expectedSurfaceReading": "だいいちしはんき",
+    "expectedLemma": "第1四半期",
+    "expectedLemmaReading": "だいいちしはんき",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-231",
+    "category": "news",
+    "sentence": "政府は新たな経済対策を発表した。",
+    "surface": "政府",
+    "expectedSurfaceReading": "せいふ",
+    "expectedLemma": "政府",
+    "expectedLemmaReading": "せいふ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N3",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "worker",
+      "dictionary",
+      "ui",
+      "safari-manual"
+    ]
+  },
+  {
+    "id": "LQ-232",
+    "category": "news",
+    "sentence": "企業の設備投資が増加した。",
+    "surface": "増加",
+    "expectedSurfaceReading": "ぞうか",
+    "expectedLemma": "増加",
+    "expectedLemmaReading": "ぞうか",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N3",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary",
+      "ui"
+    ]
+  },
+  {
+    "id": "LQ-233",
+    "category": "news",
+    "sentence": "市場では株価が上昇した。",
+    "surface": "上昇",
+    "expectedSurfaceReading": "じょうしょう",
+    "expectedLemma": "上昇",
+    "expectedLemmaReading": "じょうしょう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "N1",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-234",
+    "category": "news",
+    "sentence": "金融機関が融資を拡大する。",
+    "surface": "金融機関",
+    "expectedSurfaceReading": "きんゆうきかん",
+    "expectedLemma": "金融機関",
+    "expectedLemmaReading": "きんゆうきかん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-235",
+    "category": "news",
+    "sentence": "半導体の需要が回復した。",
+    "surface": "半導体",
+    "expectedSurfaceReading": "はんどうたい",
+    "expectedLemma": "半導体",
+    "expectedLemmaReading": "はんどうたい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure",
+      "dictionary"
+    ]
+  },
+  {
+    "id": "LQ-236",
+    "category": "news",
+    "sentence": "大学と企業が共同研究を始めた。",
+    "surface": "共同研究",
+    "expectedSurfaceReading": "きょうどうけんきゅう",
+    "expectedLemma": "共同研究",
+    "expectedLemmaReading": "きょうどうけんきゅう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-237",
+    "category": "news",
+    "sentence": "特許の国際競争力を分析した。",
+    "surface": "国際競争力",
+    "expectedSurfaceReading": "こくさいきょうそうりょく",
+    "expectedLemma": "国際競争力",
+    "expectedLemmaReading": "こくさいきょうそうりょく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-238",
+    "category": "news",
+    "sentence": "知財戦略の見直しを求めた。",
+    "surface": "知財戦略",
+    "expectedSurfaceReading": "ちざいせんりゃく",
+    "expectedLemma": "知財戦略",
+    "expectedLemmaReading": "ちざいせんりゃく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-239",
+    "category": "news",
+    "sentence": "物価の上昇率が鈍化した。",
+    "surface": "上昇率",
+    "expectedSurfaceReading": "じょうしょうりつ",
+    "expectedLemma": "上昇率",
+    "expectedLemmaReading": "じょうしょうりつ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-240",
+    "category": "news",
+    "sentence": "雇用情勢は緩やかに改善した。",
+    "surface": "雇用情勢",
+    "expectedSurfaceReading": "こようじょうせい",
+    "expectedLemma": "雇用情勢",
+    "expectedLemmaReading": "こようじょうせい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-241",
+    "category": "news",
+    "sentence": "中央銀行は金利を据え置いた。",
+    "surface": "中央銀行",
+    "expectedSurfaceReading": "ちゅうおうぎんこう",
+    "expectedLemma": "中央銀行",
+    "expectedLemmaReading": "ちゅうおうぎんこう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-242",
+    "category": "news",
+    "sentence": "輸出額は前年を上回った。",
+    "surface": "輸出額",
+    "expectedSurfaceReading": "ゆしゅつがく",
+    "expectedLemma": "輸出額",
+    "expectedLemmaReading": "ゆしゅつがく",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-243",
+    "category": "news",
+    "sentence": "訪日客数が過去最高となった。",
+    "surface": "訪日客数",
+    "expectedSurfaceReading": "ほうにちきゃくすう",
+    "expectedLemma": "訪日客数",
+    "expectedLemmaReading": "ほうにちきゃくすう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "unknown",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-244",
+    "category": "news",
+    "sentence": "新制度は来月から施行される。",
+    "surface": "施行",
+    "expectedSurfaceReading": "しこう",
+    "expectedLemma": "施行",
+    "expectedLemmaReading": "しこう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N1",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-245",
+    "category": "news",
+    "sentence": "自治体は避難所を開設した。",
+    "surface": "避難所",
+    "expectedSurfaceReading": "ひなんじょ",
+    "expectedLemma": "避難所",
+    "expectedLemmaReading": "ひなんじょ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-246",
+    "category": "news",
+    "sentence": "大雨による被害が拡大した。",
+    "surface": "被害",
+    "expectedSurfaceReading": "ひがい",
+    "expectedLemma": "被害",
+    "expectedLemmaReading": "ひがい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N3",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-247",
+    "category": "news",
+    "sentence": "気象庁は警戒を呼びかけた。",
+    "surface": "気象庁",
+    "expectedSurfaceReading": "きしょうちょう",
+    "expectedLemma": "気象庁",
+    "expectedLemmaReading": "きしょうちょう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "proper-noun-unresolved",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": false,
+    "expectedLookupKinds": [
+      "exactSurface"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-248",
+    "category": "news",
+    "sentence": "鉄道各社は運転を見合わせた。",
+    "surface": "見合わせた",
+    "expectedSurfaceReading": "みあわせた",
+    "expectedLemma": "見合わせる",
+    "expectedLemmaReading": "みあわせる",
+    "expectedPartOfSpeech": "動詞",
+    "expectedConjugationType": "一段",
+    "expectedConjugationForm": "連用形",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "lemma",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-249",
+    "category": "news",
+    "sentence": "新幹線は通常通り運行している。",
+    "surface": "運行",
+    "expectedSurfaceReading": "うんこう",
+    "expectedLemma": "運行",
+    "expectedLemmaReading": "うんこう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N2",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-250",
+    "category": "news",
+    "sentence": "医療機関の負担を軽減する。",
+    "surface": "医療機関",
+    "expectedSurfaceReading": "いりょうきかん",
+    "expectedLemma": "医療機関",
+    "expectedLemmaReading": "いりょうきかん",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-251",
+    "category": "news",
+    "sentence": "研究チームが成果を公表した。",
+    "surface": "研究チーム",
+    "expectedSurfaceReading": "けんきゅうちーむ",
+    "expectedLemma": "研究チーム",
+    "expectedLemmaReading": "けんきゅうちーむ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-252",
+    "category": "news",
+    "sentence": "生成AIの利用指針をまとめた。",
+    "surface": "生成AI",
+    "expectedSurfaceReading": "せいせいえーあい",
+    "expectedLemma": "生成AI",
+    "expectedLemmaReading": "せいせいえーあい",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "numeric-or-latin",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-253",
+    "category": "news",
+    "sentence": "個人情報の保護を強化する。",
+    "surface": "個人情報",
+    "expectedSurfaceReading": "こじんじょうほう",
+    "expectedLemma": "個人情報",
+    "expectedLemmaReading": "こじんじょうほう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-254",
+    "category": "news",
+    "sentence": "サイバー攻撃への対策を急ぐ。",
+    "surface": "サイバー攻撃",
+    "expectedSurfaceReading": "さいばーこうげき",
+    "expectedLemma": "サイバー攻撃",
+    "expectedLemmaReading": "さいばーこうげき",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-255",
+    "category": "news",
+    "sentence": "再生可能エネルギーの比率を高める。",
+    "surface": "比率",
+    "expectedSurfaceReading": "ひりつ",
+    "expectedLemma": "比率",
+    "expectedLemmaReading": "ひりつ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N2",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-256",
+    "category": "news",
+    "sentence": "温室効果ガスの排出量を削減する。",
+    "surface": "排出量",
+    "expectedSurfaceReading": "はいしゅつりょう",
+    "expectedLemma": "排出量",
+    "expectedLemmaReading": "はいしゅつりょう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-257",
+    "category": "news",
+    "sentence": "国会では法案の審議が続いた。",
+    "surface": "審議",
+    "expectedSurfaceReading": "しんぎ",
+    "expectedLemma": "審議",
+    "expectedLemmaReading": "しんぎ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "N1",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-258",
+    "category": "news",
+    "sentence": "選挙の投票率は前回を下回った。",
+    "surface": "投票率",
+    "expectedSurfaceReading": "とうひょうりつ",
+    "expectedLemma": "投票率",
+    "expectedLemmaReading": "とうひょうりつ",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-259",
+    "category": "news",
+    "sentence": "海外市場で販売を開始する。",
+    "surface": "海外市場",
+    "expectedSurfaceReading": "かいがいしじょう",
+    "expectedLemma": "海外市場",
+    "expectedLemmaReading": "かいがいしじょう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "jmdict-fallback",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  },
+  {
+    "id": "LQ-260",
+    "category": "news",
+    "sentence": "無償の支援策を発表した。",
+    "surface": "無償",
+    "expectedSurfaceReading": "むしょう",
+    "expectedLemma": "無償",
+    "expectedLemmaReading": "むしょう",
+    "expectedPartOfSpeech": "名詞",
+    "expectedConjugationType": "",
+    "expectedConjugationForm": "",
+    "expectedMeaningClass": "known-chinese",
+    "expectedJlptLevel": "",
+    "allowReadingLookup": true,
+    "expectedLookupKinds": [
+      "exactSurface",
+      "reading"
+    ],
+    "mustNotContain": [],
+    "testLayers": [
+      "pure"
+    ]
+  }
+]

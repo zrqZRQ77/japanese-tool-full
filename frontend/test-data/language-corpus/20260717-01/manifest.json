@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "corpusVersion": "20260717-01",
+  "generatedAt": "2026-07-17T00:00:00.000Z",
+  "deterministic": true,
+  "totalCases": 260,
+  "categories": {
+    "basic": {
+      "label": "基础词和简单句",
+      "count": 40
+    },
+    "verbs": {
+      "label": "五段、一段及不规则动词活用",
+      "count": 60
+    },
+    "adjectives": {
+      "label": "形容词和形容动词活用",
+      "count": 30
+    },
+    "function_words": {
+      "label": "助动词、助词、系动词和功能词",
+      "count": 30
+    },
+    "ambiguity": {
+      "label": "同音、多义和词性歧义",
+      "count": 25
+    },
+    "compounds": {
+      "label": "复合词与固定搭配",
+      "count": 25
+    },
+    "proper_mixed": {
+      "label": "专有名词、数字、英文混排",
+      "count": 20
+    },
+    "news": {
+      "label": "新闻与真实文章片段",
+      "count": 30
+    }
+  },
+  "layers": {
+    "pure": 260,
+    "worker": 32,
+    "dictionary": 40,
+    "ui": 16,
+    "safari-manual": 12
+  },
+  "safariManualStatus": "PENDING",
+  "notes": [
+    "Expected JLPT levels are reference values only; empty values mean unknown or intentionally ungraded.",
+    "No production dictionary entries are generated from this corpus.",
+    "Safari manual cases are inventory only and are never reported as automated PASS."
+  ]
+}

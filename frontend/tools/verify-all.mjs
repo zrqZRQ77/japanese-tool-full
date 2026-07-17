@@ -17,6 +17,8 @@ function run(script, args = []) {
 }
 
 run('check.mjs');
+run('language-corpus.test.mjs');
+run('language-corpus-browser.test.mjs');
 run('ui-audit.mjs');
 run('verify-visual.mjs', version ? [version] : []);
 console.log('All verification layers completed successfully.');
