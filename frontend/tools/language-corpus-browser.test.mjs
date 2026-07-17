@@ -75,7 +75,8 @@ try{
     try{
       for(const item of corpus){
         const result = await client.analyze(item.sentence);
-        const slice = findSlice(result.appTokens || [], item.surface);
+        const resolvedTokens = resolveContextualTokenReadings(result.appTokens || []);
+        const slice = findSlice(resolvedTokens, item.surface);
         const firstLexical = slice.find(token=>!/^(?:助詞|助動詞|記号)$/.test(String(token.pos || ''))) || slice[0] || {};
         records.push({
           id:item.id,

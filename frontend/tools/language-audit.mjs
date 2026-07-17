@@ -120,7 +120,7 @@ try{
     try{
       for(const item of corpus){
         const workerResult = await client.analyze(item.sentence);
-        const rawTokens = workerResult.appTokens || [];
+        const rawTokens = resolveContextualTokenReadings(workerResult.appTokens || []);
         const mergedTokens = mergeLexicalTokens(rawTokens);
         const slice = findSlice(rawTokens, item.surface);
         const firstLexical = slice.find(token=>!/^(?:助詞|助動詞|記号)$/.test(String(token.pos || ''))) || slice[0] || {};

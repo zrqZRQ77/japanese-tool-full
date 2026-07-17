@@ -1,0 +1,17 @@
+[
+  {"id":"CTX-001","sentence":"毎朝七時に起きる。","surface":"七時","expectedReading":"しちじ","rule":"counter-hour-seven"},
+  {"id":"CTX-002","sentence":"七人が参加した。","surface":"七人","expectedReading":"ななにん","rule":"counterexample"},
+  {"id":"CTX-003","sentence":"ドアが開く。","surface":"開く","expectedReading":"あく","rule":"intransitive-opening-subject"},
+  {"id":"CTX-004","sentence":"店が開く。","surface":"開く","expectedReading":"あく","rule":"intransitive-opening-subject"},
+  {"id":"CTX-005","sentence":"本を開く。","surface":"開く","expectedReading":"ひらく","rule":"counterexample"},
+  {"id":"CTX-006","sentence":"生と死を考える。","surface":"生","expectedReading":"せい","rule":"life-death-contrast"},
+  {"id":"CTX-007","sentence":"生の魚を買う。","surface":"生","expectedReading":"なま","rule":"counterexample"},
+  {"id":"CTX-008","sentence":"四月一日です。","surface":"一日","expectedReading":"ついたち","rule":"calendar-first-day"},
+  {"id":"CTX-009","sentence":"一日を過ごす。","surface":"一日","expectedReading":"いちにち","rule":"counterexample"},
+  {"id":"CTX-010","sentence":"人気のない道を歩く。","surface":"人気","expectedReading":"ひとけ","rule":"absence-of-people"},
+  {"id":"CTX-011","sentence":"人気がある店だ。","surface":"人気","expectedReading":"にんき","rule":"counterexample"},
+  {"id":"CTX-012","sentence":"朝の市場へ行く。","surface":"市場","expectedReading":"いちば","rule":"physical-marketplace-context"},
+  {"id":"CTX-013","sentence":"市場を調査する。","surface":"市場","expectedReading":"しじょう","rule":"counterexample"},
+  {"id":"CTX-014","sentence":"今日中に提出する。","surface":"今日中","expectedReading":"きょうじゅう","rule":"within-today-compound"},
+  {"id":"CTX-015","sentence":"避難所を開設した。","surface":"避難所","expectedReading":"ひなんじょ","rule":"evacuation-shelter-compound"}
+]

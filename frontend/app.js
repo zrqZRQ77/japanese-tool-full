@@ -4094,8 +4094,57 @@ function shouldMergePoliteVerbTokens(parts){
   return /動詞|动词/.test(String(parts[0]?.pos || ''));
 }
 
+const CONTEXTUAL_READING_OPEN_SUBJECTS = new Set(['ドア', '戸', '扉', '店', '窓', '幕', '口', '穴', '門']);
+const CONTEXTUAL_READING_MARKETPLACE_CONTEXTS = new Set(['朝', '魚', '青果', '卸売', '築地', '豊洲']);
+
+function resolveContextualTokenReadings(rawTokens){
+  const tokens = (Array.isArray(rawTokens) ? rawTokens : []).map(token=>({...token}));
+  const surfaceAt = index=>String(tokens[index]?.surface_form || '');
+  const setReading = (index, reading, rule)=>{
+    if(index < 0 || index >= tokens.length) return;
+    tokens[index].reading = reading;
+    tokens[index].contextual_reading_rule = rule;
+  };
+
+  for(let index = 0; index < tokens.length; index += 1){
+    const surface = surfaceAt(index);
+    const previous = surfaceAt(index - 1);
+    const previousTwo = surfaceAt(index - 2);
+    const next = surfaceAt(index + 1);
+    const nextTwo = surfaceAt(index + 2);
+
+    if(surface === '七' && next === '時') setReading(index, 'シチ', 'counter-hour-seven');
+    if(surface === '七時') setReading(index, 'シチジ', 'counter-hour-seven');
+
+    if(surface === '開く' && previous === 'が' && CONTEXTUAL_READING_OPEN_SUBJECTS.has(previousTwo)){
+      setReading(index, 'アク', 'intransitive-opening-subject');
+    }
+
+    if(surface === '生' && next === 'と' && nextTwo === '死') setReading(index, 'セイ', 'life-death-contrast');
+    if(surface === '一日' && /月$/u.test(previous || previousTwo)) setReading(index, 'ツイタチ', 'calendar-first-day');
+    if(surface === '一' && next === '日' && /月$/u.test(previous || previousTwo)){
+      setReading(index, 'ツイ', 'calendar-first-day');
+      setReading(index + 1, 'タチ', 'calendar-first-day');
+    }
+
+    if(surface === '人気' && ((next === 'の' && nextTwo === 'ない') || (next === 'が' && nextTwo === 'ない'))){
+      setReading(index, 'ヒトケ', 'absence-of-people');
+    }
+
+    if(surface === '市場' && previous === 'の' && CONTEXTUAL_READING_MARKETPLACE_CONTEXTS.has(previousTwo)){
+      setReading(index, 'イチバ', 'physical-marketplace-context');
+    }
+
+    if(surface === '今日中') setReading(index, 'キョウジュウ', 'within-today-compound');
+    if(surface === '中' && previous === '今日') setReading(index, 'ジュウ', 'within-today-compound');
+    if(surface === '避難所') setReading(index, 'ヒナンジョ', 'evacuation-shelter-compound');
+    if(surface === '所' && previous === '避難') setReading(index, 'ジョ', 'evacuation-shelter-compound');
+  }
+  return tokens;
+}
+
 function mergeLexicalTokens(rawTokens){
-  const tokens = (Array.isArray(rawTokens) ? rawTokens : []).map((token, index)=>({
+  const tokens = resolveContextualTokenReadings(rawTokens).map((token, index)=>({
     ...token,
     is_compound:Boolean(token?.is_compound),
     lexical_source_refs:lexicalSourceRefs(token, index)
@@ -4110,11 +4159,15 @@ function mergeLexicalTokens(rawTokens){
       const surface = parts.map(token => token.surface_form).join('');
       const exactEntry = dictionaryEntryFor(surface);
       if(exactEntry || shouldMergePoliteVerbTokens(parts)){
+        const contextualReading = parts.some(token=>token.contextual_reading_rule)
+          ? parts.map(token=>lexicalValue(token.reading) || token.surface_form).join('')
+          : '';
         compound = {
           ...parts[0],
           surface_form:surface,
           basic_form:lexicalValue(parts[0].basic_form) || surface,
-          reading:lexicalValue(exactEntry?.reading)
+          reading:contextualReading
+            || lexicalValue(exactEntry?.reading)
             || parts.map(token=>lexicalValue(token.reading) || token.surface_form).join(''),
           is_compound:true,
           lexical_source_refs:[...new Set(parts.flatMap(token=>token.lexical_source_refs || []))]

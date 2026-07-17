@@ -3,6 +3,7 @@
     "test": "node tools/check.mjs && npm run test:language-corpus && node tools/ui-audit.mjs && node tools/verify-visual.mjs",
     "audit:ui": "UI_AUDIT_FUNCTIONAL_ONLY=1 node tools/ui-audit.mjs && UI_AUDIT_RESPONSIVE_ONLY=1 node tools/ui-audit.mjs",
     "audit:language": "node tools/language-audit.mjs",
+    "audit:articles": "node tools/article-stress-audit.mjs",
     "check": "node tools/check.mjs",
     "verify:fast": "node tools/check.mjs",
     "verify:flows": "node tools/ui-audit.mjs",
@@ -14,7 +15,8 @@
     "poc:kuromoji": "node tools/kuromoji-worker-poc.mjs",
     "test:kuromoji": "node tools/kuromoji-worker-lifecycle.test.mjs && node tools/kuromoji-app-consistency.test.mjs && node tools/kuromoji-build-cache.test.mjs",
     "test:dictionary": "node tools/lexical-record.test.mjs && node tools/lexical-lookup-plan.test.mjs && node tools/learning-indexes.test.mjs && node tools/jmdict-common.test.mjs && node tools/jmdict-browser.test.mjs",
-    "test:language-corpus": "node tools/language-corpus.test.mjs && node tools/language-corpus-browser.test.mjs",
+    "test:language-corpus": "node tools/language-corpus.test.mjs && node tools/language-corpus-browser.test.mjs && node tools/contextual-reading.test.mjs",
+    "test:contextual-reading": "node tools/contextual-reading.test.mjs",
     "visual:snapshot": "node tools/visual-snapshot.mjs",
     "visual:snapshot:states": "node tools/visual-snapshot-states.mjs",
     "visual:prune": "node tools/prune-visual-snapshots.mjs"

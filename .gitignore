@@ -11,6 +11,7 @@ npm-debug.log*
 # Generated test, fixture and review output stays local. Keep executable source and tests tracked.
 frontend/audit-screenshots/
 frontend/language-audit-results/
+frontend/article-stress-results/
 frontend/stage4-results/
 frontend/stage4-fixtures/
 frontend/visual-snapshots/
