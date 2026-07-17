@@ -33,10 +33,13 @@ const currentDesignSystem = indexHtml.match(/design-system\.css\?v=([^"']+)/)?.[
 const currentGrammarLayout = indexHtml.match(/grammar-layout\.css\?v=([^"']+)/)?.[1] || '';
 const currentTypography = indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1] || '';
 const currentHeroMenu = indexHtml.match(/hero-menu-refresh\.css\?v=([^"']+)/)?.[1] || '';
+const currentLexicalLookup = indexHtml.match(/lexical-lookup\.js\?v=([^"']+)/)?.[1] || '';
 const currentJs = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
-const current = [currentCss, currentDesignSystem, currentGrammarLayout, currentTypography, currentHeroMenu, currentJs].filter(Boolean).every(value => value === currentCss)
-  ? currentCss
-  : currentJs || currentCss || currentDesignSystem || currentGrammarLayout || currentTypography || currentHeroMenu;
+const currentLexicalIntegration = indexHtml.match(/lexical-lookup-integration\.js\?v=([^"']+)/)?.[1] || '';
+const versionedAssets = [currentCss, currentDesignSystem, currentGrammarLayout, currentTypography, currentHeroMenu, currentLexicalLookup, currentJs, currentLexicalIntegration].filter(Boolean);
+const current = versionedAssets.length && versionedAssets.every(value => value === versionedAssets[0])
+  ? versionedAssets[0]
+  : currentJs || currentLexicalLookup || currentLexicalIntegration || currentCss || currentDesignSystem || currentGrammarLayout || currentTypography || currentHeroMenu;
 const version = nextVersion(current, requested);
 
 const updated = indexHtml
@@ -45,7 +48,9 @@ const updated = indexHtml
   .replace(/grammar-layout\.css\?v=[^"']+/g, `grammar-layout.css?v=${version}`)
   .replace(/typography\.css\?v=[^"']+/g, `typography.css?v=${version}`)
   .replace(/hero-menu-refresh\.css\?v=[^"']+/g, `hero-menu-refresh.css?v=${version}`)
-  .replace(/app\.js\?v=[^"']+/g, `app.js?v=${version}`);
+  .replace(/lexical-lookup\.js\?v=[^"']+/g, `lexical-lookup.js?v=${version}`)
+  .replace(/app\.js\?v=[^"']+/g, `app.js?v=${version}`)
+  .replace(/lexical-lookup-integration\.js\?v=[^"']+/g, `lexical-lookup-integration.js?v=${version}`);
 
 if (updated === indexHtml) {
   throw new Error('No cache query strings found in index.html.');

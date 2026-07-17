@@ -138,6 +138,18 @@ try {
   }, selectedWord, {timeout:5000});
   await page.evaluate(() => window.__restoreDictionaryLookup?.());
   assert.match((await detail.textContent()) || '', /词典来源：JMdict/);
+  const englishLookupState = await wordNode.evaluate(node => {
+    const id = Number(node.getAttribute('data-token-id'));
+    const record = window.KUROMOJI_TOKEN_CACHE[id];
+    return {
+      schemaVersion:record?.lookupPlan?.schemaVersion || 0,
+      kinds:(record?.lookupPlan?.candidates || []).map(candidate=>candidate.kind),
+      matchedKind:record?.info?.lookupMatchedKind || ''
+    };
+  });
+  assert.equal(englishLookupState.schemaVersion, 1);
+  assert.ok(englishLookupState.kinds.includes('exactSurface'));
+  assert.ok(['exactSurface', 'lemma', 'compound', 'reading', 'fallback'].includes(englishLookupState.matchedKind));
   assert.equal(await saveButton.isDisabled(), true, 'Automatically saved word must not be saved twice.');
   assert.match((await saveButton.getAttribute('aria-label')) || '', /已加入生词本/);
 
@@ -176,6 +188,16 @@ try {
   assert.equal(savedChinese?.meaningSource, 'offline-chinese');
   assert.equal(savedChinese?.level, 'N3');
   assert.equal(savedChinese?.levelSource, 'jlpt-reference');
+  const chineseLookupState = await chineseWordNode.evaluate(node => {
+    const id = Number(node.getAttribute('data-token-id'));
+    const record = window.KUROMOJI_TOKEN_CACHE[id];
+    return {
+      schemaVersion:record?.lookupPlan?.schemaVersion || 0,
+      matchedKind:record?.info?.lookupMatchedKind || ''
+    };
+  });
+  assert.equal(chineseLookupState.schemaVersion, 1);
+  assert.equal(chineseLookupState.matchedKind, 'exactSurface');
 
   await chineseWordNode.click();
   assert.match((await detail.textContent()) || '', /中文释义：读书、阅读/);

@@ -1042,7 +1042,10 @@ async function applyJlptReferenceToDictionary(dictionary){
   const index = await loadJlptReferenceIndex();
   if(!index) return;
   for(const [word, info] of Object.entries(dictionary || {})){
-    const level = dictionaryLookupForms([word, info.reading]).map(form=>index[form]).find(normalizeVisibleVocabLevel) || '';
+    const lookupPlan = buildCuratedLexicalLookupPlan(word, info);
+    const level = lookupCandidatesForSource(lookupPlan, 'jlpt')
+      .map(candidate=>index[candidate.term])
+      .find(normalizeVisibleVocabLevel) || '';
     info.level = normalizeVisibleVocabLevel(level);
     info.levelSource = 'jlpt-reference';
   }
@@ -5399,7 +5402,7 @@ async function showDetail(word, el){
 
   const info = DICT[word];
   if(!info) return;
-  await enrichInfoWithJlpt([word, info.reading], info);
+  await enrichInfoWithJlpt(buildCuratedLexicalLookupPlan(word, info), info);
   if(generation !== DETAIL_REQUEST_GENERATION) return;
   const detailAction = readingDetailAction(word, info);
   const addAction = detailAction.action || (detailAction.type === 'vocab' ? `addToVocab('${word}')` : '');
@@ -7180,7 +7183,7 @@ async function saveVocab(){
 async function addToVocab(word){
   const info = DICT[word];
   if(!info) return;
-  await enrichInfoWithJlpt([word, info.reading], info);
+  await enrichInfoWithJlpt(buildCuratedLexicalLookupPlan(word, info), info);
   addCustomToVocab(word, info.reading, info.meaning, info.level, info.pos, {
     meaningLanguage:info.meaningLanguage,
     meaningSource:info.meaningSource,

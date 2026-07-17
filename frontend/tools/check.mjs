@@ -45,8 +45,10 @@ function cacheVersions(indexHtml) {
   const grammarLayout = indexHtml.match(/grammar-layout\.css\?v=([^"']+)/)?.[1] || '';
   const typography = indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1] || '';
   const heroMenu = indexHtml.match(/hero-menu-refresh\.css\?v=([^"']+)/)?.[1] || '';
+  const lexicalLookup = indexHtml.match(/lexical-lookup\.js\?v=([^"']+)/)?.[1] || '';
   const js = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
-  return { css, designSystem, grammarLayout, typography, heroMenu, js };
+  const lexicalIntegration = indexHtml.match(/lexical-lookup-integration\.js\?v=([^"']+)/)?.[1] || '';
+  return { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, js, lexicalIntegration };
 }
 
 function duplicateIds(indexHtml) {
@@ -70,6 +72,8 @@ function hardcodedFontSizeLocations(sources) {
 
 const indexHtml = readFileSync(resolve(FRONTEND_DIR, 'index.html'), 'utf8');
 const appJs = readFileSync(resolve(FRONTEND_DIR, 'app.js'), 'utf8');
+const lexicalLookupJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup.js'), 'utf8');
+const lexicalLookupIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup-integration.js'), 'utf8');
 const stylesCss = readFileSync(resolve(FRONTEND_DIR, 'styles.css'), 'utf8');
 const designSystemCss = readFileSync(resolve(FRONTEND_DIR, 'design-system.css'), 'utf8');
 const grammarLayoutCss = readFileSync(resolve(FRONTEND_DIR, 'grammar-layout.css'), 'utf8');
@@ -78,9 +82,9 @@ const kuromojiWorkerPocJs = readFileSync(resolve(FRONTEND_DIR, 'kuromoji-worker-
 const kuromojiWorkerJs = readFileSync(resolve(FRONTEND_DIR, 'vendor/kuromoji/20260714-01/kuromoji-tokenizer.worker.js'), 'utf8');
 const dictionary = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/dictionary.json'), 'utf8'));
 const chineseSupplement = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/chinese-definitions-source.json'), 'utf8'));
-const inlineSource = `${appJs}\n${indexHtml}`;
+const inlineSource = `${appJs}\n${lexicalLookupJs}\n${lexicalLookupIntegrationJs}\n${indexHtml}`;
 const globalSearchSource = appJs.match(/const GLOBAL_SEARCH_ITEMS = \[[\s\S]*?\n\];/)?.[0] || '';
-const { css, designSystem, grammarLayout, typography, heroMenu, js } = cacheVersions(indexHtml);
+const { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, js, lexicalIntegration } = cacheVersions(indexHtml);
 const duplicateIdList = duplicateIds(indexHtml);
 const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['index.html', indexHtml],
@@ -88,7 +92,7 @@ const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['design-system.css', designSystemCss],
   ['grammar-layout.css', grammarLayoutCss]
 ]);
-const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'app.js'];
+const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'lexical-lookup.js', 'app.js', 'lexical-lookup-integration.js'];
 const requiredKuromojiPocFiles = [
   'kuromoji-worker-poc.js',
   'poc/kuromoji-worker-poc.html',
@@ -110,6 +114,8 @@ const internalLevelSamples = ['kuromoji', 'worker', 'tokenizer', 'fallback', 'pa
 const validJlptSamples = ['N5', 'N4', 'N3', 'N2', 'N1'];
 
 run('app.js syntax', 'node', ['--check', 'app.js']);
+run('lexical lookup syntax', 'node', ['--check', 'lexical-lookup.js']);
+run('lexical lookup integration syntax', 'node', ['--check', 'lexical-lookup-integration.js']);
 run('git whitespace diff', 'git', ['diff', '--check'], { optional: true });
 
 assertCheck(!/\b(?:alert|confirm)\s*\(/.test(inlineSource), 'no native alert() / confirm() in app.js or index.html');
@@ -139,13 +145,25 @@ assertCheck(
 );
 assertCheck(
   appJs.includes("const LEARNING_DATA_VERSION = '20260717'")
-    && appJs.includes('async function lookupOfflineChinese')
-    && appJs.includes('async function lookupJlptReference')
-    && /async function autoLookupTokenMeaning[\s\S]*?lookupOfflineChinese\(candidates, surface\)[\s\S]*?if\(chineseResult\?\.entry\?\.m\)[\s\S]*?lookupJmdictCommonWithCompoundFallback\(candidates, surface\)/.test(appJs)
+    && lexicalLookupJs.includes('function buildLexicalLookupPlan')
+    && lexicalLookupIntegrationJs.includes('async function lookupOfflineChinese')
+    && lexicalLookupIntegrationJs.includes('async function lookupJlptReference')
+    && appJs.includes('buildCuratedLexicalLookupPlan(word, info)')
+    && !appJs.includes('enrichInfoWithJlpt([word, info.reading], info)')
+    && /async function autoLookupTokenMeaning[\s\S]*?buildLexicalLookupPlan\(lexicalAnalysis[\s\S]*?lookupOfflineChinese\(lookupPlan, surface\)[\s\S]*?lookupJmdictCommonWithCompoundFallback\(lookupPlan, surface\)/.test(lexicalLookupIntegrationJs)
     && appJs.includes('释义来源：Yomeru 离线中文词库')
     && appJs.includes('JLPT 参考等级：')
     && indexHtml.includes('data-level="ungraded"'),
-  'offline Chinese meanings and reference levels are integrated ahead of JMdict fallback'
+  'offline Chinese meanings, reference levels, and JMdict share one lexical lookup plan'
+);
+assertCheck(
+  ['exactSurface', 'lemma', 'compound', 'reading', 'fallback'].every(kind=>lexicalLookupJs.includes(`'${kind}'`))
+    && lexicalLookupJs.includes('allowReadingMatch:true')
+    && lexicalLookupJs.includes('requirePosMatch:true')
+    && /add\(analysis\.surfaceReading, 'reading'[\s\S]*?allowJlpt:false[\s\S]*?allowReadingMatch:true/.test(lexicalLookupJs)
+    && indexHtml.indexOf('lexical-lookup.js') < indexHtml.indexOf('app.js')
+    && indexHtml.indexOf('app.js') < indexHtml.indexOf('lexical-lookup-integration.js'),
+  'lexical lookup candidates keep typed priority, source permissions, POS safeguards, and load order'
 );
 assertCheck(
   /meaningLanguage:[\s\S]*?meaningSource:[\s\S]*?levelSource:/.test(appJs)
@@ -326,7 +344,7 @@ assertCheck(
   'TTS setting summaries show selected values and controls fit desktop and mobile layouts'
 );
 assertCheck(hardcodedFontSizes.length === 0, `no hardcoded px font sizes outside typography.css${hardcodedFontSizes.length ? `: ${hardcodedFontSizes.join(', ')}` : ''}`);
-assertCheck(css && designSystem && grammarLayout && typography && heroMenu && js && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === js, 'CSS and JS cache versions match');
+assertCheck(css && designSystem && grammarLayout && typography && heroMenu && lexicalLookup && js && lexicalIntegration && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === lexicalLookup && css === js && css === lexicalIntegration, 'CSS and JS cache versions match');
 assertCheck(/^\d{8}-\d{2}$/.test(css), 'cache version format is YYYYMMDD-NN');
 
 if (process.exitCode) {
