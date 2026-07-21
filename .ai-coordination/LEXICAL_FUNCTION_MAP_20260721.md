@@ -318,4 +318,4 @@ frontend：npm run verify:flows
 - 真实浏览器刷新持久化：完成并通过
 - 最终本地构建、函数唯一性和部署文件检查：完成并通过
 
-本地实现与验收已完成；下一步仅为 Vercel Preview 验收。
+本地实现与 Preview 验收均已完成。Production 发布不属于本轮自动执行范围。

@@ -1,8 +1,8 @@
 # Yomeru `app.js` 模块化第一轮：Lexical 去重与边界整理
 
 - 决策日期：2026-07-21
-- 当前状态：`READY_FOR_PREVIEW`
-- 当前完成度：`98%`
+- 当前状态：`COMPLETED`
+- 当前完成度：`100%`
 - 执行优先级：`P1`
 - 是否允许修改 Production：`否`
 - 当前目标：只整理 lexical 领域代码，不改变公开 Beta 功能和用户行为
@@ -189,7 +189,7 @@
 
 ### 阶段 G：交付与记录
 
-状态：`LOCAL_COMPLETED_PREVIEW_PENDING`
+状态：`COMPLETED`
 
 - [x] 更新本文件的当前状态和完成百分比。
 - [x] 在“实际完成内容”中记录被迁移和删除的函数。
@@ -231,6 +231,7 @@
 | 2026-07-21 | 阶段 D 批次 2 | 删除 `app.js` 中 3 个详情旧实现和 3 个旧推断辅助项；扩展唯一实现门禁 | `frontend/app.js`、`frontend/tools/check.mjs` | 完成 |
 | 2026-07-21 | 阶段 D 批次 3 | 删除 `app.js` 中 6 个生词旧实现；验证 HTML/动态事件由 `lexical-vocab-integration.js` 承接；增加保存、去重和编辑回归测试 | `frontend/app.js`、2 个测试文件 | 完成 |
 | 2026-07-21 | 阶段 F/G | 增加真实浏览器刷新持久化测试，并纳入 `test:dictionary`；完成最终本地验收 | `frontend/tools/vocab-persistence-browser.test.mjs`、`frontend/package.json` | 完成 |
+| 2026-07-21 | Preview 验收 | 创建受保护 Preview；验证 Ready 状态、远程关键文件哈希、HTML 内容与脚本顺序 | `LEXICAL_PREVIEW_VALIDATION_20260721.md` | 完成 |
 
 ## 8. 测试结果
 
@@ -269,13 +270,15 @@
 | 2026-07-21 | 最终：`frontend` `npm run test:vocab-persistence` | PASS | 新增生词后写入 localStorage；刷新后应用重新加载；生词页面 DOM 仍显示，metadata 保持 |
 | 2026-07-21 | 最终：`frontend` `npm run test:dictionary` | PASS | 已包含刷新持久化浏览器测试 |
 | 2026-07-21 | 最终：构建产物与 15 函数唯一性检查 | PASS | `dist/` 含 5 个 lexical 文件；15 个函数仅在对应 integration 文件定义 |
+| 2026-07-21 | Preview：Vercel Build / Inspect | PASS | Deployment `dpl_FE4g1NaarXce64UsGzetKpWoPceu`，target preview，状态 Ready |
+| 2026-07-21 | Preview：远程静态文件哈希 | PASS | `app.js` 和 5 个 lexical 脚本与本地 `dist/` 逐字节一致 |
+| 2026-07-21 | Preview：HTML 内容与加载顺序 | PASS | 排除 Vercel 注入脚本和尾部空白后与本地一致；全局生词入口有效 |
 
 ## 9. 遗留问题
 
-- Vercel CLI 当前 token 已失效；后续创建 Preview 或查询元数据前需要重新登录，但不得自动发布 Production。
 - UI 流程审计的两个布局断言需要在后续本地浏览器环境复核。
 - integration 文件仍依赖较多 `app.js` 全局状态和辅助函数；第一轮只去重，不进行状态管理重构。
-- 本地刷新持久化已经验证通过；尚未完成的唯一发布前环节是 Vercel Preview，当前因 CLI 登录令牌失效而阻断。
+- Preview 已通过受保护部署的构建、远程文件哈希和 HTML 加载顺序验收。
 
 ## 10. 完成定义
 
@@ -297,7 +300,7 @@
 - 构建与加载整理：`100%`
 - 测试验证：`100%`（UI 审计两个既有布局断言按基线记录为环境阻断）
 - 本地交付与记录：`100%`
-- Preview 验收：`0%`（Vercel CLI 登录令牌失效）
-- 本轮总体完成度：`98%`
+- Preview 验收：`100%`
+- 本轮总体完成度：`100%`
 
-本地代码、构建、持久化和测试验收已经完成。下一步仅为恢复 Vercel 登录后创建 Preview，复核查词、详情、生词与刷新持久化；未经用户明确授权，不合并 `main`，不部署 Production。
+Lexical 模块化第一轮已经完成。当前分支只停留在 Preview，未经用户明确授权，不合并 `main`，不部署 Production。
