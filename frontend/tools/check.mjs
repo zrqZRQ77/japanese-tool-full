@@ -111,6 +111,17 @@ const requiredKuromojiPocFiles = [
   'vendor/kuromoji/LICENSE-2.0.txt'
 ];
 const requiredFunctions = ['switchWorkspace', 'addCustomGrammarNote', 'removeGrammarNote', 'renderGrammarBook'];
+const deduplicatedLexicalFunctionNames = [
+  'lookupOfflineChinese',
+  'lookupJlptReference',
+  'enrichInfoWithJlpt',
+  'lookupJmdictCommon',
+  'lookupJmdictCommonWithCompoundFallback',
+  'autoLookupTokenMeaning'
+];
+const duplicateLexicalDefinitionsInApp = deduplicatedLexicalFunctionNames.filter(name =>
+  new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`).test(appJs)
+);
 const levelHelpersSource = [
   simpleFunctionSource(appJs, 'normalizeVisibleVocabLevel'),
   simpleFunctionSource(appJs, 'formatVisibleVocabLevel')
@@ -135,6 +146,10 @@ assertCheck(!/(?:上传 PDF|选择的 PDF|pdfModeSelect|pdfCleanupSelect|排版�
 assertCheck(requiredFiles.every(file => existsSync(resolve(FRONTEND_DIR, file))), 'required frontend files exist');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
+assertCheck(
+  duplicateLexicalDefinitionsInApp.length === 0,
+  `lexical integration functions have one implementation source${duplicateLexicalDefinitionsInApp.length ? `: ${duplicateLexicalDefinitionsInApp.join(', ')}` : ''}`
+);
 assertCheck(
   levelHelpers
     && validJlptSamples.every(level => levelHelpers.normalizeVisibleVocabLevel(level) === level)
@@ -192,7 +207,7 @@ assertCheck(
 );
 assertCheck(
   /meaningLanguage:[\s\S]*?meaningSource:[\s\S]*?levelSource:/.test(inlineSource)
-    && /VOCAB_EDIT_TARGET\.meaningSource = 'manual'/.test(appJs)
+    && /VOCAB_EDIT_TARGET\.meaningSource = 'manual'/.test(lexicalVocabIntegrationJs)
     && appJs.includes('参考等级,等级来源')
     && indexHtml.includes('暂无参考等级</button>'),
   'vocabulary metadata, manual edits, ungraded filter, and reference-level export labels stay consistent'
@@ -203,10 +218,10 @@ assertCheck(
   'CSV and Anki exports use user-visible vocabulary levels'
 );
 assertCheck(
-  /function requestTokenVocabSave\(tokenId\)[\s\S]*?info\.pendingVocabSave = true[\s\S]*?释义加载完成后会自动加入生词本/.test(appJs)
+  /function requestTokenVocabSave\(tokenId\)[\s\S]*?info\.pendingVocabSave = true[\s\S]*?释义加载完成后会自动加入生词本/.test(lexicalVocabIntegrationJs)
     && /function finishPendingTokenVocabSave\(tokenId, tokenRecord\)[\s\S]*?requestTokenVocabSave\(tokenId\)/.test(appJs)
-    && /async function autoLookupTokenMeaning[\s\S]*?info\.lookupState = 'ready'[\s\S]*?finishPendingTokenVocabSave\(tokenId, tokenRecord\)/.test(appJs)
-    && /info\.meaning = '释义待补充'[\s\S]*?info\.lookupState = 'failed'/.test(appJs),
+    && /async function autoLookupTokenMeaning[\s\S]*?info\.lookupState = 'ready'[\s\S]*?finishPendingTokenVocabSave\(tokenId, tokenRecord\)/.test(lexicalLookupIntegrationJs)
+    && /info\.meaning = '释义待补充'[\s\S]*?info\.lookupState = 'failed'/.test(lexicalLookupIntegrationJs),
   'dictionary lookup supports queued saving and safe failed-lookup placeholders'
 );
 assertCheck(
@@ -396,7 +411,7 @@ assertCheck(
 );
 assertCheck(
   ['寝る', '無償'].every(word => chineseSupplement.entries?.[word]?.meaning)
-    && appJs.includes('这是专有名词，离线词库暂未收录可靠释义；不会根据名称猜测含义。'),
+    && lexicalLookupIntegrationJs.includes('这是专有名词，离线词库暂未收录可靠释义；不会根据名称猜测含义。'),
   'new Chinese coverage and safe proper-noun miss guidance are present'
 );
 assertCheck(

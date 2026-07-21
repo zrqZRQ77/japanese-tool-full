@@ -24,8 +24,9 @@ await Promise.all([
   access(resolve(VERSIONED_DIR, 'dict/base.dat.gz'))
 ]);
 
-const [appJs, controllerJs, workerJs, indexHtml, rootVercel, frontendVercel] = await Promise.all([
+const [appJs, lexicalVocabIntegrationJs, controllerJs, workerJs, indexHtml, rootVercel, frontendVercel] = await Promise.all([
   readFile(resolve(DIST_DIR, 'app.js'), 'utf8'),
+  readFile(resolve(DIST_DIR, 'lexical-vocab-integration.js'), 'utf8'),
   readFile(resolve(DIST_DIR, 'kuromoji-worker-poc.js'), 'utf8'),
   readFile(resolve(VERSIONED_DIR, 'kuromoji-tokenizer.worker.js'), 'utf8'),
   readFile(resolve(DIST_DIR, 'index.html'), 'utf8'),
@@ -54,8 +55,8 @@ for (const config of [rootVercel, frontendVercel]) {
 assert.ok(appJs.includes('SOURCE_ANALYSIS_GENERATION'));
 assert.ok(appJs.includes("if(analysisGeneration !== SOURCE_ANALYSIS_GENERATION) return;"));
 assert.ok(appJs.includes('resetReadingDetailPanel();\n  window.KUROMOJI_TOKEN_CACHE = [];'));
-assert.ok(appJs.includes('function requestTokenVocabSave(tokenId)'));
+assert.ok(lexicalVocabIntegrationJs.includes('function requestTokenVocabSave(tokenId)'));
 assert.ok(appJs.includes('requestTokenVocabSave(${tokenId})'));
-assert.ok(appJs.includes('function addTokenSnapshotToVocab(encodedSnapshot)'));
+assert.ok(lexicalVocabIntegrationJs.includes('function addTokenSnapshotToVocab(encodedSnapshot)'));
 
 process.stdout.write('Kuromoji build, cache, race gate, and detail snapshot tests passed.\n');

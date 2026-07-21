@@ -12,6 +12,7 @@ const DATA_DIR = resolve(FRONTEND_DIR, 'data/jmdict-common', DATA_VERSION);
 const metadata = JSON.parse(await readFile(resolve(DATA_DIR, 'metadata.json'), 'utf8'));
 const localDictionary = JSON.parse(await readFile(resolve(FRONTEND_DIR, 'data/dictionary.json'), 'utf8'));
 const appJs = await readFile(resolve(FRONTEND_DIR, 'app.js'), 'utf8');
+const lexicalLookupIntegrationJs = await readFile(resolve(FRONTEND_DIR, 'lexical-lookup-integration.js'), 'utf8');
 
 function shardFor(value) {
   let hash = 2166136261;
@@ -48,7 +49,7 @@ for (const term of ['時価総額', '総額', '金融機関', '半導体', 'メ�
 }
 
 assert.ok(appJs.includes("const JMDICT_COMMON_DATA_VERSION = '20260713'"));
-assert.ok(appJs.includes('async function lookupJmdictCommon'));
+assert.ok(lexicalLookupIntegrationJs.includes('async function lookupJmdictCommon'));
 assert.ok(appJs.includes('英文释义：'));
 assert.ok(!appJs.includes('jisho.org/api/v1/search/words'));
 

@@ -2,7 +2,7 @@
 
 - 决策日期：2026-07-21
 - 当前状态：`IN_PROGRESS`
-- 当前完成度：`30%`
+- 当前完成度：`50%`
 - 执行优先级：`P1`
 - 是否允许修改 Production：`否`
 - 当前目标：只整理 lexical 领域代码，不改变公开 Beta 功能和用户行为
@@ -130,17 +130,17 @@
 
 ### 阶段 D：小批量迁移与去重
 
-状态：`NOT_STARTED`
+状态：`IN_PROGRESS`
 
 实施批次：
 
-- [ ] 批次 0：修改测试，使其检查 integration 文件而不是旧 `app.js` 实现。
-- [ ] 批次 1：删除查词接入旧实现。
+- [x] 批次 0：修改测试，使其检查 integration 文件而不是旧 `app.js` 实现。
+- [x] 批次 1：删除查词接入旧实现。
 - [ ] 批次 2：删除词语详情旧实现和失去调用的旧推断辅助代码。
 - [ ] 批次 3：删除生词保存、快照保存和编辑旧实现。
-- [ ] 每迁移一组后，从 `app.js` 删除原实现。
-- [ ] 每迁移一组后搜索确认同名定义只剩一处。
-- [ ] 每迁移一组后运行最相关的专项测试。
+- [x] 本批次已从 `app.js` 删除 6 个查词旧实现。
+- [x] 搜索确认这 6 个函数只剩 `lexical-lookup-integration.js` 一处定义。
+- [x] 本批次专项测试已执行并记录。
 - [ ] 每组修改形成可独立审查和回滚的变更。
 
 完成标准：`app.js` 中不再保留已迁移 lexical 函数的重复副本。
@@ -217,7 +217,7 @@
 
 ## 7. 实际完成内容
 
-当前尚未执行任何业务代码删除。
+已完成第一批业务代码删除：`app.js` 中 6 个查词旧实现已移除，正式实现继续由 `lexical-lookup-integration.js` 提供。
 
 | 日期 | 阶段 | 完成内容 | 文件 | 状态 |
 |---|---|---|---|---|
@@ -225,6 +225,7 @@
 | 2026-07-21 | 阶段 A | 保存 Production 完整静态快照、哈希清单和回滚说明；确认当前 frontend 与线上 174 个文件完全一致 | `.ai-bridge/production-baselines/...`、`PRODUCTION_ROLLBACK_BASELINE_20260721.md` | 完成 |
 | 2026-07-21 | 阶段 A | 创建并推送 GitHub 基线提交、备份分支和固定 Tag；将无关未提交工作存入命名 Stash；创建干净重构分支 | `988a040`、`backup/production-20260721`、`refactor/app-js-lexical-round1` | 完成 |
 | 2026-07-21 | 阶段 B/C | 检查 36 个 lexical 函数，识别 15 个重复定义，确定唯一实现来源、全局兼容边界和测试迁移范围 | `LEXICAL_FUNCTION_MAP_20260721.md` | 完成 |
+| 2026-07-21 | 阶段 D 批次 0/1 | 迁移测试归属断言；删除 `app.js` 中 6 个查词旧实现；增加唯一实现门禁 | `frontend/app.js`、4 个测试文件 | 完成 |
 
 ## 8. 测试结果
 
@@ -242,13 +243,19 @@
 | 2026-07-21 | `git diff --cached --check` | PASS | 基线提交无空白错误 |
 | 2026-07-21 | `npx vercel inspect https://yomeru.japanese-hub.com` | 首次 PASS；末次 BLOCKED | 首次确认部署 ID；完成后 Vercel CLI token 失效，后续元数据操作需重新登录 |
 | 2026-07-21 | lexical 函数静态映射 | PASS | 36 个函数，15 个重复定义，21 个唯一实现 |
+| 2026-07-21 | 批次 0/1：根目录 `npm run build` | PASS | 删除后成功生成 `dist/` |
+| 2026-07-21 | 批次 0/1：`frontend` `npm run check` | PASS | 新的唯一实现门禁通过 |
+| 2026-07-21 | 批次 0/1：`frontend` `npm run test:dictionary` | PASS | 中文词典、JLPT、JMdict 与浏览器回退流程通过 |
+| 2026-07-21 | 批次 0/1：`frontend` `npm run test:language-corpus` | PASS | 260 个纯层案例及浏览器/上下文案例通过 |
+| 2026-07-21 | 批次 0/1：`frontend` `npm run test:kuromoji` | PASS | Worker 生命周期、竞态、词形、快照与构建缓存通过 |
+| 2026-07-21 | 批次 0/1：`frontend` `npm run verify:flows` | BLOCKED（与基线一致） | 核心查词、生词和阅读流程通过；仍为原有两个布局断言阻断 |
 
 ## 9. 遗留问题
 
 - Vercel CLI 当前 token 已失效；后续创建 Preview 或查询元数据前需要重新登录，但不得自动发布 Production。
 - UI 流程审计的两个布局断言需要在后续本地浏览器环境复核。
 - integration 文件仍依赖较多 `app.js` 全局状态和辅助函数；第一轮只去重，不进行状态管理重构。
-- `check.mjs`、`kuromoji-build-cache.test.mjs` 和 `kuromoji-app-consistency.test.mjs` 仍把部分函数位置写死为 `app.js`，必须在删除前迁移。
+- 详情与生词批次对应的测试位置断言仍将在后续批次继续扩展唯一实现门禁。
 
 ## 10. 完成定义
 
@@ -266,8 +273,8 @@
 
 - 计划与边界定义：`100%`
 - 基线与函数映射：`100%`
-- 代码执行：`0%`
-- 测试验证：`35%`
-- 本轮总体完成度：`30%`
+- 代码执行：`40%`
+- 测试验证：`60%`
+- 本轮总体完成度：`50%`
 
-下一步执行阶段 D 的“批次 0＋批次 1”：先迁移三个测试文件的函数归属断言，再删除 `app.js` 中查词领域的 6 个旧实现。
+下一步执行阶段 D 的批次 2：删除 `app.js` 中 3 个详情旧实现，以及仅服务旧详情实现的 `COMMON_BASE_FORM_OVERRIDES`、`inferInflectionFromSurface` 和 `detailInflectionRecord`，同步扩展唯一实现门禁并运行同等级验证。

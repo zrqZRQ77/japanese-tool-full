@@ -5,13 +5,18 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const appSource = await readFile(new URL('../app.js', import.meta.url), 'utf8');
+const lexicalVocabIntegrationSource = await readFile(new URL('../lexical-vocab-integration.js', import.meta.url), 'utf8');
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+function extractBetweenFrom(source, startMarker, endMarker) {
+  const start = source.indexOf(startMarker);
+  const end = source.indexOf(endMarker, start);
+  assert.ok(start >= 0 && end > start, `missing source section: ${startMarker}`);
+  return source.slice(start, end);
+}
+
 function extractBetween(startMarker, endMarker) {
-  const start = appSource.indexOf(startMarker);
-  const end = appSource.indexOf(endMarker, start);
-  assert.ok(start >= 0 && end > start, `missing app source section: ${startMarker}`);
-  return appSource.slice(start, end);
+  return extractBetweenFrom(appSource, startMarker, endMarker);
 }
 
 {
@@ -32,6 +37,12 @@ function extractBetween(startMarker, endMarker) {
     normalizeArticleUrl() {
       return '';
     },
+    characterCountBucket() {
+      return '1-499';
+    },
+    performance: { now: () => Date.now() },
+    LAST_READING_GENERATION_RESULT: { status:'success', tokenizerMode:'worker', retryCount:0 },
+    LAST_READING_RETRY_COUNT: 0,
     trackAnalyticsEvent(name) {
       analytics.push(name);
     },
@@ -45,7 +56,7 @@ function extractBetween(startMarker, endMarker) {
     console
   });
   const analyzeSourceInput = extractBetween(
-    'async function analyzeSourceInput(){',
+    'async function analyzeSourceInput(options = {}){',
     '\nfunction setSourceAnalysisBusy'
   );
   vm.runInContext(
@@ -60,7 +71,7 @@ function extractBetween(startMarker, endMarker) {
   await Promise.all([oldAnalysis, newAnalysis]);
 
   assert.equal(statuses.filter(item => item.text === '已生成可点击阅读材料。').length, 1);
-  assert.equal(analytics.filter(name => name === 'analysis_completed').length, 1);
+  assert.equal(analytics.filter(name => name === 'reading_generate_success').length, 1);
   assert.equal(busyStates.at(-1), false);
   assert.equal(busyStates.filter(value => value === false).length, 1);
 }
@@ -76,9 +87,10 @@ function extractBetween(startMarker, endMarker) {
       saved.push(args);
     }
   });
-  const snapshotFunction = extractBetween(
+  const snapshotFunction = extractBetweenFrom(
+    lexicalVocabIntegrationSource,
     'function addTokenSnapshotToVocab(encodedSnapshot){',
-    '\nfunction isSystemGeneratedMeaning'
+    '\nfunction addCustomToVocab'
   );
   vm.runInContext(snapshotFunction, context);
   const oldDetailSnapshot = encodeURIComponent(JSON.stringify({
