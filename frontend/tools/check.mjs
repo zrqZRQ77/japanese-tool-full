@@ -156,6 +156,7 @@ run('lexical record syntax', 'node', ['--check', 'lexical-record.js']);
 run('lexical lookup integration syntax', 'node', ['--check', 'lexical-lookup-integration.js']);
 run('lexical detail integration syntax', 'node', ['--check', 'lexical-detail-integration.js']);
 run('lexical vocab integration syntax', 'node', ['--check', 'lexical-vocab-integration.js']);
+run('vocabulary persistence browser test syntax', 'node', ['--check', 'tools/vocab-persistence-browser.test.mjs']);
 run('git whitespace diff', 'git', ['diff', '--check'], { optional: true });
 
 assertCheck(!/\b(?:alert|confirm)\s*\(/.test(inlineSource), 'no native alert() / confirm() in app.js or index.html');
