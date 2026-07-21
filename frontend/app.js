@@ -4120,16 +4120,6 @@ function syncTokenSaveButton(detailBox, tokenId, info){
   saveButton.dataset.tooltip = info?.lookupState === 'loading' ? '加载完成后自动收藏' : '加入生词本';
 }
 
-function refreshVisibleTokenDetail(target, surface, info, tokenId){
-  if(!target?.isConnected) return;
-  const detailBox = target.closest('.detail-box');
-  const readingNode = detailBox?.querySelector('.detail-reading-text');
-  if(readingNode && info.reading && readingNode.textContent.trim() === '暂无读音') readingNode.textContent = info.reading;
-  const levelNode = detailBox?.querySelector('.detail-badge-level');
-  if(levelNode) levelNode.textContent = `JLPT 参考等级：${formatVisibleVocabLevel(info.level)}`;
-  syncTokenSaveButton(detailBox, tokenId, info);
-}
-
 function requestTokenVocabSave(tokenId){
   const tokenRecord = window.KUROMOJI_TOKEN_CACHE && window.KUROMOJI_TOKEN_CACHE[tokenId];
   if(!tokenRecord) return false;
@@ -5592,79 +5582,6 @@ function detailBadgesHtml(level, part){
   badges.push(`<span class="detail-badge detail-badge-level">JLPT 参考等级：${escapeHtml(formatVisibleVocabLevel(level))}</span>`);
   if(part) badges.push(`<span class="detail-badge">${escapeHtml(part)}</span>`);
   return badges.length ? `<div class="detail-badges">${badges.join('')}</div>` : '';
-}
-
-function detailInflectionHtml(tokenRecord){
-  const token = tokenRecord?.token || {};
-  const info = tokenRecord?.info || {};
-  const surface = tokenRecord?.surface || '';
-  const analysis = tokenRecord?.analysis || info.lexicalAnalysis
-    || (token.surface_form ? analyzeLexicalToken(token) : null);
-  const baseForm = analysis?.lemma || (info.baseForm && info.baseForm !== '*' ? info.baseForm : '');
-  const conjugatedType = analysis?.conjugationType
-    || (token.conjugated_type && token.conjugated_type !== '*' ? token.conjugated_type : '');
-  const conjugatedForm = analysis?.conjugationForm
-    || (token.conjugated_form && token.conjugated_form !== '*' ? token.conjugated_form : '');
-  const rows = [];
-  if(baseForm && baseForm !== surface){
-    rows.push(`<span><b>原形</b>${escapeHtml(baseForm)}</span>`);
-  }
-  const conjugation = [conjugatedType, conjugatedForm].filter(Boolean).join(' · ') || info.inflectionLabel || '';
-  if(conjugation){
-    rows.push(`<span><b>词形</b>${escapeHtml(conjugation)}</span>`);
-  }
-  return rows.length ? `<div class="detail-inflection">${rows.join('')}</div>` : '';
-}
-
-const COMMON_BASE_FORM_OVERRIDES = {
-  '行きます': {baseForm:'行く', inflectionLabel:'ます形'},
-  '起きます': {baseForm:'起きる', inflectionLabel:'ます形'},
-  '食べて': {baseForm:'食べる', inflectionLabel:'て形'},
-  '教えて': {baseForm:'教える', inflectionLabel:'て形'},
-  '見たり': {baseForm:'見る', inflectionLabel:'たり形'},
-  '読んだり': {baseForm:'読む', inflectionLabel:'たり形'},
-  'します': {baseForm:'する', inflectionLabel:'ます形'},
-  'あります': {baseForm:'ある', inflectionLabel:'ます形'}
-};
-
-function inferInflectionFromSurface(surface, info = {}){
-  const word = String(surface || '').trim();
-  if(!word) return null;
-  if(COMMON_BASE_FORM_OVERRIDES[word]) return COMMON_BASE_FORM_OVERRIDES[word];
-  const pos = String(info.pos || '');
-  const isVerb = /動詞|动词/.test(pos);
-  const isAdjective = /形容詞|形容词|形容動詞|形容动词/.test(pos);
-  if(isAdjective){
-    if(word.endsWith('かった')) return {baseForm:`${word.slice(0, -3)}い`, inflectionLabel:'过去形'};
-    if(word.endsWith('くない')) return {baseForm:`${word.slice(0, -3)}い`, inflectionLabel:'否定形'};
-    if(word.endsWith('くて')) return {baseForm:`${word.slice(0, -2)}い`, inflectionLabel:'て形'};
-  }
-  if(!isVerb) return null;
-  if(word.endsWith('て')) return {baseForm:`${word.slice(0, -1)}る`, inflectionLabel:'て形'};
-  if(word.endsWith('たり')) return {baseForm:`${word.slice(0, -2)}る`, inflectionLabel:'たり形'};
-  const masuStem = word.match(/^(.+)([きぎみびりちいしに])ます$/);
-  if(masuStem){
-    const endings = {き:'く', ぎ:'ぐ', み:'む', び:'ぶ', り:'る', ち:'つ', い:'う', し:'す', に:'ぬ'};
-    return {baseForm:`${masuStem[1]}${endings[masuStem[2]]}`, inflectionLabel:'ます形'};
-  }
-  return null;
-}
-
-function detailInflectionRecord(surface, info = {}, tokenRecord = null){
-  if(tokenRecord) return tokenRecord;
-  const inferred = inferInflectionFromSurface(surface, info);
-  if(!inferred?.baseForm || inferred.baseForm === surface) return null;
-  return { surface, info:{...info, ...inferred}, token:{} };
-}
-
-function detailMetaHtml(surface, reading, level, part, tokenRecord = null){
-  const inflection = detailInflectionRecord(surface, {pos:part}, tokenRecord);
-  const pieces = [
-    detailReadingDisplayHtml(surface, reading),
-    detailBadgesHtml(level, part),
-    detailInflectionHtml(inflection)
-  ].filter(Boolean);
-  return pieces.length ? `<div class="detail-meta">${pieces.join('')}</div>` : '';
 }
 
 function detailDefinitionHtml(meaning, id = ''){

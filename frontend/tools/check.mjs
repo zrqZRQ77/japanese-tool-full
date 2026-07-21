@@ -117,7 +117,10 @@ const deduplicatedLexicalFunctionNames = [
   'enrichInfoWithJlpt',
   'lookupJmdictCommon',
   'lookupJmdictCommonWithCompoundFallback',
-  'autoLookupTokenMeaning'
+  'autoLookupTokenMeaning',
+  'detailInflectionHtml',
+  'detailMetaHtml',
+  'refreshVisibleTokenDetail'
 ];
 const duplicateLexicalDefinitionsInApp = deduplicatedLexicalFunctionNames.filter(name =>
   new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`).test(appJs)
