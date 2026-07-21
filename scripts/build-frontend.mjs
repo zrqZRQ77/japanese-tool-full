@@ -21,6 +21,7 @@ const FILES = [
   'lexical-lookup-integration.js',
   'lexical-detail-integration.js',
   'lexical-vocab-integration.js',
+  'mvp-stability-fixes.js',
   'analytics.js',
   'search-entry-fix.js',
   'config.js',

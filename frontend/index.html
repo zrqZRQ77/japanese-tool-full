@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>読める · 日语阅读辅助工具 · 点击查词与生词收藏</title>
-<meta name="description" content="粘贴日语文章，保留段落，点击词语查看已有读音和释义，并收藏到本地生词本复习">
-<meta name="keywords" content="日语学习,日语阅读,JLPT,N5,N4,N3,N2,N1,假名标注,Anki,间隔复习">
+<title>読める · 日语阅读工具</title>
+<meta name="description" content="将日语文章生成带假名的可编辑 PowerPoint，并支持保存生词。">
+<meta name="keywords" content="日语学习,日语阅读,假名标注,PowerPoint,PPT,生词本">
 <link rel="icon" type="image/svg+xml" href="assets/brand/yomeru-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260717-06">
-<link rel="stylesheet" href="design-system.css?v=20260717-06">
-<link rel="stylesheet" href="grammar-layout.css?v=20260717-06">
-<link rel="stylesheet" href="typography.css?v=20260717-06">
-<link rel="stylesheet" href="hero-menu-refresh.css?v=20260717-06">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="styles.css?v=20260718-04">
+<link rel="stylesheet" href="design-system.css?v=20260718-04">
+<link rel="stylesheet" href="grammar-layout.css?v=20260718-04">
+<link rel="stylesheet" href="typography.css?v=20260718-04">
+<link rel="stylesheet" href="hero-menu-refresh.css?v=20260718-04">
 <script defer src="config.js"></script>
-<script defer src="analytics.js?v=20260710-01"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script defer src="analytics.js?v=20260719-02"></script>
 </head>
 <body data-view="reading" class="first-visit">
 <div class="wrap">
@@ -25,14 +26,9 @@
   <div class="hero-intro" id="heroIntro">
     <div class="hero-home-nav" aria-label="站点品牌">
       <span class="hero-home-mark"><img src="assets/brand/yomeru-mark.svg" alt="" aria-hidden="true"></span>
+      <span class="hero-home-name">読める</span>
     </div>
     <div class="hero-entry">
-      <div class="hero-brand">
-        <h1 class="hero-title">
-          <span class="hero-title-text"><span>読める</span> · 日语阅读辅助</span>
-        </h1>
-      </div>
-
       <div class="hero-input">
         <textarea id="heroInputText" placeholder="在此粘贴日语文本…" aria-label="粘贴日语文本"></textarea>
         <div class="hero-actions">
@@ -40,20 +36,6 @@
             <button class="btn-secondary btn--text hero-text-action" type="button" onclick="loadSampleFromHero()">
               <span>阅读示例</span>
             </button>
-            <details class="hero-menu-details hero-more-menu">
-              <summary class="hero-text-action" onclick="closeOtherHeroMenus(this.closest('details'))">
-                <span>更多</span>
-                <svg class="hero-menu-chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.25 6 7.5l3.5-3.25"></path></svg>
-              </summary>
-              <div class="hero-menu-popover" role="menu" aria-label="更多选项">
-                <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');enterReadingFromHero();switchWorkspace('test')" hidden data-mvp-hidden="level-test">
-                  <span class="hero-menu-item-label">水平测试</span>
-                </button>
-                <button class="hero-menu-item" type="button" role="menuitem" onclick="this.closest('details').removeAttribute('open');openOnboarding()">
-                  <span class="hero-menu-item-label">使用说明</span>
-                </button>
-              </div>
-            </details>
           </div>
           <button class="btn-primary btn--large hero-start-button" id="heroStartButton" type="button" onclick="analyzeFromHero()" aria-disabled="true">
             <span>开始阅读</span>
@@ -67,69 +49,63 @@
       </div>
     </div>
 
-    <div class="hero-flow-intro">
-      <p>网站特点</p>
-    </div>
+    <div class="hero-flow home-feature-stack" aria-label="网站特点">
+      <section class="hero-flow-item home-feature home-feature--furigana">
+        <div class="hero-flow-copy home-feature-copy">
+          <span class="home-feature-icon" aria-hidden="true">あ</span>
+          <h2 class="home-feature-title">假名标注</h2>
+        </div>
+        <div class="home-feature-visual home-furigana-preview" aria-label="假名标注效果预览">
+          <p><ruby>私<rt>わたし</rt></ruby>は<ruby>学生<rt>がくせい</rt></ruby>です。<ruby>今日<rt>きょう</rt></ruby>は<ruby>学校<rt>がっこう</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きます。<ruby>友達<rt>ともだち</rt></ruby>と<ruby>一緒<rt>いっしょ</rt></ruby>に<ruby>勉強<rt>べんきょう</rt></ruby>します。</p>
+        </div>
+      </section>
 
-    <div class="hero-flow" aria-label="功能预览">
-      <div class="hero-flow-item">
-        <div class="hero-mini-reader hero-demo-reader" id="heroDemoReader">
-          <p>友達と <span class="hero-demo-token"><small>がっこう</small><span>学校</span></span> で本を読みます。</p>
-        </div>
-        <div class="hero-flow-copy">
-          <h2>假名标注</h2>
-        </div>
-      </div>
-      <div class="hero-flow-item">
-        <div class="hero-mini-lookup hero-demo-lookup" role="group" aria-label="点击查词演示">
-          <p><strong>学校</strong> <small>がっこう</small></p>
-          <span>点击正文词语，查看已有读音和释义</span>
-        </div>
-        <div class="hero-flow-copy">
-          <h2>点击查词</h2>
-        </div>
-      </div>
-      <div class="hero-flow-item">
-        <div class="hero-mini-vocab hero-demo-vocab" role="group" aria-label="保存生词演示">
-          <div class="hero-vocab-entry">
-            <div class="hero-vocab-head">
-              <strong>学校</strong>
-              <small>N5</small>
+      <section class="hero-flow-item home-feature home-feature--reverse home-feature--export">
+        <div class="home-feature-visual home-ppt-preview" aria-label="可编辑 PowerPoint 课件预览">
+          <div class="home-ppt-toolbar" aria-hidden="true">
+            <span>开始</span><span>插入</span><span>设计</span><span>切换</span>
+          </div>
+          <div class="home-ppt-workspace">
+            <div class="home-ppt-thumbnails" aria-hidden="true">
+              <span class="is-active"><b>1</b><i></i></span>
+              <span><b>2</b><i></i></span>
+              <span><b>3</b><i></i></span>
             </div>
-            <span>がっこう · 学校</span>
-            <div class="hero-vocab-meta">
-              <small>名词</small>
-              <small>已加入生词本</small>
+            <div class="home-ppt-slide">
+              <strong><ruby>今日<rt>きょう</rt></ruby>は<ruby>学校<rt>がっこう</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きます</strong>
+              <ul>
+                <li>新しい友達に会いました</li>
+                <li>一緒に図書館へ行きました</li>
+                <li>とても楽しかったです</li>
+              </ul>
+              <div class="home-ppt-slide-accent" aria-hidden="true"></div>
             </div>
           </div>
         </div>
-        <div class="hero-flow-copy">
-          <h2>保存生词</h2>
+        <div class="hero-flow-copy home-feature-copy">
+          <span class="home-feature-icon home-feature-icon--ppt" aria-hidden="true">P</span>
+          <h2 class="home-feature-title">课件导出</h2>
         </div>
-      </div>
-      <div class="hero-flow-item">
-        <div class="hero-mini-flashcard hero-demo-flashcard" role="group" aria-label="闪卡复习演示">
-          <div class="hero-flashcard-shell">
-            <div class="hero-flashcard-card">
-              <div class="hero-flashcard-status">
-                <span>1 / 8</span>
-                <span>N4</span>
-              </div>
-              <div class="hero-flashcard-main">
-                <strong>注文</strong>
-                <span>ちゅうもん · 点餐、订购</span>
-              </div>
-            </div>
-            <div class="hero-flashcard-actions" aria-hidden="true">
-              <span>模糊</span>
-              <span>认识</span>
-            </div>
+      </section>
+
+      <section class="hero-flow-item home-feature home-feature--vocab">
+        <div class="hero-flow-copy home-feature-copy">
+          <span class="home-feature-icon home-feature-icon--bookmark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 3.5h12v17l-6-3.8-6 3.8v-17Z"></path></svg>
+          </span>
+          <h2 class="home-feature-title">保存生词</h2>
+        </div>
+        <div class="home-feature-visual home-vocab-preview" role="table" aria-label="保存生词列表预览">
+          <div class="home-vocab-row home-vocab-head" role="row">
+            <span role="columnheader">单词</span><span role="columnheader">假名</span><span role="columnheader">释义</span><span role="columnheader">等级</span>
           </div>
+          <div class="home-vocab-row" role="row"><strong>学校</strong><span>がっこう</span><span>学校</span><small>N5</small></div>
+          <div class="home-vocab-row" role="row"><strong>友達</strong><span>ともだち</span><span>朋友</span><small>N5</small></div>
+          <div class="home-vocab-row" role="row"><strong>一緒</strong><span>いっしょ</span><span>一起；一同</span><small>N5</small></div>
+          <div class="home-vocab-row" role="row"><strong>勉強</strong><span>べんきょう</span><span>学习；功课</span><small>N3</small></div>
+          <div class="home-vocab-row" role="row"><strong>図書館</strong><span>としょかん</span><span>图书馆</span><small>N3</small></div>
         </div>
-        <div class="hero-flow-copy">
-          <h2>闪卡复习</h2>
-        </div>
-      </div>
+      </section>
     </div>
   </div>
 
@@ -267,7 +243,7 @@
           </div>
           <div class="reader-toolbar" id="readerToolbar" style="display:none;" aria-label="阅读工具栏">
             <div class="reader-tool-group">
-              <button class="reader-tool is-active" id="annotationEditBtn" type="button" onclick="toggleAnnotationEditMode()" data-tooltip="编辑词语标注" aria-label="编辑词语标注">词</button>
+              <button class="reader-tool reading-annotation-edit-toggle" id="annotationEditBtn" type="button" onclick="toggleAnnotationEditMode()" data-tooltip="编辑假名" aria-label="编辑假名" aria-pressed="false">编辑</button>
               <button class="reader-tool" id="rubyToggleBtn" type="button" onclick="toggleReaderSmartSegmentation()" data-tooltip="显示或隐藏已有假名" aria-label="显示或隐藏已有假名">あ</button>
               <button class="reader-tool" id="translationToggleBtn" type="button" onclick="toggleParagraphTranslation()" data-tooltip="查看可用的本地译文" aria-label="查看可用的本地译文" hidden data-mvp-hidden="translation">译</button>
               <button class="reader-tool reader-speech-tool" type="button" onclick="speakCurrentReading(this)" data-tooltip="朗读正文" aria-label="朗读正文">
@@ -329,8 +305,7 @@
             <span style="color:var(--ink-soft);font-size:var(--type-size-step-14-5);">点击「用示例开始」看效果 →</span>
           </div>
 
-          <div class="next-step-bar" id="nextStepBar" style="display:none;">
-            <span class="next-step-copy">点击正文中的词语，可以查看读音、释义并加入生词本。</span>
+          <div class="next-step-bar is-hidden" id="nextStepBar" hidden style="display:none !important;">
             <button class="btn-primary reading-practice-action" id="readingNextAction" onclick="openGuidedStep('practice')" hidden data-mvp-hidden="practice">去练习</button>
           </div>
 
@@ -864,25 +839,24 @@
               <article class="settings-action-item">
                 <div>
                   <strong>日语朗读速度</strong>
-                  <p>选择适合听读练习的朗读节奏。</p>
                 </div>
                 <div class="settings-tts-controls">
                   <details class="settings-choice-menu" id="ttsRateMenu">
                     <summary class="settings-choice-trigger" onclick="closeOtherSettingsChoiceMenus(this.closest('details'))">
-                      <span class="settings-choice-title" id="ttsRateCurrentLabel">自然速度（-6%）</span>
+                      <span class="settings-choice-title" id="ttsRateCurrentLabel">自然速度</span>
                     </summary>
                     <div class="settings-choice-options" role="menu" aria-label="日语朗读速度选项">
                       <button type="button" role="menuitemradio" data-value="0.68" onclick="selectTtsRate('0.68')"><span>慢速</span></button>
                       <button type="button" role="menuitemradio" data-value="0.78" onclick="selectTtsRate('0.78')"><span>学习速度</span></button>
-                      <button type="button" role="menuitemradio" data-value="0.9" onclick="selectTtsRate('0.9')"><span>原自然速度</span></button>
-                      <button type="button" role="menuitemradio" data-value="0.94" onclick="selectTtsRate('0.94')"><span>自然速度（-6%）</span><span class="settings-choice-badge">推荐</span></button>
+                      <button type="button" role="menuitemradio" data-value="0.9" onclick="selectTtsRate('0.9')"><span>原速</span></button>
+                      <button type="button" role="menuitemradio" data-value="0.94" onclick="selectTtsRate('0.94')"><span>自然速度</span><span class="settings-choice-badge">推荐</span></button>
                     </div>
                   </details>
                   <select id="ttsRateSelect" onchange="setPreferredTtsRate(this.value)" aria-label="日语朗读速度" hidden>
                     <option value="0.68">慢速</option>
                     <option value="0.78">学习速度</option>
-                    <option value="0.9">原自然速度</option>
-                    <option value="0.94">自然速度（-6%）</option>
+                    <option value="0.9">原速</option>
+                    <option value="0.94">自然速度</option>
                   </select>
                   <button class="settings-secondary-action" type="button" onclick="previewJapaneseVoice()">试听</button>
                 </div>
@@ -890,7 +864,6 @@
               <article class="settings-action-item" id="ttsVoiceField" style="display:none;">
                 <div>
                   <strong>日语朗读音色</strong>
-                  <p>优先使用 Microsoft Andrew Multilingual；不可用时选择当前设备提供的日语音色。</p>
                 </div>
                 <div class="settings-tts-controls">
                   <details class="settings-choice-menu settings-choice-menu--voice" id="ttsVoiceMenu">
@@ -915,55 +888,48 @@
               <article class="settings-action-item">
                 <div>
                   <strong>备份数据</strong>
-                  <p>导出生词本、语法本和阅读记录到本地文件。</p>
                 </div>
                 <button class="settings-primary-action" onclick="backupData()">备份</button>
               </article>
               <article class="settings-action-item">
                 <div>
                   <strong>数据与隐私</strong>
-                  <p>学习记录保存在当前浏览器。粘贴的文本仅在当前设备中处理。清除浏览器数据后可能无法恢复，建议定期备份。</p>
+                  <p>数据仅保存在当前浏览器，粘贴文本在本机处理；清除浏览器数据前请先备份。</p>
                 </div>
               </article>
               <article class="settings-action-item">
                 <div>
                   <strong>词典数据来源</strong>
-                  <p>中文释义优先使用本地整理词库；未收录的常用词会显示 JMdict 的英文释义。JMdict 数据由 EDRDG 提供，并按 CC BY-SA 4.0 条款使用。</p>
+                  <p>释义来自本地词库与 JMdict（EDRDG，CC BY-SA 4.0）。</p>
                 </div>
                 <a class="settings-secondary-action" href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project" target="_blank" rel="noopener noreferrer">查看来源</a>
               </article>
-              <article class="settings-action-item settings-action-item--caution">
+              <article class="settings-action-item settings-action-item--restore">
                 <div>
                   <strong>恢复备份</strong>
-                  <p>从备份文件恢复学习数据，会覆盖当前设备上的学习数据。</p>
+                  <p>恢复会覆盖当前学习数据。</p>
                 </div>
                 <button class="settings-secondary-action" onclick="restoreData()">恢复</button>
               </article>
-              <article class="settings-action-item settings-action-item--caution">
+              <article class="settings-action-item settings-action-item--danger">
                 <div>
                   <strong>清除本机学习数据</strong>
-                  <p>删除当前浏览器中的生词、语法笔记、阅读记录、练习记录、阅读清单、测试结果和偏好设置。此操作无法撤销。</p>
+                  <p>将删除当前浏览器中的全部学习数据，且无法撤销。</p>
                 </div>
                 <button class="settings-secondary-action" type="button" onclick="openClearLocalDataDialog()">清除数据</button>
               </article>
               <input id="backupFileInput" type="file" accept="application/json,.json" hidden onchange="importLearningBackup(this.files[0])">
             </section>
 
-            <section class="settings-page-card settings-list-section">
-              <div class="settings-section-head">
-                <div>
-                  <span class="settings-kicker">帮助说明</span>
-                </div>
-              </div>
-
+            <section class="settings-page-card settings-list-section" id="feedbackSettingsSection" hidden>
               <article class="settings-action-item">
                 <div>
-                  <strong>阅读流程说明</strong>
-                  <p>了解粘贴文本、保存生词和复习练习如何配合使用。</p>
+                  <strong>反馈与建议</strong>
                 </div>
-                <button class="settings-secondary-action" onclick="openOnboarding()">查看说明</button>
+                <a class="settings-secondary-action" id="feedbackFormLink" href="" target="_blank" rel="noopener noreferrer" onclick="return openFeedback(event)">提供反馈</a>
               </article>
             </section>
+
           </div>
 
         </div>
@@ -1249,12 +1215,13 @@
 <div class="icon-button-hint" id="iconButtonHint" role="tooltip" aria-hidden="true"></div>
 
 <script src="kuromoji-worker-poc.js?v=20260714-01"></script>
-<script src="lexical-lookup.js?v=20260717-06"></script>
-<script src="lexical-record.js?v=20260717-06"></script>
-<script src="app.js?v=20260717-06"></script>
-<script src="lexical-lookup-integration.js?v=20260717-06"></script>
-<script src="lexical-detail-integration.js?v=20260717-06"></script>
-<script src="lexical-vocab-integration.js?v=20260717-06"></script>
+<script src="lexical-lookup.js?v=20260718-04"></script>
+<script src="lexical-record.js?v=20260718-04"></script>
+<script src="app.js?v=20260718-04"></script>
+<script src="lexical-lookup-integration.js?v=20260718-04"></script>
+<script src="lexical-detail-integration.js?v=20260718-04"></script>
+<script src="lexical-vocab-integration.js?v=20260718-04"></script>
+<script src="mvp-stability-fixes.js?v=20260719-01"></script>
 <script>
   (() => {
     const syncWorkerWordAttributes = () => {

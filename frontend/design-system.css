@@ -9072,8 +9072,6 @@ body[data-view="settings"] {
   --settings-muted: #9B9AAF;
   --settings-purple: #6B5FE7;
   --settings-soft: #F1EDFF;
-  --settings-warning-bg: #FFF3D9;
-  --settings-warning: #C27A13;
 }
 
 body[data-view="settings"],
@@ -9083,7 +9081,7 @@ body[data-view="settings"] .app-content {
 
 body[data-view="settings"] .settings-section,
 body[data-view="settings"] .settings-section * {
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif !important;
+  font-family: var(--type-font-ui-zh) !important;
 }
 
 body[data-view="settings"] .settings-section {
@@ -9270,12 +9268,12 @@ body[data-view="settings"] .settings-quota-head span {
   align-items: center !important;
   min-height: 32px !important;
   padding: 0 14px !important;
-  border: 1px solid #F1D99B !important;
+  border: 1px solid var(--settings-border) !important;
   border-radius: 999px !important;
-  background: var(--settings-warning-bg) !important;
-  color: var(--settings-warning) !important;
+  background: var(--settings-soft) !important;
+  color: var(--settings-purple) !important;
   font-size: var(--type-size-control) !important;
-  font-weight: 850 !important;
+  font-weight: var(--type-weight-semibold) !important;
   white-space: nowrap !important;
 }
 
@@ -11013,7 +11011,7 @@ body[data-view="settings"] .settings-action-item {
 }
 
 body[data-view="settings"] .settings-action-item--caution {
-  background: #FFFCF7 !important;
+  background: transparent !important;
 }
 
 body[data-view="settings"] .settings-action-item strong {
@@ -11844,19 +11842,19 @@ html body[data-view="settings"] .settings-action-item + .settings-action-item {
 html body[data-view="settings"] .settings-action-item--caution {
   margin-top: 6px !important;
   padding: 14px 16px !important;
-  border: 1px solid rgba(186, 26, 26, 0.18) !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
   border-radius: 12px !important;
-  background: rgba(255, 245, 243, 0.82) !important;
+  background: transparent !important;
 }
 
-html body[data-view="settings"] .settings-action-item--caution strong,
-html body[data-view="settings"] .settings-action-item--caution .settings-secondary-action {
-  color: #7a231f !important;
+html body[data-view="settings"] .settings-action-item--caution strong {
+  color: var(--settings-text) !important;
 }
 
 html body[data-view="settings"] .settings-action-item--caution .settings-secondary-action {
-  border-color: rgba(186, 26, 26, 0.24) !important;
-  background: rgba(255, 255, 255, 0.72) !important;
+  border-color: rgba(103, 80, 164, 0.24) !important;
+  background: var(--settings-soft) !important;
+  color: var(--settings-purple) !important;
 }
 
 html body[data-view="settings"] .settings-primary-action,
@@ -12033,7 +12031,7 @@ body[data-view="settings"] .settings-action-item--caution {
   margin: 0 -8px !important;
   padding-inline: 8px !important;
   border-radius: 10px !important;
-  background: linear-gradient(90deg, rgba(255, 252, 247, .78), rgba(241, 237, 255, .44)) !important;
+  background: transparent !important;
 }
 
 body[data-view="settings"] .settings-action-item strong {
@@ -13134,6 +13132,39 @@ body .btn-primary * {
   box-shadow: none !important;
 }
 
+/* Reading-only annotation edit control: fixed geometry across Chromium/WebKit. */
+body[data-view="reading"] #readerToolbar .reading-annotation-edit-toggle {
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 60px !important;
+  flex-shrink: 0 !important;
+  padding: 0 10px !important;
+  white-space: nowrap !important;
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+  overflow: hidden;
+  color: #2b2537 !important;
+  border: 1px solid var(--polish-line-purple) !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  font-size: var(--type-size-body) !important;
+  line-height: 1 !important;
+}
+
+body[data-view="reading"] #readerToolbar .reading-annotation-edit-toggle:hover,
+body[data-view="reading"] #readerToolbar .reading-annotation-edit-toggle:focus-visible,
+body[data-view="reading"] #readerToolbar .reading-annotation-edit-toggle.is-editing {
+  color: var(--polish-primary) !important;
+  border-color: var(--polish-primary) !important;
+  background: var(--polish-primary-soft) !important;
+}
+
 .tag,
 .pro-pill,
 .detail-badge,
@@ -13251,16 +13282,8 @@ select,
 }
 
 .hero-brand::after {
-  content: "粘贴一篇日语文章，自动变成带假名、释义、生词本和练习的阅读材料。";
-  display: block;
-  max-width: 680px;
-  margin: 14px auto 0;
-  color: var(--polish-muted);
-  font-family: var(--polish-font-ui);
-  font-size: var(--type-size-body);
-  font-weight: 500;
-  line-height: 1.8;
-  letter-spacing: 0;
+  content: none;
+  display: none;
 }
 
 .hero-input,

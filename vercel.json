@@ -40,6 +40,24 @@
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
+    },
+    {
+      "source": "/(.*).js",
+      "has": [
+        { "type": "query", "key": "v", "value": "[0-9]{8}-[0-9]{2}" }
+      ],
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/(.*).css",
+      "has": [
+        { "type": "query", "key": "v", "value": "[0-9]{8}-[0-9]{2}" }
+      ],
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
     }
   ]
 }

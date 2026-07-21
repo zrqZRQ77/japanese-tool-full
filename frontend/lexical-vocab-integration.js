@@ -75,9 +75,13 @@ function addTokenSnapshotToVocab(encodedSnapshot){
 
 function addCustomToVocab(word, reading = '', meaning = '用户添加', level = '', pos = '自选内容', metadata = {}){
   const normalized = String(word || '').trim();
-  if(!normalized) return false;
+  if(!normalized){
+    trackAnalyticsEvent('vocab_save', {jlpt_level:'ungraded', success:false});
+    return false;
+  }
   if(vocabData.find(item=>vocabIdentityKey(item.word) === vocabIdentityKey(normalized))){
     showToast('这个词已经在生词本里了。', 'info');
+    trackAnalyticsEvent('vocab_save', {jlpt_level:normalizeVisibleVocabLevel(level) || 'ungraded', success:false});
     return false;
   }
   const cleanMeaning = displayVocabMeaning(meaning, '用户添加');
@@ -107,6 +111,7 @@ function addCustomToVocab(word, reading = '', meaning = '用户添加', level = 
     lastPracticeRating:''
   }));
   saveVocab();
+  trackAnalyticsEvent('vocab_save', {jlpt_level:normalizeVisibleVocabLevel(level) || 'ungraded', success:true});
   renderVocab();
   renderSampleFlow();
   showToast(SAMPLE_FLOW_ACTIVE ? '已加入生词本。下一步可以查看生词本。' : '已加入生词本，可在左侧「生词本」中复习。', 'success');

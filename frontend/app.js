@@ -14,8 +14,75 @@ function trackAnalyticsEvent(eventName, parameters = {}){
   return window.yomeruAnalytics?.track(eventName, parameters) || false;
 }
 
+const YOMERU_PERFORMANCE_MARK_NAMES = [
+  'app_shell_visible',
+  'hero_interactive',
+  'tokenizer_load_start',
+  'tokenizer_worker_ready',
+  'dictionary_ready',
+  'reading_ready'
+];
+let YOMERU_COLD_START = true;
+try{ YOMERU_COLD_START = !sessionStorage.getItem('yomeru_app_ready'); }catch{}
+let PERFORMANCE_DEBUG_LOGGED = false;
+let PERFORMANCE_DEBUG_TIMER = 0;
+
+function performanceMarkTime(name){
+  return Math.max(0, Math.round(performance.getEntriesByName?.(name, 'mark')?.[0]?.startTime || 0));
+}
+
+function emitPerformanceDebugLog(){
+  if(PERFORMANCE_DEBUG_LOGGED || !window.yomeruAnalytics?.debugMode) return;
+  PERFORMANCE_DEBUG_LOGGED = true;
+  clearTimeout(PERFORMANCE_DEBUG_TIMER);
+  const marks = Object.fromEntries(YOMERU_PERFORMANCE_MARK_NAMES.map(name=>[name, performanceMarkTime(name) || null]));
+  const payload = {
+    type:'yomeru_performance',
+    cold_start:YOMERU_COLD_START,
+    marks
+  };
+  window.YOMERU_PERFORMANCE = payload;
+  console.info('[Yomeru performance]', payload);
+}
+
+function recordPerformanceMark(name){
+  if(!YOMERU_PERFORMANCE_MARK_NAMES.includes(name)) return 0;
+  if(!performance.getEntriesByName?.(name, 'mark')?.length) performance.mark(name);
+  const time = performanceMarkTime(name);
+  const workerReady = performanceMarkTime('tokenizer_worker_ready');
+  const readingReady = performanceMarkTime('reading_ready');
+  if((name === 'tokenizer_worker_ready' && readingReady) || (name === 'reading_ready' && workerReady)){
+    setTimeout(emitPerformanceDebugLog, 0);
+  }
+  return time;
+}
+
+function navigationCacheStatus(){
+  const navigation = performance.getEntriesByType?.('navigation')?.[0];
+  if(!navigation) return 'unknown';
+  return navigation.transferSize === 0 && navigation.decodedBodySize > 0 ? 'hit' : 'miss';
+}
+
+function characterCountBucket(text){
+  const count = [...String(text || '')].length;
+  if(count <= 100) return '1_100';
+  if(count <= 500) return '101_500';
+  if(count <= 1000) return '501_1000';
+  return '1001_plus';
+}
+
+function analyticsErrorCode(error){
+  const value = String(error?.message || error || '').toLowerCase();
+  if(/timeout|timed out|超时/.test(value)) return 'timeout';
+  if(/worker/.test(value)) return 'worker_error';
+  if(/network|fetch|load|加载/.test(value)) return 'load_error';
+  if(/unsupported|不可用/.test(value)) return 'unsupported';
+  return 'unknown';
+}
+
 // 资源加载失败处理
 window.addEventListener('error', function(e) {
+  if(e.target?.dataset?.yomeruAnalytics === 'true') return;
   if (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK') {
     console.error('Resource failed to load:', e.target.src || e.target.href);
     showToast('部分资源加载失败，功能可能受限', 'warning');
@@ -845,6 +912,7 @@ function initIconButtonHints(){
 window.addEventListener('DOMContentLoaded', () => {
   setSidebarCollapsed(safeStorage.getItem('reading_sidebar_collapsed') === '1', false);
   initIconButtonHints();
+  initializeFeedbackEntry();
   document.getElementById('heroInputText')?.addEventListener('input', updateHeroStartState);
   document.getElementById('heroInputText')?.addEventListener('input', event=>{
     scheduleLocalKuromojiPrewarm(event.currentTarget?.value || '');
@@ -853,7 +921,51 @@ window.addEventListener('DOMContentLoaded', () => {
     scheduleLocalKuromojiPrewarm(event.currentTarget?.value || '');
   });
   updateHeroStartState();
+  requestAnimationFrame(()=>{
+    const hero = document.getElementById('heroIntro');
+    const input = document.getElementById('heroInputText');
+    const button = document.getElementById('heroStartButton');
+    if(hero?.getBoundingClientRect().width) recordPerformanceMark('app_shell_visible');
+    if(input && button && !input.disabled && !button.disabled) recordPerformanceMark('hero_interactive');
+    const readyAt = performanceMarkTime('hero_interactive') || Math.round(performance.now());
+    trackAnalyticsEvent('app_ready', {
+      duration_ms:readyAt,
+      cold_start:YOMERU_COLD_START,
+      cache_status:navigationCacheStatus()
+    });
+    try{ sessionStorage.setItem('yomeru_app_ready', '1'); }catch{}
+    PERFORMANCE_DEBUG_TIMER = setTimeout(emitPerformanceDebugLog, 6000);
+  });
 });
+
+function feedbackFormUrl(){
+  const configured = String(window.NIHONGO_CONFIG?.FEEDBACK_FORM_URL || '').trim();
+  try{
+    const url = new URL(configured);
+    return /^https?:$/.test(url.protocol) ? url.href : '';
+  }catch{
+    return '';
+  }
+}
+
+function initializeFeedbackEntry(){
+  const section = document.getElementById('feedbackSettingsSection');
+  const link = document.getElementById('feedbackFormLink');
+  if(!section || !link) return;
+  const url = feedbackFormUrl();
+  section.hidden = !url;
+  link.href = url || '';
+}
+
+function openFeedback(event){
+  const url = feedbackFormUrl();
+  if(!url){
+    event?.preventDefault?.();
+    return false;
+  }
+  trackAnalyticsEvent('feedback_open', {entry_location:'settings'});
+  return true;
+}
 
 // ---------------- 数据 ----------------
 // 词库、示例文本、练习题和语法点从 data/*.json 加载，便于非代码方式维护。
@@ -935,11 +1047,12 @@ const FALLBACK_TYPING_PROMPTS = [
   {level:'N4', grammar:'たりたり', cn:'周末看电影、读书。', ja:'週末は映画を見たり、本を読んだりします。', hint:'見たり / 読んだり'}
 ];
 
+const DATA_ASSET_VERSION = '20260719-02';
 const DATA_FILES = {
-  dictionary: 'data/dictionary.json',
-  sample: 'data/sample.json',
-  typingPrompts: 'data/typing-prompts.json',
-  grammarPoints: 'data/grammar-points.json'
+  dictionary: `data/dictionary.json?v=${DATA_ASSET_VERSION}`,
+  sample: `data/sample.json?v=${DATA_ASSET_VERSION}`,
+  typingPrompts: `data/typing-prompts.json?v=${DATA_ASSET_VERSION}`,
+  grammarPoints: `data/grammar-points.json?v=${DATA_ASSET_VERSION}`
 };
 
 const THIRD_PARTY_SCRIPTS = {
@@ -988,7 +1101,7 @@ function loadExternalScript(src, globalName){
 }
 
 async function fetchJson(path){
-  const response = await withTimeout(fetch(path, { cache:'no-cache' }), 4500, `${path} 加载超时`);
+  const response = await withTimeout(fetch(path), 4500, `${path} 加载超时`);
   if(!response.ok) throw new Error(`${path} 加载失败（HTTP ${response.status}）`);
   return response.json();
 }
@@ -1000,6 +1113,7 @@ async function loadLearningData(){
     SAMPLE_TEXT = FALLBACK_SAMPLE_TEXT;
     TYPING_PROMPTS = [...FALLBACK_TYPING_PROMPTS];
     GRAMMAR_POINTS = [];
+    recordPerformanceMark('dictionary_ready');
     console.warn('当前通过本地文件打开页面，浏览器会阻止读取 data/*.json，已使用内置兜底数据。建议通过本地网页服务或正式部署地址打开。');
     return;
   }
@@ -1027,6 +1141,7 @@ async function loadLearningData(){
   if(failed.length){
     console.warn('部分学习数据加载失败,已使用本地兜底数据', failed.map(result => result.reason));
   }
+  recordPerformanceMark('dictionary_ready');
 }
 
 function prepareCuratedDictionary(dictionary){
@@ -1070,6 +1185,20 @@ function ensureLearningData(){
   return DATA_READY;
 }
 
+function scheduleLearningDataHydration(){
+  const hydrate = async ()=>{
+    try{
+      await ensureLearningData();
+    }catch(error){
+      showDataLoadError(error);
+    }
+    renderGrammar();
+    renderTypingPractice();
+  };
+  if(typeof requestIdleCallback === 'function') requestIdleCallback(hydrate, {timeout:1200});
+  else setTimeout(hydrate, 300);
+}
+
 let currentTypingIndex = 0;
 let currentVocabPracticeIndex = 0;
 let vocabPracticeAnswerVisible = false;
@@ -1106,6 +1235,10 @@ let TOKENIZER_STATUS_HIDE_TIMER = 0;
 let TOKENIZER_PROGRESS_TIMERS = [];
 let LOCAL_KUROMOJI_RENDER_GENERATION = 0;
 let TOKENIZER_LAST_ATTEMPT_FAILED = false;
+let TOKENIZER_READY_EVENT_SENT = false;
+let TOKENIZER_CACHE_STATUS_AT_START = 'cold';
+let LAST_READING_RETRY_COUNT = 0;
+let LAST_READING_GENERATION_RESULT = null;
 let SOURCE_ANALYSIS_GENERATION = 0;
 window.KUROMOJI_TOKEN_CACHE = [];
 let RUBY_OVERRIDES = {};
@@ -1117,6 +1250,7 @@ if(RUBY_OVERRIDES['丁寧']?.reading === 'あつやす'){
   safeStorage.setItem('reading_ruby_overrides', JSON.stringify(RUBY_OVERRIDES));
 }
 let IS_ANNOTATION_EDITING = false;
+let ANNOTATION_EDIT_SNAPSHOT = [];
 let CURRENT_FOOTNOTES = [];
 let READING_HISTORY = [];
 let READING_QUEUE = loadReadingQueue();
@@ -2259,6 +2393,37 @@ function resetLocalKuromojiWorkerClient(){
   LOCAL_KUROMOJI_PREWARM_STATE = 'idle';
 }
 
+function markTokenizerLoadStart(){
+  if(!performanceMarkTime('tokenizer_load_start')){
+    try{ TOKENIZER_CACHE_STATUS_AT_START = sessionStorage.getItem('yomeru_tokenizer_ready') ? 'warm' : 'cold'; }catch{}
+    recordPerformanceMark('tokenizer_load_start');
+  }
+}
+
+function markTokenizerWorkerReady(mode = 'kuromoji-worker'){
+  recordPerformanceMark('tokenizer_worker_ready');
+  try{ sessionStorage.setItem('yomeru_tokenizer_ready', '1'); }catch{}
+  if(TOKENIZER_READY_EVENT_SENT) return;
+  TOKENIZER_READY_EVENT_SENT = true;
+  trackAnalyticsEvent('tokenizer_ready', {
+    duration_ms:Math.max(0, performanceMarkTime('tokenizer_worker_ready') - performanceMarkTime('tokenizer_load_start')),
+    cache_status:TOKENIZER_CACHE_STATUS_AT_START,
+    tokenizer_mode:mode,
+    success:true
+  });
+}
+
+function markTokenizerFailure(mode = 'kuromoji-worker'){
+  if(TOKENIZER_READY_EVENT_SENT) return;
+  TOKENIZER_READY_EVENT_SENT = true;
+  trackAnalyticsEvent('tokenizer_ready', {
+    duration_ms:Math.max(0, Math.round(performance.now()) - performanceMarkTime('tokenizer_load_start')),
+    cache_status:TOKENIZER_CACHE_STATUS_AT_START,
+    tokenizer_mode:mode,
+    success:false
+  });
+}
+
 function getLocalKuromojiWorkerClient(){
   if(LOCAL_KUROMOJI_WORKER_CLIENT) return LOCAL_KUROMOJI_WORKER_CLIENT;
   if(!window.KuromojiWorkerClient?.createClient){
@@ -2275,9 +2440,13 @@ function getLocalKuromojiWorkerClient(){
 async function analyzeWithLocalKuromojiWorker(raw, options = {}){
   const maxAttempts = 2;
   let finalError = null;
+  markTokenizerLoadStart();
   for(let attempt = 1; attempt <= maxAttempts; attempt += 1){
     try{
-      return await getLocalKuromojiWorkerClient().analyze(raw);
+      const result = await getLocalKuromojiWorkerClient().analyze(raw);
+      LAST_READING_RETRY_COUNT = attempt - 1;
+      markTokenizerWorkerReady('kuromoji-worker');
+      return {...result, retryCount:attempt - 1};
     }catch(error){
       finalError = error;
       console.warn(`本地假名分析第 ${attempt} 次未完成`, error);
@@ -2287,7 +2456,9 @@ async function analyzeWithLocalKuromojiWorker(raw, options = {}){
       setTokenizerStatus('首次加载未完成，正在自动重试……', 'loading');
     }
   }
-  return {ok:false, mode:'fallback', error:finalError?.message || String(finalError || '')};
+  LAST_READING_RETRY_COUNT = maxAttempts - 1;
+  markTokenizerFailure('kuromoji-worker');
+  return {ok:false, mode:'fallback', error:finalError?.message || String(finalError || ''), retryCount:maxAttempts - 1};
 }
 
 function rememberLocalTokenizerMetrics(metrics = {}, phase = 'analysis'){
@@ -2328,6 +2499,7 @@ async function prewarmLocalKuromojiWorker(options = {}){
   if(LOCAL_KUROMOJI_PREWARM_PROMISE) return LOCAL_KUROMOJI_PREWARM_PROMISE;
 
   LOCAL_KUROMOJI_PREWARM_STATE = 'loading';
+  markTokenizerLoadStart();
   if(showStatus) setTokenizerStatus('正在后台准备假名功能，正文可以先正常阅读……', 'loading');
   const startedAt = performance.now();
   LOCAL_KUROMOJI_PREWARM_PROMISE = getLocalKuromojiWorkerClient().initialize()
@@ -2337,6 +2509,7 @@ async function prewarmLocalKuromojiWorker(options = {}){
         ...(result?.metrics || {}),
         roundTripMs:performance.now() - startedAt
       }, 'prewarm');
+      markTokenizerWorkerReady('kuromoji-worker');
       if(showStatus && !document.getElementById('useKuromoji')?.checked){
         setTokenizerStatus('假名功能已准备好。', 'ready', {autoHideMs:4000});
       }
@@ -2413,7 +2586,7 @@ async function loadSample(sampleId = 'life', useGuidedTour = false){
   document.getElementById('inputText').value = SAMPLE_TEXT;
   switchWorkspace('reading');
   if(useGuidedTour) startSampleFlow();
-  await analyzeSourceInput();
+  await analyzeSourceInput({inputSource:'sample'});
   if(useGuidedTour) renderSampleFlow();
 }
 
@@ -2643,7 +2816,7 @@ function normalizeArticleUrl(value){
   return !hasJapanese && looksLikeDomain ? `https://${trimmed}` : '';
 }
 
-async function analyzeSourceInput(){
+async function analyzeSourceInput(options = {}){
   const analysisGeneration = ++SOURCE_ANALYSIS_GENERATION;
   const value = sourceInputValue();
   if(!value){
@@ -2651,6 +2824,10 @@ async function analyzeSourceInput(){
     document.getElementById('inputText')?.focus();
     return;
   }
+  const inputSource = options.inputSource === 'sample' ? 'sample' : 'paste';
+  const countBucket = characterCountBucket(value);
+  const startedAt = performance.now();
+  let generationEventSent = false;
   setSourceAnalysisBusy(true);
   try{
     const normalizedUrl = normalizeArticleUrl(value);
@@ -2659,17 +2836,42 @@ async function analyzeSourceInput(){
       showToast('请复制原文中的日语文本后粘贴分析', 'info');
       return;
     }
-    trackAnalyticsEvent('analysis_started', { source_type:'text' });
+    trackAnalyticsEvent('reading_start', {
+      input_source:inputSource,
+      character_count_bucket:countBucket
+    });
     CURRENT_ARTICLE_URL = '';
     prewarmLocalKuromojiWorker({showStatus:false});
     setImportStatus('正在分析文本……');
     await renderText();
     if(analysisGeneration !== SOURCE_ANALYSIS_GENERATION) return;
-    trackAnalyticsEvent('analysis_completed', { source_type:'text' });
+    const outcome = LAST_READING_GENERATION_RESULT || {status:'success', tokenizerMode:document.body.dataset.tokenizerMode || 'built-in', retryCount:0};
+    if(outcome.status === 'error'){
+      trackAnalyticsEvent('reading_generate_error', {
+        stage:outcome.stage || 'render',
+        error_code:outcome.errorCode || 'unknown',
+        retry_count:Number(outcome.retryCount || 0)
+      });
+    }else{
+      trackAnalyticsEvent('reading_generate_success', {
+        duration_ms:performance.now() - startedAt,
+        character_count_bucket:countBucket,
+        tokenizer_mode:outcome.tokenizerMode || document.body.dataset.tokenizerMode || 'built-in',
+        retry_count:Number(outcome.retryCount || 0)
+      });
+    }
+    generationEventSent = true;
     setImportStatus('已生成可点击阅读材料。', 'ok');
   }catch(error){
     if(analysisGeneration !== SOURCE_ANALYSIS_GENERATION) return;
     console.error('文本分析失败', error);
+    if(!generationEventSent){
+      trackAnalyticsEvent('reading_generate_error', {
+        stage:'render',
+        error_code:analyticsErrorCode(error),
+        retry_count:LAST_READING_RETRY_COUNT
+      });
+    }
     setImportStatus(`分析没有完成：${error?.message || '请稍后重试'}。可以先关闭智能分词再试一次。`, 'error');
     showToast('分析没有完成，请查看提示', 'error');
   }finally{
@@ -3032,13 +3234,30 @@ async function confirmImportPreview(){
   switchWorkspace('reading');
   setSourceAnalysisBusy(true);
   try{
-    trackAnalyticsEvent('analysis_started', { source_type:sourceType });
+    const startedAt = performance.now();
+    const countBucket = characterCountBucket(text);
+    trackAnalyticsEvent('reading_start', {input_source:'paste', character_count_bucket:countBucket});
     setImportStatus(`正在分析: ${pendingImportMeta?.title || '正文'}……`);
     await renderText();
-    trackAnalyticsEvent('analysis_completed', { source_type:sourceType });
+    const outcome = LAST_READING_GENERATION_RESULT || {status:'success', tokenizerMode:document.body.dataset.tokenizerMode || 'built-in', retryCount:0};
+    if(outcome.status === 'error'){
+      trackAnalyticsEvent('reading_generate_error', {
+        stage:outcome.stage || 'tokenizer',
+        error_code:outcome.errorCode || 'unknown',
+        retry_count:Number(outcome.retryCount || 0)
+      });
+    }else{
+      trackAnalyticsEvent('reading_generate_success', {
+        duration_ms:performance.now() - startedAt,
+        character_count_bucket:countBucket,
+        tokenizer_mode:outcome.tokenizerMode || 'built-in',
+        retry_count:Number(outcome.retryCount || 0)
+      });
+    }
     setImportStatus(`已导入: ${pendingImportMeta?.title || '正文'}`, 'ok');
   }catch(error){
     console.error('导入正文分析失败', error);
+    trackAnalyticsEvent('reading_generate_error', {stage:'import', error_code:analyticsErrorCode(error), retry_count:LAST_READING_RETRY_COUNT});
     setImportStatus(`导入成功，但分析没有完成：${error?.message || '请稍后重试'}。`, 'error');
     showToast('导入后分析失败，请查看提示', 'error');
   }finally{
@@ -3550,6 +3769,7 @@ function addParagraphTranslations(html, raw){
 
 async function renderText(){
   const renderGeneration = ++LOCAL_KUROMOJI_RENDER_GENERATION;
+  LAST_READING_GENERATION_RESULT = null;
   await ensureLearningData();
   const showRuby = !!document.getElementById('useKuromoji')?.checked;
   const useLocalKuromojiWorker = showRuby && ENABLE_LOCAL_KUROMOJI_WORKER;
@@ -3604,12 +3824,24 @@ async function renderText(){
       delete document.body.dataset.tokenizerFallback;
       renderWithKuromojiWorkerResult(raw, workerResult, out, statsBar);
       finishLocalTokenizerSuccess(workerResult);
+      LAST_READING_GENERATION_RESULT = {
+        status:'success',
+        tokenizerMode:'kuromoji-worker',
+        retryCount:Number(workerResult.retryCount || 0)
+      };
       saveCurrentArticleToHistory();
       return;
     }
     document.body.dataset.tokenizerFallback = 'true';
     TOKENIZER_LAST_ATTEMPT_FAILED = true;
     finishTokenizerProgress('假名生成没有完成，请点击重新生成。', 'error');
+    LAST_READING_GENERATION_RESULT = {
+      status:'error',
+      stage:'tokenizer',
+      errorCode:analyticsErrorCode(workerResult.error),
+      retryCount:Number(workerResult.retryCount || 0)
+    };
+    emitPerformanceDebugLog();
     saveCurrentArticleToHistory();
     return;
   }
@@ -3622,11 +3854,13 @@ async function renderText(){
     if(tokenizer){
       document.body.dataset.tokenizerMode = 'kuromoji';
       renderWithKuromoji(raw, tokenizer, out, statsBar);
+      LAST_READING_GENERATION_RESULT = {status:'success', tokenizerMode:'kuromoji', retryCount:0};
       saveCurrentArticleToHistory();
       return;
     }
   }
   renderWithDictionary(raw, out, statsBar);
+  LAST_READING_GENERATION_RESULT = {status:'success', tokenizerMode:'built-in', retryCount:0};
   saveCurrentArticleToHistory();
 }
 
@@ -3733,6 +3967,7 @@ function renderWithDictionary(raw, out, statsBar){
     recognized:counts.N5 + counts.N4 + counts.N3 + counts.trap,
     totalTerms:counts.N5 + counts.N4 + counts.N3 + counts.trap + counts.particle
   });
+  recordPerformanceMark('reading_ready');
 }
 
 function katakanaToHiragana(str){
@@ -4298,6 +4533,7 @@ function renderWithKuromojiTokens(raw, tokens, out, statsBar, mode = 'kuromoji')
     recognized:counts.N5 + counts.N4 + counts.N3 + counts.trap + counts.kuromoji,
     totalTerms:tokens.length
   });
+  recordPerformanceMark('reading_ready');
 }
 
 function estimateReadingLevel(summary){
@@ -4493,31 +4729,75 @@ function toggleAnnotationEditMode(){
 function startAnnotationEditMode(){
   const out = document.getElementById('output');
   if(!out || !out.querySelector('ruby.w')) return;
+  cancelPendingRubyEdit();
+  ANNOTATION_EDIT_SNAPSHOT = collectRubyUnits();
   IS_ANNOTATION_EDITING = true;
+  trackAnalyticsEvent('furigana_edit_start');
   out.classList.add('editing');
   out.setAttribute('contenteditable', 'true');
   out.setAttribute('spellcheck', 'false');
   out.addEventListener('keydown', handleAnnotationEditKeydown);
-  document.getElementById('annotationEditBtn').textContent = '完成编辑';
+  const button = document.getElementById('annotationEditBtn');
+  if(button){
+    button.textContent = '完成';
+    button.classList.add('is-editing');
+    button.setAttribute('aria-pressed', 'true');
+    button.setAttribute('aria-label', '完成假名编辑');
+    button.dataset.tooltip = '完成假名编辑';
+  }
   out.focus();
 }
 
-function finishAnnotationEditMode(){
+async function finishAnnotationEditMode(){
   const out = document.getElementById('output');
-  if(!out) return;
   IS_ANNOTATION_EDITING = false;
+  const button = document.getElementById('annotationEditBtn');
+  if(button){
+    button.textContent = '编辑';
+    button.classList.remove('is-editing');
+    button.setAttribute('aria-pressed', 'false');
+    button.setAttribute('aria-label', '编辑假名');
+    button.dataset.tooltip = '编辑假名';
+  }
+  cancelPendingRubyEdit();
+  document.querySelectorAll('#output ruby.w.active, #output ruby.w.is-just-selected, #output ruby.w[aria-current="true"]').forEach(node=>{
+    node.classList.remove('active', 'is-just-selected');
+    node.removeAttribute('aria-current');
+  });
+  if(!out){
+    ANNOTATION_EDIT_SNAPSHOT = [];
+    return;
+  }
   out.classList.remove('editing');
   out.removeAttribute('contenteditable');
   out.removeAttribute('spellcheck');
   out.removeEventListener('keydown', handleAnnotationEditKeydown);
-  document.getElementById('annotationEditBtn').textContent = '编辑标注';
   const units = collectRubyUnits()
     .map(unit=>unit.base === '\n' ? unit : {base:unit.base.trim(), ruby:(unit.ruby || '').trim()})
     .filter(unit=>unit.base);
+  let overridesChanged = false;
+  units.forEach((unit, index)=>{
+    if(unit.base === '\n') return;
+    const previous = ANNOTATION_EDIT_SNAPSHOT[index];
+    if(previous && previous.base === unit.base && (previous.ruby || '') !== (unit.ruby || '')){
+      RUBY_OVERRIDES[unit.base] = unit.ruby
+        ? {reading:unit.ruby, hidden:false}
+        : {reading:'', hidden:true};
+      overridesChanged = true;
+    }
+  });
+  if(overridesChanged) safeStorage.setItem('reading_ruby_overrides', JSON.stringify(RUBY_OVERRIDES));
+  ANNOTATION_EDIT_SNAPSHOT = [];
   CURRENT_ARTICLE_TEXT = units.map(unit=>unit.base).join('');
   const sourceInput = document.getElementById('inputText');
   if(sourceInput) sourceInput.value = CURRENT_ARTICLE_TEXT;
-  renderEditedOutput(units);
+  try{
+    await renderText();
+    trackAnalyticsEvent('furigana_edit_save', {success:true});
+  }catch(error){
+    trackAnalyticsEvent('furigana_edit_save', {success:false});
+    throw error;
+  }
 }
 
 function handleAnnotationEditKeydown(event){
@@ -4554,6 +4834,7 @@ function openExportModal(){
   if(!modal) return;
   EXPORT_MODAL_TRIGGER = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   syncExportOptions();
+  trackAnalyticsEvent('export_open', {format:selectedExportFormat(), layout:selectedExportLayout()});
   setDialogVisibility(modal, true, document.getElementById('exportLayoutSelect'));
 }
 
@@ -4612,6 +4893,7 @@ function syncExportOptions(){
 async function runExport(){
   const format = selectedExportFormat();
   const layout = selectedExportLayout();
+  const startedAt = performance.now();
   setExportBusy(true, '');
   try{
     await new Promise(resolve=>setTimeout(resolve, 30));
@@ -4620,12 +4902,15 @@ async function runExport(){
     } else {
       await downloadRubyPptx(layout);
     }
-    trackAnalyticsEvent('export_completed', {
-      export_format:format,
-      export_layout:layout
+    trackAnalyticsEvent('export_complete', {
+      format,
+      layout,
+      duration_ms:performance.now() - startedAt,
+      success:true
     });
     setExportBusy(false, '');
   }catch(error){
+    trackAnalyticsEvent('export_error', {format, layout, error_code:analyticsErrorCode(error)});
     setExportBusy(false, error?.message || '导出失败');
     showToast('导出失败', 'error');
   }finally{
@@ -5182,9 +5467,12 @@ function detailReadingDisplayHtml(surface, reading){
 function beginRubyEdit(encoded){
   const control = document.getElementById('detailReadingControl');
   if(!control) return;
+  const surface = decodeURIComponent(encoded);
+  trackAnalyticsEvent('furigana_edit_start');
   const current = document.getElementById('detailReadingText')?.textContent.trim() || '';
   const value = current === '暂无读音' ? '' : current;
   control.dataset.previousReading = value;
+  control.dataset.editSurface = surface;
   control.classList.add('is-editing');
   control.innerHTML = `
     <input id="rubyEditInput" type="text" value="${escapeHtml(value)}" placeholder="输入平假名" aria-label="读音" onkeydown="handleRubyEditKeydown(event, '${encoded}')">
@@ -5199,9 +5487,13 @@ function beginRubyEdit(encoded){
 function saveRubyOverride(encoded){
   const surface = decodeURIComponent(encoded);
   const reading = document.getElementById('rubyEditInput')?.value.trim();
-  if(!reading) return;
+  if(!reading){
+    trackAnalyticsEvent('furigana_edit_save', {success:false});
+    return;
+  }
   RUBY_OVERRIDES[surface] = {reading, hidden:false};
-  safeStorage.setItem('reading_ruby_overrides', JSON.stringify(RUBY_OVERRIDES));
+  const saved = safeStorage.setItem('reading_ruby_overrides', JSON.stringify(RUBY_OVERRIDES));
+  trackAnalyticsEvent('furigana_edit_save', {success:saved});
   renderText();
   const control = document.getElementById('detailReadingControl');
   if(control) control.outerHTML = detailReadingDisplayHtml(surface, reading);
@@ -5209,11 +5501,20 @@ function saveRubyOverride(encoded){
 }
 
 function cancelRubyEdit(encoded){
-  const surface = decodeURIComponent(encoded);
+  cancelPendingRubyEdit(decodeURIComponent(encoded), true);
+}
+
+function cancelPendingRubyEdit(fallbackSurface = '', restoreFocus = false){
   const control = document.getElementById('detailReadingControl');
   if(!control) return;
+  const surface = control.dataset.editSurface || fallbackSurface;
+  if(!surface){
+    control.classList.remove('is-editing');
+    control.querySelector('#rubyEditInput')?.remove();
+    return;
+  }
   control.outerHTML = detailReadingDisplayHtml(surface, control.dataset.previousReading || '');
-  document.querySelector('.detail-reading-edit')?.focus();
+  if(restoreFocus) document.querySelector('.detail-reading-edit')?.focus();
 }
 
 function handleRubyEditKeydown(event, encoded){
@@ -6070,6 +6371,12 @@ function setPreferredVoice(name, notify = true){
 
 function previewJapaneseVoice(){
   stopTts();
+  const rate = getPreferredTtsRate();
+  const rateCategory = rate <= 0.7 ? 'slow' : rate <= 0.82 ? 'learning' : rate <= 0.92 ? 'original' : 'natural';
+  trackAnalyticsEvent('tts_preview', {
+    rate_category:rateCategory,
+    voice_source:safeStorage.getItem('reading_tts_voice') ? 'selected' : 'system'
+  });
   speakJapanese('今日は天気がいいですね。ゆっくり日本語を練習しましょう。', null, false);
 }
 
@@ -9413,13 +9720,6 @@ if(safeStorage.getItem('reading_onboarding_dismissed')) dismissOnboarding();
 
 async function initializeApp(){
   loadReadingHistory();
-  try{
-    DATA_READY = ensureLearningData();
-    await DATA_READY;
-  }catch(error){
-    showDataLoadError(error);
-  }
-
   renderGrammar();
   renderSourceDirectory();
   renderPracticeSummary();
@@ -9491,6 +9791,7 @@ async function initializeApp(){
   switchWorkspace(safeStorage.getItem('reading_workspace') || 'reading');
   renderTypingPractice();
   syncExportOptions();
+  scheduleLearningDataHydration();
 }
 
 initializeApp();

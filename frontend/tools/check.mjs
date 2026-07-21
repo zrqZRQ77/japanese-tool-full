@@ -75,11 +75,14 @@ function hardcodedFontSizeLocations(sources) {
 
 const indexHtml = readFileSync(resolve(FRONTEND_DIR, 'index.html'), 'utf8');
 const appJs = readFileSync(resolve(FRONTEND_DIR, 'app.js'), 'utf8');
+const analyticsJs = readFileSync(resolve(FRONTEND_DIR, 'analytics.js'), 'utf8');
+const configJs = readFileSync(resolve(FRONTEND_DIR, 'config.js'), 'utf8');
 const lexicalLookupJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup.js'), 'utf8');
 const lexicalRecordJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-record.js'), 'utf8');
 const lexicalLookupIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup-integration.js'), 'utf8');
 const lexicalDetailIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-detail-integration.js'), 'utf8');
 const lexicalVocabIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-vocab-integration.js'), 'utf8');
+const mvpStabilityFixesJs = readFileSync(resolve(FRONTEND_DIR, 'mvp-stability-fixes.js'), 'utf8');
 const stylesCss = readFileSync(resolve(FRONTEND_DIR, 'styles.css'), 'utf8');
 const designSystemCss = readFileSync(resolve(FRONTEND_DIR, 'design-system.css'), 'utf8');
 const grammarLayoutCss = readFileSync(resolve(FRONTEND_DIR, 'grammar-layout.css'), 'utf8');
@@ -225,6 +228,12 @@ assertCheck(
   'translation promotion and reader translation control are not public'
 );
 assertCheck(
+  !indexHtml.includes('hero-more-menu')
+    && !indexHtml.includes('使用说明')
+    && !indexHtml.includes('onclick="openOnboarding()"'),
+  'homepage more menu and obsolete onboarding entries are not public'
+);
+assertCheck(
   ['grammar', 'retell', 'discover', 'history'].every(view => new RegExp(`data-view="${view}"[^>]*hidden[^>]*data-mvp-hidden`).test(indexHtml))
     && /class="mvp-settings-button"[^>]*data-view="settings"[^>]*hidden[^>]*data-mvp-hidden="floating-settings"/.test(indexHtml)
     && /class="sidebar-footer"[\s\S]*?data-view="settings"/.test(indexHtml)
@@ -237,8 +246,42 @@ assertCheck(
   'public examples are limited to three basic non-financial texts'
 );
 assertCheck(
-  /async function loadSample\([\s\S]*?await analyzeSourceInput\(\)/.test(appJs),
+  /async function loadSample\([\s\S]*?await analyzeSourceInput\(\{inputSource:'sample'\}\)/.test(appJs),
   'examples use the same analysis entry point as pasted text'
+);
+assertCheck(
+  configJs.includes("GA_MEASUREMENT_ID: 'G-E2DE3HE7E7'")
+    && analyticsJs.includes("window.location.hostname === 'yomeru.japanese-hub.com'")
+    && analyticsJs.includes("query.get('analytics_debug') === '1'")
+    && analyticsJs.includes('debug_mode:debugMode')
+    && !indexHtml.includes('googletagmanager.com/gtag/js'),
+  'GA4 reuses the centralized Japanese Hub ID and stays opt-in outside production'
+);
+assertCheck(
+  ['app_ready', 'tokenizer_ready', 'reading_start', 'reading_generate_success', 'reading_generate_error', 'furigana_edit_start', 'furigana_edit_save', 'vocab_save', 'export_open', 'export_complete', 'export_error', 'tts_preview', 'feedback_open']
+    .every(eventName=>analyticsJs.includes(`${eventName}:`))
+    && analyticsJs.includes("/^[a-z0-9_-]{1,48}$/i")
+    && !/(?:article_text|article_content|word|meaning|email)\s*:/.test(analyticsJs),
+  'analytics events use a strict privacy-safe event and parameter allowlist'
+);
+assertCheck(
+  configJs.includes("FEEDBACK_FORM_URL: 'https://h5xjhwnvwx.feishu.cn/share/base/form/shrcnqw8wZCF6xoGwYTbbn9MhUg'")
+    && /id="feedbackSettingsSection" hidden/.test(indexHtml)
+    && /id="feedbackFormLink"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/.test(indexHtml)
+    && appJs.includes("trackAnalyticsEvent('feedback_open', {entry_location:'settings'})"),
+  'feedback settings entry stays hidden until a valid configured URL is present'
+);
+assertCheck(
+  !indexHtml.includes('pptxgen.bundle.js')
+    && /async function downloadRubyPptx[\s\S]*?loadExternalScript\(THIRD_PARTY_SCRIPTS\.pptx, 'PptxGenJS'\)/.test(appJs)
+    && appJs.includes('function scheduleLearningDataHydration')
+    && appJs.includes("recordPerformanceMark('app_shell_visible')")
+    && appJs.includes("recordPerformanceMark('hero_interactive')")
+    && appJs.includes("recordPerformanceMark('tokenizer_load_start')")
+    && appJs.includes("recordPerformanceMark('tokenizer_worker_ready')")
+    && appJs.includes("recordPerformanceMark('dictionary_ready')")
+    && appJs.includes("recordPerformanceMark('reading_ready')"),
+  'first paint avoids PPT code and records the required staged performance marks'
 );
 assertCheck(appJs.includes('const ENABLE_REMOTE_SMART_SEGMENTATION = false;'), 'remote smart segmentation remains disabled');
 assertCheck(
@@ -320,9 +363,26 @@ assertCheck(
   'reading export formats match the public MVP boundary'
 );
 assertCheck(
-  indexHtml.includes('点击正文中的词语，可以查看读音、释义并加入生词本。')
+  mvpStabilityFixesJs.includes("portraitOption.hidden = portraitPptUnavailable")
+    && mvpStabilityFixesJs.includes("portraitOption.disabled = portraitPptUnavailable")
+    && mvpStabilityFixesJs.includes("layoutSelect.value = 'landscape'")
+    && mvpStabilityFixesJs.includes("wrapExportFunction('runExport', true)")
+    && indexHtml.includes('PPTX（可编辑）')
+    && indexHtml.includes('<option value="portrait">竖版</option>'),
+  'portrait layout stays available for images but is blocked for editable PPTX'
+);
+assertCheck(
+  !indexHtml.includes('点击正文中的词语，可以查看读音、释义并加入生词本。')
     && !indexHtml.includes('完成阅读后，可以用这篇文章生成练习。'),
-  'reader guidance describes the available word-detail and vocabulary actions'
+  'reading page omits redundant fixed helper copy'
+);
+assertCheck(
+  indexHtml.includes('class="hero-home-name">読める</span>')
+    && !indexHtml.includes('假名课件生成')
+    && ['假名标注', '课件导出', '保存生词'].every(title => indexHtml.includes(`<h2 class="home-feature-title">${title}</h2>`))
+    && !indexHtml.includes('<h2 class="home-feature-title">点击查词</h2>')
+    && (indexHtml.match(/class="hero-flow-item home-feature/g) || []).length === 3,
+  'homepage uses the compact brand lockup and three vertically stacked feature sections'
 );
 assertCheck(
   /function collectRubyUnits\(\)[\s\S]*?\.reading-translation-pair \.reading-japanese/.test(appJs)
@@ -358,12 +418,27 @@ assertCheck(
   'TTS retains utterances, chunks long text, prefers Japanese voices on iOS, and retries with the system voice'
 );
 assertCheck(
-  indexHtml.includes('id="ttsRateCurrentLabel"')
+  indexHtml.includes('id="ttsRateCurrentLabel">自然速度</span>')
     && indexHtml.includes('id="ttsVoiceCurrentLabel"')
     && indexHtml.includes("currentLabel.textContent = selectedOption.textContent")
+    && !indexHtml.includes('自然速度（-6%）')
+    && !indexHtml.includes('优先使用 Microsoft Andrew Multilingual')
+    && /settings-choice-menu\s*\{[\s\S]*?width:\s*240px/.test(heroMenuCss)
+    && /settings-choice-menu--voice\s*\{[\s\S]*?width:\s*240px/.test(heroMenuCss)
     && /settings-tts-controls[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\) auto/.test(heroMenuCss)
     && /@media \(max-width: 480px\)[\s\S]*?settings-tts-controls[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\)/.test(heroMenuCss),
-  'TTS setting summaries show selected values and controls fit desktop and mobile layouts'
+  'TTS setting summaries are concise and both dropdowns share one responsive width'
+);
+assertCheck(
+  indexHtml.includes('settings-action-item--restore')
+    && indexHtml.includes('settings-action-item--danger')
+    && indexHtml.includes('恢复会覆盖当前学习数据。')
+    && indexHtml.includes('将删除当前浏览器中的全部学习数据，且无法撤销。')
+    && !designSystem.includes('--settings-warning')
+    && !/255,\s*252,\s*247|255,\s*245,\s*243/.test(designSystem)
+    && heroMenuCss.includes('font-family: var(--type-font-ui-zh) !important;')
+    && heroMenuCss.includes('.settings-action-item--danger'),
+  'settings copy, typography, restore styling, and destructive styling follow the shared design system'
 );
 assertCheck(hardcodedFontSizes.length === 0, `no hardcoded px font sizes outside typography.css${hardcodedFontSizes.length ? `: ${hardcodedFontSizes.join(', ')}` : ''}`);
 assertCheck(css && designSystem && grammarLayout && typography && heroMenu && lexicalLookup && lexicalRecord && js && lexicalIntegration && lexicalDetail && lexicalVocab && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === lexicalLookup && css === lexicalRecord && css === js && css === lexicalIntegration && css === lexicalDetail && css === lexicalVocab, 'CSS and JS cache versions match');
