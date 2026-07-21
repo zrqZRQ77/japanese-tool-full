@@ -1,7 +1,7 @@
 # Yomeru `app.js` 模块化第一轮：Lexical 去重与边界整理
 
 - 决策日期：2026-07-21
-- 当前状态：`COMPLETED`
+- 当前状态：`PRODUCTION_RELEASED`
 - 当前完成度：`100%`
 - 执行优先级：`P1`
 - 是否允许修改 Production：`否`
@@ -304,3 +304,14 @@
 - 本轮总体完成度：`100%`
 
 Lexical 模块化第一轮已经完成。当前分支只停留在 Preview，未经用户明确授权，不合并 `main`，不部署 Production。
+
+
+## 12. Production 发布
+
+- 发布状态：`PASSED`
+- 发布源提交：`e9219eb1cf76c24e26bb3950f4871c019b25835d`
+- Production Tag：`production-20260721-lexical-round1`
+- 新 Production Deployment：`dpl_R6cpkaGkqYijPdgqgqShtSQT2gFe`
+- 上一回滚 Deployment：`dpl_7n1BZh1MWE4jKXtAm1L7bP458kpr`
+- 发布记录：`.ai-coordination/LEXICAL_PRODUCTION_RELEASE_20260721.md`
+- 正式域名静态文件和真实浏览器烟雾测试：PASS
