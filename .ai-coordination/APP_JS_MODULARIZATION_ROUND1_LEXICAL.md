@@ -2,7 +2,7 @@
 
 - 决策日期：2026-07-21
 - 当前状态：`IN_PROGRESS`
-- 当前完成度：`12%`
+- 当前完成度：`30%`
 - 执行优先级：`P1`
 - 是否允许修改 Production：`否`
 - 当前目标：只整理 lexical 领域代码，不改变公开 Beta 功能和用户行为
@@ -60,6 +60,8 @@
 - `frontend/tools/language-corpus-browser.test.mjs`
 - `frontend/tools/contextual-reading.test.mjs`
 - `frontend/tools/ui-audit.mjs`
+- `frontend/tools/kuromoji-build-cache.test.mjs`
+- `frontend/tools/kuromoji-app-consistency.test.mjs`
 
 ## 4. 明确不做
 
@@ -81,69 +83,61 @@
 
 ### 阶段 A：确认基线与依赖关系
 
-状态：`IN_PROGRESS`
+状态：`COMPLETED`
 
 - [x] 读取 `AGENTS.md`、`.ai-bridge/current-plan.md` 和本文件。
 - [x] 记录当前分支和全部未提交文件。
 - [x] 保存当前 Production 的完整本地回滚快照和逐文件哈希清单。
 - [x] 对比当前 `frontend/` 与 Production 快照，确认 174/174 个部署文件完全一致。
-- [ ] 检查 `frontend/app.js` 当前未提交差异。
-- [ ] 检查五个 `lexical-*` 文件当前未提交差异。
+- [x] 检查 `frontend/app.js` 当前基线状态；重构分支建立后工作区干净。
+- [x] 检查五个 `lexical-*` 文件当前基线状态；没有未提交业务修改。
 - [x] 确认 `frontend/index.html` 的脚本加载顺序。
 - [x] 确认 `scripts/build-frontend.mjs` 的部署文件清单。
 - [x] 运行拆分前基线测试并记录结果；UI 流程审计存在环境阻断，已单独记录。
 
-完成标准：能够明确说明当前代码基线、重复定义和依赖关系，且未改动业务代码。
+完成标准：已明确当前代码基线、重复定义和依赖关系，且尚未改动业务代码。
 
 ### 阶段 B：建立 lexical 函数清单
 
-状态：`NOT_STARTED`
+状态：`COMPLETED`
 
-- [ ] 列出 `app.js` 中所有 lexical 相关函数。
-- [ ] 列出五个 `lexical-*` 文件中的公开函数。
-- [ ] 标注每个函数的定义位置和调用位置。
-- [ ] 标注 HTML 内联调用和 `window` 全局调用。
-- [ ] 标注对 `DICT`、`vocabData`、`CURRENT_ARTICLE_URL` 等全局状态的依赖。
-- [ ] 确认同名函数的实际覆盖顺序。
+- [x] 列出 `app.js` 中所有 lexical 相关函数。
+- [x] 列出五个 `lexical-*` 文件中的公开函数。
+- [x] 标注每个函数的定义位置和调用位置。
+- [x] 标注 HTML 内联调用和全局调用边界。
+- [x] 标注对 `DICT`、`vocabData`、`CURRENT_ARTICLE_URL` 等全局状态的依赖。
+- [x] 确认同名函数的实际覆盖顺序。
+- [x] 确认共有 36 个 lexical 函数，其中 15 个在 `app.js` 中重复定义。
 
-优先检查函数：
+详细映射：[`LEXICAL_FUNCTION_MAP_20260721.md`](./LEXICAL_FUNCTION_MAP_20260721.md)
 
-- `addCustomToVocab`
-- `addToVocab`
-- `addTokenToVocab`
-- `addTokenSnapshotToVocab`
-- `submitVocabEdit`
-- `buildLexicalLookupPlan`
-- `buildCuratedLexicalLookupPlan`
-- `selectLookupEntry`
-- lexical record/detail 相关函数
-
-完成标准：形成一份“保留、迁移、删除、兼容”的函数映射表。
+完成标准：已形成“保留、迁移、删除、兼容”的完整函数映射表。
 
 ### 阶段 C：确定单一实现来源
 
-状态：`NOT_STARTED`
+状态：`COMPLETED`
 
-- [ ] `lexical-record.js` 只负责标准词语记录和规范化。
-- [ ] `lexical-lookup.js` 只负责查词计划和结果选择。
-- [ ] `lexical-lookup-integration.js` 只负责旧系统查词接入。
-- [ ] `lexical-detail-integration.js` 只负责词语详情接入。
-- [ ] `lexical-vocab-integration.js` 只负责 lexical 记录与生词系统衔接。
-- [ ] 明确哪些全局函数暂时必须保留。
-- [ ] 建立最小 `window` 兼容层，避免旧调用链中断。
+- [x] `lexical-record.js` 只负责标准词语记录和规范化。
+- [x] `lexical-lookup.js` 只负责查词计划和结果选择。
+- [x] `lexical-lookup-integration.js` 作为查词来源接入的唯一实现。
+- [x] `lexical-detail-integration.js` 作为词语详情接入的唯一实现。
+- [x] `lexical-vocab-integration.js` 作为 lexical 记录与生词系统衔接的唯一实现。
+- [x] 明确必须继续保留的全局函数名称。
+- [x] 确认第一轮继续使用普通脚本的全局声明，无须额外增加 `window` 兼容层。
+- [x] 确认三个测试文件需要同步迁移函数归属断言。
 
-完成标准：每项能力只有一个真实实现文件，不再依赖“后加载文件覆盖前面定义”维持正确行为。
+完成标准：每项能力已经确定唯一目标实现文件；实际重复代码将在阶段 D 分批删除。
 
 ### 阶段 D：小批量迁移与去重
 
 状态：`NOT_STARTED`
 
-每次只处理一小组函数：
+实施批次：
 
-- [ ] 第一组：lexical record 与标准化函数。
-- [ ] 第二组：lookup plan 与 dictionary entry 选择函数。
-- [ ] 第三组：词语详情接入函数。
-- [ ] 第四组：生词保存、快照保存和编辑接入函数。
+- [ ] 批次 0：修改测试，使其检查 integration 文件而不是旧 `app.js` 实现。
+- [ ] 批次 1：删除查词接入旧实现。
+- [ ] 批次 2：删除词语详情旧实现和失去调用的旧推断辅助代码。
+- [ ] 批次 3：删除生词保存、快照保存和编辑旧实现。
 - [ ] 每迁移一组后，从 `app.js` 删除原实现。
 - [ ] 每迁移一组后搜索确认同名定义只剩一处。
 - [ ] 每迁移一组后运行最相关的专项测试。
@@ -173,6 +167,7 @@
 - [ ] `frontend`：`npm run check`
 - [ ] `frontend`：`npm run test:dictionary`
 - [ ] `frontend`：`npm run test:language-corpus`
+- [ ] `frontend`：`npm run test:kuromoji`
 - [ ] `frontend`：`npm run verify:flows`
 
 核心行为确认：
@@ -209,10 +204,10 @@
 - `frontend/app.js` 接近一万行。
 - 页面当前仍使用普通 `<script>` 加载，不是完整 ES Module 架构。
 - `frontend/index.html` 当前先加载 `app.js`，再加载多个 lexical integration 文件。
-- `frontend/lexical-vocab-integration.js` 中存在 `addCustomToVocab` 等函数。
-- `frontend/app.js` 中也存在 `addCustomToVocab`，已确认存在重复定义风险。
+- 五个 lexical 文件共定义 36 个函数，其中 15 个也存在于 `app.js`。
+- 当前真实运行的是后加载的 integration 文件版本。
+- integration 版本包含 typed lookup、词性保护、统一 record、完整生词 metadata 和编辑同步等正式逻辑。
 - 项目已有较完整的词典、语言语料和 UI 流程测试，可作为重构安全网。
-- 当前工作区已有较多未提交修改，实施前必须逐文件保护。
 - 当前 Production 已保存到 `.ai-bridge/production-baselines/2026-07-21-dpl_7n1BZh1MWE4jKXtAm1L7bP458kpr/`。
 - 当前 `frontend/` 与 Production 快照的 174 个部署文件逐字节一致，差异为 0。
 - GitHub Production 基线提交：`988a040f2fade46c248a48e333f21e5a9fad6a36`。
@@ -222,13 +217,14 @@
 
 ## 7. 实际完成内容
 
-当前尚未执行任何业务代码修改。
+当前尚未执行任何业务代码删除。
 
 | 日期 | 阶段 | 完成内容 | 文件 | 状态 |
 |---|---|---|---|---|
 | 2026-07-21 | 计划建立 | 建立第一轮 lexical 模块化执行计划与追踪清单 | 本文件、`.ai-bridge/current-plan.md` | 完成 |
 | 2026-07-21 | 阶段 A | 保存 Production 完整静态快照、哈希清单和回滚说明；确认当前 frontend 与线上 174 个文件完全一致 | `.ai-bridge/production-baselines/...`、`PRODUCTION_ROLLBACK_BASELINE_20260721.md` | 完成 |
 | 2026-07-21 | 阶段 A | 创建并推送 GitHub 基线提交、备份分支和固定 Tag；将无关未提交工作存入命名 Stash；创建干净重构分支 | `988a040`、`backup/production-20260721`、`refactor/app-js-lexical-round1` | 完成 |
+| 2026-07-21 | 阶段 B/C | 检查 36 个 lexical 函数，识别 15 个重复定义，确定唯一实现来源、全局兼容边界和测试迁移范围 | `LEXICAL_FUNCTION_MAP_20260721.md` | 完成 |
 
 ## 8. 测试结果
 
@@ -245,13 +241,14 @@
 | 2026-07-21 | `frontend`：`npm run verify:flows` | BLOCKED | 主要功能流程通过；TTS 设置标签断言与 mobile-390 次级操作布局断言未通过，报告标记为测试环境阻断 |
 | 2026-07-21 | `git diff --cached --check` | PASS | 基线提交无空白错误 |
 | 2026-07-21 | `npx vercel inspect https://yomeru.japanese-hub.com` | 首次 PASS；末次 BLOCKED | 首次确认部署 ID；完成后 Vercel CLI token 失效，后续元数据操作需重新登录 |
+| 2026-07-21 | lexical 函数静态映射 | PASS | 36 个函数，15 个重复定义，21 个唯一实现 |
 
 ## 9. 遗留问题
 
-- Production 与当前部署静态文件已完成精确校验；Git 提交本身不能一比一代表当时 dirty 部署，因此回滚以本地静态快照为准。
 - Vercel CLI 当前 token 已失效；后续创建 Preview 或查询元数据前需要重新登录，但不得自动发布 Production。
-- 需要完整列出 lexical 函数调用关系后，才能确定最小兼容层。
-- 需要确认 integration 文件覆盖 `app.js` 同名函数是否是当前有意设计，还是历史迁移遗留。
+- UI 流程审计的两个布局断言需要在后续本地浏览器环境复核。
+- integration 文件仍依赖较多 `app.js` 全局状态和辅助函数；第一轮只去重，不进行状态管理重构。
+- `check.mjs`、`kuromoji-build-cache.test.mjs` 和 `kuromoji-app-consistency.test.mjs` 仍把部分函数位置写死为 `app.js`，必须在删除前迁移。
 
 ## 10. 完成定义
 
@@ -259,17 +256,18 @@
 
 1. lexical 关键函数不再在 `app.js` 和外部文件中重复实现；
 2. 每项能力有明确且唯一的实现来源；
-3. 旧调用链通过清晰兼容层继续工作；
+3. 旧调用链通过清晰兼容边界继续工作；
 4. 公开 Beta 行为和数据格式不变；
 5. 所有规定测试通过或有明确阻断记录；
 6. 本文件已更新实际完成内容、测试结果、遗留问题和完成百分比；
-7. 未未经授权部署 Production。
+7. 未经授权不得部署 Production。
 
 ## 11. 当前进度
 
 - 计划与边界定义：`100%`
+- 基线与函数映射：`100%`
 - 代码执行：`0%`
 - 测试验证：`35%`
-- 本轮总体完成度：`12%`
+- 本轮总体完成度：`30%`
 
-下一步继续阶段 A 与阶段 B：审查基线提交中 `app.js` 和五个 `lexical-*` 文件的差异与调用关系，形成“保留、迁移、删除、兼容”函数映射表，然后才开始第一小组去重。
+下一步执行阶段 D 的“批次 0＋批次 1”：先迁移三个测试文件的函数归属断言，再删除 `app.js` 中查词领域的 6 个旧实现。
