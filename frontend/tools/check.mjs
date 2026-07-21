@@ -120,11 +120,25 @@ const deduplicatedLexicalFunctionNames = [
   'autoLookupTokenMeaning',
   'detailInflectionHtml',
   'detailMetaHtml',
-  'refreshVisibleTokenDetail'
+  'refreshVisibleTokenDetail',
+  'requestTokenVocabSave',
+  'addToVocab',
+  'addTokenToVocab',
+  'addTokenSnapshotToVocab',
+  'addCustomToVocab',
+  'submitVocabEdit'
 ];
 const duplicateLexicalDefinitionsInApp = deduplicatedLexicalFunctionNames.filter(name =>
   new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`).test(appJs)
 );
+const lexicalVocabGlobalFunctionNames = [
+  'requestTokenVocabSave',
+  'addToVocab',
+  'addTokenToVocab',
+  'addTokenSnapshotToVocab',
+  'addCustomToVocab',
+  'submitVocabEdit'
+];
 const levelHelpersSource = [
   simpleFunctionSource(appJs, 'normalizeVisibleVocabLevel'),
   simpleFunctionSource(appJs, 'formatVisibleVocabLevel')
@@ -152,6 +166,15 @@ assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\
 assertCheck(
   duplicateLexicalDefinitionsInApp.length === 0,
   `lexical integration functions have one implementation source${duplicateLexicalDefinitionsInApp.length ? `: ${duplicateLexicalDefinitionsInApp.join(', ')}` : ''}`
+);
+assertCheck(
+  lexicalVocabGlobalFunctionNames.every(name =>
+    new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`).test(lexicalVocabIntegrationJs)
+  )
+    && indexHtml.indexOf('app.js') < indexHtml.indexOf('lexical-vocab-integration.js')
+    && indexHtml.includes("onclick=\"addCustomToVocab('食べる'")
+    && appJs.includes('onsubmit=\"submitVocabEdit(event)\"'),
+  'vocabulary inline actions resolve from lexical vocab integration globals'
 );
 assertCheck(
   levelHelpers

@@ -113,6 +113,111 @@ function extractBetween(startMarker, endMarker) {
 }
 
 {
+  const analytics = [];
+  const toasts = [];
+  const lexicalInputs = [];
+  const context = vm.createContext({
+    String,
+    Date,
+    vocabData:[],
+    CURRENT_ARTICLE_URL:'',
+    SAMPLE_FLOW_ACTIVE:false,
+    vocabIdentityKey:value=>String(value || '').trim(),
+    displayVocabMeaning:(value, fallback)=>String(value || '').trim() || fallback,
+    normalizeVisibleVocabLevel:value=>/^N[1-5]$/.test(String(value || '')) ? value : '',
+    normalizeLexicalVocabFields(input){
+      lexicalInputs.push({...input});
+      return {
+        lexicalSchemaVersion:1,
+        word:input.word,
+        reading:input.reading,
+        baseForm:input.baseForm || input.word,
+        baseReading:input.baseReading || input.reading,
+        partOfSpeech:input.partOfSpeech || input.pos,
+        partOfSpeechDetail:input.partOfSpeechDetail || '',
+        conjugationType:input.conjugationType || '',
+        conjugationForm:input.conjugationForm || '',
+        lookupMatchedTerm:input.lookupMatchedTerm || '',
+        lookupMatchedKind:input.lookupMatchedKind || '',
+        pos:input.partOfSpeech || input.pos
+      };
+    },
+    normalizeVocabItem:item=>item,
+    currentVocabSourceTitle:()=> '测试文章',
+    saveVocab(){},
+    renderVocab(){},
+    renderSampleFlow(){},
+    showToast(message, type){ toasts.push({message, type}); },
+    trackAnalyticsEvent(name, parameters){ analytics.push({name, parameters}); }
+  });
+  const addCustomSource = extractBetweenFrom(
+    lexicalVocabIntegrationSource,
+    "function addCustomToVocab(word, reading = '', meaning = '用户添加', level = '', pos = '自选内容', metadata = {}){",
+    '\nfunction submitVocabEdit'
+  );
+  vm.runInContext(addCustomSource, context);
+  const firstSave = vm.runInContext(
+    "addCustomToVocab('寝ます', 'ねます', '睡觉', 'N5', '動詞', {baseForm:'寝る', baseReading:'ねる', partOfSpeech:'動詞'})",
+    context
+  );
+  const duplicateSave = vm.runInContext(
+    "addCustomToVocab('寝ます', 'ねます', '睡觉', 'N5', '動詞')",
+    context
+  );
+  assert.equal(firstSave, true);
+  assert.equal(duplicateSave, false);
+  assert.equal(context.vocabData.length, 1);
+  assert.equal(context.vocabData[0].baseForm, '寝る');
+  assert.equal(context.vocabData[0].baseReading, 'ねる');
+  assert.equal(context.vocabData[0].partOfSpeech, '動詞');
+  assert.equal(lexicalInputs[0].partOfSpeech, '動詞');
+  assert.deepEqual(analytics.map(item=>item.parameters.success), [true, false]);
+  assert.equal(toasts.at(-1)?.type, 'info');
+}
+
+{
+  const syncCalls = [];
+  const lifecycle = [];
+  const target = {word:'古い', reading:'ふるい', baseForm:'古い', baseReading:'ふるい', meaning:'旧数据', pos:'形容词'};
+  const fields = {
+    vocabEditWord:{value:'新しい'},
+    vocabEditReading:{value:'あたらしい'},
+    vocabEditMeaning:{value:'新的'}
+  };
+  const context = vm.createContext({
+    String,
+    VOCAB_EDIT_TARGET:target,
+    vocabData:[target],
+    document:{getElementById:id=>fields[id]},
+    vocabIdentityKey:value=>String(value || '').trim(),
+    showToast(message, type){ lifecycle.push(['toast', message, type]); },
+    updateEditedLexicalVocabFields(item, previousWord, previousReading, nextWord, nextReading){
+      syncCalls.push([previousWord, previousReading, nextWord, nextReading]);
+      item.word = nextWord;
+      item.reading = nextReading;
+      item.baseForm = nextWord;
+      item.baseReading = nextReading;
+    },
+    hasCjk:()=>true,
+    saveVocab(){ lifecycle.push(['save']); },
+    closeVocabEditDialog(){ lifecycle.push(['close']); },
+    renderVocab(){ lifecycle.push(['render']); }
+  });
+  const submitStart = lexicalVocabIntegrationSource.indexOf('function submitVocabEdit(event){');
+  assert.ok(submitStart >= 0, 'missing submitVocabEdit integration source');
+  vm.runInContext(lexicalVocabIntegrationSource.slice(submitStart), context);
+  context.__event = {preventDefault(){ lifecycle.push(['prevent']); }};
+  vm.runInContext('submitVocabEdit(__event)', context);
+  assert.deepEqual(syncCalls[0], ['古い', 'ふるい', '新しい', 'あたらしい']);
+  assert.equal(target.word, '新しい');
+  assert.equal(target.reading, 'あたらしい');
+  assert.equal(target.meaning, '新的');
+  assert.equal(target.meaningLanguage, 'zh');
+  assert.equal(target.meaningSource, 'manual');
+  assert.deepEqual(lifecycle.map(item=>item[0]), ['prevent', 'save', 'close', 'render', 'toast']);
+}
+
+{
   const context = vm.createContext({
     DICT: {
       ます:{meaning:'measuring container', level:'N3'},
@@ -187,4 +292,4 @@ function extractBetween(startMarker, endMarker) {
   }
 }
 
-process.stdout.write('Kuromoji race, inflection reading/level, immutable detail snapshot, and auxiliary ます tests passed.\n');
+process.stdout.write('Kuromoji race, inflection reading/level, immutable detail snapshot, vocabulary save/edit, and auxiliary ます tests passed.\n');

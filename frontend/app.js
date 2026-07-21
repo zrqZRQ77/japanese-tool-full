@@ -4120,38 +4120,6 @@ function syncTokenSaveButton(detailBox, tokenId, info){
   saveButton.dataset.tooltip = info?.lookupState === 'loading' ? '加载完成后自动收藏' : '加入生词本';
 }
 
-function requestTokenVocabSave(tokenId){
-  const tokenRecord = window.KUROMOJI_TOKEN_CACHE && window.KUROMOJI_TOKEN_CACHE[tokenId];
-  if(!tokenRecord) return false;
-  const { surface, info } = tokenRecord;
-  if(info.lookupState === 'loading'){
-    info.pendingVocabSave = true;
-    syncTokenSaveButton(document.getElementById(`tokenMeaning-${tokenId}`)?.closest('.detail-box'), tokenId, info);
-    showToast('释义加载完成后会自动加入生词本。', 'info');
-    return true;
-  }
-  const lexicalMetadata = lexicalVocabMetadata(surface, info, tokenRecord);
-  const saved = addCustomToVocab(
-    surface,
-    info.reading || '',
-    info.meaning || '释义待补充',
-    info.level || '',
-    lexicalMetadata.partOfSpeech || info.pos || '已识别词',
-    {
-      ...lexicalMetadata,
-      meaningLanguage:info.meaningLanguage || '',
-      meaningSource:info.meaningSource || '',
-      levelSource:info.levelSource || ''
-    }
-  );
-  if(saved || vocabData.some(item=>vocabIdentityKey(item.word) === vocabIdentityKey(surface))){
-    info.lookupState = 'saved';
-    info.pendingVocabSave = false;
-    syncTokenSaveButton(document.getElementById(`tokenMeaning-${tokenId}`)?.closest('.detail-box'), tokenId, info);
-  }
-  return saved;
-}
-
 function finishPendingTokenVocabSave(tokenId, tokenRecord){
   if(!tokenRecord?.info?.pendingVocabSave) return;
   tokenRecord.info.pendingVocabSave = false;
@@ -7333,40 +7301,6 @@ async function saveVocab(){
   }catch(e){ console.error('保存生词本失败', e); }
 }
 
-async function addToVocab(word){
-  const info = DICT[word];
-  if(!info) return;
-  await enrichInfoWithJlpt(buildCuratedLexicalLookupPlan(word, info), info);
-  addCustomToVocab(word, info.reading, info.meaning, info.level, info.pos, {
-    meaningLanguage:info.meaningLanguage,
-    meaningSource:info.meaningSource,
-    levelSource:info.levelSource
-  });
-}
-
-function addTokenToVocab(tokenId){
-  const token = window.KUROMOJI_TOKEN_CACHE[tokenId];
-  if(!token) return;
-  const { surface, info } = token;
-  addCustomToVocab(surface, info.reading, info.meaning, info.level, info.pos);
-}
-
-function addTokenSnapshotToVocab(encodedSnapshot){
-  try{
-    const snapshot = JSON.parse(decodeURIComponent(String(encodedSnapshot || '')));
-    addCustomToVocab(
-      snapshot.surface,
-      snapshot.reading,
-      snapshot.meaning,
-      snapshot.level,
-      snapshot.pos,
-      snapshot
-    );
-  }catch(error){
-    console.warn('词语快照无效，未加入生词本', error);
-  }
-}
-
 function isSystemGeneratedMeaning(meaning){
   return /(?:kuromoji\s*)?已识别为「[^」]+」。当前内置词库还没有中文释义/.test(String(meaning || ''));
 }
@@ -7374,31 +7308,6 @@ function isSystemGeneratedMeaning(meaning){
 function displayVocabMeaning(meaning, fallback = '释义待补充'){
   if(isSystemGeneratedMeaning(meaning)) return '暂无释义，可稍后补充。';
   return String(meaning || '').trim() || fallback;
-}
-
-function addCustomToVocab(word, reading = '', meaning = '用户添加', level = '', pos = '自选内容', metadata = {}){
-  const normalized = String(word || '').trim();
-  if(!normalized) return false;
-  if(vocabData.find(v=>vocabIdentityKey(v.word) === vocabIdentityKey(normalized))){
-    showToast('这个词已经在生词本里了。', 'info');
-    return false;
-  }
-  const cleanMeaning = displayVocabMeaning(meaning, '用户添加');
-  vocabData.unshift(normalizeVocabItem({
-    word:normalized, reading, meaning:cleanMeaning,
-    meaningLanguage:metadata.meaningLanguage || '',
-    meaningSource:metadata.meaningSource || (cleanMeaning ? 'manual' : ''),
-    level, levelSource:metadata.levelSource || '', pos,
-    sourceTitle:currentVocabSourceTitle(),
-    sourceUrl:CURRENT_ARTICLE_URL || '',
-    repetition:0, interval:0, dueAt: Date.now(),
-    lastPracticeAt:null, lastPracticeRating:''
-  }));
-  saveVocab();
-  renderVocab();
-  renderSampleFlow();
-  showToast(SAMPLE_FLOW_ACTIVE ? '已加入生词本。下一步可以查看生词本。' : '已加入生词本，可在左侧「生词本」中复习。', 'success');
-  return true;
 }
 
 function currentVocabSourceTitle(){
@@ -7644,27 +7553,6 @@ function openVocabEditDialog(item){
 function closeVocabEditDialog(){
   setDialogVisibility(document.getElementById('vocabEditModal'), false);
   VOCAB_EDIT_TARGET = null;
-}
-
-function submitVocabEdit(event){
-  event.preventDefault();
-  if(!VOCAB_EDIT_TARGET) return;
-  const word = document.getElementById('vocabEditWord').value.trim();
-  const reading = document.getElementById('vocabEditReading').value.trim();
-  const meaning = document.getElementById('vocabEditMeaning').value.trim();
-  if(!word || !meaning){ showToast('请填写单词和释义。', 'warning'); return; }
-  if(vocabData.some(entry=>entry !== VOCAB_EDIT_TARGET && vocabIdentityKey(entry.word) === vocabIdentityKey(word))){
-    showToast('生词本中已经有这个词。', 'warning'); return;
-  }
-  VOCAB_EDIT_TARGET.word = word;
-  VOCAB_EDIT_TARGET.reading = reading;
-  VOCAB_EDIT_TARGET.meaning = meaning;
-  VOCAB_EDIT_TARGET.meaningLanguage = hasCjk(meaning) ? 'zh' : VOCAB_EDIT_TARGET.meaningLanguage || '';
-  VOCAB_EDIT_TARGET.meaningSource = 'manual';
-  saveVocab();
-  closeVocabEditDialog();
-  renderVocab();
-  showToast('生词已更新。', 'success');
 }
 
 function vocabMasteryLabel(v, isDueNow){

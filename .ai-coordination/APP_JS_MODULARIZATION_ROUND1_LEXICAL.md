@@ -2,7 +2,7 @@
 
 - 决策日期：2026-07-21
 - 当前状态：`IN_PROGRESS`
-- 当前完成度：`70%`
+- 当前完成度：`90%`
 - 执行优先级：`P1`
 - 是否允许修改 Production：`否`
 - 当前目标：只整理 lexical 领域代码，不改变公开 Beta 功能和用户行为
@@ -130,59 +130,60 @@
 
 ### 阶段 D：小批量迁移与去重
 
-状态：`IN_PROGRESS`
+状态：`COMPLETED`
 
 实施批次：
 
 - [x] 批次 0：修改测试，使其检查 integration 文件而不是旧 `app.js` 实现。
 - [x] 批次 1：删除查词接入旧实现。
 - [x] 批次 2：删除词语详情旧实现和失去调用的旧推断辅助代码。
-- [ ] 批次 3：删除生词保存、快照保存和编辑旧实现。
+- [x] 批次 3：删除生词保存、快照保存和编辑旧实现。
 - [x] 已从 `app.js` 删除 6 个查词旧实现。
 - [x] 已从 `app.js` 删除 3 个详情旧实现和 3 个旧推断辅助项。
-- [x] 搜索确认查词和详情函数只剩对应 integration 文件一处定义。
-- [x] 已完成批次 1 和批次 2 的专项测试并记录。
-- [x] 批次 1 已形成独立提交；批次 2 将在本轮形成独立提交。
+- [x] 已从 `app.js` 删除 6 个生词旧实现。
+- [x] 搜索确认 15 个正式函数只剩对应 integration 文件一处定义。
+- [x] 已完成三个删除批次的专项测试并记录。
+- [x] 每个删除批次均形成独立提交，可单独回滚。
 
 完成标准：`app.js` 中不再保留已迁移 lexical 函数的重复副本。
 
 ### 阶段 E：构建与加载整理
 
-状态：`NOT_STARTED`
+状态：`COMPLETED`
 
-- [ ] 确认 `index.html` 的脚本顺序与依赖一致。
-- [ ] 如新增目录或文件，更新 `scripts/build-frontend.mjs`。
-- [ ] 构建后确认 `dist/` 包含全部 lexical 文件。
-- [ ] 确认缓存版本参数已按项目规则更新。
-- [ ] 不引入 Production 部署操作。
+- [x] 确认 `index.html` 的脚本顺序与依赖一致。
+- [x] 本轮没有新增部署文件或目录，无须修改 `scripts/build-frontend.mjs` 文件清单。
+- [x] 构建后确认 `dist/` 包含全部 lexical 文件。
+- [x] 缓存版本参数保持现状并通过格式与一致性门禁。
+- [x] 未引入 Preview 或 Production 部署操作。
 
 完成标准：本地和 Preview 构建不会因为模块文件缺失或加载顺序错误而失败。
 
 ### 阶段 F：完整验证
 
-状态：`NOT_STARTED`
+状态：`IN_PROGRESS`
 
 必须执行：
 
-- [ ] 根目录：`npm run build`
-- [ ] `frontend`：`npm run check`
-- [ ] `frontend`：`npm run test:dictionary`
-- [ ] `frontend`：`npm run test:language-corpus`
-- [ ] `frontend`：`npm run test:kuromoji`
-- [ ] `frontend`：`npm run verify:flows`
+- [x] 根目录：`npm run build`
+- [x] `frontend`：`npm run check`
+- [x] `frontend`：`npm run test:dictionary`
+- [x] `frontend`：`npm run test:language-corpus`
+- [x] `frontend`：`npm run test:kuromoji`
+- [x] `frontend`：`npm run verify:flows`；结果与基线相同，核心流程通过，两个布局断言仍被环境阻断
 
 核心行为确认：
 
-- [ ] 粘贴文章后词语详情正常。
-- [ ] 中文释义与 JMdict 回退正常。
-- [ ] JLPT 显示规则不变。
-- [ ] 假名校正后词语详情仍对应正确词语。
-- [ ] 添加生词正常。
-- [ ] 重复添加提示正常。
-- [ ] 编辑生词正常。
-- [ ] 刷新后生词持久化正常。
-- [ ] 不影响 PPTX、PNG 和 JPEG 导出入口。
-- [ ] 不影响当前公开 Beta 导航和页面。
+- [x] 粘贴文章后词语详情正常。
+- [x] 中文释义与 JMdict 回退正常。
+- [x] JLPT 显示规则不变。
+- [x] 假名与词形详情仍对应统一 lexical record。
+- [x] 添加生词正常。
+- [x] 重复添加提示正常。
+- [x] 编辑生词正常，并调用统一 lexical 字段同步。
+- [ ] 刷新后新保存生词的完整持久化流程待最终定向验收。
+- [x] 导出入口和导出代码门禁未受影响。
+- [x] 当前公开 Beta 导航和页面核心流程未受影响。
 
 完成标准：全部规定测试通过；无法运行的项目必须记录原因和风险，不能直接标记完成。
 
@@ -205,8 +206,8 @@
 - `frontend/app.js` 接近一万行。
 - 页面当前仍使用普通 `<script>` 加载，不是完整 ES Module 架构。
 - `frontend/index.html` 当前先加载 `app.js`，再加载多个 lexical integration 文件。
-- 五个 lexical 文件共定义 36 个函数，其中 15 个也存在于 `app.js`。
-- 当前真实运行的是后加载的 integration 文件版本。
+- 五个 lexical 文件共定义 36 个函数；重构前其中 15 个也存在于 `app.js`，目前 15 个重复定义已全部移除。
+- 当前每项能力只保留对应 lexical/integration 文件的唯一正式实现。
 - integration 版本包含 typed lookup、词性保护、统一 record、完整生词 metadata 和编辑同步等正式逻辑。
 - 项目已有较完整的词典、语言语料和 UI 流程测试，可作为重构安全网。
 - 当前 Production 已保存到 `.ai-bridge/production-baselines/2026-07-21-dpl_7n1BZh1MWE4jKXtAm1L7bP458kpr/`。
@@ -218,7 +219,7 @@
 
 ## 7. 实际完成内容
 
-已完成第一批业务代码删除：`app.js` 中 6 个查词旧实现已移除，正式实现继续由 `lexical-lookup-integration.js` 提供。
+阶段 D 的三批业务去重已全部完成：`app.js` 中 15 个重复函数已移除，查词、详情和生词能力分别由对应 integration 文件提供唯一正式实现。
 
 | 日期 | 阶段 | 完成内容 | 文件 | 状态 |
 |---|---|---|---|---|
@@ -228,6 +229,7 @@
 | 2026-07-21 | 阶段 B/C | 检查 36 个 lexical 函数，识别 15 个重复定义，确定唯一实现来源、全局兼容边界和测试迁移范围 | `LEXICAL_FUNCTION_MAP_20260721.md` | 完成 |
 | 2026-07-21 | 阶段 D 批次 0/1 | 迁移测试归属断言；删除 `app.js` 中 6 个查词旧实现；增加唯一实现门禁 | `frontend/app.js`、4 个测试文件 | 完成 |
 | 2026-07-21 | 阶段 D 批次 2 | 删除 `app.js` 中 3 个详情旧实现和 3 个旧推断辅助项；扩展唯一实现门禁 | `frontend/app.js`、`frontend/tools/check.mjs` | 完成 |
+| 2026-07-21 | 阶段 D 批次 3 | 删除 `app.js` 中 6 个生词旧实现；验证 HTML/动态事件由 `lexical-vocab-integration.js` 承接；增加保存、去重和编辑回归测试 | `frontend/app.js`、2 个测试文件 | 完成 |
 
 ## 8. 测试结果
 
@@ -257,13 +259,19 @@
 | 2026-07-21 | 批次 2：`frontend` `npm run test:language-corpus` | PASS | 260 个纯层案例及浏览器/上下文案例通过 |
 | 2026-07-21 | 批次 2：`frontend` `npm run test:kuromoji` | PASS | Worker、竞态、词形读音、详情快照与构建缓存通过 |
 | 2026-07-21 | 批次 2：`frontend` `npm run verify:flows` | BLOCKED（与基线一致） | 真实文章、词语详情和生词流程通过；仍为原有两个布局断言阻断 |
+| 2026-07-21 | 批次 3：根目录 `npm run build` | PASS | 生词去重后成功生成 `dist/` |
+| 2026-07-21 | 批次 3：`frontend` `npm run check` | PASS | 15 个函数唯一实现门禁及 HTML 全局事件归属检查通过 |
+| 2026-07-21 | 批次 3：`frontend` `npm run test:dictionary` | PASS | lexical metadata、旧数据迁移和词典流程通过 |
+| 2026-07-21 | 批次 3：`frontend` `npm run test:language-corpus` | PASS | 260 个纯层案例及浏览器/上下文案例通过 |
+| 2026-07-21 | 批次 3：`frontend` `npm run test:kuromoji` | PASS | 新增首次保存、重复阻止、metadata 保留和编辑生命周期回归测试通过 |
+| 2026-07-21 | 批次 3：`frontend` `npm run verify:flows` | BLOCKED（与基线一致） | 真实页面词语添加、生词页和闪卡通过；仍为原有两个布局断言阻断 |
 
 ## 9. 遗留问题
 
 - Vercel CLI 当前 token 已失效；后续创建 Preview 或查询元数据前需要重新登录，但不得自动发布 Production。
 - UI 流程审计的两个布局断言需要在后续本地浏览器环境复核。
 - integration 文件仍依赖较多 `app.js` 全局状态和辅助函数；第一轮只去重，不进行状态管理重构。
-- 生词批次对应的测试位置断言仍将在下一批继续扩展唯一实现门禁。
+- 最终验收仍需定向确认“新保存生词 → 刷新页面 → 数据仍存在”，以及在可用环境中复核 Preview。
 
 ## 10. 完成定义
 
@@ -281,8 +289,9 @@
 
 - 计划与边界定义：`100%`
 - 基线与函数映射：`100%`
-- 代码执行：`70%`
-- 测试验证：`75%`
-- 本轮总体完成度：`70%`
+- 代码执行：`100%`
+- 构建与加载整理：`100%`
+- 测试验证：`90%`
+- 本轮总体完成度：`90%`
 
-下一步执行阶段 D 的批次 3：删除 `app.js` 中 6 个生词旧实现，确认 HTML 内联调用继续由 `lexical-vocab-integration.js` 提供全局函数，扩展唯一实现门禁并运行同等级验证。
+下一步进入阶段 F/G 的最终验收与收尾：定向验证生词刷新持久化，复核最终差异和测试证据；Vercel 登录恢复后仅创建 Preview 验收，不触碰 Production。
