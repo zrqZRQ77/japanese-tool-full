@@ -4,16 +4,16 @@ Updated: 2026-07-22
 Workspace: `/Users/zhouruoqi/Downloads/japan/japaneselearning`
 Branch: `refactor/app-js-vocab-round2`
 Base: `origin/main` @ `dadf3af2b5981df170e9a13465a8b292f786eb75`
-Current phase: Phase 7 — local acceptance complete
+Current phase: Production released — baseline reset in progress
 
 ## 1. 当前结论
 
-- 上一轮 Lexical 模块化已经发布到 Production，本轮不重新分析、不修改其成果。
-- 当前本地 `HEAD` 与 `origin/main` 相同，工作区在建立本轮文档前为干净状态。
-- 正式域名仍指向 Production Deployment `dpl_R6cpkaGkqYijPdgqgqShtSQT2gFe`，Target `production`，状态 `Ready`。
-- 已从最新 main 建立分支：`refactor/app-js-vocab-round2`。
-- Phase 1 已完成函数清单、`vocabData` / DOM / Storage / HTML 事件依赖标记、模块边界和测试基线。
-- 本轮 71 个候选函数已完成迁移并通过本地整体验收；没有恢复 Stash，没有部署 Preview，没有修改 Production，没有合并 main。
+- 上一轮 Lexical 模块化已经发布到 Production，本轮未重新分析或修改其业务成果。
+- 生词系统第二轮模块化已完成 71 个候选函数迁移、自动化、Preview 人工验收、PR #1 和 main 合并。
+- 当前 main：`87ba6bb1d2d7bb5921bbf5df46f53df83dba5084`。
+- 当前 Production：`dpl_2DD7vb4PHQWCKuK7ANWCDTxUv9Lq`，Target `production`，状态 `Ready`。
+- 正式域名：`https://yomeru.japanese-hub.com`；缓存版本：`20260722-01`。
+- 完整发布记录见：`.ai-coordination/VOCAB_PRODUCTION_RELEASE_20260722.md`。
 
 ## 2. 目标与非目标
 
@@ -350,4 +350,4 @@ Phase 7 最新 UI audit report：`frontend/audit-screenshots/2026-07-22T05-43-03
 
 ## 10. 当前停止点
 
-Phase 7 本地整体验收和 Preview 人工验收均已完成。当前停在 `refactor/app-js-vocab-round2` 本地未提交分支；下一步整理单一提交并推送该分支，未经用户再次明确授权不修改 Production、不合并 main。
+实现、Preview、PR、main 合并与 Production 发布均已完成。当前进入 `RELEASED / OBSERVE`：不重复部署；可选执行 Production Safari 精简抽查，稳定观察后删除已合并功能分支。新的产品任务必须重新排期。
