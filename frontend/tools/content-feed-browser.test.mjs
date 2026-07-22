@@ -158,6 +158,18 @@ try {
         status:'unread',
         addedAt:'2026-07-01T00:00:00.000Z',
         readAt:null
+      }, {
+        id:43,
+        title:'2026 年第二次 JLPT 将于 12 月 6 日举行',
+        url:'https://www.jlpt.jp/',
+        sourceUrl:'https://www.jlpt.jp/',
+        sourceType:'content_engine',
+        contentItemId:'content-202607-jlpt-second-test-date',
+        category:'exam',
+        learningLevel:'N4',
+        status:'read',
+        addedAt:'2026-07-02T00:00:00.000Z',
+        readAt:'2026-07-02T00:00:00.000Z'
       }]));
       localStorage.setItem('yomeru_content_feed_cache_v1', JSON.stringify({
         schemaVersion:1,
@@ -250,6 +262,11 @@ try {
     await page.evaluate(() => switchWorkspace('discover'));
     await page.waitForFunction(() => document.getElementById('readingQueueList')?.textContent?.includes('直接学习'));
     assert.match(await page.locator('#readingQueueList').textContent(), /生活 · N3/);
+    const migratedJlptQueue = page.locator('#readingQueueList .reading-queue-item').filter({hasText:'JLPT'});
+    const migratedJlptLinks = await migratedJlptQueue.locator('a').evaluateAll(nodes => nodes.map(node => ({text:node.textContent.trim(), href:node.href})));
+    assert.deepEqual(migratedJlptLinks.map(link => link.text), ['日本国内报名', '海外报名与考点']);
+    assert.ok(migratedJlptLinks[0].href.includes('/application/domestic_index.html'));
+    assert.ok(migratedJlptLinks[1].href.includes('/application/overseas_index.html'));
     assert.match(await page.locator('#sourceDirectory').textContent(), /官方机构/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /阅读与媒体来源/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /JASSO/);

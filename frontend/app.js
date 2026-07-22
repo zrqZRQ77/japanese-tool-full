@@ -1928,6 +1928,38 @@ function normalizeReadingQueueSourceLinks(links, fallbackUrl = ''){
   return url ? [{label:'官方来源', url}] : [];
 }
 
+function syncReadingQueueContentSources(){
+  let changed = false;
+  READING_QUEUE.forEach(item=>{
+    if(item?.sourceType !== 'content_engine' || !item.contentItemId) return;
+    const current = window.getContentFeedItem?.(item.contentItemId);
+    if(!current) return;
+    const sourceUrl = readingQueueUrl(current.sourceUrl || '');
+    const sourceLinks = normalizeReadingQueueSourceLinks(current.sourceLinks, sourceUrl);
+    const next = {
+      title:String(current.titleZh || current.titleJa || item.title || '').trim().slice(0, 80),
+      url:sourceUrl || item.url,
+      sourceUrl:sourceUrl || item.sourceUrl || item.url,
+      sourceLinks,
+      category:String(current.category || item.category || '').trim() || null,
+      learningLevel:/^N[1-5]$/.test(String(current.learning?.recommendedLevel || ''))
+        ? String(current.learning.recommendedLevel)
+        : item.learningLevel
+    };
+    if(item.title !== next.title
+      || item.url !== next.url
+      || item.sourceUrl !== next.sourceUrl
+      || item.category !== next.category
+      || item.learningLevel !== next.learningLevel
+      || JSON.stringify(item.sourceLinks || []) !== JSON.stringify(next.sourceLinks)){
+      Object.assign(item, next);
+      changed = true;
+    }
+  });
+  if(changed) saveReadingQueue();
+  return changed;
+}
+
 function readingQueueFallbackTitle(url){
   try{
     return new URL(url).hostname.replace(/^www\./, '');
@@ -2020,6 +2052,7 @@ function addReadingQueueItem(event, titleId = 'readingQueueTitleInput', urlId = 
 }
 
 function renderReadingQueue(){
+  syncReadingQueueContentSources();
   const list = document.getElementById('readingQueueList');
   const count = document.getElementById('readingQueueCount');
   if(!list || !count) return;
