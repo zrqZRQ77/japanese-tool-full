@@ -351,4 +351,4 @@ Phase 7 最新 UI audit report：`frontend/audit-screenshots/2026-07-22T05-43-03
 
 ## 10. 当前停止点
 
-实现、Preview、PR、main 合并、Production 发布与电脑/手机真实设备验收均已完成，状态为 `RELEASED / VERIFIED`。本地功能分支已删除；远端功能分支删除待网络重试。完成本次验收记录合并后结束本轮，新的产品任务必须重新排期。
+实现、Preview、PR、main 合并、Production 发布与电脑/手机真实设备验收均已完成，状态为 `RELEASED / VERIFIED`。本地与远端功能分支均已删除。完成本次验收记录合并后结束本轮，新的产品任务必须重新排期。

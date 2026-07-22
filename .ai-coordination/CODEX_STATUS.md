@@ -14,7 +14,7 @@
 - 当前发布结论：`RELEASED / VERIFIED`
 - 当前代码阻断：无 P0/P1 Production 阻断
 - 当前人工项：无；电脑与手机 Production 实测均由用户确认通过
-- 分支清理：`refactor/app-js-vocab-round2` 本地分支已删除，远端删除待网络重试
+- 分支清理：`refactor/app-js-vocab-round2` 本地与远端分支均已删除
 - 下一产品任务：尚未正式排期；优先候选为离线中文释义覆盖扩展的缺口统计与数据源设计
 - 停止规则：真实 Production 回归、不可逆文件归属冲突或需要用户真实设备操作时暂停
 - 最后更新时间：2026-07-22 CST
