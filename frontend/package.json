@@ -20,7 +20,8 @@
     "visual:snapshot": "node tools/visual-snapshot.mjs",
     "visual:snapshot:states": "node tools/visual-snapshot-states.mjs",
     "visual:prune": "node tools/prune-visual-snapshots.mjs",
-    "test:vocab-persistence": "node tools/vocab-persistence-browser.test.mjs"
+    "test:vocab-persistence": "node tools/vocab-persistence-browser.test.mjs",
+    "test:vocab-export": "node tools/vocab-export-browser.test.mjs"
   },
   "devDependencies": {
     "playwright": "^1.45.0"
