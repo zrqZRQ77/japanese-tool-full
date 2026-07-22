@@ -6,8 +6,9 @@
 - Deployment ID：`dpl_2DD7vb4PHQWCKuK7ANWCDTxUv9Lq`
 - main：`87ba6bb1d2d7bb5921bbf5df46f53df83dba5084`
 - 缓存版本：`20260722-01`
-- 发布状态：`RELEASED / OBSERVE`
+- 发布状态：`RELEASED / VERIFIED`
 - 自动化与在线 Chromium 烟雾测试：PASS
+- Production 真实设备抽查：Mac/电脑与手机均由用户确认无问题
 
 本节是发布后精简观察，不要求重复全部历史验收。建议在 Mac Safari 与 iPhone Safari 各抽查：
 
@@ -20,13 +21,13 @@
 
 记录：
 
-- Mac Safari 首次假名：PASS / FAIL / 未执行
-- Mac Safari 热加载：PASS / FAIL / 未执行
-- iPhone Safari 生词刷新：PASS / FAIL / 未执行
-- 闪卡评分：PASS / FAIL / 未执行
-- CSV / Anki：PASS / FAIL / 未执行
-- 移动端布局：PASS / FAIL / 未执行
-- 备注或截图：
+- Mac Safari 首次假名：PASS
+- Mac Safari 热加载：PASS
+- iPhone Safari 生词刷新：PASS
+- 闪卡评分：PASS
+- CSV / Anki：PASS
+- 移动端布局：PASS
+- 备注或截图：用户于 2026-07-22 确认电脑与手机 Production 实测均无问题。
 
 若本节未发现真实回归，不需要重新创建 Preview、重新合并 main 或重新发布 Production。
 

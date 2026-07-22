@@ -1,18 +1,20 @@
 # Codex 当前状态
 
-- 当前阶段：Production 发布收尾与任务基线重置
-- 当前文档分支：`chore/release-baseline-20260722`
-- 当前 main：`87ba6bb1d2d7bb5921bbf5df46f53df83dba5084`
+- 当前阶段：Production 真实设备验收收尾
+- 当前文档分支：`docs/production-device-acceptance-20260722`
+- 当前 main：`cdfd3716c60b8fb45b84d33e079aa5f49d604788`
+- Production 代码合并提交：`87ba6bb1d2d7bb5921bbf5df46f53df83dba5084`
 - 正式线上地址：`https://yomeru.japanese-hub.com`
 - Production Deployment：`dpl_2DD7vb4PHQWCKuK7ANWCDTxUv9Lq`
 - Production 状态：`Ready`
 - 回滚点：`dpl_R6cpkaGkqYijPdgqgqShtSQT2gFe`
 - 当前缓存：`20260722-01`
 - 公开 MVP：仅粘贴日语文本；不恢复 PDF 公开入口
-- 生词系统第二轮模块化：实现、自动化、Preview、人工验收、PR、main 合并与 Production 发布全部完成
-- 当前发布结论：`RELEASED / OBSERVE`
+- 生词系统第二轮模块化：实现、自动化、Preview、人工验收、PR、main 合并、Production 发布与真实设备抽查全部完成
+- 当前发布结论：`RELEASED / VERIFIED`
 - 当前代码阻断：无 P0/P1 Production 阻断
-- 当前人工项：可选的 Mac/iPhone Safari Production 精简抽查
+- 当前人工项：无；电脑与手机 Production 实测均由用户确认通过
+- 分支清理：`refactor/app-js-vocab-round2` 本地与远端分支均已删除
 - 下一产品任务：尚未正式排期；优先候选为离线中文释义覆盖扩展的缺口统计与数据源设计
 - 停止规则：真实 Production 回归、不可逆文件归属冲突或需要用户真实设备操作时暂停
 - 最后更新时间：2026-07-22 CST
