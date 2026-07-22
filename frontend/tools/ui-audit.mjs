@@ -520,7 +520,7 @@ async function runAudit() {
         geometry
       };
     });
-    if(ttsSettings.rateLabel !== '自然速度（-6%）' || /朗读速度|朗读音色/.test(`${ttsSettings.rateLabel} ${ttsSettings.voiceLabel}`)
+    if(ttsSettings.rateLabel !== '自然速度' || /朗读速度|朗读音色/.test(`${ttsSettings.rateLabel} ${ttsSettings.voiceLabel}`)
       || ttsSettings.overflow || ttsSettings.geometry.some(item => !item.sameRow || !item.equalHeight || !item.insideViewport)){
       throw new Error(`TTS setting controls do not show their selected values in one desktop row: ${JSON.stringify(ttsSettings)}.`);
     }
@@ -997,7 +997,10 @@ async function runAudit() {
     process.stdout.write('size ');
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
     process.stdout.write('goto ');
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(async () => {
+      localStorage.clear();
+      if (typeof ensureLearningData === 'function') await ensureLearningData();
+    });
     await page.reload({ waitUntil: 'domcontentloaded' });
     process.stdout.write('reload ');
     await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
@@ -1010,37 +1013,25 @@ async function runAudit() {
     if (viewport.width <= 720) {
       const heroActionsLayout = await page.evaluate(() => {
         const sample = document.querySelector('button[onclick="loadSampleFromHero()"]');
-        const more = document.querySelector('.hero-more-menu > summary');
-        if (!sample || !more) return null;
+        const start = document.getElementById('heroStartButton');
+        if (!sample || !start) return null;
         const sampleRect = sample.getBoundingClientRect();
-        const moreRect = more.getBoundingClientRect();
+        const startRect = start.getBoundingClientRect();
         return {
           sampleLeft: Math.round(sampleRect.left),
           sampleTop: Math.round(sampleRect.top),
-          moreLeft: Math.round(moreRect.left),
-          moreTop: Math.round(moreRect.top)
+          startLeft: Math.round(startRect.left),
+          startTop: Math.round(startRect.top)
         };
       });
       if (!heroActionsLayout
-        || Math.abs(heroActionsLayout.sampleTop - heroActionsLayout.moreTop) > 3
-        || heroActionsLayout.sampleLeft >= heroActionsLayout.moreLeft) {
-        throw new Error(`Viewport ${viewport.name} hero secondary actions are not on one left-to-right row: ${JSON.stringify(heroActionsLayout)}.`);
+        || heroActionsLayout.startTop >= heroActionsLayout.sampleTop
+        || Math.abs(heroActionsLayout.sampleLeft - heroActionsLayout.startLeft) > 3) {
+        throw new Error(`Viewport ${viewport.name} hero actions do not keep the primary action first in one vertical column: ${JSON.stringify(heroActionsLayout)}.`);
       }
       if (viewport.name === 'mobile-390') await screenshot('viewport-mobile-390-home');
     }
     process.stdout.write('hero ');
-    const moreMenu = page.locator('.hero-more-menu');
-    await moreMenu.locator('summary').click();
-    await moreMenu.locator('.hero-menu-popover').waitFor({ state: 'visible', timeout: 3000 });
-    process.stdout.write('menu ');
-    if (viewport.width <= 720) {
-      const moreMenuBounds = await moreMenu.locator('.hero-menu-popover').boundingBox();
-      if (!moreMenuBounds
-        || moreMenuBounds.x < -1
-        || moreMenuBounds.x + moreMenuBounds.width > viewport.width + 1) {
-        throw new Error(`Viewport ${viewport.name} more menu exceeds the viewport: ${JSON.stringify(moreMenuBounds)}.`);
-      }
-    }
     await page.locator('#heroInputText').fill(SAMPLE_TEXT);
     await page.locator('button[onclick="analyzeFromHero()"]', { hasText: '开始阅读' }).click();
     await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 6000 });

@@ -38,6 +38,7 @@ function cacheVersion(indexHtml) {
     indexHtml.match(/design-system\.css\?v=([^"']+)/)?.[1],
     indexHtml.match(/grammar-layout\.css\?v=([^"']+)/)?.[1],
     indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1],
+    indexHtml.match(/content-feed\.js\?v=([^"']+)/)?.[1],
     indexHtml.match(/app\.js\?v=([^"']+)/)?.[1]
   ].filter(Boolean);
   const unique = [...new Set(versions)];
@@ -307,9 +308,10 @@ async function run() {
     }
 
     await page.goto(serverInfo.baseUrl, { waitUntil: 'domcontentloaded' });
-    await page.evaluate(() => {
+    await page.evaluate(async () => {
       localStorage.clear();
       localStorage.setItem('reading_guide_prompt_seen', '1');
+      if (typeof ensureLearningData === 'function') await ensureLearningData();
     });
     await page.reload({ waitUntil: 'domcontentloaded' });
     await page.locator('#heroInputText').fill(SAMPLE_TEXT);
@@ -332,12 +334,7 @@ async function run() {
       await page.locator('#output ruby.w rt').first().waitFor({ state: 'attached', timeout: 3000 });
     });
 
-    await step('翻译开启状态', '04-translation-on', async () => {
-      await page.locator('#translationToggleBtn').click();
-      await page.locator('.paragraph-translation').first().waitFor({ state: 'visible', timeout: 3000 });
-    });
-
-    await step('字号设置弹窗', '05-reading-font-settings', async () => {
+    await step('字号设置弹窗', '04-reading-font-settings', async () => {
       await page.locator('#readingFontSettingsButton').click();
       await page.locator('#readingDisplayModal').waitFor({ state: 'visible', timeout: 3000 });
       const largePreset = page.locator('#readingDisplayModal button[data-preset="large"]');
@@ -345,15 +342,15 @@ async function run() {
     });
     await closeFontModalIfOpen();
 
-    await step('导出弹窗', '06-export-modal', async () => {
+    await step('导出弹窗', '05-export-modal', async () => {
       await page.locator('#exportTriggerBtn').click();
       await page.locator('#exportModal').waitFor({ state: 'visible', timeout: 3000 });
-      await page.locator('#exportLayoutSelect').selectOption('portrait');
       await page.locator('#exportFormatSelect').selectOption('png');
+      await page.locator('#exportLayoutSelect').selectOption('portrait');
     });
     await closeExportModalIfOpen();
 
-    await step('收藏生词后的生词本', '07-vocab-saved', async () => {
+    await step('收藏生词后的生词本', '06-vocab-saved', async () => {
       await clickPreferredWord();
       const addButton = page.locator('#detailArea .add-vocab-tool').first();
       if (await addButton.isVisible().catch(() => false)) await addButton.click();
@@ -361,19 +358,25 @@ async function run() {
       await page.locator('#vocabListPage, #vocabEmptyPage').first().waitFor({ state: 'attached', timeout: 3000 });
     });
 
-    await step('生词本管理菜单', '08-vocab-management-menu', async () => {
+    await step('生词本管理菜单', '07-vocab-management-menu', async () => {
       const menu = page.locator('details.vocab-management-menu summary').first();
       await menu.click();
       await page.locator('.vocab-management-options').waitFor({ state: 'visible', timeout: 3000 });
     });
 
-    await step('JLPT筛选菜单', '09-vocab-jlpt-filter', async () => {
+    await step('JLPT筛选菜单', '08-vocab-jlpt-filter', async () => {
       const managementMenu = page.locator('details.vocab-management-menu').first();
       if (await managementMenu.isVisible().catch(() => false)) {
         await page.keyboard.press('Escape').catch(() => {});
       }
       await page.locator('#vocabJlptFilterMenu summary').click();
       await page.locator('#vocabJlptFilterMenu .vocab-filter-menu-options').waitFor({ state: 'visible', timeout: 3000 });
+    });
+
+    await step('日本留学・生活资讯', '09-content-feed', async () => {
+      await page.evaluate(() => window.switchWorkspace?.('discover'));
+      await page.waitForFunction(() => ['fallback', 'cache', 'remote'].includes(document.getElementById('contentFeedSection')?.dataset.feedSource));
+      await page.locator('#contentFeedGrid .content-feed-card').first().waitFor({ state: 'visible', timeout: 3000 });
     });
 
     manifest.ok = manifest.screenshots.every(item => item.ok) && manifest.console.every(item => item.type !== 'pageerror');
