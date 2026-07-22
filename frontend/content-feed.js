@@ -57,12 +57,14 @@
             "url": "https://www.jasso.go.jp/ryugaku/eju/news/1216740_2562.html",
             "sourceType": "official",
             "isPrimary": true,
-            "verifiedAt": "2026-07-22T00:00:00+09:00"
+            "verifiedAt": "2026-07-22T00:00:00+09:00",
+            "label": "报名公告"
           }
         ],
         "publicationTargets": [
           "yomeru"
-        ]
+        ],
+        "sourceLinkPolicy": "article_specific"
       },
       {
         "schemaVersion": 1,
@@ -92,16 +94,27 @@
         "sources": [
           {
             "organization": "日本語能力試験",
-            "title": "日本語能力試験の実施日",
-            "url": "https://www.jlpt.jp/guideline/results.html",
+            "title": "日本国内で受験する",
+            "label": "日本国内报名",
+            "url": "https://www.jlpt.jp/application/domestic_index.html",
             "sourceType": "official",
             "isPrimary": true,
+            "verifiedAt": "2026-07-22T00:00:00+09:00"
+          },
+          {
+            "organization": "日本語能力試験",
+            "title": "海外で受験する",
+            "label": "海外报名与考点",
+            "url": "https://www.jlpt.jp/application/overseas_index.html",
+            "sourceType": "official",
+            "isPrimary": false,
             "verifiedAt": "2026-07-22T00:00:00+09:00"
           }
         ],
         "publicationTargets": [
           "yomeru"
-        ]
+        ],
+        "sourceLinkPolicy": "article_specific"
       },
       {
         "schemaVersion": 1,
@@ -135,12 +148,14 @@
             "url": "https://www.moj.go.jp/isa/support/portal/guidebook_all.html",
             "sourceType": "official",
             "isPrimary": true,
-            "verifiedAt": "2026-07-22T00:00:00+09:00"
+            "verifiedAt": "2026-07-22T00:00:00+09:00",
+            "label": "指南页面"
           }
         ],
         "publicationTargets": [
           "yomeru"
-        ]
+        ],
+        "sourceLinkPolicy": "article_specific"
       }
     ]
   };
@@ -180,10 +195,29 @@
   }
 
   function primarySource(item) {
-    const sources = Array.isArray(item?.sources) ? item.sources : [];
+    const sources = Array.isArray(item?.sources) && item.sources.length
+      ? item.sources
+      : (Array.isArray(item?.sourceLinks) ? item.sourceLinks : []);
     return sources.find(source => source?.isPrimary && validHttpUrl(source?.url))
       || sources.find(source => validHttpUrl(source?.url))
       || null;
+  }
+
+  function normalizedSources(item) {
+    const sources = Array.isArray(item?.sources) && item.sources.length
+      ? item.sources
+      : (Array.isArray(item?.sourceLinks) ? item.sourceLinks : []);
+    return sources.map(source => {
+      const url = validHttpUrl(source?.url);
+      if (!url) return null;
+      return {
+        organization: String(source?.organization || '').trim(),
+        title: String(source?.title || '').trim(),
+        label: String(source?.label || source?.title || '官方来源').trim(),
+        url,
+        isPrimary: Boolean(source?.isPrimary)
+      };
+    }).filter(Boolean);
   }
 
   function isExpired(item) {
@@ -247,7 +281,9 @@
       },
       sourceUrl: validHttpUrl(source.url),
       sourceOrganization: String(source.organization || '').trim(),
-      sourceTitle: String(source.title || '').trim()
+      sourceTitle: String(source.title || '').trim(),
+      sourceLinks: normalizedSources(item),
+      sourceLinkPolicy: String(item.sourceLinkPolicy || 'article_specific')
     };
   }
 

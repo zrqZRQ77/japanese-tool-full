@@ -122,7 +122,7 @@ try {
     await page.locator('.app-sidebar .nav-item[data-view="discover"]').click();
     await page.waitForFunction(() => document.body.dataset.view === 'discover');
     await page.waitForSelector('#gradedMaterialGrid .graded-material-card.is-official');
-    assert.equal(await page.locator('.app-sidebar .nav-item[data-view="discover"] .nav-label').textContent(), '资讯阅读');
+    assert.equal(await page.locator('.app-sidebar .nav-item[data-view="discover"] .nav-label').textContent(), '素材库');
     assert.equal(await page.locator('#gradedSourceFilters select').count(), 1);
     assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').count(), 1);
     assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /生活与就业指南/);
@@ -186,16 +186,38 @@ try {
     assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card').count(), 9);
     assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').count(), 3);
     assert.equal((await page.locator('#gradedMaterialTotal').textContent())?.trim(), '9');
+    assert.match(await page.locator('#gradedMaterialSummary').textContent(), /共 9 篇素材/);
+    assert.equal(await page.locator('#gradedClearFiltersButton').isHidden(), true);
+    assert.equal(await page.locator('#readingQueueInlineForm').isHidden(), true);
+    await page.locator('#readingQueueAddButton').click();
+    assert.equal(await page.locator('#readingQueueInlineForm').isVisible(), true);
+    await page.locator('#readingQueueAddButton').click();
+    assert.equal(await page.locator('#readingQueueInlineForm').isHidden(), true);
     const fallbackCards = await page.locator('#gradedMaterialGrid .graded-material-card.is-official').allTextContents();
     assert.ok(fallbackCards.some(text => text.includes('EJU')));
     assert.ok(fallbackCards.some(text => text.includes('JLPT')));
     assert.ok(fallbackCards.some(text => text.includes('生活与就业指南')));
     assert.equal(await page.locator('#gradedMaterialGrid').textContent().then(text => text.includes('过期远程缓存')), false);
+    assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').first().textContent(), /EJU/);
+    const jlptCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'JLPT'});
+    assert.match(await jlptCard.textContent(), /12\/6/);
+    assert.doesNotMatch(await jlptCard.textContent(), /12\/5/);
+    const jlptLinks = await jlptCard.locator('.graded-card-links a').evaluateAll(nodes => nodes.map(node => ({text:node.textContent.trim(), href:node.href})));
+    assert.deepEqual(jlptLinks.map(link => link.text), ['日本国内报名', '海外报名与考点']);
+    assert.ok(jlptLinks[0].href.includes('/application/domestic_index.html'));
+    assert.ok(jlptLinks[1].href.includes('/application/overseas_index.html'));
+    const guideCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'生活与就业指南'});
+    assert.match(await guideCard.textContent(), /2\/26/);
+    assert.doesNotMatch(await guideCard.textContent(), /2\/25/);
+    assert.doesNotMatch(await page.locator('#gradedMaterialGrid .graded-material-card.is-internal').first().locator('.graded-card-top').textContent(), /站内短文/);
 
     await page.locator('#gradedSourceFilters select').selectOption('官方资讯');
     assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card').count(), 3);
+    assert.match(await page.locator('#gradedMaterialSummary').textContent(), /显示 3 \/ 9 篇/);
+    assert.equal(await page.locator('#gradedClearFiltersButton').isVisible(), true);
     await page.locator('#gradedTopicFilters select').selectOption('考试');
     assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card').count(), 2);
+    assert.match(await page.locator('#gradedMaterialSummary').textContent(), /显示 2 \/ 9 篇/);
     await page.locator('#gradedTopicFilters select').selectOption('全部');
     await page.locator('#gradedSourceFilters select').selectOption('全部');
 
@@ -218,6 +240,7 @@ try {
     assert.equal(contentItem?.learningLevel, 'N3');
     assert.equal(contentItem?.category, 'life');
     assert.match(contentItem?.sourceUrl || '', /^https:\/\//);
+    assert.equal(contentItem?.sourceLinks?.[0]?.label, '指南页面');
     assert.ok(Number.isFinite(Number(contentItem?.id)));
     assert.ok(state.activeId === String(contentItem?.id) || (state.activeId === null && contentItem?.status === 'read'));
     assert.ok(legacyItem, 'legacy queue items must survive normalization');
@@ -227,9 +250,12 @@ try {
     await page.evaluate(() => switchWorkspace('discover'));
     await page.waitForFunction(() => document.getElementById('readingQueueList')?.textContent?.includes('直接学习'));
     assert.match(await page.locator('#readingQueueList').textContent(), /生活 · N3/);
+    assert.match(await page.locator('#sourceDirectory').textContent(), /官方机构/);
+    assert.match(await page.locator('#sourceDirectory').textContent(), /阅读与媒体来源/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /JASSO/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /JLPT/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /出入国在留管理庁/);
+    assert.match(await page.locator('#externalSourceSummary').textContent(), /5 个来源/);
     await context.close();
   }
 

@@ -488,7 +488,7 @@ async function runAudit() {
       settingsVisible: Boolean(document.querySelector('.sidebar-footer .sidebar-utility-button') && getComputedStyle(document.querySelector('.sidebar-footer .sidebar-utility-button')).display !== 'none'),
       floatingSettingsVisible: Boolean(document.querySelector('.mvp-settings-button') && getComputedStyle(document.querySelector('.mvp-settings-button')).display !== 'none')
     }));
-    if(JSON.stringify(publicState.desktopNav) !== JSON.stringify(['阅读', '生词本', '资讯阅读'])) throw new Error(`Unexpected primary navigation: ${JSON.stringify(publicState.desktopNav)}.`);
+    if(JSON.stringify(publicState.desktopNav) !== JSON.stringify(['阅读', '生词本', '素材库'])) throw new Error(`Unexpected primary navigation: ${JSON.stringify(publicState.desktopNav)}.`);
     if(publicState.hiddenViewsVisible) throw new Error(`${publicState.hiddenViewsVisible} MVP-hidden entries are still visible.`);
     if(publicState.translationVisible || publicState.translationPromotion) throw new Error('Translation UI is still publicly visible.');
     if(!publicState.settingsVisible || publicState.floatingSettingsVisible) throw new Error(`Low-frequency settings placement is incorrect: ${JSON.stringify(publicState)}.`);
@@ -1103,7 +1103,7 @@ async function runAudit() {
       const mobileNavLabels = await page.evaluate(() => [...document.querySelectorAll('#menuPanel .nav-item')]
         .filter(node => node.dataset.view !== 'settings' && !node.hidden && getComputedStyle(node).display !== 'none')
         .map(node => node.textContent.trim()));
-      if(JSON.stringify(mobileNavLabels) !== JSON.stringify(['阅读', '生词本', '资讯阅读'])) throw new Error(`Viewport ${viewport.name} exposes unexpected mobile navigation: ${JSON.stringify(mobileNavLabels)}.`);
+      if(JSON.stringify(mobileNavLabels) !== JSON.stringify(['阅读', '生词本', '素材库'])) throw new Error(`Viewport ${viewport.name} exposes unexpected mobile navigation: ${JSON.stringify(mobileNavLabels)}.`);
       const mobileSettingsVisible = await page.locator('#menuPanel .menu-settings-entry').isVisible();
       if(!mobileSettingsVisible) throw new Error(`Viewport ${viewport.name} does not expose settings at the bottom of the menu.`);
       if(viewport.name === 'mobile-390'){

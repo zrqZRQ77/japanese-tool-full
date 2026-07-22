@@ -1781,7 +1781,7 @@ function openGuidedStep(type = ''){
 const GLOBAL_SEARCH_ITEMS = [
   {label:'开始阅读', detail:'粘贴日语文本', keywords:'阅读 开始 粘贴 日语 文本', action:()=>switchWorkspace('reading')},
   {label:'整理生词本', detail:'搜索、筛选、管理收藏词', keywords:'生词 单词 词汇 收藏 搜索 筛选', action:()=>switchWorkspace('vocab')},
-  {label:'资讯阅读', detail:'阅读日本留学、考试与生活官方资讯', keywords:'资讯 新闻 留学 EJU JLPT 日本生活 官方', action:()=>openContentFeed()},
+  {label:'素材库', detail:'浏览分级短文、官方资讯与阅读来源', keywords:'素材 阅读 资讯 新闻 留学 EJU JLPT 日本生活 官方', action:()=>openContentFeed()},
   {label:'复习到期词', detail:'打开闪卡复习', keywords:'复习 闪卡 到期 生词', action:()=>startReview()},
   {label:'练生词', detail:'打开生词本闪卡复习', keywords:'练习 生词 自测 闪卡', action:()=>switchWorkspace('vocab')},
   {label:'备份数据', detail:'在设置与数据管理中导出或恢复学习数据', keywords:'备份 恢复 导出 数据 设置', action:()=>switchWorkspace('settings')}
@@ -1895,7 +1895,8 @@ function normalizeReadingQueueItems(items){
       sourceType:item?.sourceType === 'content_engine' ? 'content_engine' : null,
       category:String(item?.category || '').trim() || null,
       learningLevel:/^N[1-5]$/.test(String(item?.learningLevel || '')) ? String(item.learningLevel) : null,
-      sourceUrl:readingQueueUrl(item?.sourceUrl || url) || url
+      sourceUrl:readingQueueUrl(item?.sourceUrl || url) || url,
+      sourceLinks:normalizeReadingQueueSourceLinks(item?.sourceLinks, item?.sourceUrl || url)
     }];
   }).slice(0, 100);
 }
@@ -1911,6 +1912,20 @@ function readingQueueUrl(value){
   }catch{
     return '';
   }
+}
+
+function normalizeReadingQueueSourceLinks(links, fallbackUrl = ''){
+  const normalized = (Array.isArray(links) ? links : []).map(link=>{
+    const url = readingQueueUrl(link?.url);
+    if(!url) return null;
+    return {
+      label:String(link?.label || link?.title || '官方来源').trim().slice(0, 40),
+      url
+    };
+  }).filter(Boolean);
+  if(normalized.length) return normalized;
+  const url = readingQueueUrl(fallbackUrl);
+  return url ? [{label:'官方来源', url}] : [];
 }
 
 function readingQueueFallbackTitle(url){
@@ -1952,6 +1967,27 @@ function setReadingQueueStatus(message, type = '', targetId = 'readingQueueStatu
   target.className = `reading-queue-status ${type}`.trim();
 }
 
+function toggleReadingQueueForm(forceOpen){
+  const form = document.getElementById('readingQueueInlineForm');
+  const button = document.getElementById('readingQueueAddButton');
+  const panel = document.getElementById('readingQueuePanel');
+  if(!form || !button) return;
+  const open = typeof forceOpen === 'boolean' ? forceOpen : form.hidden;
+  form.hidden = !open;
+  button.setAttribute('aria-expanded', open ? 'true' : 'false');
+  button.textContent = open ? '收起添加' : '添加文章';
+  panel?.classList.toggle('is-form-open', open);
+  if(open) requestAnimationFrame(()=>document.getElementById('readingQueueUrlInput')?.focus());
+}
+
+function readingQueueSourceActions(item){
+  if(item?.sourceType !== 'content_engine'){
+    return `<a class="btn-ghost" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">打开原文</a>`;
+  }
+  const links = normalizeReadingQueueSourceLinks(item.sourceLinks, item.sourceUrl || item.url);
+  return links.map(link=>`<a class="btn-ghost" href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`).join('');
+}
+
 function addReadingQueueItem(event, titleId = 'readingQueueTitleInput', urlId = 'readingQueueUrlInput', statusId = 'readingQueueStatus'){
   event?.preventDefault();
   const titleInput = document.getElementById(titleId);
@@ -1978,6 +2014,7 @@ function addReadingQueueItem(event, titleId = 'readingQueueTitleInput', urlId = 
   if(titleInput) titleInput.value = '';
   if(urlInput) urlInput.value = '';
   setReadingQueueStatus('已加入阅读清单。', 'ok', statusId);
+  toggleReadingQueueForm(false);
   renderReadingQueue();
   renderDailyPlan();
 }
@@ -1992,7 +2029,7 @@ function renderReadingQueue(){
   });
   const unreadCount = sorted.filter(item => item.status !== 'read').length;
   const readCount = sorted.length - unreadCount;
-  count.textContent = `${unreadCount} 篇未读`;
+  count.textContent = sorted.length ? `${sorted.length} 篇 · ${unreadCount} 未读` : '0 篇';
   const panel = document.getElementById('readingQueuePanel');
   if(panel){
     panel.classList.toggle('is-empty', !sorted.length);
@@ -2007,7 +2044,7 @@ function renderReadingQueue(){
   if(readStat) readStat.textContent = String(readCount);
   if(sourceStat) sourceStat.textContent = String(READING_SOURCES.length);
   if(!sorted.length){
-    list.innerHTML = '';
+    list.innerHTML = '<div class="reading-queue-empty-compact">还没有保存的文章。点击“添加文章”可加入外部阅读链接。</div>';
     return;
   }
   list.innerHTML = sorted.map(item => `
@@ -2019,7 +2056,7 @@ function renderReadingQueue(){
       </div>
       <div class="reading-queue-actions">
         ${item.status === 'read' && item.sourceType !== 'content_engine' ? '' : `<button class="btn-primary" onclick="openReadingQueueItem(${item.id})">${readingQueuePrimaryLabel(item)}</button>`}
-        <a class="btn-ghost" href="${escapeHtml(item.sourceUrl || item.url)}" target="_blank" rel="noopener noreferrer">${item.sourceType === 'content_engine' ? '官方来源' : '打开原文'}</a>
+        ${readingQueueSourceActions(item)}
         <button class="btn-ghost" onclick="toggleReadingQueueItem(${item.id})">${item.status === 'read' ? '重新加入' : '标为已读'}</button>
         <button class="reading-queue-remove" onclick="removeReadingQueueItem(${item.id})" title="删除" aria-label="从阅读清单删除 ${escapeHtml(item.title || '')}">${removeVocabIcon()}</button>
       </div>
@@ -2101,7 +2138,8 @@ function startContentFeedLearning(item){
     sourceType:'content_engine',
     category:String(item.category || '').trim() || null,
     learningLevel:/^N[1-5]$/.test(String(item.learning?.recommendedLevel || '')) ? String(item.learning.recommendedLevel) : null,
-    sourceUrl
+    sourceUrl,
+    sourceLinks:normalizeReadingQueueSourceLinks(item.sourceLinks, sourceUrl)
   };
   READING_QUEUE.unshift(queueItem);
   saveReadingQueue();
@@ -7827,7 +7865,7 @@ function sourceTypeMatches(filter, source){
   return source?.category === filter || source?.type?.includes(filter) || source?.traits?.some(trait => trait.includes(filter));
 }
 
-function internalReadingMaterial(material){
+function internalReadingMaterial(material, sortIndex = 0){
   const [titleJa, ...titleZhParts] = String(material?.title || '').split('——');
   return {
     ...material,
@@ -7840,7 +7878,8 @@ function internalReadingMaterial(material){
     sourceUrl:'',
     contentItemId:null,
     effectiveAt:null,
-    expiresAt:null
+    expiresAt:null,
+    sortIndex
   };
 }
 
@@ -7864,16 +7903,46 @@ function officialFeedReadingMaterial(item){
     sourceFilter:'官方资讯',
     sourceLabel:item.sourceOrganization || '官方机构',
     sourceUrl:item.sourceUrl || '',
+    sourceLinks:Array.isArray(item.sourceLinks) ? item.sourceLinks : [],
+    sourceLinkPolicy:item.sourceLinkPolicy || 'article_specific',
     contentType:item.contentType || 'news',
+    sourcePublishedAt:item.dates?.sourcePublishedAt || null,
     effectiveAt:item.dates?.effectiveAt || null,
-    expiresAt:item.dates?.expiresAt || null
+    expiresAt:item.dates?.expiresAt || null,
+    lastVerifiedAt:item.dates?.lastVerifiedAt || null
   };
 }
 
+function readingMaterialTime(value){
+  const time = Date.parse(value || '');
+  return Number.isFinite(time) ? time : 0;
+}
+
+function readingMaterialPriority(material){
+  if(material.sourceKind !== 'official') return 3;
+  if(material.contentType === 'alert' && material.expiresAt && readingMaterialTime(material.expiresAt) > Date.now()) return 0;
+  if(material.contentType === 'news' || material.contentType === 'guide') return 1;
+  return 2;
+}
+
+function compareReadingMaterials(a, b){
+  const priorityDiff = readingMaterialPriority(a) - readingMaterialPriority(b);
+  if(priorityDiff) return priorityDiff;
+  if(a.sourceKind === 'official' && b.sourceKind === 'official'){
+    if(a.contentType === 'alert' && b.contentType === 'alert'){
+      return readingMaterialTime(a.expiresAt) - readingMaterialTime(b.expiresAt);
+    }
+    const aDate = readingMaterialTime(a.sourcePublishedAt || a.effectiveAt || a.lastVerifiedAt);
+    const bDate = readingMaterialTime(b.sourcePublishedAt || b.effectiveAt || b.lastVerifiedAt);
+    return bDate - aDate;
+  }
+  return Number(a.sortIndex || 0) - Number(b.sortIndex || 0);
+}
+
 function getUnifiedReadingMaterials(){
-  const internal = GRADED_READING_MATERIALS.map(internalReadingMaterial);
+  const internal = GRADED_READING_MATERIALS.map((material, index)=>internalReadingMaterial(material, index));
   const official = (window.getContentFeedItems?.() || []).map(officialFeedReadingMaterial);
-  return [...official, ...internal];
+  return [...official, ...internal].sort(compareReadingMaterials);
 }
 
 function gradedMaterialMatches(material){
@@ -7945,12 +8014,34 @@ function materialTopicClass(topic){
   return `topic-${key}`;
 }
 
-function materialTimingLabel(material){
-  const value = material.contentType === 'alert' && material.expiresAt ? material.expiresAt : material.effectiveAt;
+function formatJapanDate(value, includeTime = false){
   if(!value || Number.isNaN(Date.parse(value))) return '';
-  const date = new Date(value);
-  const label = new Intl.DateTimeFormat('zh-CN', {month:'numeric', day:'numeric'}).format(date);
-  return material.contentType === 'alert' ? `截止 ${label}` : label;
+  const formatter = new Intl.DateTimeFormat('zh-CN', {
+    timeZone:'Asia/Tokyo',
+    month:'numeric',
+    day:'numeric',
+    ...(includeTime ? {hour:'2-digit', minute:'2-digit', hour12:false} : {})
+  });
+  return formatter.format(new Date(value)).replace('24:', '00:');
+}
+
+function materialTimingLabel(material){
+  if(material.contentType === 'alert' && material.expiresAt){
+    const label = formatJapanDate(material.expiresAt, true);
+    return label ? `截止 ${label}（日本时间）` : '';
+  }
+  return formatJapanDate(material.sourcePublishedAt || material.effectiveAt || material.lastVerifiedAt, false);
+}
+
+function materialSourceLinks(material){
+  if(material.sourceKind !== 'official') return [];
+  const links = Array.isArray(material.sourceLinks) && material.sourceLinks.length
+    ? material.sourceLinks
+    : (material.sourceUrl ? [{label:'官方来源', url:material.sourceUrl}] : []);
+  return links.filter(link=>readingQueueUrl(link?.url)).map(link=>({
+    label:String(link.label || link.title || '官方来源').trim(),
+    url:readingQueueUrl(link.url)
+  }));
 }
 
 function renderGradedReadingMaterials(){
@@ -8004,23 +8095,35 @@ function renderGradedReadingMaterials(){
   }
   if(!grid) return;
   const items = allItems.filter(gradedMaterialMatches);
+  const hasFilters = ACTIVE_GRADED_LEVEL !== '全部' || ACTIVE_GRADED_TOPIC !== '全部' || ACTIVE_GRADED_SOURCE !== '全部';
+  const summary = document.getElementById('gradedMaterialSummary');
+  const clearButton = document.getElementById('gradedClearFiltersButton');
+  if(summary){
+    summary.innerHTML = hasFilters
+      ? `显示 ${items.length} / <span id="gradedMaterialTotal">${allItems.length}</span> 篇`
+      : `共 <span id="gradedMaterialTotal">${allItems.length}</span> 篇素材`;
+  }
+  if(clearButton) clearButton.hidden = !hasFilters;
   grid.innerHTML = items.length ? items.map(material => {
     const topics = (material.topics || [material.topic]).filter(Boolean).slice(0, 2);
     const timing = materialTimingLabel(material);
+    const links = materialSourceLinks(material);
+    const officialTag = material.sourceKind === 'official' ? '<span class="material-source-kind">官方</span>' : '';
+    const linkMarkup = links.length ? `<span class="graded-card-links">${links.map(link=>`<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHtml(link.label)}</a>`).join('')}</span>` : '';
     return `
       <article class="graded-material-card ${material.sourceKind === 'official' ? 'is-official' : 'is-internal'}" onclick="loadGradedReadingMaterial('${escapeHtml(material.id)}')" tabindex="0" role="button" aria-label="阅读 ${escapeHtml(material.titleJa || material.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadGradedReadingMaterial('${escapeHtml(material.id)}')}">
         <div class="graded-card-top">
           <span class="material-level ${materialLevelClass(material.level)}">${escapeHtml(material.level)}</span>
           ${topics.map(topic => `<span class="material-topic ${materialTopicClass(topic)}">${escapeHtml(topic)}</span>`).join('')}
-          <span class="material-source-kind">${escapeHtml(material.sourceFilter)}</span>
-          <span>${escapeHtml(material.minutes)} 分钟</span>
+          ${officialTag}
         </div>
         <h3 lang="ja">${escapeHtml(material.titleJa || gradedMaterialDisplayTitle(material.title))}</h3>
         ${material.titleZh ? `<p class="graded-material-subtitle">${escapeHtml(material.titleZh)}</p>` : ''}
         <div class="graded-card-meta">
           <span>${escapeHtml(material.sourceLabel || 'Yumeru')}</span>
+          <span>${escapeHtml(material.minutes)} 分钟</span>
           ${timing ? `<span>${escapeHtml(timing)}</span>` : ''}
-          ${material.sourceUrl ? `<a href="${escapeHtml(material.sourceUrl)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">官方来源</a>` : ''}
+          ${linkMarkup}
         </div>
       </article>
     `;
@@ -8142,18 +8245,8 @@ function renderSourceRecommendations(){
   `).join('');
 }
 
-function renderSourceDirectory(){
-  const target = document.getElementById('sourceDirectory');
-  if(!target) return;
-  renderGradedReadingMaterials();
-  renderSourceLevelTabs();
-  renderSourceTypeTabs();
-  const visibleSources = READING_SOURCES.filter(source => !source.caution);
-  const externalTotal = document.getElementById('externalSourceTotal');
-  if(externalTotal) externalTotal.textContent = String(visibleSources.length);
-  const recommended = (safeStorage.getItem('reading_level_result') || '').split('｜')[0] || '';
-  const sources = visibleSources.filter(source => sourceLevelMatches(ACTIVE_SOURCE_LEVEL, source.level) && sourceTypeMatches(ACTIVE_SOURCE_TYPE, source));
-  target.innerHTML = sources.length ? sources.map(source => `
+function sourceDirectoryCard(source, recommended){
+  return `
     <article class="source-directory-item ${source.official ? 'is-official' : ''} ${recommendedSourceForLevel(source, recommended) ? 'recommended' : ''}" onclick="openRecommendedSource('${source.url}')" tabindex="0" role="link" aria-label="访问 ${escapeHtml(source.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecommendedSource('${source.url}')}">
       <div class="source-directory-icon ${source.official ? 'is-purple' : source.category === '新闻' ? 'is-red' : source.category === '生活' ? 'is-purple' : source.category === '旅行' ? 'is-orange' : 'is-green'}" aria-hidden="true">
         ${escapeHtml(source.icon || (source.title.includes('NHK') ? 'N' : source.category === '生活' ? '読' : source.category === '旅行' ? '旅' : '経'))}
@@ -8163,6 +8256,43 @@ function renderSourceDirectory(){
         <p>${escapeHtml(source.level)} · ${escapeHtml(source.category)} / ${escapeHtml((source.traits || [source.type]).slice(0, 2).join(' / ') || source.type)}</p>
       </div>
     </article>
+  `;
+}
+
+function renderSourceDirectory(){
+  const target = document.getElementById('sourceDirectory');
+  if(!target) return;
+  renderGradedReadingMaterials();
+  renderSourceLevelTabs();
+  renderSourceTypeTabs();
+  const visibleSources = READING_SOURCES.filter(source => !source.caution);
+  const recommended = (safeStorage.getItem('reading_level_result') || '').split('｜')[0] || '';
+  const sources = visibleSources.filter(source => sourceLevelMatches(ACTIVE_SOURCE_LEVEL, source.level) && sourceTypeMatches(ACTIVE_SOURCE_TYPE, source));
+  const hasFilters = ACTIVE_SOURCE_LEVEL !== '全部' || ACTIVE_SOURCE_TYPE !== '全部';
+  const sourceSummary = document.getElementById('externalSourceSummary');
+  const clearButton = document.getElementById('externalSourceClearButton');
+  if(sourceSummary){
+    sourceSummary.innerHTML = hasFilters
+      ? `显示 ${sources.length} / <span id="externalSourceTotal">${visibleSources.length}</span> 个来源`
+      : `<span id="externalSourceTotal">${visibleSources.length}</span> 个来源`;
+  }
+  if(clearButton) clearButton.hidden = !hasFilters;
+  const officialSources = sources.filter(source => source.official);
+  const mediaSources = sources.filter(source => !source.official);
+  const groups = [
+    ['官方机构', '用于核对考试、留学、在留和生活制度的原始信息', officialSources],
+    ['阅读与媒体来源', '用于寻找新闻、生活、旅行、商业和兴趣类日语文章', mediaSources]
+  ].filter(([, , items]) => items.length);
+  target.innerHTML = groups.length ? groups.map(([title, description, items]) => `
+    <section class="source-directory-group">
+      <div class="source-directory-group-head">
+        <h3>${escapeHtml(title)}</h3>
+        <span>${escapeHtml(description)}</span>
+      </div>
+      <div class="source-directory-group-grid">
+        ${items.map(source=>sourceDirectoryCard(source, recommended)).join('')}
+      </div>
+    </section>
   `).join('') : '<div class="source-empty-state">这个等级暂时没有对应类型。可以换一个类型，或使用当前等级示例开始阅读。</div>';
   renderSourceRecommendations();
 }

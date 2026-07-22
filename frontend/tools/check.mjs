@@ -213,6 +213,9 @@ assertCheck(!indexHtml.includes('contentFeedSection') && indexHtml.includes('gra
 assertCheck(contentFeedFallback.schemaVersion === 1 && Array.isArray(contentFeedFallback.items) && contentFeedFallback.items.length >= 3 && contentFeedJs.includes('BUNDLED_FALLBACK_PAYLOAD'), 'bundled content feed fallback is valid and available at runtime');
 assertCheck(!/(editorial|internalNotes|reviewedBy)/.test(JSON.stringify(contentFeedFallback)), 'bundled content feed fallback excludes internal editorial fields');
 assertCheck(['jasso', 'jlpt-official', 'isa-guide'].every(id => appJs.includes(`id:'${id}'`)), 'official institutions are available in the shared source directory');
+assertCheck(contentFeedFallback.items.some(item => item.id === 'content-202607-jlpt-second-test-date' && item.sources.some(source => source.url.includes('/application/domestic_index.html')) && item.sources.some(source => source.url.includes('/application/overseas_index.html'))), 'JLPT article uses article-specific domestic and overseas application links');
+assertCheck(appJs.includes("timeZone:'Asia/Tokyo'") && appJs.includes('compareReadingMaterials') && appJs.includes('source-directory-group'), 'material library keeps Japan dates, freshness sorting, and grouped sources');
+assertCheck(indexHtml.includes('id="readingQueueInlineForm" onsubmit="addReadingQueueItem(event)" hidden') && indexHtml.includes('id="readingQueueAddButton"'), 'reading queue add form is compact and expandable');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
 assertCheck(
@@ -343,7 +346,7 @@ assertCheck(
 assertCheck(
   globalSearchSource.includes("label:'开始阅读'")
     && globalSearchSource.includes("label:'整理生词本'")
-    && globalSearchSource.includes("label:'资讯阅读'")
+    && globalSearchSource.includes("label:'素材库'")
     && globalSearchSource.includes("label:'备份数据'")
     && !/(?:语法本|水平测试|学习历史|找阅读材料|句型打字|文章理解练习)/.test(globalSearchSource),
   'global search matches reduced public MVP navigation'

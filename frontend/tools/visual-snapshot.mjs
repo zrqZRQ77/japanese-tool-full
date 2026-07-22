@@ -229,7 +229,7 @@ async function run() {
 
     await page.evaluate(() => window.switchWorkspace?.('discover'));
     await page.waitForFunction(() => ['fallback', 'cache', 'remote'].includes(window.getContentFeedSource?.()));
-    await shot('日本留学・生活资讯', '04-content-feed');
+    await shot('素材库', '04-content-feed');
 
     await page.locator('.sidebar-utility-button[data-view="settings"]').click();
     await shot('设置与帮助', '05-settings');

@@ -373,7 +373,7 @@ async function run() {
       await page.locator('#vocabJlptFilterMenu .vocab-filter-menu-options').waitFor({ state: 'visible', timeout: 3000 });
     });
 
-    await step('日本留学・生活资讯', '09-content-feed', async () => {
+    await step('素材库', '09-content-feed', async () => {
       await page.evaluate(() => window.switchWorkspace?.('discover'));
       await page.waitForFunction(() => ['fallback', 'cache', 'remote'].includes(window.getContentFeedSource?.()));
       await page.locator('#gradedMaterialGrid .graded-material-card.is-official').first().waitFor({ state: 'visible', timeout: 3000 });

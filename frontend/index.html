@@ -11,11 +11,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="styles.css?v=20260722-05">
-<link rel="stylesheet" href="design-system.css?v=20260722-05">
-<link rel="stylesheet" href="grammar-layout.css?v=20260722-05">
-<link rel="stylesheet" href="typography.css?v=20260722-05">
-<link rel="stylesheet" href="hero-menu-refresh.css?v=20260722-05">
+<link rel="stylesheet" href="styles.css?v=20260722-06">
+<link rel="stylesheet" href="design-system.css?v=20260722-06">
+<link rel="stylesheet" href="grammar-layout.css?v=20260722-06">
+<link rel="stylesheet" href="typography.css?v=20260722-06">
+<link rel="stylesheet" href="hero-menu-refresh.css?v=20260722-06">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260719-02"></script>
 </head>
@@ -166,7 +166,7 @@
           <span class="nav-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M5 4h12l2 2v14H5V4Z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg>
           </span>
-          <span class="nav-label">资讯阅读</span>
+          <span class="nav-label">素材库</span>
         </button>
         <button class="nav-item" data-view="history" type="button" onclick="switchWorkspace('history')" hidden data-mvp-hidden="history">
           <span class="nav-icon" aria-hidden="true">
@@ -690,12 +690,13 @@
               <h3 id="readingQueueTitle">我的阅读清单</h3>
             </div>
             <div class="reading-queue-head-actions">
-              <button class="discover-panel-meta reading-queue-level-button" type="button" onclick="enterReadingFromHero();switchWorkspace('test')" aria-label="打开水平测试" title="水平测试">水平测试</button>
-              <span class="discover-panel-meta" id="readingQueueCount">0 篇未读</span>
+              <span class="discover-panel-meta" id="readingQueueCount">0 篇</span>
+              <button class="discover-panel-link reading-queue-add-toggle" id="readingQueueAddButton" type="button" onclick="toggleReadingQueueForm()" aria-expanded="false" aria-controls="readingQueueInlineForm">添加文章</button>
+              <button class="discover-panel-link reading-queue-level-button" type="button" onclick="enterReadingFromHero();switchWorkspace('test')" aria-label="打开水平测试" title="水平测试">水平测试</button>
             </div>
           </div>
           <div class="reading-queue-list" id="readingQueueList"></div>
-          <form class="reading-queue-form" id="readingQueueInlineForm" onsubmit="addReadingQueueItem(event)">
+          <form class="reading-queue-form" id="readingQueueInlineForm" onsubmit="addReadingQueueItem(event)" hidden>
             <input id="readingQueueTitleInput" type="text" maxlength="80" placeholder="文章标题（可选）" aria-label="文章标题">
             <input id="readingQueueUrlInput" type="url" required placeholder="粘贴具体文章链接" aria-label="文章链接">
             <button class="btn-primary" type="submit">加入清单</button>
@@ -709,7 +710,10 @@
               <h3 id="gradedReadingTitle">阅读素材</h3>
               <p class="discover-panel-desc">站内分级短文与官方资讯统一按等级、题材和来源筛选</p>
             </div>
-            <button class="discover-panel-link" type="button" onclick="clearDiscoverFilters()">查看全部 <span id="gradedMaterialTotal">0</span> 篇 →</button>
+            <div class="graded-material-summary">
+              <span class="discover-panel-meta" id="gradedMaterialSummary">共 <span id="gradedMaterialTotal">0</span> 篇素材</span>
+              <button class="discover-panel-link" id="gradedClearFiltersButton" type="button" onclick="clearDiscoverFilters()" hidden>清除筛选</button>
+            </div>
           </div>
 
           <div class="discover-filter-panel discover-filter-panel--refined" aria-label="阅读素材筛选">
@@ -730,7 +734,10 @@
               <h3 id="externalSourceTitle">精选来源</h3>
               <p class="discover-panel-desc">新闻、经济与日语学习类网站导航，点击卡片打开原文来源</p>
             </div>
-            <button class="discover-panel-link" type="button" onclick="clearSourceFilters()">查看全部 <span id="externalSourceTotal">18</span> 个 →</button>
+            <div class="source-summary-actions">
+              <span class="discover-panel-meta" id="externalSourceSummary"><span id="externalSourceTotal">0</span> 个来源</span>
+              <button class="discover-panel-link" id="externalSourceClearButton" type="button" onclick="clearSourceFilters()" hidden>清除筛选</button>
+            </div>
           </div>
           <div class="discover-sources" id="sourceDirectory"></div>
         </section>
@@ -968,7 +975,7 @@
     </button>
     <button class="nav-item" type="button" data-view="discover" onclick="openContentFeed()">
       <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h12l2 2v14H5V4Z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg></span>
-      <span class="nav-label">资讯阅读</span>
+      <span class="nav-label">素材库</span>
     </button>
     <button class="nav-item" type="button" data-view="history" onclick="switchWorkspace('history')" hidden data-mvp-hidden="history">
       <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg></span>
@@ -1217,17 +1224,17 @@
 <div class="icon-button-hint" id="iconButtonHint" role="tooltip" aria-hidden="true"></div>
 
 <script src="kuromoji-worker-poc.js?v=20260714-01"></script>
-<script src="lexical-lookup.js?v=20260722-05"></script>
-<script src="lexical-record.js?v=20260722-05"></script>
-<script src="vocab-store.js?v=20260722-05"></script>
-<script src="vocab-list.js?v=20260722-05"></script>
-<script src="vocab-review.js?v=20260722-05"></script>
-<script src="vocab-export.js?v=20260722-05"></script>
-<script src="content-feed.js?v=20260722-05"></script>
-<script src="app.js?v=20260722-05"></script>
-<script src="lexical-lookup-integration.js?v=20260722-05"></script>
-<script src="lexical-detail-integration.js?v=20260722-05"></script>
-<script src="lexical-vocab-integration.js?v=20260722-05"></script>
+<script src="lexical-lookup.js?v=20260722-06"></script>
+<script src="lexical-record.js?v=20260722-06"></script>
+<script src="vocab-store.js?v=20260722-06"></script>
+<script src="vocab-list.js?v=20260722-06"></script>
+<script src="vocab-review.js?v=20260722-06"></script>
+<script src="vocab-export.js?v=20260722-06"></script>
+<script src="content-feed.js?v=20260722-06"></script>
+<script src="app.js?v=20260722-06"></script>
+<script src="lexical-lookup-integration.js?v=20260722-06"></script>
+<script src="lexical-detail-integration.js?v=20260722-06"></script>
+<script src="lexical-vocab-integration.js?v=20260722-06"></script>
 <script src="mvp-stability-fixes.js?v=20260719-01"></script>
 <script>
   (() => {
