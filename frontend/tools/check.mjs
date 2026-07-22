@@ -342,6 +342,7 @@ assertCheck(
 assertCheck(
   globalSearchSource.includes("label:'开始阅读'")
     && globalSearchSource.includes("label:'整理生词本'")
+    && globalSearchSource.includes("label:'资讯阅读'")
     && globalSearchSource.includes("label:'备份数据'")
     && !/(?:语法本|水平测试|学习历史|找阅读材料|句型打字|文章理解练习)/.test(globalSearchSource),
   'global search matches reduced public MVP navigation'
@@ -358,11 +359,15 @@ assertCheck(
   'homepage more menu and obsolete onboarding entries are not public'
 );
 assertCheck(
-  ['grammar', 'retell', 'discover', 'history'].every(view => new RegExp(`data-view="${view}"[^>]*hidden[^>]*data-mvp-hidden`).test(indexHtml))
+  ['grammar', 'retell', 'history'].every(view => new RegExp(`data-view="${view}"[^>]*hidden[^>]*data-mvp-hidden`).test(indexHtml))
+    && !/data-view="discover"[^>]*hidden[^>]*data-mvp-hidden/.test(indexHtml)
+    && (indexHtml.match(/data-view="discover"[^>]*onclick="openContentFeed\(\)"/g) || []).length === 2
+    && indexHtml.includes('class="home-content-feed-entry"')
+    && indexHtml.includes('日本留学・生活资讯')
     && /class="mvp-settings-button"[^>]*data-view="settings"[^>]*hidden[^>]*data-mvp-hidden="floating-settings"/.test(indexHtml)
     && /class="sidebar-footer"[\s\S]*?data-view="settings"/.test(indexHtml)
     && /class="nav-item menu-settings-entry"[^>]*data-view="settings"/.test(indexHtml),
-  'only reading and vocabulary remain in primary navigation and settings is low frequency'
+  'reading, vocabulary, and content feed are public while settings stays low frequency'
 );
 assertCheck(
   (indexHtml.match(/onclick="loadSample\('(life|story|news)'\)"/g) || []).length === 3

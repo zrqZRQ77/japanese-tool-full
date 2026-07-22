@@ -117,8 +117,11 @@ try {
     }));
     await page.goto(appUrl, {waitUntil:'domcontentloaded'});
     await page.waitForFunction(() => document.getElementById('contentFeedSection')?.dataset.feedSource === 'remote');
-    await page.evaluate(() => { enterReadingFromHero(); switchWorkspace('discover'); });
+    await page.locator('.home-content-feed-entry').waitFor({state:'visible'});
+    await page.locator('.home-content-feed-entry').click();
+    await page.waitForFunction(() => document.body.dataset.view === 'discover');
     await page.waitForSelector('[data-content-id="content-202602-life-work-guidebook-eighth-edition"]');
+    assert.equal(await page.locator('.app-sidebar .nav-item[data-view="discover"] .nav-label').textContent(), '资讯阅读');
     assert.match(await page.locator('#contentFeedStatus').textContent(), /官方内容源/);
     assert.equal(await page.locator('#contentFeedGrid .content-feed-card').count(), 1);
     assert.equal(await page.locator('#contentFeedGrid .material-level').textContent(), 'N3');
@@ -171,8 +174,10 @@ try {
     });
     await page.goto(appUrl, {waitUntil:'domcontentloaded'});
     await page.waitForFunction(() => document.getElementById('contentFeedSection')?.dataset.feedSource === 'fallback');
-    await page.evaluate(() => { enterReadingFromHero(); switchWorkspace('discover'); });
+    await page.locator('.home-content-feed-entry').click();
+    await page.waitForFunction(() => document.body.dataset.view === 'discover');
     await page.waitForSelector('[data-content-id="content-202602-life-work-guidebook-eighth-edition"]');
+    assert.equal(await page.locator('#menuPanel .nav-item[data-view="discover"]').getAttribute('hidden'), null);
     assert.match(await page.locator('#contentFeedStatus').textContent(), /内置官方内容快照/);
     assert.ok(await page.locator('#contentFeedGrid .content-feed-card').count() >= 2);
     assert.equal(await page.locator('[data-content-id="stale-remote-item"]').count(), 0);

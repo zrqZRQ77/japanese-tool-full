@@ -432,6 +432,17 @@ function enterReadingFromHero(){
   switchWorkspace('reading');
 }
 
+function openContentFeed(){
+  document.body.classList.remove('first-visit');
+  safeStorage.setItem('hasUsedApp', 'true');
+  safeStorage.setItem('reading_workspace', 'discover');
+  switchWorkspace('discover');
+  window.refreshContentFeed?.();
+  requestAnimationFrame(()=>{
+    document.getElementById('contentFeedSection')?.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+}
+
 function updateHeroStartState(){
   const input = document.getElementById('heroInputText');
   const button = document.getElementById('heroStartButton');
@@ -1770,6 +1781,7 @@ function openGuidedStep(type = ''){
 const GLOBAL_SEARCH_ITEMS = [
   {label:'开始阅读', detail:'粘贴日语文本', keywords:'阅读 开始 粘贴 日语 文本', action:()=>switchWorkspace('reading')},
   {label:'整理生词本', detail:'搜索、筛选、管理收藏词', keywords:'生词 单词 词汇 收藏 搜索 筛选', action:()=>switchWorkspace('vocab')},
+  {label:'资讯阅读', detail:'阅读日本留学、考试与生活官方资讯', keywords:'资讯 新闻 留学 EJU JLPT 日本生活 官方', action:()=>openContentFeed()},
   {label:'复习到期词', detail:'打开闪卡复习', keywords:'复习 闪卡 到期 生词', action:()=>startReview()},
   {label:'练生词', detail:'打开生词本闪卡复习', keywords:'练习 生词 自测 闪卡', action:()=>switchWorkspace('vocab')},
   {label:'备份数据', detail:'在设置与数据管理中导出或恢复学习数据', keywords:'备份 恢复 导出 数据 设置', action:()=>switchWorkspace('settings')}
