@@ -210,7 +210,7 @@ assertCheck(!/\b(?:alert|confirm)\s*\(/.test(inlineSource), 'no native alert() /
 assertCheck(!/(?:上传 PDF|选择的 PDF|pdfModeSelect|pdfCleanupSelect|排版方向|网页打印\/导出的PDF)/i.test(indexHtml), 'public HTML does not expose withdrawn PDF controls or copy');
 assertCheck(requiredFiles.every(file => existsSync(resolve(FRONTEND_DIR, file))), 'required frontend files exist');
 assertCheck(indexHtml.includes('contentFeedSection') && contentFeedJs.includes('CONTENT_FEED_BASE_URL') && contentFeedJs.includes('openContentFeedQueueItem'), 'content feed UI, remote adapter, and queue bridge are wired');
-assertCheck(contentFeedFallback.schemaVersion === 1 && Array.isArray(contentFeedFallback.items) && contentFeedFallback.items.length >= 3, 'bundled content feed fallback is valid');
+assertCheck(contentFeedFallback.schemaVersion === 1 && Array.isArray(contentFeedFallback.items) && contentFeedFallback.items.length >= 3 && contentFeedJs.includes('BUNDLED_FALLBACK_PAYLOAD'), 'bundled content feed fallback is valid and available at runtime');
 assertCheck(!/(editorial|internalNotes|reviewedBy)/.test(JSON.stringify(contentFeedFallback)), 'bundled content feed fallback excludes internal editorial fields');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
@@ -362,8 +362,9 @@ assertCheck(
   ['grammar', 'retell', 'history'].every(view => new RegExp(`data-view="${view}"[^>]*hidden[^>]*data-mvp-hidden`).test(indexHtml))
     && !/data-view="discover"[^>]*hidden[^>]*data-mvp-hidden/.test(indexHtml)
     && (indexHtml.match(/data-view="discover"[^>]*onclick="openContentFeed\(\)"/g) || []).length === 2
-    && indexHtml.includes('class="home-content-feed-entry"')
+    && !indexHtml.includes('class="home-content-feed-entry"')
     && indexHtml.includes('日本留学・生活资讯')
+    && indexHtml.indexOf('id="contentFeedSection"') < indexHtml.indexOf('id="readingQueuePanel"')
     && /class="mvp-settings-button"[^>]*data-view="settings"[^>]*hidden[^>]*data-mvp-hidden="floating-settings"/.test(indexHtml)
     && /class="sidebar-footer"[\s\S]*?data-view="settings"/.test(indexHtml)
     && /class="nav-item menu-settings-entry"[^>]*data-view="settings"/.test(indexHtml),

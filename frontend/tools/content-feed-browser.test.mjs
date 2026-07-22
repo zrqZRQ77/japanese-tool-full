@@ -117,8 +117,9 @@ try {
     }));
     await page.goto(appUrl, {waitUntil:'domcontentloaded'});
     await page.waitForFunction(() => document.getElementById('contentFeedSection')?.dataset.feedSource === 'remote');
-    await page.locator('.home-content-feed-entry').waitFor({state:'visible'});
-    await page.locator('.home-content-feed-entry').click();
+    assert.equal(await page.locator('.home-content-feed-entry').count(), 0);
+    await page.evaluate(() => enterReadingFromHero());
+    await page.locator('.app-sidebar .nav-item[data-view="discover"]').click();
     await page.waitForFunction(() => document.body.dataset.view === 'discover');
     await page.waitForSelector('[data-content-id="content-202602-life-work-guidebook-eighth-edition"]');
     assert.equal(await page.locator('.app-sidebar .nav-item[data-view="discover"] .nav-label').textContent(), '资讯阅读');
@@ -147,6 +148,7 @@ try {
     await page.route('https://fonts.googleapis.com/**', route=>route.abort());
     await page.route('https://fonts.gstatic.com/**', route=>route.abort());
     await page.route('https://japan-university-17425oc6a-zrq-projects1.vercel.app/**', route=>route.abort());
+    await page.route('**/data/content-feed-fallback.json', route=>route.abort());
     await page.addInitScript(() => {
       localStorage.setItem('reading_queue', JSON.stringify([{
         id:42,
@@ -174,12 +176,19 @@ try {
     });
     await page.goto(appUrl, {waitUntil:'domcontentloaded'});
     await page.waitForFunction(() => document.getElementById('contentFeedSection')?.dataset.feedSource === 'fallback');
-    await page.locator('.home-content-feed-entry').click();
+    assert.equal(await page.locator('.home-content-feed-entry').count(), 0);
+    await page.evaluate(() => { enterReadingFromHero(); openMenu(); });
+    await page.locator('#menuPanel .nav-item[data-view="discover"]').click();
     await page.waitForFunction(() => document.body.dataset.view === 'discover');
     await page.waitForSelector('[data-content-id="content-202602-life-work-guidebook-eighth-edition"]');
     assert.equal(await page.locator('#menuPanel .nav-item[data-view="discover"]').getAttribute('hidden'), null);
     assert.match(await page.locator('#contentFeedStatus').textContent(), /内置官方内容快照/);
-    assert.ok(await page.locator('#contentFeedGrid .content-feed-card').count() >= 2);
+    assert.equal(await page.locator('#contentFeedGrid .content-feed-card').count(), 3);
+    assert.equal((await page.locator('#contentFeedCount').textContent())?.trim(), '3 篇');
+    const fallbackTitles = await page.locator('#contentFeedGrid .content-feed-card h3').allTextContents();
+    assert.ok(fallbackTitles.some(title => title.includes('EJU')));
+    assert.ok(fallbackTitles.some(title => title.includes('JLPT')));
+    assert.ok(fallbackTitles.some(title => title.includes('生活与就业指南')));
     assert.equal(await page.locator('[data-content-id="stale-remote-item"]').count(), 0);
 
     await page.locator('[data-content-id="content-202602-life-work-guidebook-eighth-edition"] [data-content-action="learn"]').click();
