@@ -2141,12 +2141,14 @@ function markActiveReadingQueueRead(){
 
 const SOURCE_LEVEL_FILTERS = ['全部', 'N5', 'N4', 'N3', 'N2', 'N1'];
 let ACTIVE_SOURCE_LEVEL = '全部';
-const SOURCE_TYPE_FILTERS = ['全部', '新闻', '生活', '旅行', '美食', '故事', '商业', '文化', '科技'];
+const SOURCE_TYPE_FILTERS = ['全部', '新闻', '留学', '考试', '日语学习', '生活', '就业', '旅行', '美食', '故事', '商业', '文化', '科技'];
 let ACTIVE_SOURCE_TYPE = '全部';
 const GRADED_LEVEL_FILTERS = ['全部', 'N5', 'N4', 'N3', 'N2', 'N1'];
-const GRADED_TOPIC_FILTERS = ['全部', '新闻', '科技', '生活', '旅行', '美食', '商业'];
+const GRADED_TOPIC_FILTERS = ['全部', '留学', '考试', '日语学习', '生活', '就业', '新闻', '科技', '旅行', '美食', '商业'];
+const GRADED_SOURCE_FILTERS = ['全部', '官方资讯', '站内短文'];
 let ACTIVE_GRADED_LEVEL = '全部';
 let ACTIVE_GRADED_TOPIC = '全部';
+let ACTIVE_GRADED_SOURCE = '全部';
 
 const GRADED_READING_MATERIALS = [
   {
@@ -2293,6 +2295,45 @@ const READING_SOURCES = [
     traits:['商业', '每日更新', '高难度'],
     caution:'存在广告拦截检测机制和部分付费内容，建议先作为外链入口，不强求站内全文抓取。',
     icon:'経'
+  },
+  {
+    id:'jasso',
+    level:'N4-N2',
+    title:'日本学生支援機構 JASSO',
+    url:'https://www.jasso.go.jp/ryugaku/',
+    domain:'jasso.go.jp',
+    type:'官方留学信息',
+    category:'留学',
+    note:'发布 EJU、奖学金与留学生支援信息，适合确认报名、考试和制度变化。',
+    traits:['留学', '考试', '官方更新'],
+    icon:'学',
+    official:true
+  },
+  {
+    id:'jlpt-official',
+    level:'N5-N1',
+    title:'日本語能力試験 JLPT',
+    url:'https://www.jlpt.jp/',
+    domain:'jlpt.jp',
+    type:'官方考试信息',
+    category:'考试',
+    note:'发布 JLPT 考试日期、实施地区、报名和成绩相关信息。',
+    traits:['考试', '日语学习', '官方更新'],
+    icon:'試',
+    official:true
+  },
+  {
+    id:'isa-guide',
+    level:'N4-N2',
+    title:'出入国在留管理庁',
+    url:'https://www.moj.go.jp/isa/',
+    domain:'moj.go.jp',
+    type:'官方生活指南',
+    category:'生活',
+    note:'提供在留手续、生活与就业指南等面向外国人的官方信息。',
+    traits:['生活', '就业', '官方指南'],
+    icon:'在',
+    official:true
   }
 ];
 
@@ -7786,10 +7827,61 @@ function sourceTypeMatches(filter, source){
   return source?.category === filter || source?.type?.includes(filter) || source?.traits?.some(trait => trait.includes(filter));
 }
 
+function internalReadingMaterial(material){
+  const [titleJa, ...titleZhParts] = String(material?.title || '').split('——');
+  return {
+    ...material,
+    titleJa:String(titleJa || material?.title || '').trim(),
+    titleZh:titleZhParts.join('——').trim(),
+    topics:[String(material?.topic || '生活')],
+    sourceKind:'internal',
+    sourceFilter:'站内短文',
+    sourceLabel:'Yumeru 站内短文',
+    sourceUrl:'',
+    contentItemId:null,
+    effectiveAt:null,
+    expiresAt:null
+  };
+}
+
+function officialFeedReadingMaterial(item){
+  const topics = Array.isArray(item?.topics) && item.topics.length ? item.topics : ['新闻'];
+  return {
+    id:`official:${item.id}`,
+    contentItemId:item.id,
+    level:item.learning?.recommendedLevel || 'N3',
+    topic:topics[0] || '新闻',
+    topics,
+    title:`${item.learning?.titleJa || item.titleJa || ''} —— ${item.titleZh || ''}`,
+    titleJa:item.learning?.titleJa || item.titleJa || '',
+    titleZh:item.titleZh || '',
+    excerpt:item.oneLineConclusionZh || item.summaryZh || '',
+    minutes:item.learning?.estimatedMinutes || 4,
+    words:String(item.learning?.textJa || '').length,
+    progress:0,
+    text:item.learning?.textJa || '',
+    sourceKind:'official',
+    sourceFilter:'官方资讯',
+    sourceLabel:item.sourceOrganization || '官方机构',
+    sourceUrl:item.sourceUrl || '',
+    contentType:item.contentType || 'news',
+    effectiveAt:item.dates?.effectiveAt || null,
+    expiresAt:item.dates?.expiresAt || null
+  };
+}
+
+function getUnifiedReadingMaterials(){
+  const internal = GRADED_READING_MATERIALS.map(internalReadingMaterial);
+  const official = (window.getContentFeedItems?.() || []).map(officialFeedReadingMaterial);
+  return [...official, ...internal];
+}
+
 function gradedMaterialMatches(material){
   const levelOk = ACTIVE_GRADED_LEVEL === '全部' || material.level === ACTIVE_GRADED_LEVEL;
-  const topicOk = ACTIVE_GRADED_TOPIC === '全部' || material.topic === ACTIVE_GRADED_TOPIC;
-  return levelOk && topicOk;
+  const topics = Array.isArray(material.topics) ? material.topics : [material.topic].filter(Boolean);
+  const topicOk = ACTIVE_GRADED_TOPIC === '全部' || topics.includes(ACTIVE_GRADED_TOPIC);
+  const sourceOk = ACTIVE_GRADED_SOURCE === '全部' || material.sourceFilter === ACTIVE_GRADED_SOURCE;
+  return levelOk && topicOk && sourceOk;
 }
 
 function setGradedLevelFilter(level){
@@ -7802,15 +7894,22 @@ function setGradedTopicFilter(topic){
   renderGradedReadingMaterials();
 }
 
-function applyGradedQuickFilter(level, topic){
+function setGradedSourceFilter(source){
+  ACTIVE_GRADED_SOURCE = GRADED_SOURCE_FILTERS.includes(source) ? source : '全部';
+  renderGradedReadingMaterials();
+}
+
+function applyGradedQuickFilter(level, topic, source = '全部'){
   ACTIVE_GRADED_LEVEL = GRADED_LEVEL_FILTERS.includes(level) ? level : '全部';
   ACTIVE_GRADED_TOPIC = GRADED_TOPIC_FILTERS.includes(topic) ? topic : '全部';
+  ACTIVE_GRADED_SOURCE = GRADED_SOURCE_FILTERS.includes(source) ? source : '全部';
   renderGradedReadingMaterials();
 }
 
 function clearDiscoverFilters(){
   ACTIVE_GRADED_LEVEL = '全部';
   ACTIVE_GRADED_TOPIC = '全部';
+  ACTIVE_GRADED_SOURCE = '全部';
   renderGradedReadingMaterials();
   requestAnimationFrame(()=>document.getElementById('gradedMaterialGrid')?.scrollIntoView({behavior:'smooth', block:'start'}));
 }
@@ -7835,6 +7934,10 @@ function materialTopicClass(topic){
     新闻:'news',
     科技:'tech',
     生活:'life',
+    就业:'career',
+    留学:'study',
+    考试:'exam',
+    日语学习:'language',
     旅行:'travel',
     美食:'food',
     商业:'business'
@@ -7842,13 +7945,23 @@ function materialTopicClass(topic){
   return `topic-${key}`;
 }
 
+function materialTimingLabel(material){
+  const value = material.contentType === 'alert' && material.expiresAt ? material.expiresAt : material.effectiveAt;
+  if(!value || Number.isNaN(Date.parse(value))) return '';
+  const date = new Date(value);
+  const label = new Intl.DateTimeFormat('zh-CN', {month:'numeric', day:'numeric'}).format(date);
+  return material.contentType === 'alert' ? `截止 ${label}` : label;
+}
+
 function renderGradedReadingMaterials(){
   const levelTarget = document.getElementById('gradedLevelFilters');
   const topicTarget = document.getElementById('gradedTopicFilters');
+  const sourceTarget = document.getElementById('gradedSourceFilters');
   const quickTarget = document.getElementById('gradedQuickTags');
   const grid = document.getElementById('gradedMaterialGrid');
   const total = document.getElementById('gradedMaterialTotal');
-  if(total) total.textContent = '32';
+  const allItems = getUnifiedReadingMaterials();
+  if(total) total.textContent = String(allItems.length);
   if(levelTarget){
     levelTarget.innerHTML = `
       <select class="discover-filter-select discover-filter-select--refined" aria-label="JLPT等级" onchange="setGradedLevelFilter(this.value)">
@@ -7869,33 +7982,60 @@ function renderGradedReadingMaterials(){
       </select>
     `;
   }
+  if(sourceTarget){
+    sourceTarget.innerHTML = `
+      <select class="discover-filter-select discover-filter-select--refined" aria-label="内容来源" onchange="setGradedSourceFilter(this.value)">
+        <option value="全部" ${ACTIVE_GRADED_SOURCE === '全部' ? 'selected' : ''}>内容来源</option>
+        ${GRADED_SOURCE_FILTERS.map(source => `
+          ${source === '全部' ? '' : `<option value="${escapeHtml(source)}" ${ACTIVE_GRADED_SOURCE === source ? 'selected' : ''}>${escapeHtml(source)}</option>`}
+        `).join('')}
+      </select>
+    `;
+  }
   if(quickTarget){
     quickTarget.innerHTML = [
-      ['N5', '生活', '生活入门'],
-      ['N4', '新闻', '新闻速览'],
-      ['N3', '旅行', '旅行会话'],
-      ['N2', '商业', '商业资讯']
-    ].map(([level, topic, label]) => `
-      <button type="button" class="${ACTIVE_GRADED_LEVEL === level && ACTIVE_GRADED_TOPIC === topic ? 'active' : ''}" onclick="applyGradedQuickFilter('${level}', '${topic}')" aria-pressed="${ACTIVE_GRADED_LEVEL === level && ACTIVE_GRADED_TOPIC === topic ? 'true' : 'false'}"><span></span>${level} · ${label}</button>
+      ['全部', '全部', '官方资讯', '最新官方资讯'],
+      ['N3', '考试', '官方资讯', 'N3 · 留学考试'],
+      ['N3', '生活', '官方资讯', 'N3 · 日本生活'],
+      ['N4', '新闻', '站内短文', 'N4 · 新闻速览']
+    ].map(([level, topic, source, label]) => `
+      <button type="button" class="${ACTIVE_GRADED_LEVEL === level && ACTIVE_GRADED_TOPIC === topic && ACTIVE_GRADED_SOURCE === source ? 'active' : ''}" onclick="applyGradedQuickFilter('${level}', '${topic}', '${source}')" aria-pressed="${ACTIVE_GRADED_LEVEL === level && ACTIVE_GRADED_TOPIC === topic && ACTIVE_GRADED_SOURCE === source ? 'true' : 'false'}"><span></span>${escapeHtml(label)}</button>
     `).join('');
   }
   if(!grid) return;
-  const items = GRADED_READING_MATERIALS.filter(gradedMaterialMatches);
-  grid.innerHTML = items.length ? items.map(material => `
-    <article class="graded-material-card" onclick="loadGradedReadingMaterial('${material.id}')" tabindex="0" role="button" aria-label="阅读 ${escapeHtml(material.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadGradedReadingMaterial('${material.id}')}">
-      <div class="graded-card-top">
-        <span class="material-level ${materialLevelClass(material.level)}">${escapeHtml(material.level)}</span>
-        <span class="material-topic ${materialTopicClass(material.topic)}">${escapeHtml(material.topic)}类</span>
-        <span>${material.minutes} 分钟</span>
-      </div>
-      <h3>${escapeHtml(gradedMaterialDisplayTitle(material.title))}</h3>
-    </article>
-  `).join('') : '<div class="source-empty-state">暂时没有匹配素材。换一个等级或题材试试。</div>';
+  const items = allItems.filter(gradedMaterialMatches);
+  grid.innerHTML = items.length ? items.map(material => {
+    const topics = (material.topics || [material.topic]).filter(Boolean).slice(0, 2);
+    const timing = materialTimingLabel(material);
+    return `
+      <article class="graded-material-card ${material.sourceKind === 'official' ? 'is-official' : 'is-internal'}" onclick="loadGradedReadingMaterial('${escapeHtml(material.id)}')" tabindex="0" role="button" aria-label="阅读 ${escapeHtml(material.titleJa || material.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadGradedReadingMaterial('${escapeHtml(material.id)}')}">
+        <div class="graded-card-top">
+          <span class="material-level ${materialLevelClass(material.level)}">${escapeHtml(material.level)}</span>
+          ${topics.map(topic => `<span class="material-topic ${materialTopicClass(topic)}">${escapeHtml(topic)}</span>`).join('')}
+          <span class="material-source-kind">${escapeHtml(material.sourceFilter)}</span>
+          <span>${escapeHtml(material.minutes)} 分钟</span>
+        </div>
+        <h3 lang="ja">${escapeHtml(material.titleJa || gradedMaterialDisplayTitle(material.title))}</h3>
+        ${material.titleZh ? `<p class="graded-material-subtitle">${escapeHtml(material.titleZh)}</p>` : ''}
+        <div class="graded-card-meta">
+          <span>${escapeHtml(material.sourceLabel || 'Yumeru')}</span>
+          ${timing ? `<span>${escapeHtml(timing)}</span>` : ''}
+          ${material.sourceUrl ? `<a href="${escapeHtml(material.sourceUrl)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">官方来源</a>` : ''}
+        </div>
+      </article>
+    `;
+  }).join('') : '<div class="source-empty-state">暂时没有匹配素材。换一个等级、题材或来源试试。</div>';
 }
 
 function loadGradedReadingMaterial(id){
-  const material = GRADED_READING_MATERIALS.find(item => item.id === id);
+  const material = getUnifiedReadingMaterials().find(item => item.id === id);
   if(!material) return;
+  if(material.sourceKind === 'official'){
+    Promise.resolve(window.startContentFeedItem?.(material.contentItemId)).then(opened=>{
+      if(!opened) showToast('这篇官方资讯暂时无法加载，请稍后重试。', 'warning');
+    });
+    return;
+  }
   const input = document.getElementById('inputText');
   if(input) input.value = material.text;
   clearActiveReadingQueueItem();
@@ -7904,6 +8044,10 @@ function loadGradedReadingMaterial(id){
   switchWorkspace('reading');
   analyzeSourceInput();
 }
+
+document.addEventListener('content-feed:updated', ()=>{
+  renderGradedReadingMaterials();
+});
 
 function recommendedSourceForLevel(source, recommended){
   if(!recommended) return false;
@@ -8010,8 +8154,8 @@ function renderSourceDirectory(){
   const recommended = (safeStorage.getItem('reading_level_result') || '').split('｜')[0] || '';
   const sources = visibleSources.filter(source => sourceLevelMatches(ACTIVE_SOURCE_LEVEL, source.level) && sourceTypeMatches(ACTIVE_SOURCE_TYPE, source));
   target.innerHTML = sources.length ? sources.map(source => `
-    <article class="source-directory-item ${recommendedSourceForLevel(source, recommended) ? 'recommended' : ''}" onclick="openRecommendedSource('${source.url}')" tabindex="0" role="link" aria-label="访问 ${escapeHtml(source.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecommendedSource('${source.url}')}">
-      <div class="source-directory-icon ${source.category === '新闻' ? 'is-red' : source.category === '生活' ? 'is-purple' : source.category === '旅行' ? 'is-orange' : 'is-green'}" aria-hidden="true">
+    <article class="source-directory-item ${source.official ? 'is-official' : ''} ${recommendedSourceForLevel(source, recommended) ? 'recommended' : ''}" onclick="openRecommendedSource('${source.url}')" tabindex="0" role="link" aria-label="访问 ${escapeHtml(source.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecommendedSource('${source.url}')}">
+      <div class="source-directory-icon ${source.official ? 'is-purple' : source.category === '新闻' ? 'is-red' : source.category === '生活' ? 'is-purple' : source.category === '旅行' ? 'is-orange' : 'is-green'}" aria-hidden="true">
         ${escapeHtml(source.icon || (source.title.includes('NHK') ? 'N' : source.category === '生活' ? '読' : source.category === '旅行' ? '旅' : '経'))}
       </div>
       <div class="source-directory-copy">

@@ -375,8 +375,8 @@ async function run() {
 
     await step('日本留学・生活资讯', '09-content-feed', async () => {
       await page.evaluate(() => window.switchWorkspace?.('discover'));
-      await page.waitForFunction(() => ['fallback', 'cache', 'remote'].includes(document.getElementById('contentFeedSection')?.dataset.feedSource));
-      await page.locator('#contentFeedGrid .content-feed-card').first().waitFor({ state: 'visible', timeout: 3000 });
+      await page.waitForFunction(() => ['fallback', 'cache', 'remote'].includes(window.getContentFeedSource?.()));
+      await page.locator('#gradedMaterialGrid .graded-material-card.is-official').first().waitFor({ state: 'visible', timeout: 3000 });
     });
 
     manifest.ok = manifest.screenshots.every(item => item.ok) && manifest.console.every(item => item.type !== 'pageerror');

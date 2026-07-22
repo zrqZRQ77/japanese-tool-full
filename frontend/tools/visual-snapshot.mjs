@@ -228,7 +228,7 @@ async function run() {
     await shot('生词本', '03-vocab');
 
     await page.evaluate(() => window.switchWorkspace?.('discover'));
-    await page.waitForFunction(() => ['fallback', 'cache', 'remote'].includes(document.getElementById('contentFeedSection')?.dataset.feedSource));
+    await page.waitForFunction(() => ['fallback', 'cache', 'remote'].includes(window.getContentFeedSource?.()));
     await shot('日本留学・生活资讯', '04-content-feed');
 
     await page.locator('.sidebar-utility-button[data-view="settings"]').click();

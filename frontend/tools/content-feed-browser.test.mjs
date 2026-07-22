@@ -116,17 +116,18 @@ try {
       body:JSON.stringify(publicRemotePayload())
     }));
     await page.goto(appUrl, {waitUntil:'domcontentloaded'});
-    await page.waitForFunction(() => document.getElementById('contentFeedSection')?.dataset.feedSource === 'remote');
-    assert.equal(await page.locator('.home-content-feed-entry').count(), 0);
+    await page.waitForFunction(() => window.getContentFeedSource?.() === 'remote');
+    assert.equal(await page.locator('#contentFeedSection').count(), 0);
     await page.evaluate(() => enterReadingFromHero());
     await page.locator('.app-sidebar .nav-item[data-view="discover"]').click();
     await page.waitForFunction(() => document.body.dataset.view === 'discover');
-    await page.waitForSelector('[data-content-id="content-202602-life-work-guidebook-eighth-edition"]');
+    await page.waitForSelector('#gradedMaterialGrid .graded-material-card.is-official');
     assert.equal(await page.locator('.app-sidebar .nav-item[data-view="discover"] .nav-label').textContent(), '资讯阅读');
-    assert.match(await page.locator('#contentFeedStatus').textContent(), /官方内容源/);
-    assert.equal(await page.locator('#contentFeedGrid .content-feed-card').count(), 1);
-    assert.equal(await page.locator('#contentFeedGrid .material-level').textContent(), 'N3');
-    assert.match(await page.locator('#contentFeedGrid .content-feed-meta').textContent(), /4 分钟/);
+    assert.equal(await page.locator('#gradedSourceFilters select').count(), 1);
+    assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').count(), 1);
+    assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /生活与就业指南/);
+    assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /N3/);
+    assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /4 分钟/);
     const bridgeFailure = await page.evaluate(async () => {
       const original = window.startContentFeedLearning;
       window.startContentFeedLearning = () => false;
@@ -175,23 +176,31 @@ try {
       }));
     });
     await page.goto(appUrl, {waitUntil:'domcontentloaded'});
-    await page.waitForFunction(() => document.getElementById('contentFeedSection')?.dataset.feedSource === 'fallback');
-    assert.equal(await page.locator('.home-content-feed-entry').count(), 0);
+    await page.waitForFunction(() => window.getContentFeedSource?.() === 'fallback');
+    assert.equal(await page.locator('#contentFeedSection').count(), 0);
     await page.evaluate(() => { enterReadingFromHero(); openMenu(); });
     await page.locator('#menuPanel .nav-item[data-view="discover"]').click();
     await page.waitForFunction(() => document.body.dataset.view === 'discover');
-    await page.waitForSelector('[data-content-id="content-202602-life-work-guidebook-eighth-edition"]');
+    await page.waitForSelector('#gradedMaterialGrid .graded-material-card.is-official');
     assert.equal(await page.locator('#menuPanel .nav-item[data-view="discover"]').getAttribute('hidden'), null);
-    assert.match(await page.locator('#contentFeedStatus').textContent(), /内置官方内容快照/);
-    assert.equal(await page.locator('#contentFeedGrid .content-feed-card').count(), 3);
-    assert.equal((await page.locator('#contentFeedCount').textContent())?.trim(), '3 篇');
-    const fallbackTitles = await page.locator('#contentFeedGrid .content-feed-card h3').allTextContents();
-    assert.ok(fallbackTitles.some(title => title.includes('EJU')));
-    assert.ok(fallbackTitles.some(title => title.includes('JLPT')));
-    assert.ok(fallbackTitles.some(title => title.includes('生活与就业指南')));
-    assert.equal(await page.locator('[data-content-id="stale-remote-item"]').count(), 0);
+    assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card').count(), 9);
+    assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').count(), 3);
+    assert.equal((await page.locator('#gradedMaterialTotal').textContent())?.trim(), '9');
+    const fallbackCards = await page.locator('#gradedMaterialGrid .graded-material-card.is-official').allTextContents();
+    assert.ok(fallbackCards.some(text => text.includes('EJU')));
+    assert.ok(fallbackCards.some(text => text.includes('JLPT')));
+    assert.ok(fallbackCards.some(text => text.includes('生活与就业指南')));
+    assert.equal(await page.locator('#gradedMaterialGrid').textContent().then(text => text.includes('过期远程缓存')), false);
 
-    await page.locator('[data-content-id="content-202602-life-work-guidebook-eighth-edition"] [data-content-action="learn"]').click();
+    await page.locator('#gradedSourceFilters select').selectOption('官方资讯');
+    assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card').count(), 3);
+    await page.locator('#gradedTopicFilters select').selectOption('考试');
+    assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card').count(), 2);
+    await page.locator('#gradedTopicFilters select').selectOption('全部');
+    await page.locator('#gradedSourceFilters select').selectOption('全部');
+
+    const lifeCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'生活与就业指南'});
+    await lifeCard.click();
     await page.waitForFunction(() => document.body.dataset.view === 'reading');
     await page.waitForFunction(() => document.getElementById('inputText')?.value.includes('生活・就労ガイドブック'));
 
@@ -218,6 +227,9 @@ try {
     await page.evaluate(() => switchWorkspace('discover'));
     await page.waitForFunction(() => document.getElementById('readingQueueList')?.textContent?.includes('直接学习'));
     assert.match(await page.locator('#readingQueueList').textContent(), /生活 · N3/);
+    assert.match(await page.locator('#sourceDirectory').textContent(), /JASSO/);
+    assert.match(await page.locator('#sourceDirectory').textContent(), /JLPT/);
+    assert.match(await page.locator('#sourceDirectory').textContent(), /出入国在留管理庁/);
     await context.close();
   }
 

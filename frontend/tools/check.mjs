@@ -209,9 +209,10 @@ run('git whitespace diff', 'git', ['diff', '--check'], { optional: true });
 assertCheck(!/\b(?:alert|confirm)\s*\(/.test(inlineSource), 'no native alert() / confirm() in app.js or index.html');
 assertCheck(!/(?:上传 PDF|选择的 PDF|pdfModeSelect|pdfCleanupSelect|排版方向|网页打印\/导出的PDF)/i.test(indexHtml), 'public HTML does not expose withdrawn PDF controls or copy');
 assertCheck(requiredFiles.every(file => existsSync(resolve(FRONTEND_DIR, file))), 'required frontend files exist');
-assertCheck(indexHtml.includes('contentFeedSection') && contentFeedJs.includes('CONTENT_FEED_BASE_URL') && contentFeedJs.includes('openContentFeedQueueItem'), 'content feed UI, remote adapter, and queue bridge are wired');
+assertCheck(!indexHtml.includes('contentFeedSection') && indexHtml.includes('gradedSourceFilters') && appJs.includes('getUnifiedReadingMaterials') && contentFeedJs.includes('getContentFeedItems') && contentFeedJs.includes('openContentFeedQueueItem'), 'official feed is merged into the unified reading-material system');
 assertCheck(contentFeedFallback.schemaVersion === 1 && Array.isArray(contentFeedFallback.items) && contentFeedFallback.items.length >= 3 && contentFeedJs.includes('BUNDLED_FALLBACK_PAYLOAD'), 'bundled content feed fallback is valid and available at runtime');
 assertCheck(!/(editorial|internalNotes|reviewedBy)/.test(JSON.stringify(contentFeedFallback)), 'bundled content feed fallback excludes internal editorial fields');
+assertCheck(['jasso', 'jlpt-official', 'isa-guide'].every(id => appJs.includes(`id:'${id}'`)), 'official institutions are available in the shared source directory');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
 assertCheck(
@@ -363,8 +364,9 @@ assertCheck(
     && !/data-view="discover"[^>]*hidden[^>]*data-mvp-hidden/.test(indexHtml)
     && (indexHtml.match(/data-view="discover"[^>]*onclick="openContentFeed\(\)"/g) || []).length === 2
     && !indexHtml.includes('class="home-content-feed-entry"')
-    && indexHtml.includes('日本留学・生活资讯')
-    && indexHtml.indexOf('id="contentFeedSection"') < indexHtml.indexOf('id="readingQueuePanel"')
+    && !indexHtml.includes('id="contentFeedSection"')
+    && indexHtml.includes('id="gradedSourceFilters"')
+    && indexHtml.indexOf('id="readingQueuePanel"') < indexHtml.indexOf('id="gradedReadingTitle"')
     && /class="mvp-settings-button"[^>]*data-view="settings"[^>]*hidden[^>]*data-mvp-hidden="floating-settings"/.test(indexHtml)
     && /class="sidebar-footer"[\s\S]*?data-view="settings"/.test(indexHtml)
     && /class="nav-item menu-settings-entry"[^>]*data-view="settings"/.test(indexHtml),

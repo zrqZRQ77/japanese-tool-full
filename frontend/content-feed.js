@@ -191,6 +191,20 @@
     return Boolean(expiresAt && !Number.isNaN(Date.parse(expiresAt)) && Date.parse(expiresAt) <= Date.now());
   }
 
+  function contentTopics(item) {
+    const explicit = Array.isArray(item?.topics) ? item.topics.map(value => String(value || '').trim()).filter(Boolean) : [];
+    if (explicit.length) return [...new Set(explicit)];
+    const key = `${item?.slug || ''} ${item?.id || ''}`.toLowerCase();
+    if (key.includes('eju')) return ['留学', '考试'];
+    if (key.includes('jlpt')) return ['考试', '日语学习'];
+    if (item?.category === 'life') return ['生活', '就业'];
+    if (item?.category === 'career') return ['就业'];
+    if (item?.category === 'admissions') return ['留学'];
+    if (item?.category === 'exam') return ['考试'];
+    if (item?.category === 'visa') return ['留学', '生活'];
+    return ['新闻'];
+  }
+
   function normalizeItem(item) {
     if (!item || item.schemaVersion !== 1 || item.status !== 'published' || isExpired(item)) return null;
     const id = String(item.id || '').trim();
@@ -212,6 +226,7 @@
       slug,
       contentType: String(item.contentType || 'news'),
       category: String(item.category || 'major_japan_update'),
+      topics: contentTopics(item),
       riskLevel: String(item.riskLevel || 'low'),
       titleZh,
       titleJa,
@@ -384,6 +399,9 @@
       } finally {
         state.loading = null;
         render();
+        document.dispatchEvent(new CustomEvent('content-feed:updated', {
+          detail: { items: state.items.slice(), source: state.source }
+        }));
       }
       return state.items;
     })();
@@ -420,6 +438,8 @@
   });
 
   window.refreshContentFeed = refreshContentFeed;
+  window.getContentFeedItems = () => state.items.slice();
+  window.getContentFeedSource = () => state.source;
   window.getContentFeedItem = getContentFeedItem;
   window.startContentFeedItem = startContentFeedItem;
   window.openContentFeedQueueItem = openContentFeedQueueItem;
