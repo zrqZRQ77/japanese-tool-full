@@ -1,5 +1,39 @@
 # 真实设备验收清单
 
+## 当前 Production 精简抽查（2026-07-22）
+
+- Production：`https://yomeru.japanese-hub.com`
+- Deployment ID：`dpl_2DD7vb4PHQWCKuK7ANWCDTxUv9Lq`
+- main：`87ba6bb1d2d7bb5921bbf5df46f53df83dba5084`
+- 缓存版本：`20260722-01`
+- 发布状态：`RELEASED / OBSERVE`
+- 自动化与在线 Chromium 烟雾测试：PASS
+
+本节是发布后精简观察，不要求重复全部历史验收。建议在 Mac Safari 与 iPhone Safari 各抽查：
+
+1. 清除站点数据后首次生成假名，确认有可见进度且不会白屏。
+2. 同一文章第二次生成，确认热加载可接受。
+3. 收藏一个词，刷新后仍存在，读音、释义和参考等级一致。
+4. 打开闪卡并完成一次评分，确认队列与完成状态正常。
+5. 至少下载一次 CSV 或 Anki TSV；需要时再抽查完整备份恢复。
+6. 手机 390/430 宽度无明显横向溢出或不可操作按钮。
+
+记录：
+
+- Mac Safari 首次假名：PASS / FAIL / 未执行
+- Mac Safari 热加载：PASS / FAIL / 未执行
+- iPhone Safari 生词刷新：PASS / FAIL / 未执行
+- 闪卡评分：PASS / FAIL / 未执行
+- CSV / Anki：PASS / FAIL / 未执行
+- 移动端布局：PASS / FAIL / 未执行
+- 备注或截图：
+
+若本节未发现真实回归，不需要重新创建 Preview、重新合并 main 或重新发布 Production。
+
+---
+
+以下为历史候选版本与验收记录，仅用于追溯。
+
 ## 当前候选版本
 
 - Preview：`https://japanese-tool-nlctq0019-zrq-projects1.vercel.app`

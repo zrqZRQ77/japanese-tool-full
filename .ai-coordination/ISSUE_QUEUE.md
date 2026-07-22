@@ -4,6 +4,25 @@
 
 ## 当前问题
 
+### 2026-07-22 当前队列摘要
+
+- 当前 Production：`dpl_2DD7vb4PHQWCKuK7ANWCDTxUv9Lq`，状态 `Ready`。
+- 当前 main：`87ba6bb1d2d7bb5921bbf5df46f53df83dba5084`。
+- 当前没有已确认的 P0/P1 Production 阻断。
+- `LANGUAGE-SAFARI-001` 保持 P2 / DEFERRED，可在 Production 做精简真实设备抽查。
+- `CONTENT-001` 属于已撤销的公开 PDF 路线，保留为历史 DEFERRED，不进入当前 MVP 任务。
+- `DICT-COVERAGE-001` 已被 `DICT-COVERAGE-002`、统一 JMdict 查询和语言审计覆盖。
+- `UI-INTERNAL-001` 已被统一生词字段迁移、显示格式化和导出门禁覆盖。
+
+### RELEASE-VOCAB-MODULARIZATION-20260722
+
+- 来源：`app.js` 生词系统模块化第二轮
+- 等级：P1
+- 状态：VERIFIED / RELEASED
+- 涉及文件：`frontend/vocab-store.js`、`vocab-list.js`、`vocab-review.js`、`vocab-export.js`、`frontend/app.js`、构建/缓存/测试文件
+- 处理结论：71 个候选函数完成唯一实现迁移；`app.js` 减少 986 行；本地自动化、Preview 人工验收、PR #1、main 合并和 Production 发布均完成。
+- Production 证据：`dpl_2DD7vb4PHQWCKuK7ANWCDTxUv9Lq`；正式域名在线烟雾测试 PASS。
+
 ### LEXICAL-DETAIL-VOCAB-001
 
 - 来源：词汇形态统一与语言质量计划阶段三（2026-07-17）
@@ -135,21 +154,21 @@
 
 - 来源：用户 Mac/iPhone Safari 真实文章验收（2026-07-15）
 - 等级：P0
-- 状态：CONFIRMED
+- 状态：VERIFIED（已由 DICT-COVERAGE-002、统一 JMdict 查询与语言审计覆盖）
 - 涉及文件：`frontend/data/dictionary.json`、`frontend/app.js`、词典构建脚本与覆盖测试
 - 发现：当前本地词典只有 126 条；`autoLookupTokenMeaning()` 没有真实第二层查询；`時価総額`、`総額`、`金融機関`、`半導体` 等常见内容词无中文释义。
 - 预期结果：建立可离线部署的真实词典索引，支持 surface/basic form 与复合词查询；未命中时准确说明边界。
-- 处理结论：待 Safari 性能项完成后独立处理。
+- 处理结论：历史缺口已通过版本化离线中文索引、JMdict 本地回退、统一查询计划与语言审计处理；后续“扩大中文覆盖”属于新的数据扩展任务，不沿用本问题的旧实现假设。
 
 ### UI-INTERNAL-001
 
 - 来源：用户真实 Preview 验收（2026-07-15）
 - 等级：P1
-- 状态：CONFIRMED
+- 状态：VERIFIED（统一字段迁移、显示格式化与导出门禁 PASS）
 - 涉及文件：`frontend/app.js`、数据迁移与 UI 测试
 - 发现：内部等级/来源值 `kuromoji` 可直接显示在生词页。
 - 预期结果：内部 source 与用户可见 JLPT 分级分离；未知等级显示“未分级”；迁移既有本地生词数据。
-- 处理结论：待词典覆盖项完成后处理。
+- 处理结论：内部来源与用户可见 JLPT 等级已分离；旧数据自动迁移，未分级显示和 CSV/TSV 导出均由静态与浏览器测试覆盖。
 
 ### USER-REAL-005
 
@@ -272,13 +291,13 @@
 - 来源：用户 Mac Safari PDF 实测
 - 基线：`main / b944085 / 用户当前线上版本`
 - 等级：P1
-- 状态：FIXING
+- 状态：DEFERRED / HISTORICAL
 - 涉及文件：`frontend/app.js`
 - 发现：任意 PDF 的本地逐词拼接会形成看似完整但不可靠的中文翻译，复杂 PDF 的断行与假名覆盖有限。
 - 复现方式或证据：用户实机截图显示错误翻译、断行和无假名。
 - 证据层级：真实设备验收。
 - 预期结果：不展示虚假翻译；明确 MVP 的本地翻译边界；复杂 PDF 解析留作专项增强。
-- 处理结论：本轮已移除未知句子的词义拼接，只对内置且可核验的句子给译文；复杂 PDF 版面重建和完整翻译服务仍未完成，不标记 PASS。
+- 处理结论：已移除未知句子的词义拼接；公开 PDF Beta 已撤销，当前公开输入仅粘贴日语文本。复杂 PDF 版面重建和完整翻译服务保留在未来功能池，不进入当前 MVP 队列。
 
 ### DOC-001
 
