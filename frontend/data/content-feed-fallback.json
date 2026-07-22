@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-22T00:00:00+09:00",
+  "items": [
+    {
+      "schemaVersion": 1,
+      "id": "content-202607-eju-round2-application",
+      "slug": "eju-2026-round2-application-open",
+      "contentType": "alert",
+      "category": "exam",
+      "status": "published",
+      "riskLevel": "high",
+      "titleJa": "2026年度日本留学試験（第2回）の出願受付が始まりました",
+      "titleZh": "2026 年度第二次 EJU 已开放报名",
+      "oneLineConclusionZh": "日本国内考生需在 2026 年 7 月 30 日 17:00（日本时间）前完成第二次 EJU 网上报名。",
+      "summaryZh": "JASSO 已开放 2026 年度第二次日本留学考试的日本国内报名。",
+      "impactZh": "计划使用 EJU 成绩申请日本大学的人，应先确认目标学校要求的科目和年度。",
+      "dates": {
+        "sourcePublishedAt": "2026-07-06T00:00:00+09:00",
+        "effectiveAt": "2026-07-06T00:00:00+09:00",
+        "expiresAt": "2026-07-30T17:00:00+09:00",
+        "lastVerifiedAt": "2026-07-22T00:00:00+09:00"
+      },
+      "learning": {
+        "titleJa": "EJU第2回の出願期限を確認しよう",
+        "textJa": "日本学生支援機構は、2026年度日本留学試験の第2回試験について、出願の受け付けを始めました。日本国内で受験する人の出願期間は、7月6日から7月30日の午後5時までです。受験を考えている人は、志望校が必要とする科目を確認してから、EJUオンラインで手続きを進めましょう。",
+        "recommendedLevel": "N3",
+        "estimatedMinutes": 4
+      },
+      "sources": [
+        {
+          "organization": "日本学生支援機構（JASSO）",
+          "title": "2026年度日本留学試験（第2回）出願受付を開始しました",
+          "url": "https://www.jasso.go.jp/ryugaku/eju/news/1216740_2562.html",
+          "sourceType": "official",
+          "isPrimary": true,
+          "verifiedAt": "2026-07-22T00:00:00+09:00"
+        }
+      ],
+      "publicationTargets": ["yomeru"]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "content-202607-jlpt-second-test-date",
+      "slug": "jlpt-2026-second-test-date",
+      "contentType": "guide",
+      "category": "exam",
+      "status": "published",
+      "riskLevel": "medium",
+      "titleJa": "2026年の第2回日本語能力試験は12月6日に実施されます",
+      "titleZh": "2026 年第二次 JLPT 将于 12 月 6 日举行",
+      "oneLineConclusionZh": "具体报名期间因日本国内与海外考点而异，应查看当地实施机构的通知。",
+      "summaryZh": "JLPT 官方公布，2026 年第二次考试定于 12 月 6 日。",
+      "impactZh": "准备把 JLPT 成绩用于升学、求职或能力证明的人，应根据所在地确认报名安排。",
+      "dates": {
+        "sourcePublishedAt": null,
+        "effectiveAt": "2026-12-06T00:00:00+09:00",
+        "expiresAt": "2026-12-07T00:00:00+09:00",
+        "lastVerifiedAt": "2026-07-22T00:00:00+09:00"
+      },
+      "learning": {
+        "titleJa": "JLPTの試験日と申込期間は同じではありません",
+        "textJa": "2026年の第2回日本語能力試験は、12月6日の日曜日に行われます。ただし、申込期間は国や地域によって異なります。海外では、7月か12月のどちらか一方だけ試験を行う都市もあります。受験したい人は、地域の実施機関から出る案内を確認しましょう。",
+        "recommendedLevel": "N4",
+        "estimatedMinutes": 3
+      },
+      "sources": [
+        {
+          "organization": "日本語能力試験",
+          "title": "日本語能力試験の実施日",
+          "url": "https://www.jlpt.jp/guideline/results.html",
+          "sourceType": "official",
+          "isPrimary": true,
+          "verifiedAt": "2026-07-22T00:00:00+09:00"
+        }
+      ],
+      "publicationTargets": ["yomeru"]
+    },
+    {
+      "schemaVersion": 1,
+      "id": "content-202602-life-work-guidebook-eighth-edition",
+      "slug": "life-work-guidebook-eighth-edition",
+      "contentType": "guide",
+      "category": "life",
+      "status": "published",
+      "riskLevel": "low",
+      "titleJa": "外国人向け「生活・就労ガイドブック」第8版が公開されています",
+      "titleZh": "面向外国人的《生活与就业指南》第 8 版已发布",
+      "oneLineConclusionZh": "官方提供日语、简单日语、中文等多个语言版本，可作为赴日生活信息入口。",
+      "summaryZh": "指南整理了外国人在日本生活和工作时常见的制度与手续。",
+      "impactZh": "刚到日本或准备赴日的人可以用它了解居住、工作、医疗、税务和紧急求助等基础信息。",
+      "dates": {
+        "sourcePublishedAt": "2026-02-26T00:00:00+09:00",
+        "effectiveAt": "2026-02-26T00:00:00+09:00",
+        "expiresAt": null,
+        "lastVerifiedAt": "2026-07-22T00:00:00+09:00"
+      },
+      "learning": {
+        "titleJa": "日本で暮らすための公式ガイドを活用しよう",
+        "textJa": "出入国在留管理庁は、外国人のための「生活・就労ガイドブック」を公開しています。日本語版だけでなく、やさしい日本語版や中国語版などでも読むことができます。仕事、病院、税金、災害への備えなどを調べる入口として便利です。実際に手続きをするときは、担当する役所の最新情報も確認しましょう。",
+        "recommendedLevel": "N3",
+        "estimatedMinutes": 4
+      },
+      "sources": [
+        {
+          "organization": "出入国在留管理庁",
+          "title": "生活・就労ガイドブック",
+          "url": "https://www.moj.go.jp/isa/support/portal/guidebook_all.html",
+          "sourceType": "official",
+          "isPrimary": true,
+          "verifiedAt": "2026-07-22T00:00:00+09:00"
+        }
+      ],
+      "publicationTargets": ["yomeru"]
+    }
+  ]
+}

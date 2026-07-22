@@ -21,6 +21,7 @@ const FILES = [
   'vocab-list.js',
   'vocab-review.js',
   'vocab-export.js',
+  'content-feed.js',
   'app.js',
   'lexical-lookup-integration.js',
   'lexical-detail-integration.js',

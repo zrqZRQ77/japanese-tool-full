@@ -1878,7 +1878,12 @@ function normalizeReadingQueueItems(items){
       url,
       status:item?.status === 'read' ? 'read' : 'unread',
       addedAt:String(item?.addedAt || new Date().toISOString()),
-      readAt:item?.status === 'read' ? String(item?.readAt || new Date().toISOString()) : null
+      readAt:item?.status === 'read' ? String(item?.readAt || new Date().toISOString()) : null,
+      contentItemId:String(item?.contentItemId || '').trim() || null,
+      sourceType:item?.sourceType === 'content_engine' ? 'content_engine' : null,
+      category:String(item?.category || '').trim() || null,
+      learningLevel:/^N[1-5]$/.test(String(item?.learningLevel || '')) ? String(item.learningLevel) : null,
+      sourceUrl:readingQueueUrl(item?.sourceUrl || url) || url
     }];
   }).slice(0, 100);
 }
@@ -1902,6 +1907,30 @@ function readingQueueFallbackTitle(url){
   }catch{
     return '未命名文章';
   }
+}
+
+function readingQueueCategoryLabel(category){
+  return ({
+    admissions:'考学',
+    exam:'考试',
+    visa:'签证',
+    life:'生活',
+    career:'就职',
+    major_japan_update:'日本动态'
+  })[category] || '日本资讯';
+}
+
+function readingQueueMeta(item){
+  if(item?.sourceType !== 'content_engine') return readingQueueFallbackTitle(item?.url);
+  return [
+    readingQueueCategoryLabel(item.category),
+    item.learningLevel,
+    readingQueueFallbackTitle(item.sourceUrl || item.url)
+  ].filter(Boolean).join(' · ');
+}
+
+function readingQueuePrimaryLabel(item){
+  return item?.sourceType === 'content_engine' ? '直接学习' : '粘贴文本学习';
 }
 
 function setReadingQueueStatus(message, type = '', targetId = 'readingQueueStatus'){
@@ -1974,11 +2003,11 @@ function renderReadingQueue(){
       <span class="reading-queue-state">${item.status === 'read' ? '已读' : '未读'}</span>
       <div class="reading-queue-copy">
         <h3>${escapeHtml(item.title || readingQueueFallbackTitle(item.url))}</h3>
-        <p>${escapeHtml(readingQueueFallbackTitle(item.url))}</p>
+        <p>${escapeHtml(readingQueueMeta(item))}</p>
       </div>
       <div class="reading-queue-actions">
-        ${item.status === 'read' ? '' : `<button class="btn-primary" onclick="openReadingQueueItem(${item.id})">粘贴文本学习</button>`}
-        <a class="btn-ghost" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">打开原文</a>
+        ${item.status === 'read' && item.sourceType !== 'content_engine' ? '' : `<button class="btn-primary" onclick="openReadingQueueItem(${item.id})">${readingQueuePrimaryLabel(item)}</button>`}
+        <a class="btn-ghost" href="${escapeHtml(item.sourceUrl || item.url)}" target="_blank" rel="noopener noreferrer">${item.sourceType === 'content_engine' ? '官方来源' : '打开原文'}</a>
         <button class="btn-ghost" onclick="toggleReadingQueueItem(${item.id})">${item.status === 'read' ? '重新加入' : '标为已读'}</button>
         <button class="reading-queue-remove" onclick="removeReadingQueueItem(${item.id})" title="删除" aria-label="从阅读清单删除 ${escapeHtml(item.title || '')}">${removeVocabIcon()}</button>
       </div>
@@ -1991,6 +2020,16 @@ function openReadingQueueItem(id){
   if(!item) return;
   ACTIVE_READING_QUEUE_ID = item.id;
   safeStorage.setItem('reading_queue_active_id', String(item.id));
+  if(item.sourceType === 'content_engine'){
+    if(typeof window.openContentFeedQueueItem === 'function'){
+      Promise.resolve(window.openContentFeedQueueItem(item)).then(opened=>{
+        if(!opened) showToast('这篇资讯暂时无法加载，请稍后重试。', 'warning');
+      });
+    }else{
+      showToast('资讯阅读模块暂时不可用。', 'warning');
+    }
+    return;
+  }
   const input = document.getElementById('inputText');
   if(input) input.value = '';
   switchWorkspace('reading');
@@ -2028,6 +2067,48 @@ function removeReadingQueueItem(id){
     renderDailyPlan();
   });
 }
+
+function startContentFeedLearning(item){
+  const contentItemId = String(item?.id || '').trim();
+  const text = String(item?.learning?.textJa || '').trim();
+  const sourceUrl = readingQueueUrl(item?.sourceUrl || '');
+  if(!contentItemId || !text || !sourceUrl){
+    showToast('这篇资讯缺少可学习正文或官方来源。', 'warning');
+    return false;
+  }
+  const existingIndex = READING_QUEUE.findIndex(entry => entry.contentItemId === contentItemId);
+  const existing = existingIndex >= 0 ? READING_QUEUE.splice(existingIndex, 1)[0] : null;
+  const queueItem = {
+    id:existing?.id || Date.now(),
+    title:String(item.titleZh || item.titleJa || '日本资讯').trim().slice(0, 80),
+    url:sourceUrl,
+    status:'unread',
+    addedAt:existing?.addedAt || new Date().toISOString(),
+    readAt:null,
+    contentItemId,
+    sourceType:'content_engine',
+    category:String(item.category || '').trim() || null,
+    learningLevel:/^N[1-5]$/.test(String(item.learning?.recommendedLevel || '')) ? String(item.learning.recommendedLevel) : null,
+    sourceUrl
+  };
+  READING_QUEUE.unshift(queueItem);
+  saveReadingQueue();
+  ACTIVE_READING_QUEUE_ID = queueItem.id;
+  safeStorage.setItem('reading_queue_active_id', String(queueItem.id));
+  safeStorage.setItem('current_article_source_title', queueItem.title);
+  CURRENT_ARTICLE_URL = sourceUrl;
+  const input = document.getElementById('inputText');
+  if(input) input.value = text;
+  switchWorkspace('reading');
+  analyzeSourceInput({inputSource:'content_feed', preserveArticleUrl:true});
+  renderReadingQueue();
+  trackAnalyticsEvent('content_feed_reading_start', {
+    category:queueItem.category || 'unknown',
+    learning_level:queueItem.learningLevel || 'ungraded'
+  });
+  return true;
+}
+window.startContentFeedLearning = startContentFeedLearning;
 
 function clearActiveReadingQueueItem(){
   ACTIVE_READING_QUEUE_ID = null;
@@ -2734,7 +2815,7 @@ async function analyzeSourceInput(options = {}){
     document.getElementById('inputText')?.focus();
     return;
   }
-  const inputSource = options.inputSource === 'sample' ? 'sample' : 'paste';
+  const inputSource = options.inputSource === 'sample' ? 'sample' : (options.inputSource === 'content_feed' ? 'content_feed' : 'paste');
   const countBucket = characterCountBucket(value);
   const startedAt = performance.now();
   let generationEventSent = false;
@@ -2750,7 +2831,7 @@ async function analyzeSourceInput(options = {}){
       input_source:inputSource,
       character_count_bucket:countBucket
     });
-    CURRENT_ARTICLE_URL = '';
+    if(!options.preserveArticleUrl) CURRENT_ARTICLE_URL = '';
     prewarmLocalKuromojiWorker({showStatus:false});
     setImportStatus('正在分析文本……');
     await renderText();
@@ -2920,6 +3001,7 @@ function switchWorkspace(view){
   if(view === 'discover'){
     renderReadingQueue();
     renderSourceDirectory();
+    window.refreshContentFeed?.();
   }
   if(view === 'settings'){
     document.querySelectorAll('#settingsLanguageSelect, #interfaceLanguageSelect').forEach(select=>{
