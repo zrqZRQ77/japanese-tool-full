@@ -7,9 +7,9 @@
 ### 2026-07-22 当前队列摘要
 
 - 当前 Production：`dpl_2DD7vb4PHQWCKuK7ANWCDTxUv9Lq`，状态 `Ready`。
-- 当前 main：`87ba6bb1d2d7bb5921bbf5df46f53df83dba5084`。
+- 当前 main：`cdfd3716c60b8fb45b84d33e079aa5f49d604788`。
 - 当前没有已确认的 P0/P1 Production 阻断。
-- `LANGUAGE-SAFARI-001` 保持 P2 / DEFERRED，可在 Production 做精简真实设备抽查。
+- `LANGUAGE-SAFARI-001` 已由 2026-07-22 Production 电脑与手机真实设备抽查关闭。
 - `CONTENT-001` 属于已撤销的公开 PDF 路线，保留为历史 DEFERRED，不进入当前 MVP 任务。
 - `DICT-COVERAGE-001` 已被 `DICT-COVERAGE-002`、统一 JMdict 查询和语言审计覆盖。
 - `UI-INTERNAL-001` 已被统一生词字段迁移、显示格式化和导出门禁覆盖。
@@ -552,14 +552,14 @@
 ### LANGUAGE-SAFARI-001
 
 - 来源：词形系统重构阶段四
-- 基线：语料版本 `20260717-01`
+- 基线：语料版本 `20260717-01`；Production `dpl_2DD7vb4PHQWCKuK7ANWCDTxUv9Lq`
 - 等级：P2
-- 状态：DEFERRED
-- 涉及文件：`frontend/test-data/language-corpus/20260717-01/cases.json`、`manifest.json`
+- 状态：VERIFIED
+- 涉及文件：`frontend/test-data/language-corpus/20260717-01/cases.json`、`manifest.json`、`.ai-coordination/REAL_DEVICE_ACCEPTANCE_CHECKLIST.md`
 - 发现：Codex 自动化环境不能替代真实 Mac/iPhone Safari 的语言案例验收。
-- 证据层级：人工验收清单占位，不是自动化 PASS。
-- 预期结果：后续 Preview 在真实 Safari 按清单执行并记录 PASS/FAIL、设备与现象。
-- 处理结论：当前 12 个 `safari-manual` 案例状态保持 `PENDING`；阶段四不伪造结果，不部署 Preview 或 Production。
+- 证据层级：自动化门禁＋Production 真实设备人工验收。
+- 预期结果：在真实电脑与手机环境抽查首次/热加载、收藏刷新、闪卡评分、导出和移动端布局。
+- 处理结论：用户于 2026-07-22 确认电脑与手机 Production 实测均无问题；首次与热加载、生词刷新、闪卡评分、CSV/Anki 和移动端布局全部记为 PASS。
 
 ### LANGUAGE-AUDIT-001
 

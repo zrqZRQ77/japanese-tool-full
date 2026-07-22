@@ -65,9 +65,17 @@ Date: 2026-07-22 CST
 - `verify:flows` 仍报告两个既有布局断言：TTS 设置同行断言与 mobile-390 首页次操作断言。
 - 生词添加、列表、闪卡和删除流程均 PASS；上述两项未作为本轮 Production 阻断。
 
+## Production 真实设备验收
+
+- 验收时间：2026-07-22
+- 验收环境：电脑与手机 Production
+- 用户结论：均无问题
+- 首次与热加载、生词刷新、闪卡评分、CSV/Anki 和移动端布局：PASS
+- 结果：`RELEASED / VERIFIED`
+
 ## 发布后动作
 
-1. 状态为 `RELEASED / OBSERVE`，不重复部署。
-2. 可选执行 Mac/iPhone Safari Production 精简抽查，并记录到 `REAL_DEVICE_ACCEPTANCE_CHECKLIST.md`。
-3. 稳定观察后删除已合并的功能分支。
+1. 不重复部署；只有发现新的真实回归时才重新进入修复流程。
+2. `refactor/app-js-vocab-round2` 本地分支已删除，远端分支删除待网络重试。
+3. 本轮发布、真实设备验收与本地清理完成后结束。
 4. 新产品任务重新排期；当前优先候选为离线中文释义覆盖扩展的缺口统计与数据源设计。
