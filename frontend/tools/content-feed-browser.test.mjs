@@ -128,6 +128,10 @@ try {
     assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /生活与就业指南/);
     assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /N3/);
     assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /4 分钟/);
+    assert.equal(await page.locator('#readingQueueEmptyHint').isVisible(), true);
+    assert.equal(await page.locator('#readingQueueList').textContent(), '');
+    const emptyQueueHeight = await page.locator('#readingQueuePanel').evaluate(element => Math.round(element.getBoundingClientRect().height));
+    assert.ok(emptyQueueHeight < 100, `empty reading queue should stay compact, got ${emptyQueueHeight}px`);
     const bridgeFailure = await page.evaluate(async () => {
       const original = window.startContentFeedLearning;
       window.startContentFeedLearning = () => false;
@@ -212,15 +216,19 @@ try {
     assert.equal(await page.locator('#gradedMaterialGrid').textContent().then(text => text.includes('过期远程缓存')), false);
     assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').first().textContent(), /EJU/);
     const jlptCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'JLPT'});
-    assert.match(await jlptCard.textContent(), /12\/6/);
-    assert.doesNotMatch(await jlptCard.textContent(), /12\/5/);
-    const jlptLinks = await jlptCard.locator('.graded-card-links a').evaluateAll(nodes => nodes.map(node => ({text:node.textContent.trim(), href:node.href})));
+    assert.match(await jlptCard.locator('.graded-material-subtitle').textContent(), /12 月 6 日/);
+    assert.doesNotMatch(await jlptCard.locator('.graded-card-meta').textContent(), /12\/6|12\/5/);
+    assert.equal(await jlptCard.locator('.graded-card-top > span').count(), 4);
+    const jlptTopText = (await jlptCard.locator('.graded-card-top').textContent()).replace(/\s+/g, ' ').trim();
+    assert.match(jlptTopText, /N4.*日语考试.*3 分钟.*官方/);
+    await jlptCard.locator('.graded-card-source-menu summary').click();
+    const jlptLinks = await jlptCard.locator('.graded-card-source-popover a').evaluateAll(nodes => nodes.map(node => ({text:node.textContent.trim(), href:node.href})));
     assert.deepEqual(jlptLinks.map(link => link.text), ['日本国内报名', '海外报名与考点']);
     assert.ok(jlptLinks[0].href.includes('/application/domestic_index.html'));
     assert.ok(jlptLinks[1].href.includes('/application/overseas_index.html'));
     const guideCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'生活与就业指南'});
-    assert.match(await guideCard.textContent(), /2\/26/);
-    assert.doesNotMatch(await guideCard.textContent(), /2\/25/);
+    assert.doesNotMatch(await guideCard.locator('.graded-card-meta').textContent(), /2\/26|2\/25/);
+    assert.equal(await guideCard.locator('.graded-card-source-action').textContent(), '官方信息');
     assert.doesNotMatch(await page.locator('#gradedMaterialGrid .graded-material-card.is-internal').first().locator('.graded-card-top').textContent(), /站内短文/);
 
     await page.locator('#gradedSourceFilters select').selectOption('官方资讯');
@@ -273,6 +281,20 @@ try {
     assert.match(await page.locator('#sourceDirectory').textContent(), /JLPT/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /出入国在留管理庁/);
     assert.match(await page.locator('#externalSourceSummary').textContent(), /5 个来源/);
+    const sourceMetas = await page.locator('#sourceDirectory .source-directory-item p').allTextContents();
+    assert.ok(sourceMetas.includes('N4-N2 · 日本留学・EJU'));
+    assert.ok(sourceMetas.includes('N5-N1 · 日语考试'));
+    assert.ok(sourceMetas.includes('N4-N2 · 在留手续・日本生活'));
+    assert.ok(sourceMetas.includes('N5-N3 · 易读新闻・生活'));
+    assert.ok(sourceMetas.includes('N5-N3 · 旅行・美食'));
+    assert.equal(sourceMetas.some(meta => /留学.*留学|考试.*考试|生活.*生活/.test(meta)), false);
+    const groupSurface = await page.locator('#sourceDirectory .source-directory-group').first().evaluate(element => {
+      const style = getComputedStyle(element);
+      return {border:style.borderTopWidth, background:style.backgroundColor, shadow:style.boxShadow};
+    });
+    assert.equal(groupSurface.border, '0px');
+    assert.equal(groupSurface.background, 'rgba(0, 0, 0, 0)');
+    assert.equal(groupSurface.shadow, 'none');
     await context.close();
   }
 

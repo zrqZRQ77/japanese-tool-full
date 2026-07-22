@@ -15207,3 +15207,193 @@ body[data-view="discover"] .source-directory-group-grid .source-directory-item {
     justify-content: flex-start;
   }
 }
+
+
+/* Material library design-system cleanup 2026-07-22 */
+body[data-view="discover"] .reading-queue-title-group {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+body[data-view="discover"] .reading-queue-empty-hint {
+  color: var(--color-text-soft);
+  font-size: var(--type-size-meta);
+  font-weight: 400;
+}
+
+body[data-view="discover"] .reading-queue-empty-hint[hidden] {
+  display: none !important;
+}
+
+body[data-view="discover"] .reading-queue-panel.is-empty {
+  gap: 0 !important;
+  padding: var(--space-3) var(--space-4) !important;
+}
+
+body[data-view="discover"] .reading-queue-panel.is-empty .discover-panel-head {
+  min-height: 44px;
+}
+
+body[data-view="discover"] .reading-queue-panel.is-empty .reading-queue-list,
+body[data-view="discover"] .reading-queue-panel.is-empty .reading-queue-status:empty {
+  display: none !important;
+}
+
+body[data-view="discover"] .graded-material-card,
+body[data-view="discover"] .graded-material-card.is-official,
+body[data-view="discover"] .graded-material-card.is-internal {
+  min-height: 156px !important;
+  border-color: var(--color-border) !important;
+  background: var(--color-bg) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .graded-material-card.is-alert {
+  border-color: color-mix(in srgb, var(--color-caution) 55%, var(--color-border)) !important;
+}
+
+body[data-view="discover"] .graded-material-card:hover,
+body[data-view="discover"] .graded-material-card:focus-visible,
+body[data-view="discover"] .graded-material-card.is-official:hover,
+body[data-view="discover"] .graded-material-card.is-official:focus-visible {
+  border-color: var(--color-primary) !important;
+}
+
+body[data-view="discover"] .graded-card-top .material-duration {
+  min-height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--color-text-soft) !important;
+  font-weight: 600 !important;
+}
+
+body[data-view="discover"] .graded-material-card h3 {
+  margin-top: 2px !important;
+}
+
+body[data-view="discover"] .graded-card-meta {
+  position: relative;
+  min-height: 30px;
+}
+
+body[data-view="discover"] .graded-card-source-action,
+body[data-view="discover"] .graded-card-source-menu summary {
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary-strong);
+  font-size: var(--type-size-meta);
+  font-weight: 700;
+  line-height: var(--type-line-ui);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+body[data-view="discover"] .graded-card-source-action:hover,
+body[data-view="discover"] .graded-card-source-action:focus-visible,
+body[data-view="discover"] .graded-card-source-menu summary:hover,
+body[data-view="discover"] .graded-card-source-menu summary:focus-visible {
+  text-decoration: underline;
+  outline: none;
+}
+
+body[data-view="discover"] .graded-card-source-menu {
+  position: relative;
+  margin-left: auto;
+}
+
+body[data-view="discover"] .graded-card-source-menu summary {
+  list-style: none;
+}
+
+body[data-view="discover"] .graded-card-source-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+body[data-view="discover"] .graded-card-source-popover {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--space-2));
+  z-index: 6;
+  min-width: 168px;
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-level-2);
+}
+
+body[data-view="discover"] .graded-card-source-popover a {
+  margin: 0 !important;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--type-size-meta);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+body[data-view="discover"] .graded-card-source-popover a:hover,
+body[data-view="discover"] .graded-card-source-popover a:focus-visible {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-strong);
+  text-decoration: none;
+  outline: none;
+}
+
+body[data-view="discover"] .source-directory-group,
+body[data-view="discover"] .discover-sources > .source-directory-group {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .source-directory-group + .source-directory-group {
+  margin-top: var(--space-5);
+  padding-top: var(--space-5) !important;
+  border-top: 1px solid var(--color-border) !important;
+}
+
+body[data-view="discover"] .source-directory-item,
+body[data-view="discover"] .source-directory-item.is-official {
+  border-color: var(--color-border) !important;
+  background: var(--color-bg) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .source-directory-item:hover,
+body[data-view="discover"] .source-directory-item:focus-visible,
+body[data-view="discover"] .source-directory-item.is-official:hover,
+body[data-view="discover"] .source-directory-item.is-official:focus-visible {
+  border-color: var(--color-primary) !important;
+}
+
+@media (max-width: 680px) {
+  body[data-view="discover"] .reading-queue-panel.is-empty .discover-panel-head {
+    display: grid !important;
+    gap: var(--space-2) !important;
+  }
+
+  body[data-view="discover"] .graded-card-source-menu,
+  body[data-view="discover"] .graded-card-source-action {
+    margin-left: 0;
+  }
+
+  body[data-view="discover"] .graded-card-source-popover {
+    right: auto;
+    left: 0;
+  }
+}

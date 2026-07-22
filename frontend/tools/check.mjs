@@ -215,7 +215,10 @@ assertCheck(!/(editorial|internalNotes|reviewedBy)/.test(JSON.stringify(contentF
 assertCheck(['jasso', 'jlpt-official', 'isa-guide'].every(id => appJs.includes(`id:'${id}'`)), 'official institutions are available in the shared source directory');
 assertCheck(contentFeedFallback.items.some(item => item.id === 'content-202607-jlpt-second-test-date' && item.sources.some(source => source.url.includes('/application/domestic_index.html')) && item.sources.some(source => source.url.includes('/application/overseas_index.html'))), 'JLPT article uses article-specific domestic and overseas application links');
 assertCheck(appJs.includes("timeZone:'Asia/Tokyo'") && appJs.includes('compareReadingMaterials') && appJs.includes('source-directory-group'), 'material library keeps Japan dates, freshness sorting, and grouped sources');
-assertCheck(indexHtml.includes('id="readingQueueInlineForm" onsubmit="addReadingQueueItem(event)" hidden') && indexHtml.includes('id="readingQueueAddButton"'), 'reading queue add form is compact and expandable');
+assertCheck(indexHtml.includes('id="readingQueueInlineForm" onsubmit="addReadingQueueItem(event)" hidden') && indexHtml.includes('id="readingQueueAddButton"') && indexHtml.includes('id="readingQueueEmptyHint" hidden'), 'reading queue add form and empty state stay compact');
+assertCheck(indexHtml.includes('官方机构与日语阅读网站，查看原始信息或寻找更多阅读素材') && !indexHtml.includes('新闻、经济与日语学习类网站导航'), 'source directory copy matches official institutions and reading media');
+assertCheck(appJs.includes("['全部', '全部', '官方资讯', '官方信息']") && appJs.includes('materialDisplayTopic') && appJs.includes('materialSourceAction'), 'material cards use reduced topic hierarchy and one official-information action');
+assertCheck(['易读新闻・生活', '旅行・美食', '日本留学・EJU', '日语考试', '在留手续・日本生活'].every(meta => appJs.includes(`displayMeta:'${meta}'`)), 'source cards use curated non-duplicated descriptions');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
 assertCheck(

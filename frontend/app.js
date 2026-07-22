@@ -2064,10 +2064,12 @@ function renderReadingQueue(){
   const readCount = sorted.length - unreadCount;
   count.textContent = sorted.length ? `${sorted.length} 篇 · ${unreadCount} 未读` : '0 篇';
   const panel = document.getElementById('readingQueuePanel');
+  const emptyHint = document.getElementById('readingQueueEmptyHint');
   if(panel){
     panel.classList.toggle('is-empty', !sorted.length);
     panel.classList.toggle('has-items', Boolean(sorted.length));
   }
+  if(emptyHint) emptyHint.hidden = Boolean(sorted.length);
   const savedStat = document.getElementById('resourceSavedCount');
   const unreadStat = document.getElementById('resourceUnreadCount');
   const readStat = document.getElementById('resourceReadCount');
@@ -2077,7 +2079,7 @@ function renderReadingQueue(){
   if(readStat) readStat.textContent = String(readCount);
   if(sourceStat) sourceStat.textContent = String(READING_SOURCES.length);
   if(!sorted.length){
-    list.innerHTML = '<div class="reading-queue-empty-compact">还没有保存的文章。点击“添加文章”可加入外部阅读链接。</div>';
+    list.innerHTML = '';
     return;
   }
   list.innerHTML = sorted.map(item => `
@@ -2301,6 +2303,7 @@ const READING_SOURCES = [
     category:'新闻',
     note:'免费的やさしい日本语新闻/生活杂志，文章标题直接标注 N5/N4/N3 等级，汉字全部配假名。',
     traits:['新闻', '生活', '不定期更新'],
+    displayMeta:'易读新闻・生活',
     icon:'W'
   },
   {
@@ -2326,6 +2329,7 @@ const READING_SOURCES = [
     category:'旅行',
     note:'面向访日外国人的やさしい日本语版，覆盖饮品、街区、观光路线和日常小知识。',
     traits:['旅行', '美食', '持续更新'],
+    displayMeta:'旅行・美食',
     icon:'旅'
   },
   {
@@ -2377,6 +2381,7 @@ const READING_SOURCES = [
     category:'留学',
     note:'发布 EJU、奖学金与留学生支援信息，适合确认报名、考试和制度变化。',
     traits:['留学', '考试', '官方更新'],
+    displayMeta:'日本留学・EJU',
     icon:'学',
     official:true
   },
@@ -2390,6 +2395,7 @@ const READING_SOURCES = [
     category:'考试',
     note:'发布 JLPT 考试日期、实施地区、报名和成绩相关信息。',
     traits:['考试', '日语学习', '官方更新'],
+    displayMeta:'日语考试',
     icon:'試',
     official:true
   },
@@ -2403,6 +2409,7 @@ const READING_SOURCES = [
     category:'生活',
     note:'提供在留手续、生活与就业指南等面向外国人的官方信息。',
     traits:['生活', '就业', '官方指南'],
+    displayMeta:'在留手续・日本生活',
     icon:'在',
     official:true
   }
@@ -8059,11 +8066,17 @@ function formatJapanDate(value, includeTime = false){
 }
 
 function materialTimingLabel(material){
-  if(material.contentType === 'alert' && material.expiresAt){
-    const label = formatJapanDate(material.expiresAt, true);
-    return label ? `截止 ${label}（日本时间）` : '';
-  }
-  return formatJapanDate(material.sourcePublishedAt || material.effectiveAt || material.lastVerifiedAt, false);
+  if(material.contentType !== 'alert' || !material.expiresAt) return '';
+  const label = formatJapanDate(material.expiresAt, true);
+  return label ? `截止 ${label}（日本时间）` : '';
+}
+
+function materialDisplayTopic(material){
+  const topics = Array.isArray(material?.topics) ? material.topics : [material?.topic].filter(Boolean);
+  if(topics.includes('留学') && topics.includes('考试')) return '留学考试';
+  if(topics.includes('考试') && topics.includes('日语学习')) return '日语考试';
+  if(topics.includes('生活') && topics.includes('就业')) return '日本生活';
+  return String(topics[0] || '阅读');
 }
 
 function materialSourceLinks(material){
@@ -8075,6 +8088,22 @@ function materialSourceLinks(material){
     label:String(link.label || link.title || '官方来源').trim(),
     url:readingQueueUrl(link.url)
   }));
+}
+
+function materialSourceAction(material){
+  const links = materialSourceLinks(material);
+  if(!links.length) return '';
+  if(links.length === 1){
+    return `<a class="graded-card-source-action" href="${escapeHtml(links[0].url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">官方信息</a>`;
+  }
+  return `
+    <details class="graded-card-source-menu" onclick="event.stopPropagation()">
+      <summary>官方信息</summary>
+      <div class="graded-card-source-popover">
+        ${links.map(link=>`<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`).join('')}
+      </div>
+    </details>
+  `;
 }
 
 function renderGradedReadingMaterials(){
@@ -8118,7 +8147,7 @@ function renderGradedReadingMaterials(){
   }
   if(quickTarget){
     quickTarget.innerHTML = [
-      ['全部', '全部', '官方资讯', '最新官方资讯'],
+      ['全部', '全部', '官方资讯', '官方信息'],
       ['N3', '考试', '官方资讯', 'N3 · 留学考试'],
       ['N3', '生活', '官方资讯', 'N3 · 日本生活'],
       ['N4', '新闻', '站内短文', 'N4 · 新闻速览']
@@ -8138,25 +8167,25 @@ function renderGradedReadingMaterials(){
   }
   if(clearButton) clearButton.hidden = !hasFilters;
   grid.innerHTML = items.length ? items.map(material => {
-    const topics = (material.topics || [material.topic]).filter(Boolean).slice(0, 2);
+    const displayTopic = materialDisplayTopic(material);
     const timing = materialTimingLabel(material);
-    const links = materialSourceLinks(material);
     const officialTag = material.sourceKind === 'official' ? '<span class="material-source-kind">官方</span>' : '';
-    const linkMarkup = links.length ? `<span class="graded-card-links">${links.map(link=>`<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHtml(link.label)}</a>`).join('')}</span>` : '';
+    const sourceAction = materialSourceAction(material);
+    const alertClass = material.contentType === 'alert' ? ' is-alert' : '';
     return `
-      <article class="graded-material-card ${material.sourceKind === 'official' ? 'is-official' : 'is-internal'}" onclick="loadGradedReadingMaterial('${escapeHtml(material.id)}')" tabindex="0" role="button" aria-label="阅读 ${escapeHtml(material.titleJa || material.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadGradedReadingMaterial('${escapeHtml(material.id)}')}">
+      <article class="graded-material-card ${material.sourceKind === 'official' ? 'is-official' : 'is-internal'}${alertClass}" onclick="loadGradedReadingMaterial('${escapeHtml(material.id)}')" tabindex="0" role="button" aria-label="阅读 ${escapeHtml(material.titleJa || material.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadGradedReadingMaterial('${escapeHtml(material.id)}')}">
         <div class="graded-card-top">
           <span class="material-level ${materialLevelClass(material.level)}">${escapeHtml(material.level)}</span>
-          ${topics.map(topic => `<span class="material-topic ${materialTopicClass(topic)}">${escapeHtml(topic)}</span>`).join('')}
+          <span class="material-topic ${materialTopicClass(displayTopic)}">${escapeHtml(displayTopic)}</span>
+          <span class="material-duration">${escapeHtml(material.minutes)} 分钟</span>
           ${officialTag}
         </div>
         <h3 lang="ja">${escapeHtml(material.titleJa || gradedMaterialDisplayTitle(material.title))}</h3>
         ${material.titleZh ? `<p class="graded-material-subtitle">${escapeHtml(material.titleZh)}</p>` : ''}
         <div class="graded-card-meta">
           <span>${escapeHtml(material.sourceLabel || 'Yumeru')}</span>
-          <span>${escapeHtml(material.minutes)} 分钟</span>
           ${timing ? `<span>${escapeHtml(timing)}</span>` : ''}
-          ${linkMarkup}
+          ${sourceAction}
         </div>
       </article>
     `;
@@ -8278,6 +8307,17 @@ function renderSourceRecommendations(){
   `).join('');
 }
 
+function sourceDirectoryMeta(source){
+  if(source?.displayMeta) return `${source.level} · ${source.displayMeta}`;
+  const tokens = [source?.category, ...(source?.traits || []), source?.type]
+    .flatMap(value => String(value || '').split(/[\/・]/))
+    .map(value => value.trim())
+    .filter(Boolean)
+    .filter(value => !/(更新|高难度|官方)$/.test(value));
+  const unique = [...new Set(tokens)].slice(0, 2);
+  return `${source?.level || ''}${unique.length ? ` · ${unique.join('・')}` : ''}`;
+}
+
 function sourceDirectoryCard(source, recommended){
   return `
     <article class="source-directory-item ${source.official ? 'is-official' : ''} ${recommendedSourceForLevel(source, recommended) ? 'recommended' : ''}" onclick="openRecommendedSource('${source.url}')" tabindex="0" role="link" aria-label="访问 ${escapeHtml(source.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecommendedSource('${source.url}')}">
@@ -8286,7 +8326,7 @@ function sourceDirectoryCard(source, recommended){
       </div>
       <div class="source-directory-copy">
         <h3>${escapeHtml(source.title)}</h3>
-        <p>${escapeHtml(source.level)} · ${escapeHtml(source.category)} / ${escapeHtml((source.traits || [source.type]).slice(0, 2).join(' / ') || source.type)}</p>
+        <p>${escapeHtml(sourceDirectoryMeta(source))}</p>
       </div>
     </article>
   `;
