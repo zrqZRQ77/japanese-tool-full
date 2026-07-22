@@ -47,11 +47,15 @@ function cacheVersions(indexHtml) {
   const heroMenu = indexHtml.match(/hero-menu-refresh\.css\?v=([^"']+)/)?.[1] || '';
   const lexicalLookup = indexHtml.match(/lexical-lookup\.js\?v=([^"']+)/)?.[1] || '';
   const lexicalRecord = indexHtml.match(/lexical-record\.js\?v=([^"']+)/)?.[1] || '';
+  const vocabStore = indexHtml.match(/vocab-store\.js\?v=([^"']+)/)?.[1] || '';
+  const vocabList = indexHtml.match(/vocab-list\.js\?v=([^"']+)/)?.[1] || '';
+  const vocabReview = indexHtml.match(/vocab-review\.js\?v=([^"']+)/)?.[1] || '';
+  const vocabExport = indexHtml.match(/vocab-export\.js\?v=([^"']+)/)?.[1] || '';
   const js = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
   const lexicalIntegration = indexHtml.match(/lexical-lookup-integration\.js\?v=([^"']+)/)?.[1] || '';
   const lexicalDetail = indexHtml.match(/lexical-detail-integration\.js\?v=([^"']+)/)?.[1] || '';
   const lexicalVocab = indexHtml.match(/lexical-vocab-integration\.js\?v=([^"']+)/)?.[1] || '';
-  return { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, js, lexicalIntegration, lexicalDetail, lexicalVocab };
+  return { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, vocabStore, vocabList, vocabReview, vocabExport, js, lexicalIntegration, lexicalDetail, lexicalVocab };
 }
 
 function duplicateIds(indexHtml) {
@@ -79,6 +83,10 @@ const analyticsJs = readFileSync(resolve(FRONTEND_DIR, 'analytics.js'), 'utf8');
 const configJs = readFileSync(resolve(FRONTEND_DIR, 'config.js'), 'utf8');
 const lexicalLookupJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup.js'), 'utf8');
 const lexicalRecordJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-record.js'), 'utf8');
+const vocabStoreJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-store.js'), 'utf8');
+const vocabListJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-list.js'), 'utf8');
+const vocabReviewJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-review.js'), 'utf8');
+const vocabExportJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-export.js'), 'utf8');
 const lexicalLookupIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup-integration.js'), 'utf8');
 const lexicalDetailIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-detail-integration.js'), 'utf8');
 const lexicalVocabIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-vocab-integration.js'), 'utf8');
@@ -91,9 +99,9 @@ const kuromojiWorkerPocJs = readFileSync(resolve(FRONTEND_DIR, 'kuromoji-worker-
 const kuromojiWorkerJs = readFileSync(resolve(FRONTEND_DIR, 'vendor/kuromoji/20260714-01/kuromoji-tokenizer.worker.js'), 'utf8');
 const dictionary = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/dictionary.json'), 'utf8'));
 const chineseSupplement = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/chinese-definitions-source.json'), 'utf8'));
-const inlineSource = `${appJs}\n${lexicalLookupJs}\n${lexicalRecordJs}\n${lexicalLookupIntegrationJs}\n${lexicalDetailIntegrationJs}\n${lexicalVocabIntegrationJs}\n${indexHtml}`;
+const inlineSource = `${appJs}\n${lexicalLookupJs}\n${lexicalRecordJs}\n${vocabStoreJs}\n${vocabListJs}\n${vocabReviewJs}\n${vocabExportJs}\n${lexicalLookupIntegrationJs}\n${lexicalDetailIntegrationJs}\n${lexicalVocabIntegrationJs}\n${indexHtml}`;
 const globalSearchSource = appJs.match(/const GLOBAL_SEARCH_ITEMS = \[[\s\S]*?\n\];/)?.[0] || '';
-const { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, js, lexicalIntegration, lexicalDetail, lexicalVocab } = cacheVersions(indexHtml);
+const { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, vocabStore, vocabList, vocabReview, vocabExport, js, lexicalIntegration, lexicalDetail, lexicalVocab } = cacheVersions(indexHtml);
 const duplicateIdList = duplicateIds(indexHtml);
 const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['index.html', indexHtml],
@@ -101,7 +109,7 @@ const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['design-system.css', designSystemCss],
   ['grammar-layout.css', grammarLayoutCss]
 ]);
-const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'lexical-lookup.js', 'lexical-record.js', 'app.js', 'lexical-lookup-integration.js', 'lexical-detail-integration.js', 'lexical-vocab-integration.js'];
+const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'lexical-lookup.js', 'lexical-record.js', 'vocab-store.js', 'vocab-list.js', 'vocab-review.js', 'vocab-export.js', 'app.js', 'lexical-lookup-integration.js', 'lexical-detail-integration.js', 'lexical-vocab-integration.js'];
 const requiredKuromojiPocFiles = [
   'kuromoji-worker-poc.js',
   'poc/kuromoji-worker-poc.html',
@@ -139,6 +147,35 @@ const lexicalVocabGlobalFunctionNames = [
   'addCustomToVocab',
   'submitVocabEdit'
 ];
+const vocabModuleFunctionNames = [
+  'getAllVocab', 'isDue', 'vocabIdentityKey', 'normalizeVocabItem', 'normalizeVocabList',
+  'loadVocab', 'saveVocab', 'isSystemGeneratedMeaning', 'displayVocabMeaning',
+  'currentVocabSourceTitle', 'removeFromVocab', 'vocabMasteryKey', 'vocabSourceLabel',
+  'clearAllVocab', 'openVocabPanel', 'closeVocabPanel', 'removeVocabIcon',
+  'syncVocabPanelData', 'runVocabPrimaryAction', 'vocabMatchesFilter', 'vocabMeaningTone',
+  'filteredVocabForPage', 'setVocabFilter', 'setVocabJlptFilter', 'clearVocabFilters',
+  'closeVocabFilterMenu', 'closeVocabManagementMenu', 'closeOpenVocabMenus',
+  'syncVocabHeaderFilters', 'renderVocabFilterSummary', 'vocabWordMarkup', 'vocabListMarkup',
+  'editVocabItem', 'ensureVocabEditDialog', 'openVocabEditDialog', 'closeVocabEditDialog',
+  'vocabMasteryLabel', 'syncVocabSourceFilterOptions', 'renderVocab', 'vocabPracticeTag',
+  'formatDue', 'updateDueCount', 'getVocabPracticeItems', 'renderVocabPractice',
+  'nextVocabPractice', 'prevVocabPractice', 'toggleVocabPracticeAnswer', 'rateVocabPractice',
+  'markVocabPracticeKnown', 'getFlashArea', 'setFlashArea', 'updateFlashProgress',
+  'openVocabReviewPanel', 'exitFlashcards', 'prepareVocabReview', 'startReview',
+  'reviewAllVocab', 'showNextCard', 'renderCard', 'flipCard', 'handleFlashCardKey',
+  'rateCard', 'downloadTextFile', 'todayStamp', 'exportDateTime', 'setInlineStatus',
+  'setVocabExportStatus', 'runVocabExportSelect', 'exportVocabCsv', 'exportVocabCsvFile',
+  'exportAnkiTsv'
+];
+const vocabImplementationSources = [appJs, vocabStoreJs, vocabListJs, vocabReviewJs, vocabExportJs];
+const invalidVocabFunctionCounts = vocabModuleFunctionNames
+  .map(name => ({
+    name,
+    count:vocabImplementationSources.reduce((total, source) =>
+      total + (source.match(new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`, 'g')) || []).length,
+    0)
+  }))
+  .filter(item => item.count !== 1);
 const levelHelpersSource = [
   simpleFunctionSource(appJs, 'normalizeVisibleVocabLevel'),
   simpleFunctionSource(appJs, 'formatVisibleVocabLevel')
@@ -153,10 +190,15 @@ const validJlptSamples = ['N5', 'N4', 'N3', 'N2', 'N1'];
 run('app.js syntax', 'node', ['--check', 'app.js']);
 run('lexical lookup syntax', 'node', ['--check', 'lexical-lookup.js']);
 run('lexical record syntax', 'node', ['--check', 'lexical-record.js']);
+run('vocabulary store syntax', 'node', ['--check', 'vocab-store.js']);
+run('vocabulary list syntax', 'node', ['--check', 'vocab-list.js']);
+run('vocabulary review syntax', 'node', ['--check', 'vocab-review.js']);
+run('vocabulary export syntax', 'node', ['--check', 'vocab-export.js']);
 run('lexical lookup integration syntax', 'node', ['--check', 'lexical-lookup-integration.js']);
 run('lexical detail integration syntax', 'node', ['--check', 'lexical-detail-integration.js']);
 run('lexical vocab integration syntax', 'node', ['--check', 'lexical-vocab-integration.js']);
 run('vocabulary persistence browser test syntax', 'node', ['--check', 'tools/vocab-persistence-browser.test.mjs']);
+run('vocabulary export browser test syntax', 'node', ['--check', 'tools/vocab-export-browser.test.mjs']);
 run('git whitespace diff', 'git', ['diff', '--check'], { optional: true });
 
 assertCheck(!/\b(?:alert|confirm)\s*\(/.test(inlineSource), 'no native alert() / confirm() in app.js or index.html');
@@ -164,6 +206,29 @@ assertCheck(!/(?:上传 PDF|选择的 PDF|pdfModeSelect|pdfCleanupSelect|排版�
 assertCheck(requiredFiles.every(file => existsSync(resolve(FRONTEND_DIR, file))), 'required frontend files exist');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
+assertCheck(
+  indexHtml.indexOf('lexical-record.js') < indexHtml.indexOf('vocab-store.js')
+    && indexHtml.indexOf('vocab-store.js') < indexHtml.indexOf('vocab-list.js')
+    && indexHtml.indexOf('vocab-list.js') < indexHtml.indexOf('vocab-review.js')
+    && indexHtml.indexOf('vocab-review.js') < indexHtml.indexOf('vocab-export.js')
+    && indexHtml.indexOf('vocab-export.js') < indexHtml.indexOf('app.js')
+    && indexHtml.indexOf('app.js') < indexHtml.indexOf('lexical-vocab-integration.js'),
+  'vocabulary module scaffolds load in the planned ordinary-script order'
+);
+assertCheck(
+  invalidVocabFunctionCounts.length === 0,
+  `vocabulary functions have one implementation source${invalidVocabFunctionCounts.length ? `: ${invalidVocabFunctionCounts.map(item => `${item.name}=${item.count}`).join(', ')}` : ''}`
+);
+assertCheck(
+  /const SRS_STEPS_MIN = \[1, 10, 30, 120, 720, 1440, 4320, 10080, 20160\]/.test(vocabReviewJs)
+    && /function rateVocabPractice\(rating\)[\s\S]*?SRS_STEPS_MIN/.test(vocabReviewJs)
+    && /function rateCard\(rating\)[\s\S]*?SRS_STEPS_MIN/.test(vocabReviewJs)
+    && ['currentVocabPracticeIndex', 'vocabPracticeAnswerVisible', 'reviewQueue', 'currentCardWord', 'cardFlipped', 'reviewInitialCount'].every(name =>
+      new RegExp(`let\\s+${name}\\b`).test(vocabReviewJs) && !new RegExp(`let\\s+${name}\\b`).test(appJs)
+    )
+    && !/const SRS_STEPS_MIN\b/.test(appJs),
+  'vocabulary practice and flashcards share one review state and SRS schedule'
+);
 assertCheck(
   duplicateLexicalDefinitionsInApp.length === 0,
   `lexical integration functions have one implementation source${duplicateLexicalDefinitionsInApp.length ? `: ${duplicateLexicalDefinitionsInApp.join(', ')}` : ''}`
@@ -174,7 +239,7 @@ assertCheck(
   )
     && indexHtml.indexOf('app.js') < indexHtml.indexOf('lexical-vocab-integration.js')
     && indexHtml.includes("onclick=\"addCustomToVocab('食べる'")
-    && appJs.includes('onsubmit=\"submitVocabEdit(event)\"'),
+    && vocabListJs.includes('onsubmit=\"submitVocabEdit(event)\"'),
   'vocabulary inline actions resolve from lexical vocab integration globals'
 );
 assertCheck(
@@ -192,8 +257,8 @@ assertCheck(
   'tokenizer metadata stays in source fields instead of vocabulary level fields'
 );
 assertCheck(
-  /function normalizeVocabItem\(item = \{\}\)[\s\S]*?normalizeLexicalVocabFields\(item\)[\s\S]*?levelSource:level \? String\(item\.levelSource \|\| 'legacy'\) : ''/.test(appJs)
-    && /async function loadVocab\(\)[\s\S]*?const rawSnapshot = JSON\.stringify\(vocabData\);[\s\S]*?if\(JSON\.stringify\(vocabData\) !== rawSnapshot\) saveVocab\(\)/.test(appJs)
+  /function normalizeVocabItem\(item = \{\}\)[\s\S]*?normalizeLexicalVocabFields\(item\)[\s\S]*?levelSource:level \? String\(item\.levelSource \|\| 'legacy'\) : ''/.test(vocabStoreJs)
+    && /async function loadVocab\(\)[\s\S]*?const rawSnapshot = JSON\.stringify\(vocabData\);[\s\S]*?if\(JSON\.stringify\(vocabData\) !== rawSnapshot\) saveVocab\(\)/.test(vocabStoreJs)
     && lexicalRecordJs.includes('function normalizeLexicalVocabFields')
     && lexicalVocabIntegrationJs.includes("function addCustomToVocab(word, reading = '', meaning = '用户添加', level = ''"),
   'legacy vocabulary and levels migrate to the unified lexical record and persist after loading'
@@ -235,14 +300,22 @@ assertCheck(
 assertCheck(
   /meaningLanguage:[\s\S]*?meaningSource:[\s\S]*?levelSource:/.test(inlineSource)
     && /VOCAB_EDIT_TARGET\.meaningSource = 'manual'/.test(lexicalVocabIntegrationJs)
-    && appJs.includes('参考等级,等级来源')
+    && vocabExportJs.includes('参考等级,等级来源')
     && indexHtml.includes('暂无参考等级</button>'),
   'vocabulary metadata, manual edits, ungraded filter, and reference-level export labels stay consistent'
 );
 assertCheck(
-  /function exportVocabCsvFile\(\)[\s\S]*?formatVisibleVocabLevel\(v\.level\)/.test(appJs)
-    && /function exportAnkiTsv\(\)[\s\S]*?formatVisibleVocabLevel\(v\.level\)/.test(appJs),
-  'CSV and Anki exports use user-visible vocabulary levels'
+  /function exportVocabCsvFile\(\)[\s\S]*?formatVisibleVocabLevel\(v\.level\)/.test(vocabExportJs)
+    && /function exportAnkiTsv\(\)[\s\S]*?formatVisibleVocabLevel\(v\.level\)/.test(vocabExportJs)
+    && vocabExportJs.includes('单词,假名,释义,释义语言,释义来源,词性,参考等级,等级来源,来源,来源链接,复习状态,下次复习时间（按复习结果自动安排）')
+    && vocabExportJs.includes('# 正面\\t假名\\t释义\\t释义语言\\t释义来源\\t词性\\t参考等级\\t等级来源\\t来源\\t来源链接')
+    && vocabExportJs.includes('读得懂_生词本导出.csv')
+    && vocabExportJs.includes('dokedo-anki-${todayStamp()}.tsv')
+    && appJs.includes('function exportLearningBackup')
+    && appJs.includes('async function importLearningBackup')
+    && !vocabExportJs.includes('function exportLearningBackup')
+    && !vocabExportJs.includes('function importLearningBackup'),
+  'CSV and Anki exports preserve formats while complete backup stays in app.js'
 );
 assertCheck(
   /function requestTokenVocabSave\(tokenId\)[\s\S]*?info\.pendingVocabSave = true[\s\S]*?释义加载完成后会自动加入生词本/.test(lexicalVocabIntegrationJs)
@@ -483,7 +556,7 @@ assertCheck(
   'settings copy, typography, restore styling, and destructive styling follow the shared design system'
 );
 assertCheck(hardcodedFontSizes.length === 0, `no hardcoded px font sizes outside typography.css${hardcodedFontSizes.length ? `: ${hardcodedFontSizes.join(', ')}` : ''}`);
-assertCheck(css && designSystem && grammarLayout && typography && heroMenu && lexicalLookup && lexicalRecord && js && lexicalIntegration && lexicalDetail && lexicalVocab && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === lexicalLookup && css === lexicalRecord && css === js && css === lexicalIntegration && css === lexicalDetail && css === lexicalVocab, 'CSS and JS cache versions match');
+assertCheck(css && designSystem && grammarLayout && typography && heroMenu && lexicalLookup && lexicalRecord && vocabStore && vocabList && vocabReview && vocabExport && js && lexicalIntegration && lexicalDetail && lexicalVocab && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === lexicalLookup && css === lexicalRecord && css === vocabStore && css === vocabList && css === vocabReview && css === vocabExport && css === js && css === lexicalIntegration && css === lexicalDetail && css === lexicalVocab, 'CSS and JS cache versions match');
 assertCheck(/^\d{8}-\d{2}$/.test(css), 'cache version format is YYYYMMDD-NN');
 
 if (process.exitCode) {
