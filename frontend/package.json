@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "node tools/check.mjs && npm run test:content-feed && npm run test:language-corpus && node tools/ui-audit.mjs && node tools/verify-visual.mjs",
+    "test": "node tools/check.mjs && npm run test:content-feed && npm run test:train-static && npm run test:language-corpus && node tools/ui-audit.mjs && node tools/verify-visual.mjs",
     "audit:ui": "UI_AUDIT_FUNCTIONAL_ONLY=1 node tools/ui-audit.mjs && UI_AUDIT_RESPONSIVE_ONLY=1 node tools/ui-audit.mjs",
     "audit:language": "node tools/language-audit.mjs",
     "audit:articles": "node tools/article-stress-audit.mjs",
