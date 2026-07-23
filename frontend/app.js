@@ -2012,6 +2012,10 @@ function toggleReadingQueueForm(forceOpen){
   if(open) requestAnimationFrame(()=>document.getElementById('readingQueueUrlInput')?.focus());
 }
 
+function browseReadingMaterials(){
+  document.getElementById('gradedReadingTitle')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
 function readingQueueSourceActions(item){
   if(item?.sourceType !== 'content_engine'){
     return `<a class="btn-ghost" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">打开原文</a>`;
@@ -8080,23 +8084,25 @@ function materialSourceName(material){
   return label || '来源';
 }
 
+function externalLinkIconSvg(className = ''){
+  return `<svg class="${escapeHtml(className)}" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="M10 14 19 5"></path><path d="M19 14v5H5V5h5"></path></svg>`;
+}
+
+function chevronRightIconSvg(className = ''){
+  return `<svg class="${escapeHtml(className)}" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>`;
+}
+
+function materialPrimarySourceLink(material){
+  return materialSourceLinks(material)[0] || null;
+}
+
 function materialSourceAction(material){
   const name = materialSourceName(material);
-  const links = materialSourceLinks(material);
-  if(material?.sourceKind !== 'official' || !links.length){
+  const link = materialPrimarySourceLink(material);
+  if(material?.sourceKind !== 'official' || !link){
     return `<span class="graded-card-source-label">${escapeHtml(name)}</span>`;
   }
-  if(links.length === 1){
-    return `<a class="graded-card-source-action" href="${escapeHtml(links[0].url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHtml(name)} <span aria-hidden="true">↗</span></a>`;
-  }
-  return `
-    <details class="graded-card-source-menu" onclick="event.stopPropagation()">
-      <summary>${escapeHtml(name)} <span aria-hidden="true">↗</span></summary>
-      <div class="graded-card-source-popover">
-        ${links.map(link=>`<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`).join('')}
-      </div>
-    </details>
-  `;
+  return `<a class="graded-card-source-action" href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHtml(name)}${externalLinkIconSvg('external-link-icon')}</a>`;
 }
 
 function renderGradedReadingMaterials(){
@@ -8109,7 +8115,7 @@ function renderGradedReadingMaterials(){
   if(total) total.textContent = String(allItems.length);
   if(levelTarget){
     levelTarget.innerHTML = `
-      <select class="discover-filter-select discover-filter-select--refined" aria-label="JLPT等级" onchange="setGradedLevelFilter(this.value)">
+      <select class="discover-filter-select discover-filter-select--refined ${ACTIVE_GRADED_LEVEL !== '全部' ? 'is-filtered' : ''}" aria-label="JLPT等级" onchange="setGradedLevelFilter(this.value)">
         <option value="全部" ${ACTIVE_GRADED_LEVEL === '全部' ? 'selected' : ''}>JLPT等级</option>
         ${GRADED_LEVEL_FILTERS.map(level => `
           ${level === '全部' ? '' : `<option value="${escapeHtml(level)}" ${ACTIVE_GRADED_LEVEL === level ? 'selected' : ''}>${escapeHtml(level)}</option>`}
@@ -8119,7 +8125,7 @@ function renderGradedReadingMaterials(){
   }
   if(topicTarget){
     topicTarget.innerHTML = `
-      <select class="discover-filter-select discover-filter-select--refined" aria-label="题材" onchange="setGradedTopicFilter(this.value)">
+      <select class="discover-filter-select discover-filter-select--refined ${ACTIVE_GRADED_TOPIC !== '全部' ? 'is-filtered' : ''}" aria-label="题材" onchange="setGradedTopicFilter(this.value)">
         <option value="全部" ${ACTIVE_GRADED_TOPIC === '全部' ? 'selected' : ''}>题材</option>
         ${GRADED_TOPIC_FILTERS.map(topic => `
           ${topic === '全部' ? '' : `<option value="${escapeHtml(topic)}" ${ACTIVE_GRADED_TOPIC === topic ? 'selected' : ''}>${escapeHtml(topic)}</option>`}
@@ -8129,7 +8135,7 @@ function renderGradedReadingMaterials(){
   }
   if(sourceTarget){
     sourceTarget.innerHTML = `
-      <select class="discover-filter-select discover-filter-select--refined" aria-label="内容来源" onchange="setGradedSourceFilter(this.value)">
+      <select class="discover-filter-select discover-filter-select--refined ${ACTIVE_GRADED_SOURCE !== '全部' ? 'is-filtered' : ''}" aria-label="内容来源" onchange="setGradedSourceFilter(this.value)">
         <option value="全部" ${ACTIVE_GRADED_SOURCE === '全部' ? 'selected' : ''}>内容来源</option>
         ${GRADED_SOURCE_FILTERS.map(source => `
           ${source === '全部' ? '' : `<option value="${escapeHtml(source)}" ${ACTIVE_GRADED_SOURCE === source ? 'selected' : ''}>${escapeHtml(source)}</option>`}
@@ -8153,8 +8159,9 @@ function renderGradedReadingMaterials(){
     const sourceAction = materialSourceAction(material);
     return `
       <article class="graded-material-card ${material.sourceKind === 'official' ? 'is-official' : 'is-internal'}" onclick="loadGradedReadingMaterial('${escapeHtml(material.id)}')" tabindex="0" role="button" aria-label="阅读 ${escapeHtml(material.titleJa || material.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadGradedReadingMaterial('${escapeHtml(material.id)}')}">
+        <span class="graded-card-enter-cue" aria-hidden="true">${chevronRightIconSvg('graded-card-enter-icon')}</span>
         <div class="graded-card-top">
-          <span class="material-level ${materialLevelClass(material.level)}">${escapeHtml(material.level)}</span>
+          <span class="material-level jlpt-level-badge ${materialLevelClass(material.level)}">${escapeHtml(material.level)}</span>
           <span class="material-card-facts">${escapeHtml(displayTopic)} · ${escapeHtml(material.minutes)} 分钟</span>
         </div>
         <h3 lang="ja">${escapeHtml(material.titleJa || gradedMaterialDisplayTitle(material.title))}</h3>
@@ -8295,15 +8302,15 @@ function sourceDirectoryMeta(source){
 
 function sourceDirectoryCard(source, recommended){
   return `
-    <article class="source-directory-item ${source.official ? 'is-official' : ''} ${recommendedSourceForLevel(source, recommended) ? 'recommended' : ''}" onclick="openRecommendedSource('${source.url}')" tabindex="0" role="link" aria-label="访问 ${escapeHtml(source.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecommendedSource('${source.url}')}">
-      <div class="source-directory-icon ${source.official ? 'is-purple' : source.category === '新闻' ? 'is-red' : source.category === '生活' ? 'is-purple' : source.category === '旅行' ? 'is-orange' : 'is-green'}" aria-hidden="true">
+    <article class="source-directory-item ${source.official ? 'is-official is-official-source' : 'is-reading-source'} ${recommendedSourceForLevel(source, recommended) ? 'recommended' : ''}" onclick="openRecommendedSource('${source.url}')" tabindex="0" role="link" aria-label="访问 ${escapeHtml(source.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecommendedSource('${source.url}')}">
+      <div class="source-directory-icon" aria-hidden="true">
         ${escapeHtml(source.icon || (source.title.includes('NHK') ? 'N' : source.category === '生活' ? '読' : source.category === '旅行' ? '旅' : '経'))}
       </div>
       <div class="source-directory-copy">
         <h3>${escapeHtml(source.title)}</h3>
         <p>${escapeHtml(sourceDirectoryMeta(source))}</p>
       </div>
-      <span class="source-directory-arrow" aria-hidden="true">↗</span>
+      <span class="source-directory-arrow" aria-hidden="true">${externalLinkIconSvg('external-link-icon')}</span>
     </article>
   `;
 }

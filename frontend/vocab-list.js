@@ -234,7 +234,7 @@ function vocabListMarkup(items){
       </div>
       <div class="vocab-cell vocab-cell-level">
         ${normalizeVisibleVocabLevel(v.level)
-          ? `<span class="vocab-level-chip level-${escapeHtml(normalizeVisibleVocabLevel(v.level).toLowerCase())}">${escapeHtml(formatVisibleVocabLevel(v.level))}</span>`
+          ? `<span class="vocab-level-chip jlpt-level-badge level-${escapeHtml(normalizeVisibleVocabLevel(v.level).toLowerCase())}">${escapeHtml(formatVisibleVocabLevel(v.level))}</span>`
           : `<span class="vocab-level-chip muted">${escapeHtml(formatVisibleVocabLevel(v.level))}</span>`}
       </div>
       <div class="vocab-cell vocab-cell-mastery">

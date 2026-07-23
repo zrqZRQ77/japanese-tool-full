@@ -94,21 +94,12 @@
         "sources": [
           {
             "organization": "日本語能力試験",
-            "title": "日本国内で受験する",
-            "label": "日本国内报名",
-            "url": "https://www.jlpt.jp/application/domestic_index.html",
+            "title": "2026年 日本語能力試験の実施日",
+            "label": "2026年考试日期",
+            "url": "https://www.jlpt.jp/topics/list2026.html",
             "sourceType": "official",
             "isPrimary": true,
-            "verifiedAt": "2026-07-22T00:00:00+09:00"
-          },
-          {
-            "organization": "日本語能力試験",
-            "title": "海外で受験する",
-            "label": "海外报名与考点",
-            "url": "https://www.jlpt.jp/application/overseas_index.html",
-            "sourceType": "official",
-            "isPrimary": false,
-            "verifiedAt": "2026-07-22T00:00:00+09:00"
+            "verifiedAt": "2026-07-23T00:00:00+09:00"
           }
         ],
         "publicationTargets": [
@@ -194,19 +185,32 @@
     }
   }
 
-  function primarySource(item) {
-    const sources = Array.isArray(item?.sources) && item.sources.length
+  function canonicalSources(item) {
+    if (String(item?.id || '') === 'content-202607-jlpt-second-test-date') {
+      return [{
+        organization:'日本語能力試験',
+        title:'2026年 日本語能力試験の実施日',
+        label:'2026年考试日期',
+        url:'https://www.jlpt.jp/topics/list2026.html',
+        sourceType:'official',
+        isPrimary:true,
+        verifiedAt:'2026-07-23T00:00:00+09:00'
+      }];
+    }
+    return Array.isArray(item?.sources) && item.sources.length
       ? item.sources
       : (Array.isArray(item?.sourceLinks) ? item.sourceLinks : []);
+  }
+
+  function primarySource(item) {
+    const sources = canonicalSources(item);
     return sources.find(source => source?.isPrimary && validHttpUrl(source?.url))
       || sources.find(source => validHttpUrl(source?.url))
       || null;
   }
 
   function normalizedSources(item) {
-    const sources = Array.isArray(item?.sources) && item.sources.length
-      ? item.sources
-      : (Array.isArray(item?.sourceLinks) ? item.sourceLinks : []);
+    const sources = canonicalSources(item);
     return sources.map(source => {
       const url = validHttpUrl(source?.url);
       if (!url) return null;
@@ -390,7 +394,7 @@
         <div class="content-feed-card-body">
           <div class="content-feed-meta">
             <span class="content-feed-category">${escapeHtml(categoryLabels[item.category] || '日本动态')}</span>
-            <span class="material-level level-${escapeHtml(item.learning.recommendedLevel.toLowerCase())}">${escapeHtml(item.learning.recommendedLevel)}</span>
+            <span class="material-level jlpt-level-badge level-${escapeHtml(item.learning.recommendedLevel.toLowerCase())}">${escapeHtml(item.learning.recommendedLevel)}</span>
             <span>${escapeHtml(item.learning.estimatedMinutes)} 分钟</span>
             <time>${escapeHtml(dateLabel(item))}</time>
           </div>

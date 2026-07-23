@@ -15657,3 +15657,179 @@ body[data-view="discover"] .source-directory-arrow {
     left: auto !important;
   }
 }
+
+
+/* Material library interaction consistency 2026-07-23 */
+.jlpt-level-badge,
+body[data-view="discover"] .material-level.jlpt-level-badge,
+body[data-view="vocab"] .vocab-level-chip.jlpt-level-badge,
+body[data-view="grammar"] .gpoint-level {
+  min-height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 3px 9px !important;
+  border: 1px solid rgba(103, 80, 164, .18) !important;
+  border-radius: 6px !important;
+  background: var(--color-primary-soft) !important;
+  color: var(--color-primary) !important;
+  font-size: var(--type-size-caption) !important;
+  font-weight: 750 !important;
+  line-height: 1.2 !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .discover-filter-select.is-filtered {
+  border-color: var(--color-primary) !important;
+  background-color: var(--color-primary-soft) !important;
+  color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px rgba(103, 80, 164, .08) !important;
+}
+
+body[data-view="discover"] .reading-queue-browse-button {
+  color: var(--color-primary-strong) !important;
+  font-weight: 700 !important;
+}
+
+body[data-view="discover"] .graded-material-grid {
+  align-items: stretch !important;
+}
+
+body[data-view="discover"] .graded-material-card,
+body[data-view="discover"] .graded-material-card.is-official,
+body[data-view="discover"] .graded-material-card.is-internal {
+  position: relative !important;
+  min-height: 196px !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-content: normal !important;
+  gap: 0 !important;
+  overflow: visible !important;
+  transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease !important;
+}
+
+body[data-view="discover"] .graded-material-card:hover {
+  border-color: var(--color-primary) !important;
+  background: color-mix(in srgb, var(--color-primary-soft) 24%, #FFFFFF) !important;
+}
+
+body[data-view="discover"] .graded-material-card:focus-visible {
+  border-color: var(--color-primary) !important;
+  background: color-mix(in srgb, var(--color-primary-soft) 24%, #FFFFFF) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(103, 80, 164, .12) !important;
+}
+
+body[data-view="discover"] .graded-card-top {
+  min-height: 24px !important;
+  padding-right: 28px !important;
+  margin-bottom: var(--space-3) !important;
+}
+
+body[data-view="discover"] .graded-material-card h3 {
+  min-height: 2.9em !important;
+  max-height: 2.9em !important;
+  display: -webkit-box !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+body[data-view="discover"] .graded-material-card p.graded-material-subtitle {
+  min-height: 1.6em !important;
+  max-height: 1.6em !important;
+  margin-top: var(--space-3) !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+body[data-view="discover"] .graded-card-meta {
+  min-height: 24px !important;
+  margin-top: auto !important;
+  padding-top: var(--space-4) !important;
+  border-top: 0 !important;
+}
+
+body[data-view="discover"] .graded-card-enter-cue {
+  position: absolute !important;
+  top: 17px !important;
+  right: 16px !important;
+  width: 20px !important;
+  height: 20px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  color: var(--color-text-muted) !important;
+  opacity: .42 !important;
+  pointer-events: none !important;
+  transition: color .15s ease, opacity .15s ease, transform .15s ease !important;
+}
+
+body[data-view="discover"] .graded-card-enter-icon {
+  width: 17px !important;
+  height: 17px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+body[data-view="discover"] .graded-material-card:hover .graded-card-enter-cue,
+body[data-view="discover"] .graded-material-card:focus-visible .graded-card-enter-cue {
+  color: var(--color-primary) !important;
+  opacity: 1 !important;
+  transform: translateX(2px) !important;
+}
+
+body[data-view="discover"] .graded-card-source-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+body[data-view="discover"] .external-link-icon,
+body[data-view="discover"] .source-directory-arrow .external-link-icon {
+  width: 14px !important;
+  height: 14px !important;
+  flex: 0 0 14px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.9 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+body[data-view="discover"] .source-directory-item .source-directory-icon {
+  border: 1px solid transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .source-directory-item.is-official-source .source-directory-icon {
+  border-color: rgba(103, 80, 164, .18) !important;
+  background: var(--color-primary-soft) !important;
+  color: var(--color-primary) !important;
+}
+
+body[data-view="discover"] .source-directory-item.is-reading-source .source-directory-icon {
+  border-color: var(--color-border) !important;
+  background: var(--md-sys-color-surface-container-high, #ECE6F0) !important;
+  color: var(--md-sys-color-secondary, #625B71) !important;
+}
+
+body[data-view="discover"] .source-directory-arrow {
+  width: 20px !important;
+  height: 20px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+}
+
+@media (max-width: 680px) {
+  body[data-view="discover"] .graded-material-card,
+  body[data-view="discover"] .graded-material-card.is-official,
+  body[data-view="discover"] .graded-material-card.is-internal {
+    min-height: 190px !important;
+  }
+}

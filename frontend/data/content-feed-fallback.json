@@ -71,21 +71,12 @@
       "sources": [
         {
           "organization": "日本語能力試験",
-          "title": "日本国内で受験する",
-          "label": "日本国内报名",
-          "url": "https://www.jlpt.jp/application/domestic_index.html",
+          "title": "2026年 日本語能力試験の実施日",
+          "label": "2026年考试日期",
+          "url": "https://www.jlpt.jp/topics/list2026.html",
           "sourceType": "official",
           "isPrimary": true,
-          "verifiedAt": "2026-07-22T00:00:00+09:00"
-        },
-        {
-          "organization": "日本語能力試験",
-          "title": "海外で受験する",
-          "label": "海外报名与考点",
-          "url": "https://www.jlpt.jp/application/overseas_index.html",
-          "sourceType": "official",
-          "isPrimary": false,
-          "verifiedAt": "2026-07-22T00:00:00+09:00"
+          "verifiedAt": "2026-07-23T00:00:00+09:00"
         }
       ],
       "publicationTargets": [

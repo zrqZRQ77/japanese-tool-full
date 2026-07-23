@@ -2,7 +2,7 @@
 
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { createReadStream, readFileSync } from 'node:fs';
+import { createReadStream, existsSync, readFileSync } from 'node:fs';
 import { access } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,6 +11,8 @@ const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const FRONTEND_DIR = resolve(SCRIPT_DIR, '..');
 const START_PORT = Number(process.env.CONTENT_FEED_TEST_PORT || 5208);
 const fallbackPayload = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/content-feed-fallback.json'), 'utf8'));
+const SYSTEM_CHROME_EXECUTABLE = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const CUSTOM_CHROMIUM_EXECUTABLE = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || (existsSync(SYSTEM_CHROME_EXECUTABLE) ? SYSTEM_CHROME_EXECUTABLE : '');
 
 const MIME_TYPES = {
   '.html':'text/html; charset=utf-8',
@@ -91,7 +93,7 @@ const { server, port } = await startServerWithFallback();
 let browser;
 
 try {
-  browser = await chromium.launch({headless:true});
+  browser = await chromium.launch({headless:true, ...(CUSTOM_CHROMIUM_EXECUTABLE ? {executablePath:CUSTOM_CHROMIUM_EXECUTABLE} : {})});
   const appUrl = `http://127.0.0.1:${port}/index.html`;
 
   // Remote-success path.
@@ -124,11 +126,36 @@ try {
     await page.waitForSelector('#gradedMaterialGrid .graded-material-card.is-official');
     assert.equal(await page.locator('.app-sidebar .nav-item[data-view="discover"] .nav-label').textContent(), '素材库');
     assert.equal(await page.locator('#gradedSourceFilters select').count(), 1);
-    assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').count(), 1);
-    assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /生活与就业指南/);
-    assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /N3/);
-    assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /4 分钟/);
+    const remoteCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official');
+    assert.equal(await remoteCard.count(), 1);
+    assert.match(await remoteCard.textContent(), /生活与就业指南/);
+    assert.match(await remoteCard.textContent(), /N3/);
+    assert.match(await remoteCard.textContent(), /4 分钟/);
+    assert.equal(await remoteCard.locator('.jlpt-level-badge').count(), 1);
+    assert.equal(await remoteCard.locator('.graded-card-source-action .external-link-icon').count(), 1);
+    assert.equal(await remoteCard.locator('.graded-card-source-menu').count(), 0);
+    const remoteCardLayout = await remoteCard.evaluate(element => {
+      const title = element.querySelector('h3').getBoundingClientRect();
+      const metaStyle = getComputedStyle(element.querySelector('.graded-card-meta'));
+      return {titleHeight:Math.round(title.height), divider:metaStyle.borderTopWidth};
+    });
+    assert.ok(remoteCardLayout.titleHeight >= 40);
+    assert.equal(remoteCardLayout.divider, '0px');
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(180);
+    const cueOpacityBefore = Number(await remoteCard.locator('.graded-card-enter-cue').evaluate(element => getComputedStyle(element).opacity));
+    await remoteCard.hover();
+    await page.waitForTimeout(180);
+    const cueOpacityAfter = Number(await remoteCard.locator('.graded-card-enter-cue').evaluate(element => getComputedStyle(element).opacity));
+    assert.ok(cueOpacityAfter > cueOpacityBefore, JSON.stringify({cueOpacityBefore, cueOpacityAfter}));
     assert.equal(await page.locator('#readingQueueList').textContent(), '');
+    assert.equal(await page.locator('#readingQueueBrowseButton').textContent(), '浏览素材');
+    await page.evaluate(() => {
+      window.__browseTarget = '';
+      Element.prototype.scrollIntoView = function(){ window.__browseTarget = this.id; };
+    });
+    await page.locator('#readingQueueBrowseButton').click();
+    assert.equal(await page.evaluate(() => window.__browseTarget), 'gradedReadingTitle');
     const emptyQueueHeight = await page.locator('#readingQueuePanel').evaluate(element => Math.round(element.getBoundingClientRect().height));
     assert.ok(emptyQueueHeight < 100, `empty reading queue should stay compact, got ${emptyQueueHeight}px`);
     const bridgeFailure = await page.evaluate(async () => {
@@ -220,32 +247,57 @@ try {
     const jlptCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'JLPT'});
     assert.match(await jlptCard.locator('.graded-material-subtitle').textContent(), /12 月 6 日/);
     assert.equal(await jlptCard.locator('.graded-card-top > span').count(), 2);
+    assert.equal(await jlptCard.locator('.jlpt-level-badge').count(), 1);
     const jlptTopText = (await jlptCard.locator('.graded-card-top').textContent()).replace(/\s+/g, ' ').trim();
     assert.equal(jlptTopText, 'N4 日语考试 · 3 分钟');
-    assert.doesNotMatch(await jlptCard.textContent(), /官方|12\/6|12\/5/);
+    assert.doesNotMatch(await jlptCard.textContent(), /官方|12\/6|12\/5|日本国内报名|海外报名/);
     assert.ok((await jlptCard.locator('.graded-material-subtitle').evaluate(element => parseFloat(getComputedStyle(element).marginTop))) >= 10);
-    assert.match(await jlptCard.locator('.graded-card-source-menu summary').textContent(), /日本語能力試験/);
-    await jlptCard.locator('.graded-card-source-menu summary').click();
-    const jlptLinks = await jlptCard.locator('.graded-card-source-popover a').evaluateAll(nodes => nodes.map(node => ({text:node.textContent.trim(), href:node.href})));
-    assert.deepEqual(jlptLinks.map(link => link.text), ['日本国内报名', '海外报名与考点']);
-    assert.ok(jlptLinks[0].href.includes('/application/domestic_index.html'));
-    assert.ok(jlptLinks[1].href.includes('/application/overseas_index.html'));
+    const jlptSource = jlptCard.locator('.graded-card-source-action');
+    assert.match(await jlptSource.textContent(), /日本語能力試験/);
+    assert.equal(await jlptSource.getAttribute('href').then(value => new URL(value).pathname), '/topics/list2026.html');
+    assert.equal(await jlptSource.locator('.external-link-icon').count(), 1);
+    assert.equal(await jlptCard.locator('.graded-card-source-menu, .graded-card-source-popover').count(), 0);
     const guideCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'生活与就业指南'});
     assert.doesNotMatch(await guideCard.locator('.graded-card-meta').textContent(), /2\/26|2\/25|官方/);
     assert.match(await guideCard.locator('.graded-card-source-action').textContent(), /出入国在留管理庁/);
+    assert.equal(await guideCard.locator('.graded-card-source-action .external-link-icon').count(), 1);
     const internalCard = page.locator('#gradedMaterialGrid .graded-material-card.is-internal').first();
     assert.equal(await internalCard.locator('.graded-card-top > span').count(), 2);
     assert.equal((await internalCard.locator('.graded-card-source-label').textContent()).trim(), 'Yumeru');
+    assert.equal(await internalCard.locator('.external-link-icon').count(), 0);
 
     await page.locator('#gradedSourceFilters select').selectOption('官方资讯');
+    assert.equal(await page.locator('#gradedSourceFilters select').evaluate(element => element.classList.contains('is-filtered')), true);
     assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card').count(), 3);
     assert.match(await page.locator('#gradedMaterialSummary').textContent(), /显示 3 \/ 9 篇/);
     assert.equal(await page.locator('#gradedClearFiltersButton').isVisible(), true);
     await page.locator('#gradedTopicFilters select').selectOption('考试');
+    assert.equal(await page.locator('#gradedTopicFilters select').evaluate(element => element.classList.contains('is-filtered')), true);
     assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card').count(), 2);
     assert.match(await page.locator('#gradedMaterialSummary').textContent(), /显示 2 \/ 9 篇/);
     await page.locator('#gradedTopicFilters select').selectOption('全部');
     await page.locator('#gradedSourceFilters select').selectOption('全部');
+    assert.equal(await page.locator('#gradedTopicFilters select').evaluate(element => element.classList.contains('is-filtered')), false);
+    assert.equal(await page.locator('#gradedSourceFilters select').evaluate(element => element.classList.contains('is-filtered')), false);
+
+    const cardTracks = await page.locator('#gradedMaterialGrid .graded-material-card').evaluateAll(cards => cards.map(card => {
+      const cardRect = card.getBoundingClientRect();
+      const titleRect = card.querySelector('h3').getBoundingClientRect();
+      const subtitleRect = card.querySelector('.graded-material-subtitle').getBoundingClientRect();
+      const meta = card.querySelector('.graded-card-meta');
+      return {
+        height:Math.round(cardRect.height),
+        titleHeight:Math.round(titleRect.height),
+        subtitleOffset:Math.round(subtitleRect.top - cardRect.top),
+        divider:getComputedStyle(meta).borderTopWidth
+      };
+    }));
+    const range = values => Math.max(...values) - Math.min(...values);
+    assert.ok(range(cardTracks.map(item => item.height)) <= 1, JSON.stringify(cardTracks));
+    assert.ok(range(cardTracks.map(item => item.titleHeight)) <= 1, JSON.stringify(cardTracks));
+    assert.ok(range(cardTracks.map(item => item.subtitleOffset)) <= 1, JSON.stringify(cardTracks));
+    assert.equal(cardTracks.every(item => item.divider === '0px'), true);
+    assert.equal(await page.locator('#gradedMaterialGrid .graded-card-enter-cue').count(), 9);
 
     const lifeCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'生活与就业指南'});
     await lifeCard.click();
@@ -278,9 +330,8 @@ try {
     assert.match(await page.locator('#readingQueueList').textContent(), /生活 · N3/);
     const migratedJlptQueue = page.locator('#readingQueueList .reading-queue-item').filter({hasText:'JLPT'});
     const migratedJlptLinks = await migratedJlptQueue.locator('a').evaluateAll(nodes => nodes.map(node => ({text:node.textContent.trim(), href:node.href})));
-    assert.deepEqual(migratedJlptLinks.map(link => link.text), ['日本国内报名', '海外报名与考点']);
-    assert.ok(migratedJlptLinks[0].href.includes('/application/domestic_index.html'));
-    assert.ok(migratedJlptLinks[1].href.includes('/application/overseas_index.html'));
+    assert.deepEqual(migratedJlptLinks.map(link => link.text), ['2026年考试日期']);
+    assert.equal(new URL(migratedJlptLinks[0].href).pathname, '/topics/list2026.html');
     assert.match(await page.locator('#sourceDirectory').textContent(), /官方机构/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /阅读与媒体来源/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /JASSO/);
@@ -303,6 +354,20 @@ try {
     assert.equal(groupSurface.shadow, 'none');
     assert.equal(await page.locator('#sourceDirectory .source-directory-group-head span').count(), 0);
     assert.equal(await page.locator('#sourceDirectory .source-directory-arrow').count(), 5);
+    assert.equal(await page.locator('#sourceDirectory .source-directory-arrow .external-link-icon').count(), 5);
+    assert.doesNotMatch(await page.locator('#sourceDirectory').textContent(), /↗/);
+    const sourceIconTones = await page.evaluate(() => {
+      const official = document.querySelector('#sourceDirectory .is-official-source .source-directory-icon');
+      const reading = document.querySelector('#sourceDirectory .is-reading-source .source-directory-icon');
+      return {
+        officialBackground:getComputedStyle(official).backgroundColor,
+        officialColor:getComputedStyle(official).color,
+        readingBackground:getComputedStyle(reading).backgroundColor,
+        readingColor:getComputedStyle(reading).color
+      };
+    });
+    assert.notEqual(sourceIconTones.officialBackground, sourceIconTones.readingBackground);
+    assert.notEqual(sourceIconTones.officialColor, sourceIconTones.readingColor);
     const firstSourceGeometry = await page.locator('#sourceDirectory .source-directory-item').first().evaluate(element => {
       const icon = element.querySelector('.source-directory-icon').getBoundingClientRect();
       const copy = element.querySelector('.source-directory-copy').getBoundingClientRect();
