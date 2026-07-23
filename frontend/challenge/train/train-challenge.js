@@ -771,7 +771,9 @@
     renderStartRoute(routeData?.stations || [], storage.lastMode);
     setShareFeedback('');
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    document.getElementById('startStatus').textContent = '路线已就绪。点击发车后才开始计时。';
+    const status = document.getElementById('startStatus');
+    status.hidden = true;
+    status.textContent = '';
   }
 
   function bindControls() {
@@ -844,7 +846,9 @@
     const startButton = document.getElementById('trainStartButton');
     startButton.disabled = false;
     startButton.firstElementChild.textContent = '发车';
-    document.getElementById('startStatus').textContent = '路线已就绪。点击发车后才开始计时。';
+    const status = document.getElementById('startStatus');
+    status.hidden = true;
+    status.textContent = '';
   }
 
   async function init() {
@@ -857,7 +861,9 @@
     } catch (error) {
       console.error(error);
       document.body.dataset.routeError = 'true';
-      document.getElementById('startStatus').textContent = '路线数据载入失败，请刷新页面重试。';
+      const status = document.getElementById('startStatus');
+      status.hidden = false;
+      status.textContent = '路线数据载入失败，请刷新页面重试。';
     }
   }
 

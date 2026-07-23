@@ -30,9 +30,13 @@ route.stations.forEach((station, index) => {
 assert.equal((html.match(/data-challenge-view=/g) || []).length, 3);
 assert.match(html, /id="trainStartButton"/);
 assert.match(html, /class="start-controls"/);
-assert.match(html, /class="start-meta"/);
 assert.match(html, /<h1 id="startTitle">输入站名，开到终点。<\/h1>/);
+assert.doesNotMatch(html, /class="start-meta"/);
+assert.doesNotMatch(html, /看汉字输入假名，或看假名输入汉字/);
+assert.doesNotMatch(html, /原创简化示意 · 按实际站序/);
 assert.doesNotMatch(html, /class="board"/);
+assert.match(html, /class="question-main"/);
+assert.match(html, /class="question-tools"/);
 assert.match(html, /id="resultErrors"/);
 assert.doesNotMatch(html, /id="resultCpm"/);
 assert.match(html, /class="result-route"><span>新宿<\/span><i><\/i><span>上野<\/span><img/);
@@ -46,7 +50,9 @@ assert.match(html, /id="trainAnswerForm"/);
 assert.match(html, /id="trainAnswerSubmitButton"/);
 assert.match(html, /enterkeyhint="done"/);
 assert.match(html, /id="resultHintUsage"/);
-assert.match(html, /不是铁路运营机构官方产品/);
+assert.match(html, /站序参考 JR 东日本 · 不是铁路运营机构官方产品/);
+assert.doesNotMatch(html, /站名与顺序为事实数据/);
+assert.doesNotMatch(html, /核验来源：JR东日本线路图/);
 assert.match(html, /href="\/challenge\/train\/train-challenge\.css"/);
 assert.match(html, /src="\/challenge\/train\/train-challenge\.js"/);
 assert.match(html, /src="\/challenge\/train\/assets\/train\.svg"/);
@@ -81,6 +87,9 @@ assert.match(css, /rail-stop\.is-near/);
 assert.match(css, /answer button/);
 assert.match(css, /start-controls/);
 assert.match(css, /start-view h1/);
+assert.match(css, /question-tools/);
+assert.match(css, /grid-template-columns:minmax\(0,1fr\) 190px/);
+assert.match(css, /body\[data-game-state="play"\] \.page-footer\{display:none\}/);
 assert.match(css, /white-space:nowrap/);
 assert.match(css, /env\(safe-area-inset-top\)/);
 assert.match(css, /prefers-reduced-motion/);
@@ -164,6 +173,7 @@ try {
     assert.deepEqual(endpointPositions, [104, 796]);
     assert.equal(await page.locator('#trainHintToggleStart').isChecked(), false);
     assert.equal(await page.locator('#trainStartButton').isEnabled(), true);
+    assert.equal(await page.locator('#startStatus').isHidden(), true);
     assert.equal(await hasOverflow(page), false, 'mobile-390 start view overflows');
     const startViewport = await page.evaluate(() => ({
       buttonBottom: Math.round(document.getElementById('trainStartButton').getBoundingClientRect().bottom),
@@ -189,6 +199,7 @@ try {
       promptSize: document.getElementById('questionPrompt').dataset.promptSize,
       promptFontSize: Number.parseFloat(getComputedStyle(document.getElementById('questionPrompt')).fontSize),
       answerBottom: Math.round(document.getElementById('trainAnswerForm').getBoundingClientRect().bottom),
+      toolsBottom: Math.round(document.querySelector('.question-tools').getBoundingClientRect().bottom),
       viewportHeight: innerHeight
     }));
     assert.ok(initialFocusState.scrollY <= 1, `departure focus scrolled the page to ${initialFocusState.scrollY}`);
@@ -198,8 +209,9 @@ try {
     assert.ok(initialFocusState.railHeight <= 100, JSON.stringify(initialFocusState));
     assert.ok(initialFocusState.nearbyStops >= 3 && initialFocusState.nearbyStops <= 5, JSON.stringify(initialFocusState));
     assert.equal(initialFocusState.promptSize, 'short');
-    assert.ok(initialFocusState.promptFontSize <= 64, JSON.stringify(initialFocusState));
+    assert.ok(initialFocusState.promptFontSize <= 50, JSON.stringify(initialFocusState));
     assert.ok(initialFocusState.answerBottom <= initialFocusState.viewportHeight, JSON.stringify(initialFocusState));
+    assert.ok(initialFocusState.toolsBottom <= initialFocusState.viewportHeight, JSON.stringify(initialFocusState));
     assert.equal(await page.locator('#trainAnswerSubmitButton').isDisabled(), true);
     assert.equal(await page.locator('#stationAnswerHint').isVisible(), false);
     await page.waitForTimeout(180);
@@ -338,7 +350,6 @@ try {
 
     await page.locator('#trainRetryButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'start');
-    assert.equal(await page.locator('#totalChallengeCount').textContent(), '1 次');
     assert.equal(await page.locator('#trainHintToggleStart').isChecked(), false);
     await context.close();
   }
@@ -402,6 +413,8 @@ try {
       shellWidth: Math.round(document.querySelector('.shell').getBoundingClientRect().width),
       ticketWidth: Math.round(document.querySelector('.ticket').getBoundingClientRect().width),
       titleWhiteSpace: getComputedStyle(document.getElementById('startTitle')).whiteSpace,
+      titleFontSize: Number.parseFloat(getComputedStyle(document.getElementById('startTitle')).fontSize),
+      routeWidth: Math.round(document.querySelector('.route-loop').getBoundingClientRect().width),
       modesWidth: Math.round(document.querySelector('.modes').getBoundingClientRect().width),
       practiceWidth: Math.round(document.querySelector('.start-practice').getBoundingClientRect().width),
       buttonWidth: Math.round(document.getElementById('trainStartButton').getBoundingClientRect().width),
@@ -410,24 +423,47 @@ try {
       boardCount: document.querySelectorAll('.board').length,
       longRailLabels: document.querySelectorAll('.route-loop-station.is-long').length
     }));
-    assert.ok(startLayout.shellWidth <= 1040, JSON.stringify(startLayout));
-    assert.ok(startLayout.ticketWidth <= 960, JSON.stringify(startLayout));
+    assert.ok(startLayout.shellWidth <= 960, JSON.stringify(startLayout));
+    assert.ok(startLayout.ticketWidth <= 880, JSON.stringify(startLayout));
     assert.equal(startLayout.titleWhiteSpace, 'nowrap');
+    assert.ok(startLayout.titleFontSize <= 38, JSON.stringify(startLayout));
+    assert.ok(startLayout.routeWidth <= 760, JSON.stringify(startLayout));
     assert.equal(startLayout.boardCount, 0);
-    assert.ok(startLayout.modesWidth <= 520, JSON.stringify(startLayout));
-    assert.ok(startLayout.practiceWidth <= 250, JSON.stringify(startLayout));
-    assert.ok(startLayout.buttonWidth <= 180, JSON.stringify(startLayout));
+    assert.ok(startLayout.modesWidth <= 460, JSON.stringify(startLayout));
+    assert.ok(startLayout.practiceWidth <= 190, JSON.stringify(startLayout));
+    assert.ok(startLayout.buttonWidth <= 140, JSON.stringify(startLayout));
     assert.ok(startLayout.buttonBottom <= startLayout.viewportHeight, JSON.stringify(startLayout));
     assert.ok(startLayout.longRailLabels >= 3, JSON.stringify(startLayout));
     await page.locator('#trainStartButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'play');
-    const desktopPlayLayout = await page.evaluate(() => ({
-      metricsPosition: getComputedStyle(document.querySelector('.metrics')).position,
-      metricsBottom: document.querySelector('.metrics').getBoundingClientRect().bottom,
-      questionTop: document.getElementById('questionPrompt').getBoundingClientRect().top
-    }));
+    const desktopPlayLayout = await page.evaluate(() => {
+      const metrics = document.querySelector('.metrics').getBoundingClientRect();
+      const rail = document.getElementById('railMap').getBoundingClientRect();
+      const question = document.querySelector('.question').getBoundingClientRect();
+      const main = document.querySelector('.question-main').getBoundingClientRect();
+      const tools = document.querySelector('.question-tools').getBoundingClientRect();
+      return {
+        metricsPosition: getComputedStyle(document.querySelector('.metrics')).position,
+        metricsHeight: Math.round(metrics.height),
+        metricsBottom: metrics.bottom,
+        questionTop: document.getElementById('questionPrompt').getBoundingClientRect().top,
+        questionHeight: Math.round(question.height),
+        questionBottom: Math.round(question.bottom),
+        railWidth: Math.round(rail.width),
+        promptFontSize: Number.parseFloat(getComputedStyle(document.getElementById('questionPrompt')).fontSize),
+        toolsLeft: Math.round(tools.left),
+        mainRight: Math.round(main.right),
+        viewportHeight: innerHeight
+      };
+    });
     assert.equal(desktopPlayLayout.metricsPosition, 'static');
+    assert.ok(desktopPlayLayout.metricsHeight <= 64, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.metricsBottom < desktopPlayLayout.questionTop, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.railWidth <= 160, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.questionHeight <= 460, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.questionBottom <= desktopPlayLayout.viewportHeight, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.promptFontSize <= 72, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.toolsLeft >= desktopPlayLayout.mainRight, JSON.stringify(desktopPlayLayout));
     assert.equal(await hasOverflow(page), false, 'desktop play view overflows');
     await context.close();
   }
