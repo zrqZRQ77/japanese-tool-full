@@ -17,6 +17,7 @@ function run(script, args = []) {
 }
 
 run('check.mjs');
+run('content-feed-browser.test.mjs');
 run('language-corpus.test.mjs');
 run('language-corpus-browser.test.mjs');
 run('contextual-reading.test.mjs');

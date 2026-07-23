@@ -51,11 +51,12 @@ function cacheVersions(indexHtml) {
   const vocabList = indexHtml.match(/vocab-list\.js\?v=([^"']+)/)?.[1] || '';
   const vocabReview = indexHtml.match(/vocab-review\.js\?v=([^"']+)/)?.[1] || '';
   const vocabExport = indexHtml.match(/vocab-export\.js\?v=([^"']+)/)?.[1] || '';
+  const contentFeed = indexHtml.match(/content-feed\.js\?v=([^"']+)/)?.[1] || '';
   const js = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
   const lexicalIntegration = indexHtml.match(/lexical-lookup-integration\.js\?v=([^"']+)/)?.[1] || '';
   const lexicalDetail = indexHtml.match(/lexical-detail-integration\.js\?v=([^"']+)/)?.[1] || '';
   const lexicalVocab = indexHtml.match(/lexical-vocab-integration\.js\?v=([^"']+)/)?.[1] || '';
-  return { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, vocabStore, vocabList, vocabReview, vocabExport, js, lexicalIntegration, lexicalDetail, lexicalVocab };
+  return { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, vocabStore, vocabList, vocabReview, vocabExport, contentFeed, js, lexicalIntegration, lexicalDetail, lexicalVocab };
 }
 
 function duplicateIds(indexHtml) {
@@ -87,6 +88,7 @@ const vocabStoreJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-store.js'), 'utf8
 const vocabListJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-list.js'), 'utf8');
 const vocabReviewJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-review.js'), 'utf8');
 const vocabExportJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-export.js'), 'utf8');
+const contentFeedJs = readFileSync(resolve(FRONTEND_DIR, 'content-feed.js'), 'utf8');
 const lexicalLookupIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup-integration.js'), 'utf8');
 const lexicalDetailIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-detail-integration.js'), 'utf8');
 const lexicalVocabIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-vocab-integration.js'), 'utf8');
@@ -99,9 +101,12 @@ const kuromojiWorkerPocJs = readFileSync(resolve(FRONTEND_DIR, 'kuromoji-worker-
 const kuromojiWorkerJs = readFileSync(resolve(FRONTEND_DIR, 'vendor/kuromoji/20260714-01/kuromoji-tokenizer.worker.js'), 'utf8');
 const dictionary = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/dictionary.json'), 'utf8'));
 const chineseSupplement = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/chinese-definitions-source.json'), 'utf8'));
-const inlineSource = `${appJs}\n${lexicalLookupJs}\n${lexicalRecordJs}\n${vocabStoreJs}\n${vocabListJs}\n${vocabReviewJs}\n${vocabExportJs}\n${lexicalLookupIntegrationJs}\n${lexicalDetailIntegrationJs}\n${lexicalVocabIntegrationJs}\n${indexHtml}`;
+const contentFeedFallback = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/content-feed-fallback.json'), 'utf8'));
+const designMd = readFileSync(resolve(FRONTEND_DIR, '../DESIGN.md'), 'utf8');
+const uiKitMd = readFileSync(resolve(FRONTEND_DIR, '../YOMERU_UI_KIT.md'), 'utf8');
+const inlineSource = `${appJs}\n${lexicalLookupJs}\n${lexicalRecordJs}\n${vocabStoreJs}\n${vocabListJs}\n${vocabReviewJs}\n${vocabExportJs}\n${contentFeedJs}\n${lexicalLookupIntegrationJs}\n${lexicalDetailIntegrationJs}\n${lexicalVocabIntegrationJs}\n${indexHtml}`;
 const globalSearchSource = appJs.match(/const GLOBAL_SEARCH_ITEMS = \[[\s\S]*?\n\];/)?.[0] || '';
-const { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, vocabStore, vocabList, vocabReview, vocabExport, js, lexicalIntegration, lexicalDetail, lexicalVocab } = cacheVersions(indexHtml);
+const { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, vocabStore, vocabList, vocabReview, vocabExport, contentFeed, js, lexicalIntegration, lexicalDetail, lexicalVocab } = cacheVersions(indexHtml);
 const duplicateIdList = duplicateIds(indexHtml);
 const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['index.html', indexHtml],
@@ -109,7 +114,7 @@ const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['design-system.css', designSystemCss],
   ['grammar-layout.css', grammarLayoutCss]
 ]);
-const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'lexical-lookup.js', 'lexical-record.js', 'vocab-store.js', 'vocab-list.js', 'vocab-review.js', 'vocab-export.js', 'app.js', 'lexical-lookup-integration.js', 'lexical-detail-integration.js', 'lexical-vocab-integration.js'];
+const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'lexical-lookup.js', 'lexical-record.js', 'vocab-store.js', 'vocab-list.js', 'vocab-review.js', 'vocab-export.js', 'content-feed.js', 'app.js', 'data/content-feed-fallback.json', 'lexical-lookup-integration.js', 'lexical-detail-integration.js', 'lexical-vocab-integration.js'];
 const requiredKuromojiPocFiles = [
   'kuromoji-worker-poc.js',
   'poc/kuromoji-worker-poc.html',
@@ -194,6 +199,8 @@ run('vocabulary store syntax', 'node', ['--check', 'vocab-store.js']);
 run('vocabulary list syntax', 'node', ['--check', 'vocab-list.js']);
 run('vocabulary review syntax', 'node', ['--check', 'vocab-review.js']);
 run('vocabulary export syntax', 'node', ['--check', 'vocab-export.js']);
+run('content feed syntax', 'node', ['--check', 'content-feed.js']);
+run('content feed browser test syntax', 'node', ['--check', 'tools/content-feed-browser.test.mjs']);
 run('lexical lookup integration syntax', 'node', ['--check', 'lexical-lookup-integration.js']);
 run('lexical detail integration syntax', 'node', ['--check', 'lexical-detail-integration.js']);
 run('lexical vocab integration syntax', 'node', ['--check', 'lexical-vocab-integration.js']);
@@ -204,6 +211,36 @@ run('git whitespace diff', 'git', ['diff', '--check'], { optional: true });
 assertCheck(!/\b(?:alert|confirm)\s*\(/.test(inlineSource), 'no native alert() / confirm() in app.js or index.html');
 assertCheck(!/(?:上传 PDF|选择的 PDF|pdfModeSelect|pdfCleanupSelect|排版方向|网页打印\/导出的PDF)/i.test(indexHtml), 'public HTML does not expose withdrawn PDF controls or copy');
 assertCheck(requiredFiles.every(file => existsSync(resolve(FRONTEND_DIR, file))), 'required frontend files exist');
+assertCheck(!indexHtml.includes('contentFeedSection') && indexHtml.includes('gradedSourceFilters') && appJs.includes('getUnifiedReadingMaterials') && contentFeedJs.includes('getContentFeedItems') && contentFeedJs.includes('openContentFeedQueueItem'), 'official feed is merged into the unified reading-material system');
+assertCheck(contentFeedFallback.schemaVersion === 1 && Array.isArray(contentFeedFallback.items) && contentFeedFallback.items.length >= 3 && contentFeedJs.includes('BUNDLED_FALLBACK_PAYLOAD'), 'bundled content feed fallback is valid and available at runtime');
+assertCheck(!/(editorial|internalNotes|reviewedBy)/.test(JSON.stringify(contentFeedFallback)), 'bundled content feed fallback excludes internal editorial fields');
+assertCheck(['jasso', 'jlpt-official', 'isa-guide'].every(id => appJs.includes(`id:'${id}'`)), 'official institutions are available in the shared source directory');
+const jlptFeedItem = contentFeedFallback.items.find(item => item.id === 'content-202607-jlpt-second-test-date');
+const jlptPrimarySources = jlptFeedItem?.sources?.filter(source => source.isPrimary) || [];
+assertCheck(
+  jlptFeedItem?.attributionMode === 'source_based'
+    && jlptFeedItem?.sources?.length === 2
+    && jlptPrimarySources.length === 1
+    && jlptPrimarySources[0].displayName === '日本語能力試験'
+    && jlptPrimarySources[0].url.includes('/topics/list2026.html')
+    && jlptFeedItem.sources.some(source => source.url.includes('/application/overseas_index.html'))
+    && !JSON.stringify(jlptFeedItem).includes('/application/domestic_index.html'),
+  'JLPT material uses one date-page primary source plus one overseas evidence source',
+);
+assertCheck(contentFeedFallback.items.every(item => ['original', 'source_based'].includes(item.attributionMode) && item.sources.every(source => source.displayName)), 'content feed exposes explicit attribution and source display names');
+assertCheck(contentFeedJs.includes("yomeru_content_feed_cache_v2") && contentFeedJs.includes('function itemSources') && !contentFeedJs.includes('canonicalSources'), 'content feed uses the shared API contract without item-specific source overrides');
+assertCheck(appJs.includes('compareReadingMaterials') && appJs.includes('source-directory-group') && !appJs.includes('materialTimingLabel'), 'material library keeps freshness sorting and grouped sources while omitting card dates');
+assertCheck(indexHtml.includes('id="readingQueueInlineForm" onsubmit="addReadingQueueItem(event)" hidden') && indexHtml.includes('id="readingQueueAddButton"') && indexHtml.includes('id="readingQueueBrowseButton"') && appJs.includes('function browseReadingMaterials'), 'reading queue stays compact and offers a browse-material action');
+assertCheck(!/(站内分级短文与官方资讯|官方机构与日语阅读网站|用于核对考试|用于寻找新闻|还没有保存的文章)/.test(indexHtml + appJs), 'material library removes non-essential explanatory copy');
+assertCheck(!indexHtml.includes('gradedQuickTags') && !appJs.includes('const quickTarget') && !appJs.includes('N3 · 留学考试'), 'material library uses one filter system without shortcut chips');
+assertCheck(appJs.includes('materialDisplayTopic') && appJs.includes('materialSourceName') && appJs.includes('materialPrimarySourceLink') && appJs.includes("return '原创'") && appJs.includes('参考：${displayName}') && appJs.includes('material-card-facts'), 'material cards keep one level tag, one fact line, and the original/reference attribution contract');
+assertCheck(!appJs.includes('material-source-kind') && !appJs.includes('截止 ${label}') && !appJs.includes('官方信息</a>') && !appJs.includes('↗') && !appJs.includes('graded-card-source-menu'), 'material cards avoid duplicate official labels, date details, text arrows, and source menus');
+assertCheck(appJs.includes('externalLinkIconSvg') && appJs.includes('chevronRightIconSvg') && appJs.includes('is-filtered'), 'material library uses standard link icons, entry cues, and visible filter state');
+assertCheck(vocabListJs.includes('vocab-level-chip jlpt-level-badge') && appJs.includes('material-level jlpt-level-badge') && designSystemCss.includes('.jlpt-level-badge'), 'JLPT badges share one component across material and vocabulary lists');
+assertCheck(designSystemCss.includes('border-top: 0 !important') && designSystemCss.includes('-webkit-line-clamp: 2') && designSystemCss.includes('.graded-card-enter-cue'), 'material cards align title tracks, remove the source divider, and expose click affordance');
+assertCheck(['易读新闻・生活', '旅行・美食', '日本留学・EJU', '日语考试', '在留手续・日本生活'].every(meta => appJs.includes(`displayMeta:'${meta}'`)), 'source cards use curated non-duplicated descriptions');
+assertCheck(appJs.includes('is-official-source') && appJs.includes('is-reading-source') && appJs.includes('source-directory-arrow') && !appJs.includes('用于核对考试、留学') && !appJs.includes('用于寻找新闻、生活'), 'source cards use two semantic source groups without group descriptions');
+assertCheck(designMd.includes('学习标签、来源与卡片交互契约') && designMd.includes('原创') && designMd.includes('参考：机构') && uiKitMd.includes('素材库共享组件规则'), 'design standards require shared badges, attribution, direct sources, aligned cards, and visual review');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
 assertCheck(
@@ -211,7 +248,8 @@ assertCheck(
     && indexHtml.indexOf('vocab-store.js') < indexHtml.indexOf('vocab-list.js')
     && indexHtml.indexOf('vocab-list.js') < indexHtml.indexOf('vocab-review.js')
     && indexHtml.indexOf('vocab-review.js') < indexHtml.indexOf('vocab-export.js')
-    && indexHtml.indexOf('vocab-export.js') < indexHtml.indexOf('app.js')
+    && indexHtml.indexOf('vocab-export.js') < indexHtml.indexOf('content-feed.js')
+    && indexHtml.indexOf('content-feed.js') < indexHtml.indexOf('app.js')
     && indexHtml.indexOf('app.js') < indexHtml.indexOf('lexical-vocab-integration.js'),
   'vocabulary module scaffolds load in the planned ordinary-script order'
 );
@@ -333,6 +371,7 @@ assertCheck(
 assertCheck(
   globalSearchSource.includes("label:'开始阅读'")
     && globalSearchSource.includes("label:'整理生词本'")
+    && globalSearchSource.includes("label:'素材库'")
     && globalSearchSource.includes("label:'备份数据'")
     && !/(?:语法本|水平测试|学习历史|找阅读材料|句型打字|文章理解练习)/.test(globalSearchSource),
   'global search matches reduced public MVP navigation'
@@ -349,11 +388,17 @@ assertCheck(
   'homepage more menu and obsolete onboarding entries are not public'
 );
 assertCheck(
-  ['grammar', 'retell', 'discover', 'history'].every(view => new RegExp(`data-view="${view}"[^>]*hidden[^>]*data-mvp-hidden`).test(indexHtml))
+  ['grammar', 'retell', 'history'].every(view => new RegExp(`data-view="${view}"[^>]*hidden[^>]*data-mvp-hidden`).test(indexHtml))
+    && !/data-view="discover"[^>]*hidden[^>]*data-mvp-hidden/.test(indexHtml)
+    && (indexHtml.match(/data-view="discover"[^>]*onclick="openContentFeed\(\)"/g) || []).length === 2
+    && !indexHtml.includes('class="home-content-feed-entry"')
+    && !indexHtml.includes('id="contentFeedSection"')
+    && indexHtml.includes('id="gradedSourceFilters"')
+    && indexHtml.indexOf('id="readingQueuePanel"') < indexHtml.indexOf('id="gradedReadingTitle"')
     && /class="mvp-settings-button"[^>]*data-view="settings"[^>]*hidden[^>]*data-mvp-hidden="floating-settings"/.test(indexHtml)
     && /class="sidebar-footer"[\s\S]*?data-view="settings"/.test(indexHtml)
     && /class="nav-item menu-settings-entry"[^>]*data-view="settings"/.test(indexHtml),
-  'only reading and vocabulary remain in primary navigation and settings is low frequency'
+  'reading, vocabulary, and content feed are public while settings stays low frequency'
 );
 assertCheck(
   (indexHtml.match(/onclick="loadSample\('(life|story|news)'\)"/g) || []).length === 3
@@ -556,7 +601,7 @@ assertCheck(
   'settings copy, typography, restore styling, and destructive styling follow the shared design system'
 );
 assertCheck(hardcodedFontSizes.length === 0, `no hardcoded px font sizes outside typography.css${hardcodedFontSizes.length ? `: ${hardcodedFontSizes.join(', ')}` : ''}`);
-assertCheck(css && designSystem && grammarLayout && typography && heroMenu && lexicalLookup && lexicalRecord && vocabStore && vocabList && vocabReview && vocabExport && js && lexicalIntegration && lexicalDetail && lexicalVocab && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === lexicalLookup && css === lexicalRecord && css === vocabStore && css === vocabList && css === vocabReview && css === vocabExport && css === js && css === lexicalIntegration && css === lexicalDetail && css === lexicalVocab, 'CSS and JS cache versions match');
+assertCheck(css && designSystem && grammarLayout && typography && heroMenu && lexicalLookup && lexicalRecord && vocabStore && vocabList && vocabReview && vocabExport && contentFeed && js && lexicalIntegration && lexicalDetail && lexicalVocab && css === designSystem && css === grammarLayout && css === typography && css === heroMenu && css === lexicalLookup && css === lexicalRecord && css === vocabStore && css === vocabList && css === vocabReview && css === vocabExport && css === contentFeed && css === js && css === lexicalIntegration && css === lexicalDetail && css === lexicalVocab, 'CSS and JS cache versions match');
 assertCheck(/^\d{8}-\d{2}$/.test(css), 'cache version format is YYYYMMDD-NN');
 
 if (process.exitCode) {

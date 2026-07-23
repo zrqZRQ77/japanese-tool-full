@@ -37,6 +37,7 @@ function cacheVersion(indexHtml) {
     indexHtml.match(/design-system\.css\?v=([^"']+)/)?.[1],
     indexHtml.match(/grammar-layout\.css\?v=([^"']+)/)?.[1],
     indexHtml.match(/typography\.css\?v=([^"']+)/)?.[1],
+    indexHtml.match(/content-feed\.js\?v=([^"']+)/)?.[1],
     indexHtml.match(/app\.js\?v=([^"']+)/)?.[1]
   ].filter(Boolean);
   const unique = [...new Set(versions)];
@@ -211,36 +212,27 @@ async function run() {
     }
 
     await page.goto(serverInfo.baseUrl, { waitUntil: 'domcontentloaded' });
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(async () => {
+      localStorage.clear();
+      if (typeof ensureLearningData === 'function') await ensureLearningData();
+    });
     await page.reload({ waitUntil: 'domcontentloaded' });
     await shot('首页', '01-home');
 
     await page.locator('#heroInputText').fill(SAMPLE_TEXT);
     await page.locator('button[onclick="analyzeFromHero()"]').click();
-    await page.locator('#output').waitFor({ state: 'visible', timeout: 8000 });
+    await page.locator('#output ruby.w').first().waitFor({ state: 'visible', timeout: 8000 });
     await shot('阅读页', '02-reading');
 
     await page.locator('button.nav-vocab').click();
     await shot('生词本', '03-vocab');
 
-    await page.locator('button[data-view="grammar"]').click();
-    await shot('语法本', '04-grammar');
-
-    await page.locator('button[data-view="retell"]').click();
-    await page.locator('#startTypingPracticeBtn').click();
-    await shot('练习页', '05-practice');
-
-    await page.locator('button[data-view="discover"]').click();
-    await shot('资料页', '06-discover');
-
-    await page.evaluate(() => window.switchWorkspace?.('test'));
-    await shot('水平测试', '07-test');
-
-    await page.locator('button[data-view="history"]').click();
-    await shot('学习历史', '08-history');
+    await page.evaluate(() => window.switchWorkspace?.('discover'));
+    await page.waitForFunction(() => ['fallback', 'cache', 'remote'].includes(window.getContentFeedSource?.()));
+    await shot('素材库', '04-content-feed');
 
     await page.locator('.sidebar-utility-button[data-view="settings"]').click();
-    await shot('设置与帮助', '09-settings');
+    await shot('设置与帮助', '05-settings');
 
     await browser.close();
     manifest.ok = true;
