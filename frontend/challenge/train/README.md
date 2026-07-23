@@ -11,10 +11,11 @@
 - 日语 IME composition 期间 Enter 不提交。
 - 严格答案判断、错误后继续修改、正确后只前进一站。
 - 实时用时、进度、正确率、连续正确数和路线位置。
-- 完成时间、平均每站用时、CPM、最佳连续和本机最佳纪录。
+- 题目按字符长度自动缩放，桌面统计栏不遮挡题目，手机保留紧凑吸顶状态。
+- 结果页使用紧凑字号和按钮组，并明确区分纯挑战与练习纪录。
 - 独立 localStorage 保存最佳成绩、最近 5 次、总挑战次数和最近难度。
-- 1080×1350 竖屏 PNG 成绩卡。
-- Web Share API 文件分享、普通链接分享、复制链接与下载回退。
+- 1080×1350 竖屏 PNG 成绩卡，列车在完成后停靠上野终点。
+- Web Share API 文件分享、普通链接分享、复制链接与下载回退；公开链接固定为 `https://yomeru.japanese-hub.com/challenge/train`。
 - 390px、430px 和桌面响应式布局。
 
 ## 成绩卡与分享
@@ -50,6 +51,7 @@
 
 - 点击“发车”时记录 `startedAt`，此前计时保持为 0。
 - 使用 `performance.now()` 计算真实经过时间；切到后台再回来仍按经过时间计算。
+- 第一版不提供暂停键；纯挑战和练习模式都保持连续计时，避免误解成绩规则。
 - 记录 `correctSubmissions`、`wrongSubmissions`、`stationTimes[]`、`bestStreak` 和 `correctChars`。
 - `accuracy = correct / (correct + wrong)`。
 - `cpm = correctChars / elapsedMinutes`。

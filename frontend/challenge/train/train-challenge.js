@@ -2,6 +2,7 @@
   'use strict';
 
   const ROUTE_URL = '/challenge/train/routes/yamanote-short.json';
+  const PUBLIC_CHALLENGE_URL = 'https://yomeru.japanese-hub.com/challenge/train';
   const STORAGE_KEY = 'yomeru_train_typing_v1';
   const MODES = Object.freeze({
     'kanji-to-kana': Object.freeze({
@@ -175,10 +176,10 @@
   function renderStartRoute(stations) {
     const target = document.getElementById('startRouteMap');
     if (!target) return;
-    const start = { x: 80, y: 158 };
-    const controlA = { x: 220, y: 12 };
-    const controlB = { x: 680, y: 12 };
-    const end = { x: 820, y: 158 };
+    const start = { x: 104, y: 158 };
+    const controlA = { x: 234, y: 12 };
+    const controlB = { x: 666, y: 12 };
+    const end = { x: 796, y: 158 };
     const stationMarkup = stations.map((station, index) => {
       const point = cubicPoint(index / (stations.length - 1), start, controlA, controlB, end);
       const labelY = point.y + (index % 2 ? 44 : 28);
@@ -188,7 +189,7 @@
       const longClass = [...station.display].length >= 4 ? ' is-long' : '';
       return `<g class="route-loop-station${endpointClass}${longClass}" data-station-id="${station.id}"><circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="13"></circle><text x="${point.x.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="middle">${tspans}</text></g>`;
     }).join('');
-    target.innerHTML = `<svg viewBox="0 0 900 235" role="img" aria-labelledby="routeLoopTitle routeLoopDesc"><title id="routeLoopTitle">新宿到上野的山手线北侧短程</title><desc id="routeLoopDesc">按照实际车站顺序绘制的原创半环形示意图，不是官方线路图。</desc><path class="route-loop-ghost" d="M80 158 C220 236 680 236 820 158"></path><path class="route-loop-line" d="M80 158 C220 12 680 12 820 158"></path>${stationMarkup}</svg>`;
+    target.innerHTML = `<svg viewBox="0 0 900 235" role="img" aria-labelledby="routeLoopTitle routeLoopDesc"><title id="routeLoopTitle">新宿到上野的山手线北侧短程</title><desc id="routeLoopDesc">按照实际车站顺序绘制的原创半环形示意图，不是官方线路图。</desc><path class="route-loop-ghost" d="M104 158 C234 236 666 236 796 158"></path><path class="route-loop-line" d="M104 158 C234 12 666 12 796 158"></path>${stationMarkup}</svg>`;
   }
 
   function renderRail() {
@@ -285,6 +286,14 @@
     document.getElementById('streakValue').textContent = String(game.currentStreak);
   }
 
+  function promptSizeFor(value) {
+    const length = [...String(value || '')].length;
+    if (length >= 6) return 'extra-long';
+    if (length >= 4) return 'long';
+    if (length === 3) return 'medium';
+    return 'short';
+  }
+
   function renderQuestion({ resetScroll = false } = {}) {
     if (!routeData) return;
     const station = routeData.stations[game.index];
@@ -294,7 +303,10 @@
     document.getElementById('nextStationName').textContent = next?.display || '终点';
     document.getElementById('challengeModeLabel').textContent = mode.label;
     document.getElementById('challengeIndexLabel').textContent = String(game.index + 1).padStart(2, '0');
-    document.getElementById('questionPrompt').textContent = mode.prompt(station);
+    const prompt = mode.prompt(station);
+    const promptElement = document.getElementById('questionPrompt');
+    promptElement.textContent = prompt;
+    promptElement.dataset.promptSize = promptSizeFor(prompt);
     document.getElementById('questionHint').textContent = mode.hint;
     const input = document.getElementById('trainAnswerInput');
     input.value = '';
@@ -411,6 +423,12 @@
     return result.hintCount > 0 ? `${result.mode}:practice` : result.mode;
   }
 
+  function resultPracticeLabel(result) {
+    if (result.hintCount >= (routeData?.stations.length || 13)) return '练习模式 · 全程使用提示';
+    if (result.hintCount > 0) return `练习模式 · 使用提示 ${result.hintCount} 站`;
+    return '纯挑战 · 未使用提示';
+  }
+
   function persistResult(result) {
     const storage = readStorage();
     storage.totalChallenges += 1;
@@ -462,18 +480,17 @@
     document.getElementById('resultAverage').textContent = formatSeconds(result.averageStationMs);
     document.getElementById('resultCpm').textContent = `${Math.round(result.cpm)} CPM`;
     document.getElementById('resultStreak').textContent = String(result.bestStreak);
-    document.getElementById('resultHintUsage').textContent = result.hintCount > 0
-      ? `练习模式 · 使用提示 ${result.hintCount} 站（成绩单独记录）`
-      : '纯挑战 · 未使用提示';
+    document.getElementById('resultHintUsage').textContent = resultPracticeLabel(result);
     const best = storage.bestByMode[resultRecordKey(result)];
+    const recordLabel = result.hintCount > 0 ? '练习模式最佳纪录' : '纯挑战最佳纪录';
     document.getElementById('resultBest').textContent = best
-      ? `本机最佳纪录：${formatElapsed(best.elapsedMs)} · ${Math.round(best.accuracy * 100)}%`
-      : '本机最佳纪录：—';
+      ? `${recordLabel}：${formatElapsed(best.elapsedMs)} · ${Math.round(best.accuracy * 100)}%`
+      : `${recordLabel}：—`;
     renderStoredSummary();
   }
 
   function challengeUrl() {
-    return new URL('/challenge/train/', window.location.origin).href;
+    return PUBLIC_CHALLENGE_URL;
   }
 
   function resultModeName(mode) {
@@ -567,7 +584,7 @@
       context.fill();
       context.stroke();
     }
-    drawTrainIcon(context, 540, 250, 0.72);
+    drawTrainIcon(context, 930, 250, 0.72);
     context.fillStyle = card;
     context.font = '700 24px "Hiragino Kaku Gothic ProN", sans-serif';
     context.textAlign = 'left';
@@ -588,9 +605,7 @@
     context.fillText('抵达终点。', 118, 535);
     context.fillStyle = soft;
     context.font = '600 24px "PingFang SC", sans-serif';
-    const cardModeLabel = result.hintCount > 0
-      ? `${resultModeName(result.mode)} · 提示 ${result.hintCount} 站`
-      : `${resultModeName(result.mode)} · 纯挑战`;
+    const cardModeLabel = `${resultModeName(result.mode)} · ${resultPracticeLabel(result)}`;
     context.fillText(cardModeLabel, 122, 582);
 
     context.fillStyle = ink;

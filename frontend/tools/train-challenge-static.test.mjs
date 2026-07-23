@@ -43,7 +43,9 @@ assert.match(html, /src="\/challenge\/train\/train-challenge\.js"/);
 assert.match(html, /src="\/challenge\/train\/assets\/train\.svg"/);
 assert.match(js, /yomeru_train_typing_v1/);
 assert.match(js, /const ROUTE_URL = '\/challenge\/train\/routes\/yamanote-short\.json'/);
-assert.match(js, /new URL\('\/challenge\/train\/', window\.location\.origin\)/);
+assert.match(js, /const PUBLIC_CHALLENGE_URL = 'https:\/\/yomeru\.japanese-hub\.com\/challenge\/train'/);
+assert.match(js, /return PUBLIC_CHALLENGE_URL/);
+assert.match(js, /drawTrainIcon\(context, 930, 250, 0\.72\)/);
 assert.match(js, /compositionstart/);
 assert.match(js, /event\.isComposing/);
 assert.match(js, /recentResults.*slice\(0, 5\)/s);
@@ -55,6 +57,9 @@ assert.match(js, /Number\.NEGATIVE_INFINITY/);
 assert.match(readme, /最后一站只能触发一次结算/);
 assert.match(css, /route-loop-line/);
 assert.match(css, /answer\.is-error:focus-within/);
+assert.match(css, /data-prompt-size="long"/);
+assert.match(css, /result-actions\{align-self:start/);
+assert.match(css, /metrics\{position:static/);
 assert.match(css, /prefers-reduced-motion/);
 
 const mime = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml'};
@@ -130,6 +135,8 @@ try {
     assert.equal(await page.locator('#startRouteMap .route-loop-line').count(), 1);
     assert.equal(await page.locator('#startRouteMap .route-loop-ghost').count(), 1);
     assert.ok(await page.locator('#startRouteMap tspan').count() > 13, 'long station names were not split across lines');
+    const endpointPositions = await page.locator('#startRouteMap .route-loop-station.is-endpoint circle').evaluateAll(nodes => nodes.map(node => Number(node.getAttribute('cx'))));
+    assert.deepEqual(endpointPositions, [104, 796]);
     assert.equal(await page.locator('#trainHintToggleStart').isChecked(), false);
     assert.equal(await page.locator('#trainStartButton').isEnabled(), true);
     assert.equal(await hasOverflow(page), false, 'mobile-390 start view overflows');
@@ -143,10 +150,16 @@ try {
     assert.equal(await page.evaluate(() => document.activeElement?.id === 'trainAnswerInput'), true);
     const initialFocusState = await page.evaluate(() => ({
       scrollY: window.scrollY,
-      outlineColor: getComputedStyle(document.getElementById('answerField')).outlineColor
+      outlineColor: getComputedStyle(document.getElementById('answerField')).outlineColor,
+      metricsPosition: getComputedStyle(document.querySelector('.metrics')).position,
+      promptSize: document.getElementById('questionPrompt').dataset.promptSize,
+      promptFontSize: Number.parseFloat(getComputedStyle(document.getElementById('questionPrompt')).fontSize)
     }));
     assert.ok(initialFocusState.scrollY <= 1, `departure focus scrolled the page to ${initialFocusState.scrollY}`);
     assert.notEqual(initialFocusState.outlineColor, 'rgb(228, 90, 70)', 'normal focus still looks like an error');
+    assert.equal(initialFocusState.metricsPosition, 'sticky');
+    assert.equal(initialFocusState.promptSize, 'short');
+    assert.ok(initialFocusState.promptFontSize <= 82, JSON.stringify(initialFocusState));
     assert.equal(await page.locator('#stationAnswerHint').isVisible(), false);
     await page.waitForTimeout(180);
     assert.ok((await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot())).elapsedMs >= 100);
@@ -181,6 +194,14 @@ try {
     state = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
     assert.equal(state.correctSubmissions, 1);
     assert.equal(state.wrongSubmissions, 1);
+    const longPromptState = await page.evaluate(() => ({
+      text: document.getElementById('questionPrompt').textContent,
+      size: document.getElementById('questionPrompt').dataset.promptSize,
+      fontSize: Number.parseFloat(getComputedStyle(document.getElementById('questionPrompt')).fontSize)
+    }));
+    assert.equal(longPromptState.text, '新大久保');
+    assert.equal(longPromptState.size, 'long');
+    assert.ok(longPromptState.fontSize < initialFocusState.promptFontSize, JSON.stringify({ initialFocusState, longPromptState }));
 
     for (let index = 1; index < route.stations.length; index += 1) {
       await submit(page, route.stations[index].reading);
@@ -204,6 +225,14 @@ try {
     assert.ok(state.result.elapsedMs > 0);
     assert.equal(Math.round(state.result.accuracy * 100), 93);
     assert.equal(await page.locator('#resultHintUsage').textContent(), '纯挑战 · 未使用提示');
+    assert.match(await page.locator('#resultBest').textContent(), /^纯挑战最佳纪录：/);
+    const resultLayout = await page.evaluate(() => ({
+      actionHeights: [...document.querySelectorAll('.result-actions > button')].map(button => Math.round(button.getBoundingClientRect().height)),
+      hintTop: document.getElementById('resultHintUsage').getBoundingClientRect().top,
+      timeTop: document.querySelector('.finish-time').getBoundingClientRect().top
+    }));
+    assert.ok(resultLayout.actionHeights.every(height => height <= 72), JSON.stringify(resultLayout));
+    assert.ok(resultLayout.hintTop < resultLayout.timeTop, JSON.stringify(resultLayout));
     assert.equal(await hasOverflow(page), false, 'mobile-390 result view overflows');
 
     const stored = await page.evaluate(() => ({
@@ -250,7 +279,7 @@ try {
     const shared = await page.evaluate(() => window.__sharePayload);
     assert.equal(shared.files, 1);
     assert.match(shared.text, /正确率 93%/);
-    assert.match(shared.url, /\/challenge\/train\/$/);
+    assert.equal(shared.url, 'https://yomeru.japanese-hub.com/challenge/train');
 
     await page.evaluate(() => {
       window.__copiedLink = '';
@@ -262,7 +291,7 @@ try {
     });
     await page.locator('#shareResultButton').click();
     await page.waitForFunction(() => document.getElementById('shareFeedback')?.textContent?.includes('链接已复制'));
-    assert.match(await page.evaluate(() => window.__copiedLink), /\/challenge\/train\/$/);
+    assert.equal(await page.evaluate(() => window.__copiedLink), 'https://yomeru.japanese-hub.com/challenge/train');
 
     await page.locator('#trainRetryButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'start');
@@ -282,6 +311,12 @@ try {
     await page.locator('#trainStartButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'play');
     assert.equal(await page.locator('#questionPrompt').textContent(), 'しんじゅく');
+    const kanaPromptStyle = await page.evaluate(() => ({
+      size: document.getElementById('questionPrompt').dataset.promptSize,
+      fontSize: Number.parseFloat(getComputedStyle(document.getElementById('questionPrompt')).fontSize)
+    }));
+    assert.equal(kanaPromptStyle.size, 'long');
+    assert.ok(kanaPromptStyle.fontSize <= 68, JSON.stringify(kanaPromptStyle));
     assert.equal(await page.locator('#stationAnswerHint').isVisible(), true);
     assert.equal(await page.locator('#stationAnswerHintLabel').textContent(), '站名');
     assert.equal(await page.locator('#stationAnswerHintValue').textContent(), '新宿');
@@ -320,6 +355,13 @@ try {
     assert.ok(startLayout.longRailLabels >= 3, JSON.stringify(startLayout));
     await page.locator('#trainStartButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'play');
+    const desktopPlayLayout = await page.evaluate(() => ({
+      metricsPosition: getComputedStyle(document.querySelector('.metrics')).position,
+      metricsBottom: document.querySelector('.metrics').getBoundingClientRect().bottom,
+      questionTop: document.getElementById('questionPrompt').getBoundingClientRect().top
+    }));
+    assert.equal(desktopPlayLayout.metricsPosition, 'static');
+    assert.ok(desktopPlayLayout.metricsBottom < desktopPlayLayout.questionTop, JSON.stringify(desktopPlayLayout));
     assert.equal(await hasOverflow(page), false, 'desktop play view overflows');
     await context.close();
   }
