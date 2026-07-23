@@ -192,6 +192,7 @@ try {
     const initialFocusState = await page.evaluate(() => ({
       scrollY: window.scrollY,
       outlineColor: getComputedStyle(document.getElementById('trainAnswerForm')).outlineColor,
+      outlineWidth: Number.parseFloat(getComputedStyle(document.getElementById('trainAnswerForm')).outlineWidth),
       metricsPosition: getComputedStyle(document.querySelector('.metrics')).position,
       metricsHeight: Math.round(document.querySelector('.metrics').getBoundingClientRect().height),
       railHeight: Math.round(document.getElementById('railMap').getBoundingClientRect().height),
@@ -204,12 +205,13 @@ try {
     }));
     assert.ok(initialFocusState.scrollY <= 1, `departure focus scrolled the page to ${initialFocusState.scrollY}`);
     assert.notEqual(initialFocusState.outlineColor, 'rgb(228, 90, 70)', 'normal focus still looks like an error');
+    assert.ok(initialFocusState.outlineWidth <= 2, JSON.stringify(initialFocusState));
     assert.equal(initialFocusState.metricsPosition, 'sticky');
-    assert.ok(initialFocusState.metricsHeight <= 72, JSON.stringify(initialFocusState));
-    assert.ok(initialFocusState.railHeight <= 100, JSON.stringify(initialFocusState));
+    assert.ok(initialFocusState.metricsHeight <= 60, JSON.stringify(initialFocusState));
+    assert.ok(initialFocusState.railHeight <= 70, JSON.stringify(initialFocusState));
     assert.ok(initialFocusState.nearbyStops >= 3 && initialFocusState.nearbyStops <= 5, JSON.stringify(initialFocusState));
     assert.equal(initialFocusState.promptSize, 'short');
-    assert.ok(initialFocusState.promptFontSize <= 50, JSON.stringify(initialFocusState));
+    assert.ok(initialFocusState.promptFontSize <= 46, JSON.stringify(initialFocusState));
     assert.ok(initialFocusState.answerBottom <= initialFocusState.viewportHeight, JSON.stringify(initialFocusState));
     assert.ok(initialFocusState.toolsBottom <= initialFocusState.viewportHeight, JSON.stringify(initialFocusState));
     assert.equal(await page.locator('#trainAnswerSubmitButton').isDisabled(), true);
@@ -443,6 +445,7 @@ try {
       const main = document.querySelector('.question-main').getBoundingClientRect();
       const tools = document.querySelector('.question-tools').getBoundingClientRect();
       return {
+        playWidth: Math.round(document.querySelector('.play-view').getBoundingClientRect().width),
         metricsPosition: getComputedStyle(document.querySelector('.metrics')).position,
         metricsHeight: Math.round(metrics.height),
         metricsBottom: metrics.bottom,
@@ -456,13 +459,14 @@ try {
         viewportHeight: innerHeight
       };
     });
+    assert.ok(desktopPlayLayout.playWidth <= 900, JSON.stringify(desktopPlayLayout));
     assert.equal(desktopPlayLayout.metricsPosition, 'static');
-    assert.ok(desktopPlayLayout.metricsHeight <= 64, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.metricsHeight <= 56, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.metricsBottom < desktopPlayLayout.questionTop, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.railWidth <= 160, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.questionHeight <= 460, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.railWidth <= 130, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.questionHeight <= 380, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.questionBottom <= desktopPlayLayout.viewportHeight, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.promptFontSize <= 72, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.promptFontSize <= 60, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.toolsLeft >= desktopPlayLayout.mainRight, JSON.stringify(desktopPlayLayout));
     assert.equal(await hasOverflow(page), false, 'desktop play view overflows');
     await context.close();
