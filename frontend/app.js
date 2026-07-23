@@ -2064,12 +2064,10 @@ function renderReadingQueue(){
   const readCount = sorted.length - unreadCount;
   count.textContent = sorted.length ? `${sorted.length} 篇 · ${unreadCount} 未读` : '0 篇';
   const panel = document.getElementById('readingQueuePanel');
-  const emptyHint = document.getElementById('readingQueueEmptyHint');
   if(panel){
     panel.classList.toggle('is-empty', !sorted.length);
     panel.classList.toggle('has-items', Boolean(sorted.length));
   }
-  if(emptyHint) emptyHint.hidden = Boolean(sorted.length);
   const savedStat = document.getElementById('resourceSavedCount');
   const unreadStat = document.getElementById('resourceUnreadCount');
   const readStat = document.getElementById('resourceReadCount');
@@ -8054,23 +8052,6 @@ function materialTopicClass(topic){
   return `topic-${key}`;
 }
 
-function formatJapanDate(value, includeTime = false){
-  if(!value || Number.isNaN(Date.parse(value))) return '';
-  const formatter = new Intl.DateTimeFormat('zh-CN', {
-    timeZone:'Asia/Tokyo',
-    month:'numeric',
-    day:'numeric',
-    ...(includeTime ? {hour:'2-digit', minute:'2-digit', hour12:false} : {})
-  });
-  return formatter.format(new Date(value)).replace('24:', '00:');
-}
-
-function materialTimingLabel(material){
-  if(material.contentType !== 'alert' || !material.expiresAt) return '';
-  const label = formatJapanDate(material.expiresAt, true);
-  return label ? `截止 ${label}（日本时间）` : '';
-}
-
 function materialDisplayTopic(material){
   const topics = Array.isArray(material?.topics) ? material.topics : [material?.topic].filter(Boolean);
   if(topics.includes('留学') && topics.includes('考试')) return '留学考试';
@@ -8090,15 +8071,27 @@ function materialSourceLinks(material){
   }));
 }
 
+function materialSourceName(material){
+  if(material?.sourceKind !== 'official') return 'Yumeru';
+  const label = String(material?.sourceLabel || '').trim();
+  if(/JASSO|学生支援/.test(label)) return 'JASSO';
+  if(/日本語能力|JLPT/.test(label)) return '日本語能力試験';
+  if(/出入国在留/.test(label)) return '出入国在留管理庁';
+  return label || '来源';
+}
+
 function materialSourceAction(material){
+  const name = materialSourceName(material);
   const links = materialSourceLinks(material);
-  if(!links.length) return '';
+  if(material?.sourceKind !== 'official' || !links.length){
+    return `<span class="graded-card-source-label">${escapeHtml(name)}</span>`;
+  }
   if(links.length === 1){
-    return `<a class="graded-card-source-action" href="${escapeHtml(links[0].url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">官方信息</a>`;
+    return `<a class="graded-card-source-action" href="${escapeHtml(links[0].url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHtml(name)} <span aria-hidden="true">↗</span></a>`;
   }
   return `
     <details class="graded-card-source-menu" onclick="event.stopPropagation()">
-      <summary>官方信息</summary>
+      <summary>${escapeHtml(name)} <span aria-hidden="true">↗</span></summary>
       <div class="graded-card-source-popover">
         ${links.map(link=>`<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`).join('')}
       </div>
@@ -8110,7 +8103,6 @@ function renderGradedReadingMaterials(){
   const levelTarget = document.getElementById('gradedLevelFilters');
   const topicTarget = document.getElementById('gradedTopicFilters');
   const sourceTarget = document.getElementById('gradedSourceFilters');
-  const quickTarget = document.getElementById('gradedQuickTags');
   const grid = document.getElementById('gradedMaterialGrid');
   const total = document.getElementById('gradedMaterialTotal');
   const allItems = getUnifiedReadingMaterials();
@@ -8145,16 +8137,6 @@ function renderGradedReadingMaterials(){
       </select>
     `;
   }
-  if(quickTarget){
-    quickTarget.innerHTML = [
-      ['全部', '全部', '官方资讯', '官方信息'],
-      ['N3', '考试', '官方资讯', 'N3 · 留学考试'],
-      ['N3', '生活', '官方资讯', 'N3 · 日本生活'],
-      ['N4', '新闻', '站内短文', 'N4 · 新闻速览']
-    ].map(([level, topic, source, label]) => `
-      <button type="button" class="${ACTIVE_GRADED_LEVEL === level && ACTIVE_GRADED_TOPIC === topic && ACTIVE_GRADED_SOURCE === source ? 'active' : ''}" onclick="applyGradedQuickFilter('${level}', '${topic}', '${source}')" aria-pressed="${ACTIVE_GRADED_LEVEL === level && ACTIVE_GRADED_TOPIC === topic && ACTIVE_GRADED_SOURCE === source ? 'true' : 'false'}"><span></span>${escapeHtml(label)}</button>
-    `).join('');
-  }
   if(!grid) return;
   const items = allItems.filter(gradedMaterialMatches);
   const hasFilters = ACTIVE_GRADED_LEVEL !== '全部' || ACTIVE_GRADED_TOPIC !== '全部' || ACTIVE_GRADED_SOURCE !== '全部';
@@ -8168,28 +8150,21 @@ function renderGradedReadingMaterials(){
   if(clearButton) clearButton.hidden = !hasFilters;
   grid.innerHTML = items.length ? items.map(material => {
     const displayTopic = materialDisplayTopic(material);
-    const timing = materialTimingLabel(material);
-    const officialTag = material.sourceKind === 'official' ? '<span class="material-source-kind">官方</span>' : '';
     const sourceAction = materialSourceAction(material);
-    const alertClass = material.contentType === 'alert' ? ' is-alert' : '';
     return `
-      <article class="graded-material-card ${material.sourceKind === 'official' ? 'is-official' : 'is-internal'}${alertClass}" onclick="loadGradedReadingMaterial('${escapeHtml(material.id)}')" tabindex="0" role="button" aria-label="阅读 ${escapeHtml(material.titleJa || material.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadGradedReadingMaterial('${escapeHtml(material.id)}')}">
+      <article class="graded-material-card ${material.sourceKind === 'official' ? 'is-official' : 'is-internal'}" onclick="loadGradedReadingMaterial('${escapeHtml(material.id)}')" tabindex="0" role="button" aria-label="阅读 ${escapeHtml(material.titleJa || material.title)}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadGradedReadingMaterial('${escapeHtml(material.id)}')}">
         <div class="graded-card-top">
           <span class="material-level ${materialLevelClass(material.level)}">${escapeHtml(material.level)}</span>
-          <span class="material-topic ${materialTopicClass(displayTopic)}">${escapeHtml(displayTopic)}</span>
-          <span class="material-duration">${escapeHtml(material.minutes)} 分钟</span>
-          ${officialTag}
+          <span class="material-card-facts">${escapeHtml(displayTopic)} · ${escapeHtml(material.minutes)} 分钟</span>
         </div>
         <h3 lang="ja">${escapeHtml(material.titleJa || gradedMaterialDisplayTitle(material.title))}</h3>
         ${material.titleZh ? `<p class="graded-material-subtitle">${escapeHtml(material.titleZh)}</p>` : ''}
         <div class="graded-card-meta">
-          <span>${escapeHtml(material.sourceLabel || 'Yumeru')}</span>
-          ${timing ? `<span>${escapeHtml(timing)}</span>` : ''}
           ${sourceAction}
         </div>
       </article>
     `;
-  }).join('') : '<div class="source-empty-state">暂时没有匹配素材。换一个等级、题材或来源试试。</div>';
+  }).join('') : '<div class="source-empty-state">暂无匹配素材</div>';
 }
 
 function loadGradedReadingMaterial(id){
@@ -8328,6 +8303,7 @@ function sourceDirectoryCard(source, recommended){
         <h3>${escapeHtml(source.title)}</h3>
         <p>${escapeHtml(sourceDirectoryMeta(source))}</p>
       </div>
+      <span class="source-directory-arrow" aria-hidden="true">↗</span>
     </article>
   `;
 }
@@ -8353,20 +8329,19 @@ function renderSourceDirectory(){
   const officialSources = sources.filter(source => source.official);
   const mediaSources = sources.filter(source => !source.official);
   const groups = [
-    ['官方机构', '用于核对考试、留学、在留和生活制度的原始信息', officialSources],
-    ['阅读与媒体来源', '用于寻找新闻、生活、旅行、商业和兴趣类日语文章', mediaSources]
-  ].filter(([, , items]) => items.length);
-  target.innerHTML = groups.length ? groups.map(([title, description, items]) => `
+    ['官方机构', officialSources],
+    ['阅读与媒体来源', mediaSources]
+  ].filter(([, items]) => items.length);
+  target.innerHTML = groups.length ? groups.map(([title, items]) => `
     <section class="source-directory-group">
       <div class="source-directory-group-head">
         <h3>${escapeHtml(title)}</h3>
-        <span>${escapeHtml(description)}</span>
       </div>
       <div class="source-directory-group-grid">
         ${items.map(source=>sourceDirectoryCard(source, recommended)).join('')}
       </div>
     </section>
-  `).join('') : '<div class="source-empty-state">这个等级暂时没有对应类型。可以换一个类型，或使用当前等级示例开始阅读。</div>';
+  `).join('') : '<div class="source-empty-state">暂无匹配来源</div>';
   renderSourceRecommendations();
 }
 

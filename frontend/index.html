@@ -11,11 +11,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="styles.css?v=20260722-08">
-<link rel="stylesheet" href="design-system.css?v=20260722-08">
-<link rel="stylesheet" href="grammar-layout.css?v=20260722-08">
-<link rel="stylesheet" href="typography.css?v=20260722-08">
-<link rel="stylesheet" href="hero-menu-refresh.css?v=20260722-08">
+<link rel="stylesheet" href="styles.css?v=20260722-09">
+<link rel="stylesheet" href="design-system.css?v=20260722-09">
+<link rel="stylesheet" href="grammar-layout.css?v=20260722-09">
+<link rel="stylesheet" href="typography.css?v=20260722-09">
+<link rel="stylesheet" href="hero-menu-refresh.css?v=20260722-09">
 <script defer src="config.js"></script>
 <script defer src="analytics.js?v=20260719-02"></script>
 </head>
@@ -686,9 +686,8 @@
       <div class="card-pad">
         <section class="discover-panel quick-add-panel reading-queue-panel is-empty" id="readingQueuePanel" aria-labelledby="readingQueueTitle">
           <div class="discover-panel-head">
-            <div class="reading-queue-title-group">
+            <div>
               <h3 id="readingQueueTitle">我的阅读清单</h3>
-              <span class="reading-queue-empty-hint" id="readingQueueEmptyHint" hidden>还没有保存的文章</span>
             </div>
             <div class="reading-queue-head-actions">
               <span class="discover-panel-meta" id="readingQueueCount">0 篇</span>
@@ -709,7 +708,6 @@
           <div class="discover-panel-head">
             <div>
               <h3 id="gradedReadingTitle">阅读素材</h3>
-              <p class="discover-panel-desc">站内分级短文与官方资讯统一按等级、题材和来源筛选</p>
             </div>
             <div class="graded-material-summary">
               <span class="discover-panel-meta" id="gradedMaterialSummary">共 <span id="gradedMaterialTotal">0</span> 篇素材</span>
@@ -723,7 +721,6 @@
               <div class="discover-filter-options discover-select-control" id="gradedTopicFilters"></div>
               <div class="discover-filter-options discover-select-control" id="gradedSourceFilters"></div>
             </div>
-            <div class="discover-quick-tags" id="gradedQuickTags" aria-label="快速筛选组合"></div>
           </div>
 
           <div class="graded-material-grid" id="gradedMaterialGrid"></div>
@@ -733,7 +730,6 @@
           <div class="discover-panel-head">
             <div>
               <h3 id="externalSourceTitle">精选来源</h3>
-              <p class="discover-panel-desc">官方机构与日语阅读网站，查看原始信息或寻找更多阅读素材</p>
             </div>
             <div class="source-summary-actions">
               <span class="discover-panel-meta" id="externalSourceSummary"><span id="externalSourceTotal">0</span> 个来源</span>
@@ -1225,17 +1221,17 @@
 <div class="icon-button-hint" id="iconButtonHint" role="tooltip" aria-hidden="true"></div>
 
 <script src="kuromoji-worker-poc.js?v=20260714-01"></script>
-<script src="lexical-lookup.js?v=20260722-08"></script>
-<script src="lexical-record.js?v=20260722-08"></script>
-<script src="vocab-store.js?v=20260722-08"></script>
-<script src="vocab-list.js?v=20260722-08"></script>
-<script src="vocab-review.js?v=20260722-08"></script>
-<script src="vocab-export.js?v=20260722-08"></script>
-<script src="content-feed.js?v=20260722-08"></script>
-<script src="app.js?v=20260722-08"></script>
-<script src="lexical-lookup-integration.js?v=20260722-08"></script>
-<script src="lexical-detail-integration.js?v=20260722-08"></script>
-<script src="lexical-vocab-integration.js?v=20260722-08"></script>
+<script src="lexical-lookup.js?v=20260722-09"></script>
+<script src="lexical-record.js?v=20260722-09"></script>
+<script src="vocab-store.js?v=20260722-09"></script>
+<script src="vocab-list.js?v=20260722-09"></script>
+<script src="vocab-review.js?v=20260722-09"></script>
+<script src="vocab-export.js?v=20260722-09"></script>
+<script src="content-feed.js?v=20260722-09"></script>
+<script src="app.js?v=20260722-09"></script>
+<script src="lexical-lookup-integration.js?v=20260722-09"></script>
+<script src="lexical-detail-integration.js?v=20260722-09"></script>
+<script src="lexical-vocab-integration.js?v=20260722-09"></script>
 <script src="mvp-stability-fixes.js?v=20260719-01"></script>
 <script>
   (() => {

@@ -102,6 +102,8 @@ const kuromojiWorkerJs = readFileSync(resolve(FRONTEND_DIR, 'vendor/kuromoji/202
 const dictionary = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/dictionary.json'), 'utf8'));
 const chineseSupplement = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/chinese-definitions-source.json'), 'utf8'));
 const contentFeedFallback = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'data/content-feed-fallback.json'), 'utf8'));
+const designMd = readFileSync(resolve(FRONTEND_DIR, '../DESIGN.md'), 'utf8');
+const uiKitMd = readFileSync(resolve(FRONTEND_DIR, '../YOMERU_UI_KIT.md'), 'utf8');
 const inlineSource = `${appJs}\n${lexicalLookupJs}\n${lexicalRecordJs}\n${vocabStoreJs}\n${vocabListJs}\n${vocabReviewJs}\n${vocabExportJs}\n${contentFeedJs}\n${lexicalLookupIntegrationJs}\n${lexicalDetailIntegrationJs}\n${lexicalVocabIntegrationJs}\n${indexHtml}`;
 const globalSearchSource = appJs.match(/const GLOBAL_SEARCH_ITEMS = \[[\s\S]*?\n\];/)?.[0] || '';
 const { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, vocabStore, vocabList, vocabReview, vocabExport, contentFeed, js, lexicalIntegration, lexicalDetail, lexicalVocab } = cacheVersions(indexHtml);
@@ -214,11 +216,15 @@ assertCheck(contentFeedFallback.schemaVersion === 1 && Array.isArray(contentFeed
 assertCheck(!/(editorial|internalNotes|reviewedBy)/.test(JSON.stringify(contentFeedFallback)), 'bundled content feed fallback excludes internal editorial fields');
 assertCheck(['jasso', 'jlpt-official', 'isa-guide'].every(id => appJs.includes(`id:'${id}'`)), 'official institutions are available in the shared source directory');
 assertCheck(contentFeedFallback.items.some(item => item.id === 'content-202607-jlpt-second-test-date' && item.sources.some(source => source.url.includes('/application/domestic_index.html')) && item.sources.some(source => source.url.includes('/application/overseas_index.html'))), 'JLPT article uses article-specific domestic and overseas application links');
-assertCheck(appJs.includes("timeZone:'Asia/Tokyo'") && appJs.includes('compareReadingMaterials') && appJs.includes('source-directory-group'), 'material library keeps Japan dates, freshness sorting, and grouped sources');
-assertCheck(indexHtml.includes('id="readingQueueInlineForm" onsubmit="addReadingQueueItem(event)" hidden') && indexHtml.includes('id="readingQueueAddButton"') && indexHtml.includes('id="readingQueueEmptyHint" hidden'), 'reading queue add form and empty state stay compact');
-assertCheck(indexHtml.includes('官方机构与日语阅读网站，查看原始信息或寻找更多阅读素材') && !indexHtml.includes('新闻、经济与日语学习类网站导航'), 'source directory copy matches official institutions and reading media');
-assertCheck(appJs.includes("['全部', '全部', '官方资讯', '官方信息']") && appJs.includes('materialDisplayTopic') && appJs.includes('materialSourceAction'), 'material cards use reduced topic hierarchy and one official-information action');
+assertCheck(appJs.includes('compareReadingMaterials') && appJs.includes('source-directory-group') && !appJs.includes('materialTimingLabel'), 'material library keeps freshness sorting and grouped sources while omitting card dates');
+assertCheck(indexHtml.includes('id="readingQueueInlineForm" onsubmit="addReadingQueueItem(event)" hidden') && indexHtml.includes('id="readingQueueAddButton"') && !indexHtml.includes('readingQueueEmptyHint'), 'reading queue add form stays compact without tutorial copy');
+assertCheck(!/(站内分级短文与官方资讯|官方机构与日语阅读网站|用于核对考试|用于寻找新闻|还没有保存的文章)/.test(indexHtml + appJs), 'material library removes non-essential explanatory copy');
+assertCheck(!indexHtml.includes('gradedQuickTags') && !appJs.includes('const quickTarget') && !appJs.includes('N3 · 留学考试'), 'material library uses one filter system without shortcut chips');
+assertCheck(appJs.includes('materialDisplayTopic') && appJs.includes('materialSourceName') && appJs.includes('materialSourceAction') && appJs.includes('material-card-facts'), 'material cards keep one level tag, one fact line, and one source action');
+assertCheck(!appJs.includes('material-source-kind') && !appJs.includes('截止 ${label}') && !appJs.includes('官方信息</a>'), 'material cards avoid duplicate official labels and date details');
 assertCheck(['易读新闻・生活', '旅行・美食', '日本留学・EJU', '日语考试', '在留手续・日本生活'].every(meta => appJs.includes(`displayMeta:'${meta}'`)), 'source cards use curated non-duplicated descriptions');
+assertCheck(appJs.includes('source-directory-arrow') && !appJs.includes('用于核对考试、留学') && !appJs.includes('用于寻找新闻、生活'), 'source cards use direct links without group descriptions');
+assertCheck(designMd.includes('简洁文案与交付前自检') && uiKitMd.includes('简洁交付规则'), 'design standards require concise copy and human visual review');
 assertCheck(duplicateIdList.length === 0, `HTML ids are unique${duplicateIdList.length ? `: ${duplicateIdList.join(', ')}` : ''}`);
 assertCheck(requiredFunctions.every(name => new RegExp(`function\\s+${name}\\s*\\(`).test(appJs)), 'required app functions exist');
 assertCheck(

@@ -15397,3 +15397,263 @@ body[data-view="discover"] .source-directory-item.is-official:focus-visible {
     left: 0;
   }
 }
+
+
+/* Material library final reduction 2026-07-23 */
+body[data-view="discover"] .reading-queue-panel.is-empty {
+  padding: var(--space-3) var(--space-4) !important;
+  gap: 0 !important;
+}
+
+body[data-view="discover"] .reading-queue-panel.is-empty .discover-panel-head {
+  min-height: 44px !important;
+  margin: 0 !important;
+}
+
+body[data-view="discover"] .reading-queue-panel.is-empty .reading-queue-list,
+body[data-view="discover"] .reading-queue-panel.is-empty .reading-queue-status:empty {
+  display: none !important;
+}
+
+body[data-view="discover"] .discover-filter-panel--refined {
+  margin-bottom: var(--space-4) !important;
+  padding-bottom: var(--space-4) !important;
+}
+
+body[data-view="discover"] .graded-material-card,
+body[data-view="discover"] .graded-material-card.is-official,
+body[data-view="discover"] .graded-material-card.is-internal,
+body[data-view="discover"] .graded-material-card.is-alert {
+  min-height: 148px !important;
+  padding: var(--space-4) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-lg) !important;
+  background: var(--color-bg) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .graded-material-card:hover,
+body[data-view="discover"] .graded-material-card:focus-visible,
+body[data-view="discover"] .graded-material-card.is-official:hover,
+body[data-view="discover"] .graded-material-card.is-official:focus-visible {
+  border-color: var(--color-primary) !important;
+}
+
+body[data-view="discover"] .graded-card-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: var(--space-2) !important;
+  margin: 0 0 var(--space-3) !important;
+}
+
+body[data-view="discover"] .graded-card-top .material-level {
+  flex: 0 0 auto !important;
+}
+
+body[data-view="discover"] .material-card-facts {
+  color: var(--color-text-soft) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 600 !important;
+  line-height: var(--type-line-ui) !important;
+}
+
+body[data-view="discover"] .graded-material-card h3 {
+  margin: 0 !important;
+  font-size: var(--type-size-emphasis) !important;
+  line-height: 1.45 !important;
+}
+
+body[data-view="discover"] .graded-material-card p.graded-material-subtitle {
+  min-height: 0 !important;
+  margin: var(--space-3) 0 0 !important;
+  color: var(--color-text-soft) !important;
+  font-size: var(--type-size-meta) !important;
+  line-height: 1.6 !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+  overflow: hidden !important;
+}
+
+body[data-view="discover"] .graded-card-meta {
+  min-height: 28px !important;
+  margin-top: auto !important;
+  padding-top: var(--space-3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: var(--space-2) !important;
+  border-top: 1px solid var(--color-border) !important;
+}
+
+body[data-view="discover"] .graded-card-source-label,
+body[data-view="discover"] .graded-card-source-action,
+body[data-view="discover"] .graded-card-source-menu summary {
+  margin: 0 !important;
+  color: var(--color-text-soft) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 650 !important;
+  line-height: var(--type-line-ui) !important;
+  text-decoration: none !important;
+}
+
+body[data-view="discover"] .graded-card-source-action,
+body[data-view="discover"] .graded-card-source-menu summary {
+  color: var(--color-primary-strong) !important;
+  cursor: pointer !important;
+}
+
+body[data-view="discover"] .graded-card-source-action:hover,
+body[data-view="discover"] .graded-card-source-action:focus-visible,
+body[data-view="discover"] .graded-card-source-menu summary:hover,
+body[data-view="discover"] .graded-card-source-menu summary:focus-visible {
+  text-decoration: underline !important;
+  outline: none !important;
+}
+
+body[data-view="discover"] .graded-card-source-menu {
+  position: relative !important;
+  margin: 0 !important;
+}
+
+body[data-view="discover"] .graded-card-source-menu summary {
+  list-style: none !important;
+}
+
+body[data-view="discover"] .graded-card-source-menu summary::-webkit-details-marker {
+  display: none !important;
+}
+
+body[data-view="discover"] .graded-card-source-popover {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: calc(100% + var(--space-2)) !important;
+  z-index: 6 !important;
+  min-width: 168px !important;
+  display: grid !important;
+  gap: var(--space-1) !important;
+  padding: var(--space-2) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-lg) !important;
+  background: var(--color-paper) !important;
+  box-shadow: var(--shadow-level-2) !important;
+}
+
+body[data-view="discover"] .graded-card-source-popover a {
+  margin: 0 !important;
+  padding: var(--space-2) var(--space-3) !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--color-text) !important;
+  font-size: var(--type-size-meta) !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+body[data-view="discover"] .graded-card-source-popover a:hover,
+body[data-view="discover"] .graded-card-source-popover a:focus-visible {
+  background: var(--color-primary-soft) !important;
+  color: var(--color-primary-strong) !important;
+  outline: none !important;
+}
+
+body[data-view="discover"] .source-directory-group,
+body[data-view="discover"] .discover-sources > .source-directory-group {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .source-directory-group-head {
+  margin-bottom: var(--space-3) !important;
+}
+
+body[data-view="discover"] .source-directory-group-head h3 {
+  margin: 0 !important;
+  font-size: var(--type-size-subtitle) !important;
+}
+
+body[data-view="discover"] .source-directory-group-head span {
+  display: none !important;
+}
+
+body[data-view="discover"] .source-directory-group + .source-directory-group {
+  margin-top: var(--space-5) !important;
+  padding-top: var(--space-5) !important;
+  border-top: 1px solid var(--color-border) !important;
+}
+
+body[data-view="discover"] .source-directory-group-grid {
+  gap: var(--space-3) !important;
+}
+
+body[data-view="discover"] .source-directory-item,
+body[data-view="discover"] .source-directory-item.is-official {
+  min-height: 88px !important;
+  grid-template-columns: 44px minmax(0, 1fr) 20px !important;
+  align-items: center !important;
+  gap: var(--space-3) !important;
+  padding: var(--space-4) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-lg) !important;
+  background: var(--color-bg) !important;
+  box-shadow: none !important;
+}
+
+body[data-view="discover"] .source-directory-item:hover,
+body[data-view="discover"] .source-directory-item:focus-visible,
+body[data-view="discover"] .source-directory-item.is-official:hover,
+body[data-view="discover"] .source-directory-item.is-official:focus-visible {
+  border-color: var(--color-primary) !important;
+  outline: none !important;
+}
+
+body[data-view="discover"] .source-directory-copy {
+  width: 100% !important;
+  height: 44px !important;
+  min-width: 0 !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-self: center !important;
+}
+
+body[data-view="discover"] .source-directory-copy h3,
+body[data-view="discover"] .source-directory-copy p {
+  margin: 0 !important;
+}
+
+body[data-view="discover"] .source-directory-copy p {
+  margin-top: var(--space-1) !important;
+}
+
+body[data-view="discover"] .source-directory-arrow {
+  align-self: center !important;
+  justify-self: end !important;
+  color: var(--color-text-soft) !important;
+  font-size: var(--type-size-body) !important;
+}
+
+@media (max-width: 680px) {
+  body[data-view="discover"] .reading-queue-panel.is-empty .discover-panel-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  body[data-view="discover"] .source-directory-item,
+  body[data-view="discover"] .source-directory-item.is-official {
+    grid-template-columns: 40px minmax(0, 1fr) 20px !important;
+  }
+
+  body[data-view="discover"] .graded-card-source-popover {
+    right: 0 !important;
+    left: auto !important;
+  }
+}

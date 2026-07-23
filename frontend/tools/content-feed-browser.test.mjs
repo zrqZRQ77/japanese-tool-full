@@ -96,7 +96,7 @@ try {
 
   // Remote-success path.
   {
-    const context = await browser.newContext({viewport:{width:1280, height:800}});
+    const context = await browser.newContext({viewport:{width:1440, height:900}});
     const page = await context.newPage();
     page.setDefaultNavigationTimeout(60000);
     await page.route('https://fonts.googleapis.com/**', route=>route.abort());
@@ -128,7 +128,6 @@ try {
     assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /生活与就业指南/);
     assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /N3/);
     assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').textContent(), /4 分钟/);
-    assert.equal(await page.locator('#readingQueueEmptyHint').isVisible(), true);
     assert.equal(await page.locator('#readingQueueList').textContent(), '');
     const emptyQueueHeight = await page.locator('#readingQueuePanel').evaluate(element => Math.round(element.getBoundingClientRect().height));
     assert.ok(emptyQueueHeight < 100, `empty reading queue should stay compact, got ${emptyQueueHeight}px`);
@@ -205,6 +204,9 @@ try {
     assert.match(await page.locator('#gradedMaterialSummary').textContent(), /共 9 篇素材/);
     assert.equal(await page.locator('#gradedClearFiltersButton').isHidden(), true);
     assert.equal(await page.locator('#readingQueueInlineForm').isHidden(), true);
+    assert.equal(await page.locator('#gradedQuickTags').count(), 0);
+    assert.equal(await page.locator('.discover-panel-desc').count(), 0);
+    assert.doesNotMatch(await page.locator('body').textContent(), /用于核对考试|用于寻找新闻|还没有保存的文章/);
     await page.locator('#readingQueueAddButton').click();
     assert.equal(await page.locator('#readingQueueInlineForm').isVisible(), true);
     await page.locator('#readingQueueAddButton').click();
@@ -217,19 +219,23 @@ try {
     assert.match(await page.locator('#gradedMaterialGrid .graded-material-card.is-official').first().textContent(), /EJU/);
     const jlptCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'JLPT'});
     assert.match(await jlptCard.locator('.graded-material-subtitle').textContent(), /12 月 6 日/);
-    assert.doesNotMatch(await jlptCard.locator('.graded-card-meta').textContent(), /12\/6|12\/5/);
-    assert.equal(await jlptCard.locator('.graded-card-top > span').count(), 4);
+    assert.equal(await jlptCard.locator('.graded-card-top > span').count(), 2);
     const jlptTopText = (await jlptCard.locator('.graded-card-top').textContent()).replace(/\s+/g, ' ').trim();
-    assert.match(jlptTopText, /N4.*日语考试.*3 分钟.*官方/);
+    assert.equal(jlptTopText, 'N4 日语考试 · 3 分钟');
+    assert.doesNotMatch(await jlptCard.textContent(), /官方|12\/6|12\/5/);
+    assert.ok((await jlptCard.locator('.graded-material-subtitle').evaluate(element => parseFloat(getComputedStyle(element).marginTop))) >= 10);
+    assert.match(await jlptCard.locator('.graded-card-source-menu summary').textContent(), /日本語能力試験/);
     await jlptCard.locator('.graded-card-source-menu summary').click();
     const jlptLinks = await jlptCard.locator('.graded-card-source-popover a').evaluateAll(nodes => nodes.map(node => ({text:node.textContent.trim(), href:node.href})));
     assert.deepEqual(jlptLinks.map(link => link.text), ['日本国内报名', '海外报名与考点']);
     assert.ok(jlptLinks[0].href.includes('/application/domestic_index.html'));
     assert.ok(jlptLinks[1].href.includes('/application/overseas_index.html'));
     const guideCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'生活与就业指南'});
-    assert.doesNotMatch(await guideCard.locator('.graded-card-meta').textContent(), /2\/26|2\/25/);
-    assert.equal(await guideCard.locator('.graded-card-source-action').textContent(), '官方信息');
-    assert.doesNotMatch(await page.locator('#gradedMaterialGrid .graded-material-card.is-internal').first().locator('.graded-card-top').textContent(), /站内短文/);
+    assert.doesNotMatch(await guideCard.locator('.graded-card-meta').textContent(), /2\/26|2\/25|官方/);
+    assert.match(await guideCard.locator('.graded-card-source-action').textContent(), /出入国在留管理庁/);
+    const internalCard = page.locator('#gradedMaterialGrid .graded-material-card.is-internal').first();
+    assert.equal(await internalCard.locator('.graded-card-top > span').count(), 2);
+    assert.equal((await internalCard.locator('.graded-card-source-label').textContent()).trim(), 'Yumeru');
 
     await page.locator('#gradedSourceFilters select').selectOption('官方资讯');
     assert.equal(await page.locator('#gradedMaterialGrid .graded-material-card').count(), 3);
@@ -295,6 +301,23 @@ try {
     assert.equal(groupSurface.border, '0px');
     assert.equal(groupSurface.background, 'rgba(0, 0, 0, 0)');
     assert.equal(groupSurface.shadow, 'none');
+    assert.equal(await page.locator('#sourceDirectory .source-directory-group-head span').count(), 0);
+    assert.equal(await page.locator('#sourceDirectory .source-directory-arrow').count(), 5);
+    const firstSourceGeometry = await page.locator('#sourceDirectory .source-directory-item').first().evaluate(element => {
+      const icon = element.querySelector('.source-directory-icon').getBoundingClientRect();
+      const copy = element.querySelector('.source-directory-copy').getBoundingClientRect();
+      const arrow = element.querySelector('.source-directory-arrow').getBoundingClientRect();
+      const card = element.getBoundingClientRect();
+      return {
+        height:Math.round(card.height),
+        iconCenter:Math.round(icon.top + icon.height / 2),
+        copyCenter:Math.round(copy.top + copy.height / 2),
+        arrowCenter:Math.round(arrow.top + arrow.height / 2)
+      };
+    });
+    assert.ok(firstSourceGeometry.height <= 100);
+    assert.ok(Math.abs(firstSourceGeometry.iconCenter - firstSourceGeometry.copyCenter) <= 4, JSON.stringify(firstSourceGeometry));
+    assert.ok(Math.abs(firstSourceGeometry.arrowCenter - firstSourceGeometry.copyCenter) <= 4, JSON.stringify(firstSourceGeometry));
     await context.close();
   }
 
