@@ -1,0 +1,4354 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-23T00:00:00.000Z",
+  "baseline": {
+    "mainCommit": "01ccdb78c9988a9513199344439d5d5240c758f3",
+    "coverageAudit": "20260723",
+    "jmdictDataVersion": "20260713",
+    "sourceRegistry": "audits/offline-chinese-coverage/20260723/source-registry.json"
+  },
+  "policy": {
+    "officialChineseLayer": "human-reviewed-yomeru-curated-only",
+    "automaticApprovalAllowed": false,
+    "aiDraftAllowed": true,
+    "aiDraftPublishAllowed": false,
+    "requiredReviewerStatus": "approved",
+    "requiredEvidenceCount": 1
+  },
+  "summary": {
+    "totalItems": 93,
+    "priorityCounts": {
+      "P0": 6,
+      "P1": 42,
+      "P2": 19,
+      "P3": 26
+    },
+    "reviewTypeCounts": {
+      "high-frequency-lexical": 15,
+      "manual-research-required": 26,
+      "sense-disambiguation": 45,
+      "standard-lexical": 7
+    },
+    "withJmdictEvidence": 67,
+    "manualResearchRequired": 26,
+    "ambiguityReview": 45,
+    "candidateChineseFilled": 0
+  },
+  "items": [
+    {
+      "queueId": "zh-review-001",
+      "priority": "P0",
+      "word": "帰る",
+      "reading": "かえる",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "ambiguity",
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-074",
+        "LQ-075",
+        "LQ-161"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1221270"
+          ],
+          "headwords": [
+            "帰る"
+          ],
+          "readings": [
+            "かえる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to return",
+            "to come home",
+            "to go home",
+            "to go back",
+            "to leave (of a guest, customer, etc.)",
+            "to get home",
+            "to get to home plate"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-002",
+      "priority": "P0",
+      "word": "書く",
+      "reading": "かく",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-046",
+        "LQ-047",
+        "LQ-048"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1343950"
+          ],
+          "headwords": [
+            "書く"
+          ],
+          "readings": [
+            "かく"
+          ],
+          "partsOfSpeech": [
+            "v5k",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to write",
+            "to compose",
+            "to pen",
+            "to draw",
+            "to paint"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-003",
+      "priority": "P0",
+      "word": "静か",
+      "reading": "しずか",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-105",
+        "LQ-106",
+        "LQ-107"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1381820"
+          ],
+          "headwords": [
+            "静か"
+          ],
+          "readings": [
+            "しずか"
+          ],
+          "partsOfSpeech": [
+            "adj-na"
+          ],
+          "englishGlosses": [
+            "quiet",
+            "silent",
+            "slow",
+            "unhurried",
+            "calm",
+            "peaceful"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-004",
+      "priority": "P0",
+      "word": "待つ",
+      "reading": "まつ",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-052",
+        "LQ-053",
+        "LQ-054"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1410590"
+          ],
+          "headwords": [
+            "待つ"
+          ],
+          "readings": [
+            "まつ"
+          ],
+          "partsOfSpeech": [
+            "v5t",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to wait",
+            "to await",
+            "to look forward to",
+            "to anticipate",
+            "to depend on",
+            "to need"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-005",
+      "priority": "P0",
+      "word": "開く",
+      "reading": "あく",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "ambiguity",
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-082",
+        "LQ-174",
+        "LQ-175"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1586270"
+          ],
+          "headwords": [
+            "開く"
+          ],
+          "readings": [
+            "あく"
+          ],
+          "partsOfSpeech": [
+            "v5k",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to open (e.g. doors)",
+            "to open (e.g. business, etc.)",
+            "to be empty",
+            "to be vacant",
+            "to be available",
+            "to be free",
+            "to be open (e.g. neckline, etc.)",
+            "to have been opened (of one's eyes, mouth, etc.)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-006",
+      "priority": "P0",
+      "word": "来る",
+      "reading": "くる",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-066",
+        "LQ-068",
+        "LQ-069"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1547720"
+          ],
+          "headwords": [
+            "来る"
+          ],
+          "readings": [
+            "くる"
+          ],
+          "partsOfSpeech": [
+            "aux-v",
+            "vi",
+            "vk"
+          ],
+          "englishGlosses": [
+            "to come (spatially or temporally)",
+            "to approach",
+            "to arrive",
+            "to come back",
+            "to do ... and come back",
+            "to come to be",
+            "to become",
+            "to get"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-007",
+      "priority": "P1",
+      "word": "一日",
+      "reading": "いちにち",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-178",
+        "LQ-179"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1576260"
+          ],
+          "headwords": [
+            "一日"
+          ],
+          "readings": [
+            "いちにち"
+          ],
+          "partsOfSpeech": [
+            "adv",
+            "n"
+          ],
+          "englishGlosses": [
+            "one day",
+            "all day (long)",
+            "the whole day",
+            "from morning till night",
+            "first day of the month"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-008",
+      "priority": "P1",
+      "word": "飲む",
+      "reading": "のむ",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-070",
+        "LQ-071"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1169870"
+          ],
+          "headwords": [
+            "飲む"
+          ],
+          "readings": [
+            "のむ"
+          ],
+          "partsOfSpeech": [
+            "v5m",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to drink",
+            "to swallow",
+            "to take (medicine)",
+            "to smoke (tobacco)",
+            "to swallow up",
+            "to engulf",
+            "to suppress (one's anger, bitter feelings, etc.)",
+            "to keep down"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-009",
+      "priority": "P1",
+      "word": "古い",
+      "reading": "ふるい",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-110",
+        "LQ-111"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1265070"
+          ],
+          "headwords": [
+            "古い"
+          ],
+          "readings": [
+            "ふるい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "old",
+            "aged",
+            "ancient",
+            "antiquated",
+            "antique",
+            "timeworn",
+            "long",
+            "since long ago"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-010",
+      "priority": "P1",
+      "word": "呼ぶ",
+      "reading": "よぶ",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-099",
+        "LQ-100"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1266440"
+          ],
+          "headwords": [
+            "呼ぶ"
+          ],
+          "readings": [
+            "よぶ"
+          ],
+          "partsOfSpeech": [
+            "v5b",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to call out (to)",
+            "to call",
+            "to invoke",
+            "to summon (a doctor, etc.)",
+            "to invite",
+            "to designate",
+            "to name",
+            "to brand"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-011",
+      "priority": "P1",
+      "word": "降る",
+      "reading": "ふる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-093",
+        "LQ-094"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1282790"
+          ],
+          "headwords": [
+            "降る"
+          ],
+          "readings": [
+            "ふる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to fall (of rain, snow, ash, etc.)",
+            "to come down",
+            "to form (of frost)",
+            "to beam down (of sunlight or moonlight)",
+            "to pour in",
+            "to visit (of luck, misfortune, etc.)",
+            "to come",
+            "to arrive"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-012",
+      "priority": "P1",
+      "word": "座る",
+      "reading": "すわる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-087",
+        "LQ-088"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1291800"
+          ],
+          "headwords": [
+            "座る"
+          ],
+          "readings": [
+            "すわる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to sit (down)",
+            "to have a seat",
+            "to be seated",
+            "to kneel (on the floor)",
+            "to assume (a position)",
+            "to take on (a duty)",
+            "to occupy (a post)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-013",
+      "priority": "P1",
+      "word": "撮る",
+      "reading": "とる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-076",
+        "LQ-077"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1298790"
+          ],
+          "headwords": [
+            "撮る"
+          ],
+          "readings": [
+            "とる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to take (a photograph)",
+            "to record (audio or video)",
+            "to film",
+            "to shoot"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-014",
+      "priority": "P1",
+      "word": "持つ",
+      "reading": "もつ",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-089",
+        "LQ-090"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1315720"
+          ],
+          "headwords": [
+            "持つ"
+          ],
+          "readings": [
+            "もつ"
+          ],
+          "partsOfSpeech": [
+            "v5t",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to hold (in one's hand)",
+            "to take",
+            "to carry",
+            "to possess",
+            "to have",
+            "to own",
+            "to maintain",
+            "to keep"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-015",
+      "priority": "P1",
+      "word": "暑い",
+      "reading": "あつい",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-112",
+        "LQ-113"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1343460"
+          ],
+          "headwords": [
+            "暑い"
+          ],
+          "readings": [
+            "あつい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "hot",
+            "warm",
+            "sultry",
+            "heated",
+            "passionate",
+            "impassioned",
+            "burning (desire, etc.)",
+            "on everybody's mind"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-016",
+      "priority": "P1",
+      "word": "乗る",
+      "reading": "のる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-083",
+        "LQ-084"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1355120"
+          ],
+          "headwords": [
+            "乗る"
+          ],
+          "readings": [
+            "のる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to get on (train, plane, bus, ship, etc.)",
+            "to get in",
+            "to board",
+            "to take",
+            "to embark",
+            "to get on (e.g. a footstool)",
+            "to step on",
+            "to jump on"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-017",
+      "priority": "P1",
+      "word": "青い",
+      "reading": "あおい",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-129",
+        "LQ-130"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1381390"
+          ],
+          "headwords": [
+            "青い"
+          ],
+          "readings": [
+            "あおい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "blue",
+            "azure",
+            "green",
+            "pale (facial color)",
+            "gray",
+            "grey",
+            "unripe",
+            "inexperienced"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-018",
+      "priority": "P1",
+      "word": "聞く",
+      "reading": "きく",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-072",
+        "LQ-073"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1591110"
+          ],
+          "headwords": [
+            "聞く"
+          ],
+          "readings": [
+            "きく"
+          ],
+          "partsOfSpeech": [
+            "v5k",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to hear",
+            "to listen (e.g. to music)",
+            "to ask",
+            "to enquire",
+            "to query",
+            "to hear about",
+            "to hear of",
+            "to learn of"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-019",
+      "priority": "P1",
+      "word": "便利",
+      "reading": "べんり",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-121",
+        "LQ-122"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1512610"
+          ],
+          "headwords": [
+            "便利"
+          ],
+          "readings": [
+            "べんり"
+          ],
+          "partsOfSpeech": [
+            "adj-na"
+          ],
+          "englishGlosses": [
+            "convenient",
+            "handy",
+            "useful"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-020",
+      "priority": "P1",
+      "word": "冷たい",
+      "reading": "つめたい",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-114",
+        "LQ-115"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1556730"
+          ],
+          "headwords": [
+            "冷たい"
+          ],
+          "readings": [
+            "つめたい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "cold (to the touch)",
+            "chilly",
+            "icy",
+            "freezing",
+            "(emotionally) cold",
+            "coldhearted",
+            "unfeeling",
+            "indifferent"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-021",
+      "priority": "P1",
+      "word": "話す",
+      "reading": "はなす",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-091",
+        "LQ-092"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1562350"
+          ],
+          "headwords": [
+            "話す"
+          ],
+          "readings": [
+            "はなす"
+          ],
+          "partsOfSpeech": [
+            "v5s",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to talk",
+            "to speak",
+            "to converse",
+            "to chat",
+            "to tell",
+            "to explain",
+            "to narrate",
+            "to mention"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-022",
+      "priority": "P1",
+      "word": "会う",
+      "reading": "あう",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-078",
+        "LQ-079"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1198180"
+          ],
+          "headwords": [
+            "会う"
+          ],
+          "readings": [
+            "あう"
+          ],
+          "partsOfSpeech": [
+            "v5u",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to meet",
+            "to encounter",
+            "to see",
+            "to have an accident",
+            "to have a bad experience"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-023",
+      "priority": "P1",
+      "word": "終わる",
+      "reading": "おわる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-095",
+        "LQ-096"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1589600"
+          ],
+          "headwords": [
+            "終わる"
+          ],
+          "readings": [
+            "おわる"
+          ],
+          "partsOfSpeech": [
+            "suf",
+            "v5r",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to end",
+            "to come to an end",
+            "to finish",
+            "to close",
+            "to be over",
+            "to complete",
+            "to conclude",
+            "to finish doing"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-024",
+      "priority": "P1",
+      "word": "人気",
+      "reading": "にんき",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-180",
+        "LQ-181"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1367010"
+          ],
+          "headwords": [
+            "人気"
+          ],
+          "readings": [
+            "にんき"
+          ],
+          "partsOfSpeech": [
+            "adj-no",
+            "n"
+          ],
+          "englishGlosses": [
+            "popularity",
+            "public favor",
+            "condition (e.g. market)",
+            "tone",
+            "character",
+            "nature"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-025",
+      "priority": "P1",
+      "word": "買う",
+      "reading": "かう",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-097",
+        "LQ-098"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1473740"
+          ],
+          "headwords": [
+            "買う"
+          ],
+          "readings": [
+            "かう"
+          ],
+          "partsOfSpeech": [
+            "v5u",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to buy",
+            "to purchase",
+            "to value (highly)",
+            "to think highly of",
+            "to have a high opinion of",
+            "to appreciate",
+            "to recognize",
+            "to incur (someone's anger, displeasure, etc.)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-026",
+      "priority": "P1",
+      "word": "雨",
+      "reading": "あめ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-167"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1171900"
+          ],
+          "headwords": [
+            "雨"
+          ],
+          "readings": [
+            "あめ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "rain",
+            "rainy day",
+            "rainy weather",
+            "the November suit (in hanafuda)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-027",
+      "priority": "P1",
+      "word": "駅",
+      "reading": "えき",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-021"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1175140"
+          ],
+          "headwords": [
+            "駅"
+          ],
+          "readings": [
+            "えき"
+          ],
+          "partsOfSpeech": [
+            "ctr",
+            "n"
+          ],
+          "englishGlosses": [
+            "railway station",
+            "train station",
+            "staging post on a highway (in pre-modern Japan)",
+            "counter for railway stations and bus stations"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-028",
+      "priority": "P1",
+      "word": "音楽",
+      "reading": "おんがく",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-027"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1183720"
+          ],
+          "headwords": [
+            "音楽"
+          ],
+          "readings": [
+            "おんがく"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "music"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-029",
+      "priority": "P1",
+      "word": "家",
+      "reading": "いえ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-023"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1191730"
+          ],
+          "headwords": [
+            "家"
+          ],
+          "readings": [
+            "いえ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "house",
+            "residence",
+            "dwelling",
+            "home",
+            "family",
+            "household",
+            "lineage",
+            "family name"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-030",
+      "priority": "P1",
+      "word": "花",
+      "reading": "はな",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-165"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1194500"
+          ],
+          "headwords": [
+            "花"
+          ],
+          "readings": [
+            "はな"
+          ],
+          "partsOfSpeech": [
+            "adj-no",
+            "n"
+          ],
+          "englishGlosses": [
+            "flower",
+            "blossom",
+            "bloom",
+            "petal",
+            "cherry blossom",
+            "beauty",
+            "blooming (esp. of cherry blossoms)",
+            "ikebana"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-031",
+      "priority": "P1",
+      "word": "机",
+      "reading": "つくえ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-035"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1220210"
+          ],
+          "headwords": [
+            "机"
+          ],
+          "readings": [
+            "つくえ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "desk"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-032",
+      "priority": "P1",
+      "word": "橋",
+      "reading": "はし",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-163"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1237410"
+          ],
+          "headwords": [
+            "橋"
+          ],
+          "readings": [
+            "はし"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "bridge"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-033",
+      "priority": "P1",
+      "word": "犬",
+      "reading": "いぬ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-036"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1258330"
+          ],
+          "headwords": [
+            "犬"
+          ],
+          "readings": [
+            "いぬ"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "n-pref"
+          ],
+          "englishGlosses": [
+            "dog (Canis (lupus) familiaris)",
+            "canine",
+            "squealer",
+            "rat",
+            "snitch",
+            "informer",
+            "informant",
+            "spy"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-034",
+      "priority": "P1",
+      "word": "公園",
+      "reading": "こうえん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-019"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1273270"
+          ],
+          "headwords": [
+            "公園"
+          ],
+          "readings": [
+            "こうえん"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "(public) park"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-035",
+      "priority": "P1",
+      "word": "昨日",
+      "reading": "きのう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-031"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1579260"
+          ],
+          "headwords": [
+            "昨日"
+          ],
+          "readings": [
+            "きのう"
+          ],
+          "partsOfSpeech": [
+            "adv",
+            "n"
+          ],
+          "englishGlosses": [
+            "yesterday"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-036",
+      "priority": "P1",
+      "word": "仕事",
+      "reading": "しごと",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-030"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1304970"
+          ],
+          "headwords": [
+            "仕事"
+          ],
+          "readings": [
+            "しごと"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vi",
+            "vs"
+          ],
+          "englishGlosses": [
+            "work",
+            "job",
+            "labor",
+            "labour",
+            "business",
+            "task",
+            "assignment",
+            "occupation"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-037",
+      "priority": "P2",
+      "word": "施行",
+      "reading": "しこう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N1"
+      ],
+      "exampleCaseIds": [
+        "LQ-244"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1579510"
+          ],
+          "headwords": [
+            "施行"
+          ],
+          "readings": [
+            "しこう"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vs",
+            "vt"
+          ],
+          "englishGlosses": [
+            "putting in force (a law)",
+            "putting into operation",
+            "putting into effect",
+            "enforcement",
+            "carrying out (a plan, policy, etc.)",
+            "execution"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-038",
+      "priority": "P1",
+      "word": "紙",
+      "reading": "かみ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-169"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1311530"
+          ],
+          "headwords": [
+            "紙"
+          ],
+          "readings": [
+            "かみ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "paper"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-039",
+      "priority": "P1",
+      "word": "写真",
+      "reading": "しゃしん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-028"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1321900"
+          ],
+          "headwords": [
+            "写真"
+          ],
+          "readings": [
+            "しゃしん"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "photograph",
+            "photo",
+            "picture",
+            "photography",
+            "moving picture",
+            "movie"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-040",
+      "priority": "P2",
+      "word": "審議",
+      "reading": "しんぎ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N1"
+      ],
+      "exampleCaseIds": [
+        "LQ-257"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1360360"
+          ],
+          "headwords": [
+            "審議"
+          ],
+          "readings": [
+            "しんぎ"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vs",
+            "vt"
+          ],
+          "englishGlosses": [
+            "deliberation",
+            "discussion",
+            "consideration"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-041",
+      "priority": "P1",
+      "word": "水",
+      "reading": "みず",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-020"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1371260"
+          ],
+          "headwords": [
+            "水"
+          ],
+          "readings": [
+            "みず"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "water (esp. cool or cold)",
+            "fluid (esp. in an animal tissue)",
+            "liquid",
+            "flood",
+            "floodwaters",
+            "water offered to wrestlers just prior to a bout",
+            "break granted to wrestlers engaged in a prolonged bout"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-042",
+      "priority": "P2",
+      "word": "政府",
+      "reading": "せいふ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N3"
+      ],
+      "exampleCaseIds": [
+        "LQ-231"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1376070"
+          ],
+          "headwords": [
+            "政府"
+          ],
+          "readings": [
+            "せいふ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "government",
+            "administration",
+            "ministry"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-043",
+      "priority": "P1",
+      "word": "切る",
+      "reading": "きる",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-172"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1384830"
+          ],
+          "headwords": [
+            "切る"
+          ],
+          "readings": [
+            "きる"
+          ],
+          "partsOfSpeech": [
+            "suf",
+            "v5r",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to cut",
+            "to cut through",
+            "to perform (surgery)",
+            "to sever (connections, ties)",
+            "to turn off (e.g. the light)",
+            "to terminate (e.g. a conversation)",
+            "to hang up (the phone)",
+            "to disconnect"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-044",
+      "priority": "P1",
+      "word": "窓",
+      "reading": "まど",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-040"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1401400"
+          ],
+          "headwords": [
+            "窓"
+          ],
+          "readings": [
+            "まど"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "window"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-045",
+      "priority": "P1",
+      "word": "着る",
+      "reading": "きる",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-173"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1423000"
+          ],
+          "headwords": [
+            "着る"
+          ],
+          "readings": [
+            "きる"
+          ],
+          "partsOfSpeech": [
+            "v1",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to wear (from the shoulders down)",
+            "to put on",
+            "to take (the blame, responsibility)",
+            "to bear"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-046",
+      "priority": "P1",
+      "word": "電車",
+      "reading": "でんしゃ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-022"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1443530"
+          ],
+          "headwords": [
+            "電車"
+          ],
+          "readings": [
+            "でんしゃ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "train",
+            "electric train"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-047",
+      "priority": "P1",
+      "word": "猫",
+      "reading": "ねこ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-018"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1467640"
+          ],
+          "headwords": [
+            "猫"
+          ],
+          "readings": [
+            "ねこ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "cat (esp. the domestic cat, Felis catus)",
+            "feline",
+            "shamisen",
+            "geisha",
+            "wheelbarrow",
+            "clay bed-warmer",
+            "bottom (submissive partner of a homosexual relationship)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-048",
+      "priority": "P1",
+      "word": "箸",
+      "reading": "はし",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-164"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1476410"
+          ],
+          "headwords": [
+            "箸"
+          ],
+          "readings": [
+            "はし"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "chopsticks"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-049",
+      "priority": "P1",
+      "word": "髪",
+      "reading": "かみ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N4"
+      ],
+      "exampleCaseIds": [
+        "LQ-171"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1477950"
+          ],
+          "headwords": [
+            "髪"
+          ],
+          "readings": [
+            "かみ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "hair (on the head)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-050",
+      "priority": "P2",
+      "word": "比率",
+      "reading": "ひりつ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N1"
+      ],
+      "exampleCaseIds": [
+        "LQ-255"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1483680"
+          ],
+          "headwords": [
+            "比率"
+          ],
+          "readings": [
+            "ひりつ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "ratio",
+            "proportion",
+            "percentage"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-051",
+      "priority": "P2",
+      "word": "被害",
+      "reading": "ひがい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N3"
+      ],
+      "exampleCaseIds": [
+        "LQ-246"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1484350"
+          ],
+          "headwords": [
+            "被害"
+          ],
+          "readings": [
+            "ひがい"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "(suffering) damage",
+            "injury",
+            "harm"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-052",
+      "priority": "P1",
+      "word": "鼻",
+      "reading": "はな",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-166"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1486720"
+          ],
+          "headwords": [
+            "鼻"
+          ],
+          "readings": [
+            "はな"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "nose"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-053",
+      "priority": "P1",
+      "word": "料理",
+      "reading": "りょうり",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-029"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1554310"
+          ],
+          "headwords": [
+            "料理"
+          ],
+          "readings": [
+            "りょうり"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vs",
+            "vt"
+          ],
+          "englishGlosses": [
+            "cooking",
+            "cookery",
+            "cuisine",
+            "food",
+            "dish",
+            "dealing with (skillfully)",
+            "handling (well)",
+            "managing"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-054",
+      "priority": "P2",
+      "word": "飴",
+      "reading": "あめ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-168"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1153520"
+          ],
+          "headwords": [
+            "飴"
+          ],
+          "readings": [
+            "あめ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "(hard) candy",
+            "toffee",
+            "rice-sugar",
+            "sugar made from the starch of rice, potatoes, etc.",
+            "amber",
+            "yellowish-brown"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-055",
+      "priority": "P2",
+      "word": "易しい",
+      "reading": "やさしい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-118"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1157000"
+          ],
+          "headwords": [
+            "易しい"
+          ],
+          "readings": [
+            "やさしい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "easy",
+            "plain",
+            "simple"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-056",
+      "priority": "P2",
+      "word": "運行",
+      "reading": "うんこう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-249"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1172750"
+          ],
+          "headwords": [
+            "運行"
+          ],
+          "readings": [
+            "うんこう"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vi",
+            "vs",
+            "vt"
+          ],
+          "englishGlosses": [
+            "operation (of a bus or train service)",
+            "service",
+            "running",
+            "movement (of a heavenly body)",
+            "motion",
+            "revolution"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-057",
+      "priority": "P2",
+      "word": "開ける",
+      "reading": "あける",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-080"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1202450"
+          ],
+          "headwords": [
+            "開ける"
+          ],
+          "readings": [
+            "あける"
+          ],
+          "partsOfSpeech": [
+            "v1",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to open (a door, etc.)",
+            "to unwrap (e.g. parcel, package)",
+            "to unlock",
+            "to open (for business, etc.)",
+            "to empty",
+            "to remove",
+            "to make space",
+            "to make room"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-058",
+      "priority": "P2",
+      "word": "蛙",
+      "reading": "かえる",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-162"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1577460"
+          ],
+          "headwords": [
+            "蛙"
+          ],
+          "readings": [
+            "かえる"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "frog"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-059",
+      "priority": "P2",
+      "word": "携帯電話",
+      "reading": "けいたいでんわ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-210"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1250690"
+          ],
+          "headwords": [
+            "携帯電話"
+          ],
+          "readings": [
+            "けいたいでんわ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "mobile phone",
+            "cell phone"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-060",
+      "priority": "P2",
+      "word": "見合わせる",
+      "reading": "みあわせる",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-248"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1259570"
+          ],
+          "headwords": [
+            "見合わせる"
+          ],
+          "readings": [
+            "みあわせる"
+          ],
+          "partsOfSpeech": [
+            "v1",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to exchange glances",
+            "to look at each other",
+            "to postpone",
+            "to put off",
+            "to withhold",
+            "to abandon",
+            "to contrast",
+            "to compare"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-061",
+      "priority": "P2",
+      "word": "高速道路",
+      "reading": "こうそくどうろ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-209"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1283720"
+          ],
+          "headwords": [
+            "高速道路"
+          ],
+          "readings": [
+            "こうそくどうろ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "highway",
+            "freeway",
+            "expressway",
+            "motorway"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-062",
+      "priority": "P2",
+      "word": "神",
+      "reading": "かみ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-170"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1364440"
+          ],
+          "headwords": [
+            "神"
+          ],
+          "readings": [
+            "かみ"
+          ],
+          "partsOfSpeech": [
+            "adj-na",
+            "n",
+            "n-pref"
+          ],
+          "englishGlosses": [
+            "god",
+            "deity",
+            "divinity",
+            "spirit",
+            "kami",
+            "god-tier",
+            "incredible",
+            "fantastic"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-063",
+      "priority": "P2",
+      "word": "生",
+      "reading": "なま",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-176"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1378450"
+          ],
+          "headwords": [
+            "生"
+          ],
+          "readings": [
+            "なま"
+          ],
+          "partsOfSpeech": [
+            "adj-no",
+            "n",
+            "pref"
+          ],
+          "englishGlosses": [
+            "raw",
+            "uncooked",
+            "fresh",
+            "natural",
+            "as it is",
+            "unedited",
+            "unprocessed",
+            "unprotected (sex)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-064",
+      "priority": "P2",
+      "word": "大学院生",
+      "reading": "だいがくいんせい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-207"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "2077500"
+          ],
+          "headwords": [
+            "大学院生"
+          ],
+          "readings": [
+            "だいがくいんせい"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "graduate student",
+            "postgraduate student"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-065",
+      "priority": "P2",
+      "word": "地球温暖化",
+      "reading": "ちきゅうおんだんか",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-197"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1420980"
+          ],
+          "headwords": [
+            "地球温暖化"
+          ],
+          "readings": [
+            "ちきゅうおんだんか"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "global warming"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-066",
+      "priority": "P2",
+      "word": "地方自治体",
+      "reading": "ちほうじちたい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-206"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1763330"
+          ],
+          "headwords": [
+            "地方自治体"
+          ],
+          "readings": [
+            "ちほうじちたい"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "local authority",
+            "local government",
+            "locality",
+            "local self-governing body",
+            "municipality"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-067",
+      "priority": "P2",
+      "word": "電子部品",
+      "reading": "でんしぶひん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-205"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "2132850"
+          ],
+          "headwords": [
+            "電子部品"
+          ],
+          "readings": [
+            "でんしぶひん"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "electronic parts",
+            "electronic components"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-068",
+      "priority": "P3",
+      "word": "サイバー攻撃",
+      "reading": "さいばーこうげき",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-254"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-069",
+      "priority": "P3",
+      "word": "医療機関",
+      "reading": "いりょうきかん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-250"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-070",
+      "priority": "P3",
+      "word": "医療保険制度",
+      "reading": "いりょうほけんせいど",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-202"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-071",
+      "priority": "P3",
+      "word": "海外市場",
+      "reading": "かいがいしじょう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-259"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-072",
+      "priority": "P3",
+      "word": "外国人観光客",
+      "reading": "がいこくじんかんこうきゃく",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-208"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-073",
+      "priority": "P3",
+      "word": "共同研究",
+      "reading": "きょうどうけんきゅう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-236"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-074",
+      "priority": "P3",
+      "word": "経済成長",
+      "reading": "けいざいせいちょう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-198"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-075",
+      "priority": "P3",
+      "word": "研究チーム",
+      "reading": "けんきゅうちーむ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-251"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-076",
+      "priority": "P3",
+      "word": "研究開発費",
+      "reading": "けんきゅうかいはつひ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-201"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-077",
+      "priority": "P3",
+      "word": "個人情報",
+      "reading": "こじんじょうほう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-253"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-078",
+      "priority": "P3",
+      "word": "雇用情勢",
+      "reading": "こようじょうせい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-240"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-079",
+      "priority": "P3",
+      "word": "公共交通機関",
+      "reading": "こうきょうこうつうきかん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-200"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-080",
+      "priority": "P3",
+      "word": "今日中",
+      "reading": "きょうじゅう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-184"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "ambiguity",
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-081",
+      "priority": "P3",
+      "word": "再生可能エネルギー",
+      "reading": "さいせいかのうえねるぎー",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-204"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-082",
+      "priority": "P3",
+      "word": "自然災害",
+      "reading": "しぜんさいがい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-203"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-083",
+      "priority": "P3",
+      "word": "少子高齢化",
+      "reading": "しょうしこうれいか",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-196"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-084",
+      "priority": "P3",
+      "word": "上昇率",
+      "reading": "じょうしょうりつ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-239"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-085",
+      "priority": "P3",
+      "word": "情報通信技術",
+      "reading": "じょうほうつうしんぎじゅつ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-195"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-086",
+      "priority": "P3",
+      "word": "中央銀行",
+      "reading": "ちゅうおうぎんこう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-241"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-087",
+      "priority": "P3",
+      "word": "投票率",
+      "reading": "とうひょうりつ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-258"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-088",
+      "priority": "P3",
+      "word": "排出量",
+      "reading": "はいしゅつりょう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-256"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-089",
+      "priority": "P3",
+      "word": "半導体メモリー",
+      "reading": "はんどうたいめもりー",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-190"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-090",
+      "priority": "P3",
+      "word": "避難所",
+      "reading": "ひなんじょ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-245"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-091",
+      "priority": "P3",
+      "word": "訪日客数",
+      "reading": "ほうにちきゃくすう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-243"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-092",
+      "priority": "P3",
+      "word": "輸出額",
+      "reading": "ゆしゅつがく",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-242"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    },
+    {
+      "queueId": "zh-review-093",
+      "priority": "P3",
+      "word": "労働市場",
+      "reading": "ろうどうしじょう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-199"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
+    }
+  ]
+}
