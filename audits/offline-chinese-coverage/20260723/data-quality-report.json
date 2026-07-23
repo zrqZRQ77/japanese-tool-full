@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-23T00:00:00.000Z",
+  "baseline": {
+    "mainCommit": "01ccdb78c9988a9513199344439d5d5240c758f3",
+    "chineseDataVersion": "20260717",
+    "reviewQueueVersion": "20260723"
+  },
+  "inputSha256": {
+    "dictionary": "69b343c085de93e14e32ee3508509a2971944168acf3e34e53eb07cafb45e45a",
+    "supplement": "e221bfc6e261f355ad47d1689c744a067e95a801dbf467ca959e75b006bf76a1",
+    "chineseMetadata": "63aaedb8a1265a7b66d119007dbcde3e705e48fb51bcdd104ad8635887be245f",
+    "reviewQueue": "535e7285d911be8e830bb9d703578e6b3daa58fb1bfb981c0f3a00d9deedc884",
+    "sourceRegistry": "22e6a4862f0392566a77fc6c9ba6f6c9d788ede4426b59eaecf7ad0f97446fdb"
+  },
+  "summary": {
+    "valid": true,
+    "errors": 0,
+    "warnings": 1,
+    "notes": 2,
+    "dictionaryEntries": 137,
+    "supplementEntries": 22,
+    "curatedOverlaps": 1,
+    "indexedEntries": 158,
+    "indexedForms": 285,
+    "reviewQueueItems": 93,
+    "pendingItems": 93,
+    "approvedItems": 0,
+    "homophoneGroups": 6,
+    "multiPosEvidenceItems": 34
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "code": "curated-source-overlap",
+      "message": "基础词典与补充词典存在同词键，构建时需要明确覆盖顺序。",
+      "words": [
+        "企業"
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "code": "homophone-review-groups",
+      "message": "审核队列中存在需要分别处理的同音词组。",
+      "groups": [
+        {
+          "reading": "あめ",
+          "words": [
+            "飴",
+            "雨"
+          ]
+        },
+        {
+          "reading": "かえる",
+          "words": [
+            "蛙",
+            "帰る"
+          ]
+        },
+        {
+          "reading": "かみ",
+          "words": [
+            "紙",
+            "神",
+            "髪"
+          ]
+        },
+        {
+          "reading": "きる",
+          "words": [
+            "切る",
+            "着る"
+          ]
+        },
+        {
+          "reading": "はし",
+          "words": [
+            "橋",
+            "箸"
+          ]
+        },
+        {
+          "reading": "はな",
+          "words": [
+            "花",
+            "鼻"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "multi-pos-evidence",
+      "message": "部分 JMdict 证据包含多个词性，审核时需要按义项选择。",
+      "itemCount": 34
+    }
+  ]
+}
