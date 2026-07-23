@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">原创简化列车图标</title>
+  <desc id="desc">Yomeru 电车日语输入挑战使用的原创正面列车图标</desc>
+  <rect x="20" y="10" width="56" height="68" rx="17" fill="#fffdf8" stroke="#17242d" stroke-width="5"/>
+  <path d="M29 28h38v25H29z" fill="#cde68a" stroke="#17242d" stroke-width="4"/>
+  <path d="M48 28v25" stroke="#17242d" stroke-width="4"/>
+  <circle cx="34" cy="65" r="5" fill="#e45a46"/><circle cx="62" cy="65" r="5" fill="#e45a46"/>
+  <path d="M27 78l-8 10M69 78l8 10M33 86h30" stroke="#17242d" stroke-width="5" stroke-linecap="round"/>
+</svg>

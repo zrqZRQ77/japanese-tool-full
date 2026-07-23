@@ -18,6 +18,7 @@
     "test:language-corpus": "node tools/language-corpus.test.mjs && node tools/language-corpus-browser.test.mjs && node tools/contextual-reading.test.mjs",
     "test:contextual-reading": "node tools/contextual-reading.test.mjs",
     "test:content-feed": "node tools/content-feed-browser.test.mjs",
+    "test:train-static": "node tools/train-challenge-static.test.mjs",
     "visual:snapshot": "node tools/visual-snapshot.mjs",
     "visual:snapshot:states": "node tools/visual-snapshot-states.mjs",
     "visual:prune": "node tools/prune-visual-snapshots.mjs",
