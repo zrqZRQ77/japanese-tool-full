@@ -405,7 +405,6 @@
     game.correctChars += [...answer].length;
     game.stationTimes.push(Math.max(0, now - game.stationStartedAt));
     game.locked = true;
-    input.disabled = true;
     document.getElementById('trainAnswerSubmitButton').disabled = true;
     setFeedback(`正确：${station.display}（${station.reading}）`, 'correct');
     renderMetrics();
@@ -804,6 +803,9 @@
     }
 
     input.addEventListener('input', updateSubmitState);
+    submitButton.addEventListener('pointerdown', event => {
+      event.preventDefault();
+    });
     input.addEventListener('compositionstart', () => {
       compositionActive = true;
       submitButton.disabled = true;

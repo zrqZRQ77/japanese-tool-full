@@ -19,26 +19,28 @@
     <section class="view start-view" data-challenge-view="start" aria-labelledby="startTitle">
       <article class="ticket">
         <p class="eyebrow">YOMERU TRAIN TYPING / 01</p>
-        <h1 id="startTitle">输入站名，<br>开到终点。</h1>
-        <p class="lead">13 个连续车站。看汉字输入假名，或看假名输入汉字。</p>
+        <h1 id="startTitle">输入站名，开到终点。</h1>
+        <p class="lead">看汉字输入假名，或看假名输入汉字。</p>
+        <p class="start-meta">13 站 <i></i> 约 30–60 秒 <i></i> 日语 IME <i></i> 本机 <strong id="totalChallengeCount">0 次</strong></p>
         <div class="route-loop" aria-label="新宿到上野的十三站原创环线示意图">
           <div class="route-loop-heading"><span>山手线北侧短程</span><small>原创简化示意 · 按实际站序</small></div>
           <div id="startRouteMap" class="route-loop-map"></div>
         </div>
-        <fieldset class="modes">
-          <legend>选择挑战方式</legend>
-          <label><input type="radio" name="mode" value="kanji-to-kana" checked><b>A</b><span><strong>汉字 → 假名</strong><small>推荐 · 输入读音</small></span></label>
-          <label><input type="radio" name="mode" value="kana-to-kanji"><b>B</b><span><strong>假名 → 汉字</strong><small>进阶 · 输入站名汉字</small></span></label>
-        </fieldset>
-        <label class="practice-switch" for="trainHintToggleStart">
-          <span><strong>练习提示</strong><small>开启后显示当前站答案；纯挑战成绩单独记录</small></span>
-          <input id="trainHintToggleStart" type="checkbox" role="switch" aria-label="开启练习提示">
-          <i aria-hidden="true"></i>
-        </label>
-        <button id="trainStartButton" class="primary" type="button" disabled><span>载入路线…</span><span aria-hidden="true">→</span></button>
+        <div class="start-controls">
+          <fieldset class="modes">
+            <legend>选择挑战方式</legend>
+            <label><input type="radio" name="mode" value="kanji-to-kana" checked><b>A</b><span><strong>汉字 → 假名</strong><small>输入读音</small></span></label>
+            <label><input type="radio" name="mode" value="kana-to-kanji"><b>B</b><span><strong>假名 → 汉字</strong><small>输入汉字</small></span></label>
+          </fieldset>
+          <label class="practice-switch start-practice" for="trainHintToggleStart">
+            <span><strong>练习提示</strong><small>显示当前答案</small></span>
+            <input id="trainHintToggleStart" type="checkbox" role="switch" aria-label="开启练习提示">
+            <i aria-hidden="true"></i>
+          </label>
+          <button id="trainStartButton" class="primary start-button" type="button" disabled><span>载入路线…</span><span aria-hidden="true">→</span></button>
+        </div>
         <p id="startStatus" class="note" role="status">正在准备 13 个站点。点击发车后才开始计时。</p>
       </article>
-      <aside class="board" aria-label="挑战说明"><span>YAMANOTE ARC</span><div class="board-loop" aria-hidden="true"></div><strong>13</strong><b>STATIONS</b><dl><div><dt>目标时间</dt><dd>30–60 秒</dd></div><div><dt>输入方式</dt><dd>日语 IME</dd></div><div><dt>本机挑战</dt><dd id="totalChallengeCount">0 次</dd></div></dl></aside>
     </section>
 
     <section class="view play-view" data-challenge-view="play" aria-labelledby="questionPrompt" hidden>

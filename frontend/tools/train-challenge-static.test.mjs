@@ -29,6 +29,10 @@ route.stations.forEach((station, index) => {
 });
 assert.equal((html.match(/data-challenge-view=/g) || []).length, 3);
 assert.match(html, /id="trainStartButton"/);
+assert.match(html, /class="start-controls"/);
+assert.match(html, /class="start-meta"/);
+assert.match(html, /<h1 id="startTitle">输入站名，开到终点。<\/h1>/);
+assert.doesNotMatch(html, /class="board"/);
 assert.match(html, /id="resultErrors"/);
 assert.doesNotMatch(html, /id="resultCpm"/);
 assert.match(html, /class="result-route"><span>新宿<\/span><i><\/i><span>上野<\/span><img/);
@@ -54,6 +58,8 @@ assert.match(js, /new URL\('\/challenge\/train', window\.location\.origin\)/);
 assert.match(js, /drawTrainIcon\(context, 930, 250, 0\.72\)/);
 assert.match(js, /compositionstart/);
 assert.match(js, /event\.isComposing/);
+assert.match(js, /submitButton\.addEventListener\('pointerdown'/);
+assert.doesNotMatch(js, /input\.disabled = true/);
 assert.match(js, /recentResults.*slice\(0, 5\)/s);
 assert.match(js, /lastShowHints/);
 assert.match(js, /resultRecordKey/);
@@ -73,6 +79,10 @@ assert.match(css, /metrics\{position:static/);
 assert.match(css, /grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/);
 assert.match(css, /rail-stop\.is-near/);
 assert.match(css, /answer button/);
+assert.match(css, /start-controls/);
+assert.match(css, /start-view h1/);
+assert.match(css, /white-space:nowrap/);
+assert.match(css, /env\(safe-area-inset-top\)/);
 assert.match(css, /prefers-reduced-motion/);
 
 const mime = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml'};
@@ -217,15 +227,14 @@ try {
 
     // Two rapid Enter events on a correct answer advance only once.
     await page.locator('#trainAnswerInput').fill(route.stations[0].reading);
-    await page.evaluate(() => {
-      const form = document.getElementById('trainAnswerForm');
-      form.requestSubmit();
-      form.requestSubmit();
-    });
+    await page.locator('#trainAnswerSubmitButton').click();
+    await page.evaluate(() => document.getElementById('trainAnswerForm').requestSubmit());
     await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE.snapshot().index === 1);
     state = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
     assert.equal(state.correctSubmissions, 1);
     assert.equal(state.wrongSubmissions, 1);
+    assert.equal(await page.locator('#trainAnswerInput').isDisabled(), false);
+    assert.equal(await page.evaluate(() => document.activeElement?.id === 'trainAnswerInput'), true);
     const longPromptState = await page.evaluate(() => ({
       text: document.getElementById('questionPrompt').textContent,
       size: document.getElementById('questionPrompt').dataset.promptSize,
@@ -391,12 +400,24 @@ try {
     assert.equal(await hasOverflow(page), false, 'desktop start view overflows');
     const startLayout = await page.evaluate(() => ({
       shellWidth: Math.round(document.querySelector('.shell').getBoundingClientRect().width),
-      boardHeight: Math.round(document.querySelector('.board').getBoundingClientRect().height),
-      ticketHeight: Math.round(document.querySelector('.ticket').getBoundingClientRect().height),
+      ticketWidth: Math.round(document.querySelector('.ticket').getBoundingClientRect().width),
+      titleWhiteSpace: getComputedStyle(document.getElementById('startTitle')).whiteSpace,
+      modesWidth: Math.round(document.querySelector('.modes').getBoundingClientRect().width),
+      practiceWidth: Math.round(document.querySelector('.start-practice').getBoundingClientRect().width),
+      buttonWidth: Math.round(document.getElementById('trainStartButton').getBoundingClientRect().width),
+      buttonBottom: Math.round(document.getElementById('trainStartButton').getBoundingClientRect().bottom),
+      viewportHeight: innerHeight,
+      boardCount: document.querySelectorAll('.board').length,
       longRailLabels: document.querySelectorAll('.route-loop-station.is-long').length
     }));
     assert.ok(startLayout.shellWidth <= 1040, JSON.stringify(startLayout));
-    assert.ok(startLayout.boardHeight < startLayout.ticketHeight, JSON.stringify(startLayout));
+    assert.ok(startLayout.ticketWidth <= 960, JSON.stringify(startLayout));
+    assert.equal(startLayout.titleWhiteSpace, 'nowrap');
+    assert.equal(startLayout.boardCount, 0);
+    assert.ok(startLayout.modesWidth <= 520, JSON.stringify(startLayout));
+    assert.ok(startLayout.practiceWidth <= 250, JSON.stringify(startLayout));
+    assert.ok(startLayout.buttonWidth <= 180, JSON.stringify(startLayout));
+    assert.ok(startLayout.buttonBottom <= startLayout.viewportHeight, JSON.stringify(startLayout));
     assert.ok(startLayout.longRailLabels >= 3, JSON.stringify(startLayout));
     await page.locator('#trainStartButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'play');
