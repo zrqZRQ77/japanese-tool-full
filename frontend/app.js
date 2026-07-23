@@ -7915,8 +7915,9 @@ function internalReadingMaterial(material, sortIndex = 0){
     titleZh:titleZhParts.join('——').trim(),
     topics:[String(material?.topic || '生活')],
     sourceKind:'internal',
+    attributionMode:'original',
     sourceFilter:'站内短文',
-    sourceLabel:'Yumeru 站内短文',
+    sourceLabel:'原创',
     sourceUrl:'',
     contentItemId:null,
     effectiveAt:null,
@@ -7942,8 +7943,10 @@ function officialFeedReadingMaterial(item){
     progress:0,
     text:item.learning?.textJa || '',
     sourceKind:'official',
-    sourceFilter:'官方资讯',
+    attributionMode:item.attributionMode === 'original' ? 'original' : 'source_based',
+    sourceFilter:item.attributionMode === 'original' ? '站内短文' : '官方资讯',
     sourceLabel:item.sourceOrganization || '官方机构',
+    sourceDisplayName:item.sourceDisplayName || item.sourceOrganization || '官方机构',
     sourceUrl:item.sourceUrl || '',
     sourceLinks:Array.isArray(item.sourceLinks) ? item.sourceLinks : [],
     sourceLinkPolicy:item.sourceLinkPolicy || 'article_specific',
@@ -8065,7 +8068,7 @@ function materialDisplayTopic(material){
 }
 
 function materialSourceLinks(material){
-  if(material.sourceKind !== 'official') return [];
+  if(material.sourceKind !== 'official' || material.attributionMode === 'original') return [];
   const links = Array.isArray(material.sourceLinks) && material.sourceLinks.length
     ? material.sourceLinks
     : (material.sourceUrl ? [{label:'官方来源', url:material.sourceUrl}] : []);
@@ -8076,12 +8079,16 @@ function materialSourceLinks(material){
 }
 
 function materialSourceName(material){
-  if(material?.sourceKind !== 'official') return 'Yumeru';
-  const label = String(material?.sourceLabel || '').trim();
-  if(/JASSO|学生支援/.test(label)) return 'JASSO';
-  if(/日本語能力|JLPT/.test(label)) return '日本語能力試験';
-  if(/出入国在留/.test(label)) return '出入国在留管理庁';
-  return label || '来源';
+  if(material?.attributionMode === 'original' || material?.sourceKind !== 'official') return '原创';
+  const label = String(material?.sourceDisplayName || material?.sourceLabel || '').trim();
+  const displayName = /JASSO|学生支援/.test(label)
+    ? 'JASSO'
+    : /日本語能力|JLPT/.test(label)
+      ? '日本語能力試験'
+      : /出入国在留/.test(label)
+        ? '出入国在留管理庁'
+        : label || '官方来源';
+  return `参考：${displayName}`;
 }
 
 function externalLinkIconSvg(className = ''){
@@ -8099,7 +8106,7 @@ function materialPrimarySourceLink(material){
 function materialSourceAction(material){
   const name = materialSourceName(material);
   const link = materialPrimarySourceLink(material);
-  if(material?.sourceKind !== 'official' || !link){
+  if(material?.attributionMode === 'original' || material?.sourceKind !== 'official' || !link){
     return `<span class="graded-card-source-label">${escapeHtml(name)}</span>`;
   }
   return `<a class="graded-card-source-action" href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHtml(name)}${externalLinkIconSvg('external-link-icon')}</a>`;

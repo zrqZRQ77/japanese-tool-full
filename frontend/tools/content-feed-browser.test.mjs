@@ -132,6 +132,7 @@ try {
     assert.match(await remoteCard.textContent(), /N3/);
     assert.match(await remoteCard.textContent(), /4 分钟/);
     assert.equal(await remoteCard.locator('.jlpt-level-badge').count(), 1);
+    assert.equal((await remoteCard.locator('.graded-card-source-action').textContent()).trim(), '参考：出入国在留管理庁');
     assert.equal(await remoteCard.locator('.graded-card-source-action .external-link-icon').count(), 1);
     assert.equal(await remoteCard.locator('.graded-card-source-menu').count(), 0);
     const remoteCardLayout = await remoteCard.evaluate(element => {
@@ -201,7 +202,7 @@ try {
         addedAt:'2026-07-02T00:00:00.000Z',
         readAt:'2026-07-02T00:00:00.000Z'
       }]));
-      localStorage.setItem('yomeru_content_feed_cache_v1', JSON.stringify({
+      localStorage.setItem('yomeru_content_feed_cache_v2', JSON.stringify({
         schemaVersion:1,
         updatedAt:'2026-01-01T00:00:00.000Z',
         items:[{
@@ -253,17 +254,17 @@ try {
     assert.doesNotMatch(await jlptCard.textContent(), /官方|12\/6|12\/5|日本国内报名|海外报名/);
     assert.ok((await jlptCard.locator('.graded-material-subtitle').evaluate(element => parseFloat(getComputedStyle(element).marginTop))) >= 10);
     const jlptSource = jlptCard.locator('.graded-card-source-action');
-    assert.match(await jlptSource.textContent(), /日本語能力試験/);
+    assert.equal((await jlptSource.textContent()).trim(), '参考：日本語能力試験');
     assert.equal(await jlptSource.getAttribute('href').then(value => new URL(value).pathname), '/topics/list2026.html');
     assert.equal(await jlptSource.locator('.external-link-icon').count(), 1);
     assert.equal(await jlptCard.locator('.graded-card-source-menu, .graded-card-source-popover').count(), 0);
     const guideCard = page.locator('#gradedMaterialGrid .graded-material-card.is-official').filter({hasText:'生活与就业指南'});
     assert.doesNotMatch(await guideCard.locator('.graded-card-meta').textContent(), /2\/26|2\/25|官方/);
-    assert.match(await guideCard.locator('.graded-card-source-action').textContent(), /出入国在留管理庁/);
+    assert.equal((await guideCard.locator('.graded-card-source-action').textContent()).trim(), '参考：出入国在留管理庁');
     assert.equal(await guideCard.locator('.graded-card-source-action .external-link-icon').count(), 1);
     const internalCard = page.locator('#gradedMaterialGrid .graded-material-card.is-internal').first();
     assert.equal(await internalCard.locator('.graded-card-top > span').count(), 2);
-    assert.equal((await internalCard.locator('.graded-card-source-label').textContent()).trim(), 'Yumeru');
+    assert.equal((await internalCard.locator('.graded-card-source-label').textContent()).trim(), '原创');
     assert.equal(await internalCard.locator('.external-link-icon').count(), 0);
 
     await page.locator('#gradedSourceFilters select').selectOption('官方资讯');
@@ -330,8 +331,9 @@ try {
     assert.match(await page.locator('#readingQueueList').textContent(), /生活 · N3/);
     const migratedJlptQueue = page.locator('#readingQueueList .reading-queue-item').filter({hasText:'JLPT'});
     const migratedJlptLinks = await migratedJlptQueue.locator('a').evaluateAll(nodes => nodes.map(node => ({text:node.textContent.trim(), href:node.href})));
-    assert.deepEqual(migratedJlptLinks.map(link => link.text), ['2026年考试日期']);
+    assert.deepEqual(migratedJlptLinks.map(link => link.text), ['2026年考试日期', '海外报名与实施城市']);
     assert.equal(new URL(migratedJlptLinks[0].href).pathname, '/topics/list2026.html');
+    assert.equal(new URL(migratedJlptLinks[1].href).pathname, '/application/overseas_index.html');
     assert.match(await page.locator('#sourceDirectory').textContent(), /官方机构/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /阅读与媒体来源/);
     assert.match(await page.locator('#sourceDirectory').textContent(), /JASSO/);

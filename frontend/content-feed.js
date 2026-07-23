@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const CACHE_KEY = 'yomeru_content_feed_cache_v1';
+  const CACHE_KEY = 'yomeru_content_feed_cache_v2';
   const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
   const REQUEST_TIMEOUT_MS = 7000;
   const state = {
@@ -23,7 +23,7 @@
   // Runtime-safe official snapshot. This guarantees content even when a static JSON fetch is blocked.
   const BUNDLED_FALLBACK_PAYLOAD = {
     "schemaVersion": 1,
-    "generatedAt": "2026-07-22T00:00:00+09:00",
+    "generatedAt": "2026-07-23T00:00:00+09:00",
     "items": [
       {
         "schemaVersion": 1,
@@ -58,13 +58,15 @@
             "sourceType": "official",
             "isPrimary": true,
             "verifiedAt": "2026-07-22T00:00:00+09:00",
-            "label": "报名公告"
+            "label": "报名公告",
+            "displayName": "JASSO"
           }
         ],
         "publicationTargets": [
           "yomeru"
         ],
-        "sourceLinkPolicy": "article_specific"
+        "sourceLinkPolicy": "article_specific",
+        "attributionMode": "source_based"
       },
       {
         "schemaVersion": 1,
@@ -83,7 +85,7 @@
           "sourcePublishedAt": null,
           "effectiveAt": "2026-12-06T00:00:00+09:00",
           "expiresAt": "2026-12-07T00:00:00+09:00",
-          "lastVerifiedAt": "2026-07-22T00:00:00+09:00"
+          "lastVerifiedAt": "2026-07-23T00:00:00+09:00"
         },
         "learning": {
           "titleJa": "JLPTの試験日と申込期間は同じではありません",
@@ -93,19 +95,31 @@
         },
         "sources": [
           {
-            "organization": "日本語能力試験",
+            "organization": "日本語能力試験（国際交流基金・日本国際教育支援協会）",
+            "displayName": "日本語能力試験",
             "title": "2026年 日本語能力試験の実施日",
             "label": "2026年考试日期",
             "url": "https://www.jlpt.jp/topics/list2026.html",
             "sourceType": "official",
             "isPrimary": true,
             "verifiedAt": "2026-07-23T00:00:00+09:00"
+          },
+          {
+            "organization": "日本語能力試験（国際交流基金・日本国際教育支援協会）",
+            "displayName": "日本語能力試験",
+            "title": "海外で受験する",
+            "label": "海外报名与实施城市",
+            "url": "https://www.jlpt.jp/application/overseas_index.html",
+            "sourceType": "official",
+            "isPrimary": false,
+            "verifiedAt": "2026-07-23T00:00:00+09:00"
           }
         ],
         "publicationTargets": [
           "yomeru"
         ],
-        "sourceLinkPolicy": "article_specific"
+        "sourceLinkPolicy": "article_specific",
+        "attributionMode": "source_based"
       },
       {
         "schemaVersion": 1,
@@ -140,13 +154,15 @@
             "sourceType": "official",
             "isPrimary": true,
             "verifiedAt": "2026-07-22T00:00:00+09:00",
-            "label": "指南页面"
+            "label": "指南页面",
+            "displayName": "出入国在留管理庁"
           }
         ],
         "publicationTargets": [
           "yomeru"
         ],
-        "sourceLinkPolicy": "article_specific"
+        "sourceLinkPolicy": "article_specific",
+        "attributionMode": "source_based"
       }
     ]
   };
@@ -185,40 +201,31 @@
     }
   }
 
-  function canonicalSources(item) {
-    if (String(item?.id || '') === 'content-202607-jlpt-second-test-date') {
-      return [{
-        organization:'日本語能力試験',
-        title:'2026年 日本語能力試験の実施日',
-        label:'2026年考试日期',
-        url:'https://www.jlpt.jp/topics/list2026.html',
-        sourceType:'official',
-        isPrimary:true,
-        verifiedAt:'2026-07-23T00:00:00+09:00'
-      }];
-    }
+  function itemSources(item) {
     return Array.isArray(item?.sources) && item.sources.length
       ? item.sources
       : (Array.isArray(item?.sourceLinks) ? item.sourceLinks : []);
   }
 
   function primarySource(item) {
-    const sources = canonicalSources(item);
+    const sources = itemSources(item);
     return sources.find(source => source?.isPrimary && validHttpUrl(source?.url))
       || sources.find(source => validHttpUrl(source?.url))
       || null;
   }
 
   function normalizedSources(item) {
-    const sources = canonicalSources(item);
+    const sources = itemSources(item);
     return sources.map(source => {
       const url = validHttpUrl(source?.url);
       if (!url) return null;
       return {
         organization: String(source?.organization || '').trim(),
+        displayName: String(source?.displayName || source?.organization || '').trim(),
         title: String(source?.title || '').trim(),
         label: String(source?.label || source?.title || '官方来源').trim(),
         url,
+        sourceType: String(source?.sourceType || '').trim(),
         isPrimary: Boolean(source?.isPrimary)
       };
     }).filter(Boolean);
@@ -256,6 +263,7 @@
     const estimatedMinutes = Number.isFinite(estimatedMinutesValue)
       ? Math.min(60, Math.max(1, Math.round(estimatedMinutesValue)))
       : 4;
+    const attributionMode = item.attributionMode === 'original' ? 'original' : 'source_based';
     const source = primarySource(item);
     if (!id || !slug || !titleZh || !titleJa || !textJa || !source) return null;
     return {
@@ -266,6 +274,7 @@
       category: String(item.category || 'major_japan_update'),
       topics: contentTopics(item),
       riskLevel: String(item.riskLevel || 'low'),
+      attributionMode,
       titleZh,
       titleJa,
       oneLineConclusionZh: String(item.oneLineConclusionZh || item.summaryZh || '').trim(),
@@ -285,6 +294,7 @@
       },
       sourceUrl: validHttpUrl(source.url),
       sourceOrganization: String(source.organization || '').trim(),
+      sourceDisplayName: String(source.displayName || source.organization || '').trim(),
       sourceTitle: String(source.title || '').trim(),
       sourceLinks: normalizedSources(item),
       sourceLinkPolicy: String(item.sourceLinkPolicy || 'article_specific')
