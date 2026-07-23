@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const ROUTE_URL = 'routes/yamanote-short.json';
+  const ROUTE_URL = '/challenge/train/routes/yamanote-short.json';
   const STORAGE_KEY = 'yomeru_train_typing_v1';
   const MODES = Object.freeze({
     'kanji-to-kana': Object.freeze({
@@ -364,7 +364,7 @@
   }
 
   function challengeUrl() {
-    return new URL('./', window.location.href).href;
+    return new URL('/challenge/train/', window.location.origin).href;
   }
 
   function resultModeName(mode) {

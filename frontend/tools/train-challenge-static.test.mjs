@@ -33,7 +33,12 @@ assert.match(html, /id="resultCpm"/);
 assert.match(html, /id="saveResultCardButton"/);
 assert.match(html, /id="shareResultButton"/);
 assert.match(html, /不是铁路运营机构官方产品/);
+assert.match(html, /href="\/challenge\/train\/train-challenge\.css"/);
+assert.match(html, /src="\/challenge\/train\/train-challenge\.js"/);
+assert.match(html, /src="\/challenge\/train\/assets\/train\.svg"/);
 assert.match(js, /yomeru_train_typing_v1/);
+assert.match(js, /const ROUTE_URL = '\/challenge\/train\/routes\/yamanote-short\.json'/);
+assert.match(js, /new URL\('\/challenge\/train\/', window\.location\.origin\)/);
 assert.match(js, /compositionstart/);
 assert.match(js, /event\.isComposing/);
 assert.match(js, /recentResults.*slice\(0, 5\)/s);
@@ -44,7 +49,10 @@ assert.match(css, /prefers-reduced-motion/);
 const mime = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml'};
 function pathFor(url) {
   const pathname = decodeURIComponent(new URL(url, 'http://127.0.0.1').pathname);
-  const filePath = resolve(FRONTEND_DIR, `.${pathname === '/' ? '/challenge/train/index.html' : pathname}`);
+  const normalizedPath = pathname === '/' || pathname === '/challenge/train' || pathname === '/challenge/train/'
+    ? '/challenge/train/index.html'
+    : pathname;
+  const filePath = resolve(FRONTEND_DIR, `.${normalizedPath}`);
   return filePath.startsWith(FRONTEND_DIR) ? filePath : null;
 }
 function startServer(port) {
@@ -85,7 +93,7 @@ const { server, port } = await availableServer();
 let browser;
 try {
   browser = await chromium.launch({headless:true});
-  const appUrl = `http://127.0.0.1:${port}/challenge/train/index.html`;
+  const appUrl = `http://127.0.0.1:${port}/challenge/train`;
 
   // Full kana-mode completion on the narrowest supported viewport.
   {
@@ -98,6 +106,14 @@ try {
     const page = await context.newPage();
     await page.goto(appUrl, {waitUntil:'networkidle'});
     await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE?.route()?.stations?.length === 13);
+    const loadedAssets = await page.evaluate(() => ({
+      stylesheet: [...document.styleSheets].some(sheet => sheet.href?.endsWith('/challenge/train/train-challenge.css')),
+      script: [...document.scripts].some(script => script.src.endsWith('/challenge/train/train-challenge.js')),
+      ticketRadius: getComputedStyle(document.querySelector('.ticket')).borderRadius
+    }));
+    assert.equal(loadedAssets.stylesheet, true, 'challenge stylesheet did not load from the clean URL');
+    assert.equal(loadedAssets.script, true, 'challenge script did not load from the clean URL');
+    assert.notEqual(loadedAssets.ticketRadius, '0px', 'challenge styles were not applied');
     assert.equal(await page.locator('#trainStartButton').isEnabled(), true);
     assert.equal(await hasOverflow(page), false, 'mobile-390 start view overflows');
     assert.equal(await page.evaluate(() => document.getElementById('trainStartButton').getBoundingClientRect().bottom <= innerHeight), true, 'departure button is below first viewport');
