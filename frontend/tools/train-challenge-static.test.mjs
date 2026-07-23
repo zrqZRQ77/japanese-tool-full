@@ -2,7 +2,7 @@
 
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { createReadStream, readFileSync } from 'node:fs';
+import { createReadStream, readFileSync, statSync } from 'node:fs';
 import { access } from 'node:fs/promises';
 import { dirname, extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,6 +30,8 @@ route.stations.forEach((station, index) => {
 assert.equal((html.match(/data-challenge-view=/g) || []).length, 3);
 assert.match(html, /id="trainStartButton"/);
 assert.match(html, /id="resultCpm"/);
+assert.match(html, /id="saveResultCardButton"/);
+assert.match(html, /id="shareResultButton"/);
 assert.match(html, /不是铁路运营机构官方产品/);
 assert.match(js, /yomeru_train_typing_v1/);
 assert.match(js, /compositionstart/);
@@ -172,6 +174,50 @@ try {
     assert.equal(stored.vocab, 'vocab-sentinel');
     assert.equal(stored.history, 'history-sentinel');
 
+    const cardInfo = await page.evaluate(async () => {
+      const blob = await window.YOMERU_TRAIN_CHALLENGE.createResultCardBlob();
+      return { type: blob.type, size: blob.size };
+    });
+    assert.equal(cardInfo.type, 'image/png');
+    assert.ok(cardInfo.size > 10000, `result card PNG is unexpectedly small: ${cardInfo.size}`);
+
+    const downloadPromise = page.waitForEvent('download');
+    await page.locator('#saveResultCardButton').click();
+    const download = await downloadPromise;
+    assert.match(download.suggestedFilename(), /^yomeru-train-kanji-kana-\d{8}\.png$/);
+    const downloadedPath = await download.path();
+    assert.ok(downloadedPath && statSync(downloadedPath).size > 10000);
+    await page.waitForFunction(() => document.getElementById('shareFeedback')?.textContent?.includes('成绩卡已生成'));
+
+    await page.evaluate(() => {
+      window.__sharePayload = null;
+      Object.defineProperty(navigator, 'canShare', { configurable: true, value: payload => Boolean(payload?.files?.length) });
+      Object.defineProperty(navigator, 'share', {
+        configurable: true,
+        value: async payload => {
+          window.__sharePayload = { title: payload.title, text: payload.text, url: payload.url, files: payload.files?.length || 0 };
+        }
+      });
+    });
+    await page.locator('#shareResultButton').click();
+    await page.waitForFunction(() => document.getElementById('shareFeedback')?.textContent?.includes('系统分享'));
+    const shared = await page.evaluate(() => window.__sharePayload);
+    assert.equal(shared.files, 1);
+    assert.match(shared.text, /正确率 93%/);
+    assert.match(shared.url, /\/challenge\/train\/$/);
+
+    await page.evaluate(() => {
+      window.__copiedLink = '';
+      Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText: async value => { window.__copiedLink = value; } }
+      });
+    });
+    await page.locator('#shareResultButton').click();
+    await page.waitForFunction(() => document.getElementById('shareFeedback')?.textContent?.includes('链接已复制'));
+    assert.match(await page.evaluate(() => window.__copiedLink), /\/challenge\/train\/$/);
+
     await page.locator('#trainRetryButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'start');
     assert.equal(await page.locator('#totalChallengeCount').textContent(), '1 次');
@@ -211,7 +257,7 @@ try {
     await context.close();
   }
 
-  process.stdout.write('Train challenge A2 game, IME, scoring, persistence, and responsive tests passed.\n');
+  process.stdout.write('Train challenge A3 game, result-card, sharing, persistence, and responsive tests passed.\n');
 } finally {
   await browser?.close();
   await new Promise(resolveClose => server.close(resolveClose));

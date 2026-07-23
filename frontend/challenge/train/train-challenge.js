@@ -363,18 +363,277 @@
     renderStoredSummary();
   }
 
+  function challengeUrl() {
+    return new URL('./', window.location.href).href;
+  }
+
+  function resultModeName(mode) {
+    return mode === 'kana-to-kanji' ? '假名 → 汉字' : '汉字 → 假名';
+  }
+
+  function cardFilename(result) {
+    const date = String(result.completedAt || new Date().toISOString()).slice(0, 10).replaceAll('-', '');
+    const mode = result.mode === 'kana-to-kanji' ? 'kana-kanji' : 'kanji-kana';
+    return `yomeru-train-${mode}-${date}.png`;
+  }
+
+  function roundedRectPath(context, x, y, width, height, radius) {
+    const r = Math.min(radius, width / 2, height / 2);
+    context.beginPath();
+    context.moveTo(x + r, y);
+    context.arcTo(x + width, y, x + width, y + height, r);
+    context.arcTo(x + width, y + height, x, y + height, r);
+    context.arcTo(x, y + height, x, y, r);
+    context.arcTo(x, y, x + width, y, r);
+    context.closePath();
+  }
+
+  function drawTrainIcon(context, x, y, scale = 1) {
+    context.save();
+    context.translate(x, y);
+    context.scale(scale, scale);
+    context.fillStyle = '#fffdf8';
+    context.strokeStyle = '#17242d';
+    context.lineWidth = 6;
+    roundedRectPath(context, -45, -58, 90, 108, 24);
+    context.fill();
+    context.stroke();
+    context.fillStyle = '#b8dc63';
+    context.strokeStyle = '#17242d';
+    context.lineWidth = 5;
+    context.fillRect(-30, -36, 60, 38);
+    context.strokeRect(-30, -36, 60, 38);
+    context.beginPath();
+    context.moveTo(0, -36);
+    context.lineTo(0, 2);
+    context.stroke();
+    context.fillStyle = '#e45a46';
+    context.beginPath();
+    context.arc(-22, 27, 7, 0, Math.PI * 2);
+    context.arc(22, 27, 7, 0, Math.PI * 2);
+    context.fill();
+    context.restore();
+  }
+
+  function drawResultCard(result) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1350;
+    const context = canvas.getContext('2d');
+    const ink = '#17242d';
+    const paper = '#f6f4ee';
+    const card = '#fffdf8';
+    const signal = '#b8dc63';
+    const arrival = '#e45a46';
+    const soft = '#536068';
+
+    context.fillStyle = ink;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = signal;
+    context.fillRect(0, 0, 22, canvas.height);
+
+    context.fillStyle = card;
+    context.font = '800 52px "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif';
+    context.fillText('Yomeru', 82, 104);
+    context.fillStyle = signal;
+    context.font = '800 22px Inter, sans-serif';
+    context.letterSpacing = '4px';
+    context.fillText('TRAIN TYPING CHALLENGE', 82, 148);
+    context.letterSpacing = '0px';
+
+    context.strokeStyle = signal;
+    context.lineWidth = 12;
+    context.lineCap = 'round';
+    context.beginPath();
+    context.moveTo(150, 250);
+    context.lineTo(930, 250);
+    context.stroke();
+    for (let index = 0; index < 13; index += 1) {
+      const x = 150 + (780 / 12) * index;
+      context.fillStyle = index === 0 || index === 12 ? arrival : card;
+      context.strokeStyle = ink;
+      context.lineWidth = 7;
+      context.beginPath();
+      context.arc(x, 250, index === 0 || index === 12 ? 18 : 13, 0, Math.PI * 2);
+      context.fill();
+      context.stroke();
+    }
+    drawTrainIcon(context, 540, 250, 0.72);
+    context.fillStyle = card;
+    context.font = '700 24px "Hiragino Kaku Gothic ProN", sans-serif';
+    context.textAlign = 'left';
+    context.fillText('新宿', 120, 310);
+    context.textAlign = 'right';
+    context.fillText('上野', 960, 310);
+
+    roundedRectPath(context, 64, 360, 952, 770, 54);
+    context.fillStyle = card;
+    context.fill();
+
+    context.textAlign = 'left';
+    context.fillStyle = '#789d35';
+    context.font = '800 22px Inter, sans-serif';
+    context.fillText('ARRIVED / 挑战完成', 122, 438);
+    context.fillStyle = ink;
+    context.font = '800 74px "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif';
+    context.fillText('抵达终点。', 118, 535);
+    context.fillStyle = soft;
+    context.font = '600 24px "PingFang SC", sans-serif';
+    context.fillText(resultModeName(result.mode), 122, 582);
+
+    context.fillStyle = ink;
+    context.font = '800 142px "Hiragino Kaku Gothic ProN", Inter, sans-serif';
+    context.fillText(formatElapsed(result.elapsedMs), 112, 758);
+    context.fillStyle = soft;
+    context.font = '600 22px "PingFang SC", sans-serif';
+    context.fillText('完成时间', 122, 798);
+
+    const stats = [
+      ['正确率', `${Math.round(result.accuracy * 100)}%`],
+      ['平均每站', formatSeconds(result.averageStationMs)],
+      ['输入速度', `${Math.round(result.cpm)} CPM`],
+      ['最佳连续', String(result.bestStreak)]
+    ];
+    stats.forEach(([label, value], index) => {
+      const column = index % 2;
+      const row = Math.floor(index / 2);
+      const x = 122 + column * 440;
+      const y = 890 + row * 118;
+      context.fillStyle = soft;
+      context.font = '600 21px "PingFang SC", sans-serif';
+      context.fillText(label, x, y);
+      context.fillStyle = ink;
+      context.font = '800 38px "Hiragino Kaku Gothic ProN", Inter, sans-serif';
+      context.fillText(value, x, y + 48);
+    });
+
+    context.fillStyle = paper;
+    context.font = '600 24px "PingFang SC", sans-serif';
+    context.fillText('你能用日语开完这条线吗？', 82, 1214);
+    context.fillStyle = signal;
+    context.font = '700 20px Inter, sans-serif';
+    context.fillText(challengeUrl(), 82, 1260);
+    context.fillStyle = '#ffffff9e';
+    context.font = '500 17px "PingFang SC", sans-serif';
+    context.fillText('原创学习活动 · 非铁路运营机构官方产品', 82, 1304);
+    return canvas;
+  }
+
+  function createResultCardBlob(result = game.result) {
+    if (!result) return Promise.reject(new Error('Result is not available.'));
+    const canvas = drawResultCard(result);
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG generation failed.')), 'image/png', 0.95);
+    });
+  }
+
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+  }
+
+  function setShareFeedback(message, type = '') {
+    const target = document.getElementById('shareFeedback');
+    if (!target) return;
+    target.textContent = message;
+    target.className = `share-feedback${type ? ` is-${type}` : ''}`;
+  }
+
+  function setShareButtonsBusy(busy) {
+    for (const id of ['saveResultCardButton', 'shareResultButton']) {
+      const button = document.getElementById(id);
+      if (button) button.disabled = busy;
+    }
+  }
+
+  async function saveResultCard() {
+    if (!game.result) return false;
+    setShareButtonsBusy(true);
+    setShareFeedback('正在生成成绩卡…');
+    try {
+      const blob = await createResultCardBlob(game.result);
+      downloadBlob(blob, cardFilename(game.result));
+      setShareFeedback('成绩卡已生成，可以在下载记录中查看。', 'success');
+      return true;
+    } catch (error) {
+      console.error(error);
+      setShareFeedback('成绩卡生成失败，请稍后重试。', 'error');
+      return false;
+    } finally {
+      setShareButtonsBusy(false);
+    }
+  }
+
+  async function copyChallengeLink() {
+    if (!navigator.clipboard?.writeText) return false;
+    await navigator.clipboard.writeText(challengeUrl());
+    return true;
+  }
+
+  async function shareResult() {
+    if (!game.result) return false;
+    const result = game.result;
+    const title = 'Yomeru 电车日语输入挑战';
+    const text = `我用 ${formatElapsed(result.elapsedMs)} 完成新宿到上野挑战，正确率 ${Math.round(result.accuracy * 100)}%。`;
+    setShareButtonsBusy(true);
+    setShareFeedback('正在准备分享…');
+    try {
+      const blob = await createResultCardBlob(result);
+      const file = typeof File === 'function' ? new File([blob], cardFilename(result), { type: 'image/png' }) : null;
+      if (typeof navigator.share === 'function') {
+        const payload = { title, text, url: challengeUrl() };
+        if (file && typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] })) payload.files = [file];
+        await navigator.share(payload);
+        setShareFeedback('已打开系统分享。', 'success');
+        return true;
+      }
+      if (await copyChallengeLink()) {
+        setShareFeedback('挑战链接已复制，可以粘贴到小红书或聊天中。', 'success');
+        return true;
+      }
+      downloadBlob(blob, cardFilename(result));
+      setShareFeedback('当前浏览器不支持系统分享，已改为下载成绩卡。', 'success');
+      return true;
+    } catch (error) {
+      if (error?.name === 'AbortError') {
+        setShareFeedback('已取消分享。');
+        return false;
+      }
+      try {
+        if (await copyChallengeLink()) {
+          setShareFeedback('系统分享不可用，挑战链接已复制。', 'success');
+          return true;
+        }
+      } catch {}
+      console.error(error);
+      setShareFeedback('分享失败，请使用保存成绩卡。', 'error');
+      return false;
+    } finally {
+      setShareButtonsBusy(false);
+    }
+  }
+
   function resetToStart() {
     stopTimer();
     const mode = readStorage().lastMode;
     game = createIdleGame(mode);
     setPhase('start');
     renderStoredSummary();
+    setShareFeedback('');
     document.getElementById('startStatus').textContent = '路线已就绪。点击发车后才开始计时。';
   }
 
   function bindControls() {
     document.getElementById('trainStartButton')?.addEventListener('click', startGame);
     document.getElementById('trainRetryButton')?.addEventListener('click', resetToStart);
+    document.getElementById('saveResultCardButton')?.addEventListener('click', saveResultCard);
+    document.getElementById('shareResultButton')?.addEventListener('click', shareResult);
   }
 
   function bindIme() {
@@ -433,7 +692,10 @@
     storageKey: STORAGE_KEY,
     normalizeAnswer,
     snapshot,
-    readStorage
+    readStorage,
+    createResultCardBlob,
+    saveResultCard,
+    shareResult
   });
 
   document.addEventListener('DOMContentLoaded', init, { once: true });
