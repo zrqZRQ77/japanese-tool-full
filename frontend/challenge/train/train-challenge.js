@@ -173,7 +173,11 @@
     return [chars.slice(0, splitAt).join(''), chars.slice(splitAt).join('')];
   }
 
-  function renderStartRoute(stations) {
+  function startRouteLabel(station, mode) {
+    return mode === 'kana-to-kanji' ? station.reading : station.display;
+  }
+
+  function renderStartRoute(stations, mode = selectedMode()) {
     const target = document.getElementById('startRouteMap');
     if (!target) return;
     const start = { x: 104, y: 158 };
@@ -183,13 +187,19 @@
     const stationMarkup = stations.map((station, index) => {
       const point = cubicPoint(index / (stations.length - 1), start, controlA, controlB, end);
       const labelY = point.y + (index % 2 ? 44 : 28);
-      const labelLines = stationLabelLines(station.display);
+      const label = startRouteLabel(station, mode);
+      const labelLines = stationLabelLines(label);
       const tspans = labelLines.map((line, lineIndex) => `<tspan x="${point.x.toFixed(1)}" dy="${lineIndex ? 16 : 0}">${line}</tspan>`).join('');
       const endpointClass = index === 0 || index === stations.length - 1 ? ' is-endpoint' : '';
-      const longClass = [...station.display].length >= 4 ? ' is-long' : '';
+      const longClass = [...label].length >= 4 ? ' is-long' : '';
       return `<g class="route-loop-station${endpointClass}${longClass}" data-station-id="${station.id}"><circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="13"></circle><text x="${point.x.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="middle">${tspans}</text></g>`;
     }).join('');
-    target.innerHTML = `<svg viewBox="0 0 900 235" role="img" aria-labelledby="routeLoopTitle routeLoopDesc"><title id="routeLoopTitle">新宿到上野的山手线北侧短程</title><desc id="routeLoopDesc">按照实际车站顺序绘制的原创半环形示意图，不是官方线路图。</desc><path class="route-loop-ghost" d="M104 158 C234 236 666 236 796 158"></path><path class="route-loop-line" d="M104 158 C234 12 666 12 796 158"></path>${stationMarkup}</svg>`;
+    target.innerHTML = `<svg viewBox="0 0 900 235" role="img" aria-label="新宿到上野的山手线北侧短程，按照实际车站顺序绘制的原创半环形示意图"><desc>按照实际车站顺序绘制的原创半环形示意图，不是官方线路图。</desc><path class="route-loop-ghost" d="M104 158 C234 236 666 236 796 158"></path><path class="route-loop-line" d="M104 158 C234 12 666 12 796 158"></path>${stationMarkup}</svg>`;
+  }
+
+  function stationProgressLabel(station, index) {
+    if (game.mode !== 'kana-to-kanji' || index < game.index) return station.display;
+    return String(index + 1).padStart(2, '0');
   }
 
   function renderRail() {
@@ -198,11 +208,14 @@
     if (!target || !routeData) return;
     target.innerHTML = routeData.stations.map((station, index) => {
       const className = index < game.index ? ' completed' : (index === game.index ? ' current' : '');
-      const longClass = [...station.display].length >= 4 ? ' is-long' : '';
-      return `<span class="rail-stop${className}${longClass}" aria-current="${index === game.index ? 'step' : 'false'}">${station.display}</span>`;
+      const label = stationProgressLabel(station, index);
+      const longClass = [...label].length >= 4 ? ' is-long' : '';
+      const nearClass = Math.abs(index - game.index) <= 2 ? ' is-near' : '';
+      return `<span class="rail-stop${className}${longClass}${nearClass}" data-station-index="${index}" aria-current="${index === game.index ? 'step' : 'false'}">${label}</span>`;
     }).join('');
+    const progress = routeData.stations.length > 1 ? game.index / (routeData.stations.length - 1) : 0;
+    target.parentElement?.style.setProperty('--route-progress-ratio', String(progress));
     if (marker) {
-      const progress = routeData.stations.length > 1 ? game.index / (routeData.stations.length - 1) : 0;
       marker.style.setProperty('--train-position', `${4 + progress * 84}%`);
       marker.alt = `列车当前位于${routeData.stations[game.index]?.display || '终点'}`;
     }
@@ -221,12 +234,6 @@
       const input = document.getElementById(id);
       if (input) input.checked = Boolean(enabled);
     }
-  }
-
-  function persistHintSetting(enabled) {
-    const storage = readStorage();
-    storage.lastShowHints = Boolean(enabled);
-    writeStorage(storage);
   }
 
   function answerHintForStation(station) {
@@ -249,10 +256,9 @@
     }
   }
 
-  function setHintEnabled(enabled, { persist = true, countUsage = true } = {}) {
+  function setHintEnabled(enabled, { countUsage = true } = {}) {
     game.showHints = Boolean(enabled);
     syncHintToggles(game.showHints);
-    if (persist) persistHintSetting(game.showHints);
     renderPracticeHint({ countUsage });
   }
 
@@ -275,7 +281,7 @@
     document.querySelectorAll('input[name="mode"]').forEach(input => {
       input.checked = input.value === storage.lastMode;
     });
-    if (game.phase === 'start') syncHintToggles(storage.lastShowHints);
+    if (game.phase === 'start') syncHintToggles(false);
   }
 
   function renderMetrics() {
@@ -299,8 +305,12 @@
     const station = routeData.stations[game.index];
     const next = routeData.stations[game.index + 1];
     const mode = MODES[game.mode];
-    document.getElementById('currentStationName').textContent = station.display;
-    document.getElementById('nextStationName').textContent = next?.display || '终点';
+    const currentContext = game.mode === 'kana-to-kanji' ? `第 ${game.index + 1} 站` : station.display;
+    const nextContext = next
+      ? (game.mode === 'kana-to-kanji' ? `第 ${game.index + 2} 站` : next.display)
+      : '终点';
+    document.getElementById('currentStationName').textContent = currentContext;
+    document.getElementById('nextStationName').textContent = nextContext;
     document.getElementById('challengeModeLabel').textContent = mode.label;
     document.getElementById('challengeIndexLabel').textContent = String(game.index + 1).padStart(2, '0');
     const prompt = mode.prompt(station);
@@ -309,13 +319,15 @@
     promptElement.dataset.promptSize = promptSizeFor(prompt);
     document.getElementById('questionHint').textContent = mode.hint;
     const input = document.getElementById('trainAnswerInput');
+    const submitButton = document.getElementById('trainAnswerSubmitButton');
     input.value = '';
     input.disabled = false;
     input.placeholder = game.mode === 'kanji-to-kana' ? '输入平假名' : '输入站名汉字';
-    document.getElementById('answerField').className = 'answer';
+    submitButton.disabled = true;
+    document.getElementById('trainAnswerForm').className = 'answer';
     const feedback = document.getElementById('trainAnswerFeedback');
     feedback.className = 'feedback';
-    feedback.textContent = '输入答案后按 Enter。';
+    feedback.textContent = '输入答案后点击确认，或按 Enter。';
     renderMetrics();
     renderRail();
     syncHintToggles(game.showHints);
@@ -346,7 +358,7 @@
     game.stationStartedAt = now;
     const storage = readStorage();
     storage.lastMode = mode;
-    storage.lastShowHints = showHints;
+    storage.lastShowHints = false;
     writeStorage(storage);
     setPhase('play');
     renderQuestion({ resetScroll: true });
@@ -359,7 +371,7 @@
 
   function setFeedback(message, type = '') {
     const feedback = document.getElementById('trainAnswerFeedback');
-    const field = document.getElementById('answerField');
+    const field = document.getElementById('trainAnswerForm');
     feedback.textContent = message;
     feedback.className = `feedback${type ? ` is-${type}` : ''}`;
     field.className = `answer${game.locked ? ' is-locked' : ''}${type ? ` is-${type}` : ''}`;
@@ -374,7 +386,7 @@
     const input = document.getElementById('trainAnswerInput');
     const answer = normalizeAnswer(input.value);
     if (!answer) {
-      setFeedback('请输入答案后再按 Enter。', 'error');
+      setFeedback('请输入答案后再确认。', 'error');
       return false;
     }
 
@@ -394,6 +406,7 @@
     game.stationTimes.push(Math.max(0, now - game.stationStartedAt));
     game.locked = true;
     input.disabled = true;
+    document.getElementById('trainAnswerSubmitButton').disabled = true;
     setFeedback(`正确：${station.display}（${station.reading}）`, 'correct');
     renderMetrics();
 
@@ -433,7 +446,7 @@
     const storage = readStorage();
     storage.totalChallenges += 1;
     storage.lastMode = result.mode;
-    storage.lastShowHints = result.hintCount > 0;
+    storage.lastShowHints = false;
     storage.recentResults = [result, ...storage.recentResults].slice(0, 5);
     const recordKey = resultRecordKey(result);
     if (isBetterResult(result, storage.bestByMode[recordKey])) storage.bestByMode[recordKey] = result;
@@ -449,7 +462,7 @@
     stopTimer();
     const elapsedMs = elapsedNow();
     const accuracy = accuracyValue();
-    const averageStationMs = game.stationTimes.length ? game.stationTimes.reduce((sum, value) => sum + value, 0) / game.stationTimes.length : 0;
+    const averageStationMs = routeData?.stations.length ? elapsedMs / routeData.stations.length : 0;
     const elapsedMinutes = elapsedMs / 60000;
     const cpm = elapsedMinutes > 0 ? game.correctChars / elapsedMinutes : 0;
     const result = {
@@ -478,7 +491,7 @@
     document.getElementById('resultElapsed').textContent = formatElapsed(result.elapsedMs);
     document.getElementById('resultAccuracy').textContent = `${Math.round(result.accuracy * 100)}%`;
     document.getElementById('resultAverage').textContent = formatSeconds(result.averageStationMs);
-    document.getElementById('resultCpm').textContent = `${Math.round(result.cpm)} CPM`;
+    document.getElementById('resultErrors').textContent = String(result.wrongSubmissions);
     document.getElementById('resultStreak').textContent = String(result.bestStreak);
     document.getElementById('resultHintUsage').textContent = resultPracticeLabel(result);
     const best = storage.bestByMode[resultRecordKey(result)];
@@ -490,7 +503,8 @@
   }
 
   function challengeUrl() {
-    return PUBLIC_CHALLENGE_URL;
+    if (window.location.hostname === 'yomeru.japanese-hub.com') return PUBLIC_CHALLENGE_URL;
+    return new URL('/challenge/train', window.location.origin).href;
   }
 
   function resultModeName(mode) {
@@ -618,7 +632,7 @@
     const stats = [
       ['正确率', `${Math.round(result.accuracy * 100)}%`],
       ['平均每站', formatSeconds(result.averageStationMs)],
-      ['输入速度', `${Math.round(result.cpm)} CPM`],
+      ['错误次数', String(result.wrongSubmissions)],
       ['最佳连续', String(result.bestStreak)]
     ];
     stats.forEach(([label, value], index) => {
@@ -750,9 +764,12 @@
   function resetToStart() {
     stopTimer();
     const storage = readStorage();
-    game = createIdleGame(storage.lastMode, storage.lastShowHints);
+    storage.lastShowHints = false;
+    writeStorage(storage);
+    game = createIdleGame(storage.lastMode, false);
     setPhase('start');
     renderStoredSummary();
+    renderStartRoute(routeData?.stations || [], storage.lastMode);
     setShareFeedback('');
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     document.getElementById('startStatus').textContent = '路线已就绪。点击发车后才开始计时。';
@@ -763,9 +780,13 @@
     document.getElementById('trainRetryButton')?.addEventListener('click', resetToStart);
     document.getElementById('saveResultCardButton')?.addEventListener('click', saveResultCard);
     document.getElementById('shareResultButton')?.addEventListener('click', shareResult);
+    document.querySelectorAll('input[name="mode"]').forEach(input => {
+      input.addEventListener('change', () => {
+        if (routeData) renderStartRoute(routeData.stations, selectedMode());
+      });
+    });
     document.getElementById('trainHintToggleStart')?.addEventListener('change', event => {
       syncHintToggles(event.currentTarget.checked);
-      persistHintSetting(event.currentTarget.checked);
     });
     document.getElementById('trainHintTogglePlay')?.addEventListener('change', event => {
       setHintEnabled(event.currentTarget.checked);
@@ -773,21 +794,37 @@
   }
 
   function bindIme() {
+    const form = document.getElementById('trainAnswerForm');
     const input = document.getElementById('trainAnswerInput');
-    if (!input) return;
+    const submitButton = document.getElementById('trainAnswerSubmitButton');
+    if (!form || !input || !submitButton) return;
+
+    function updateSubmitState() {
+      submitButton.disabled = game.locked || !normalizeAnswer(input.value);
+    }
+
+    input.addEventListener('input', updateSubmitState);
     input.addEventListener('compositionstart', () => {
       compositionActive = true;
+      submitButton.disabled = true;
       setFeedback('正在使用日语输入法组合文字…');
     });
     input.addEventListener('compositionend', () => {
       compositionActive = false;
-      setFeedback('组合完成，按 Enter 提交。');
+      updateSubmitState();
+      setFeedback('候选已确认，可点击“确认”或再次按完成键。');
     });
     input.addEventListener('keydown', event => {
       if (event.key !== 'Enter') return;
-      event.preventDefault();
       if (event.isComposing || compositionActive) {
-        setFeedback('候选词仍在组合，本次回车没有提交。');
+        event.preventDefault();
+        setFeedback('候选词仍在组合，本次操作没有提交。');
+      }
+    });
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (compositionActive) {
+        setFeedback('请先确认输入法候选，再提交答案。');
         return;
       }
       submitAnswer();
@@ -800,8 +837,8 @@
     const payload = await response.json();
     if (!Array.isArray(payload.stations) || payload.stations.length !== 13) throw new Error('Route must contain exactly 13 stations.');
     routeData = payload;
-    renderStartRoute(payload.stations);
     renderStoredSummary();
+    renderStartRoute(payload.stations, selectedMode());
     const startButton = document.getElementById('trainStartButton');
     startButton.disabled = false;
     startButton.firstElementChild.textContent = '发车';

@@ -55,24 +55,28 @@
           <p class="eyebrow"><span id="challengeModeLabel">KANJI → KANA</span> / <span id="challengeIndexLabel">01</span></p>
           <h2 id="questionPrompt" lang="ja">新宿</h2>
           <p id="questionHint" class="lead">请输入这个站名的平假名读音</p>
+          <form id="trainAnswerForm" class="answer" autocomplete="off">
+            <label class="sr-only" for="trainAnswerInput">输入答案</label>
+            <input id="trainAnswerInput" lang="ja" inputmode="text" enterkeyhint="done" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入答案">
+            <button id="trainAnswerSubmitButton" type="submit" disabled>确认</button>
+          </form>
+          <p id="trainAnswerFeedback" class="feedback" aria-live="polite">输入答案后点击确认，或按 Enter。</p>
           <div class="practice-toolbar">
             <label class="practice-switch compact" for="trainHintTogglePlay">
-              <span><strong>练习提示</strong><small>可随时关闭，恢复纯挑战</small></span>
+              <span><strong>练习提示</strong><small>可随时开启；本局默认关闭</small></span>
               <input id="trainHintTogglePlay" type="checkbox" role="switch" aria-label="显示当前站提示">
               <i aria-hidden="true"></i>
             </label>
             <p id="stationAnswerHint" class="station-answer-hint" hidden><span id="stationAnswerHintLabel">读音</span><strong id="stationAnswerHintValue" lang="ja">しんじゅく</strong></p>
           </div>
-          <label id="answerField" class="answer"><span class="sr-only">输入答案</span><input id="trainAnswerInput" lang="ja" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入答案"><kbd>Enter</kbd></label>
-          <p id="trainAnswerFeedback" class="feedback" aria-live="polite">输入答案后按 Enter。</p>
-          <div class="ime-note"><b>あ</b><p><strong>日语输入法安全</strong>候选词还在组合时，回车不会提前提交。</p></div>
+          <div class="ime-note"><b>あ</b><p><strong>日语输入法安全</strong>候选词还在组合时，先确认候选，再点击“确认”。</p></div>
         </article>
       </div>
     </section>
 
     <section class="view result-view" data-challenge-view="result" aria-labelledby="resultTitle" hidden>
       <article class="result-card" id="resultCard">
-        <div class="result-route"><img src="/challenge/train/assets/train.svg" alt="" width="60" height="60"><span>新宿</span><i></i><span>上野</span></div>
+        <div class="result-route"><span>新宿</span><i></i><span>上野</span><img src="/challenge/train/assets/train.svg" alt="列车已抵达上野" width="60" height="60"></div>
         <p class="eyebrow">ARRIVED / 挑战完成</p>
         <h2 id="resultTitle">抵达终点。</h2>
         <p id="resultHintUsage" class="result-hint-usage">纯挑战 · 未使用提示</p>
@@ -80,7 +84,7 @@
         <div class="result-stats">
           <div><span>正确率</span><strong id="resultAccuracy">—</strong></div>
           <div><span>平均每站</span><strong id="resultAverage">—</strong></div>
-          <div><span>输入速度</span><strong id="resultCpm">—</strong></div>
+          <div><span>错误次数</span><strong id="resultErrors">0</strong></div>
           <div><span>最佳连续</span><strong id="resultStreak">0</strong></div>
         </div>
         <p id="resultBest" class="best">纯挑战最佳纪录：—</p>
