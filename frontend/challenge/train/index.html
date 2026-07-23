@@ -21,16 +21,24 @@
         <p class="eyebrow">YOMERU TRAIN TYPING / 01</p>
         <h1 id="startTitle">输入站名，<br>开到终点。</h1>
         <p class="lead">13 个连续车站。看汉字输入假名，或看假名输入汉字。</p>
-        <div class="route-strip" aria-label="新宿到上野的十三站路线"><div id="startRouteStops" class="route-stops"></div></div>
+        <div class="route-loop" aria-label="新宿到上野的十三站原创环线示意图">
+          <div class="route-loop-heading"><span>山手线北侧短程</span><small>原创简化示意 · 按实际站序</small></div>
+          <div id="startRouteMap" class="route-loop-map"></div>
+        </div>
         <fieldset class="modes">
           <legend>选择挑战方式</legend>
           <label><input type="radio" name="mode" value="kanji-to-kana" checked><b>A</b><span><strong>汉字 → 假名</strong><small>推荐 · 输入读音</small></span></label>
           <label><input type="radio" name="mode" value="kana-to-kanji"><b>B</b><span><strong>假名 → 汉字</strong><small>进阶 · 输入站名汉字</small></span></label>
         </fieldset>
+        <label class="practice-switch" for="trainHintToggleStart">
+          <span><strong>练习提示</strong><small>开启后显示当前站答案；纯挑战成绩单独记录</small></span>
+          <input id="trainHintToggleStart" type="checkbox" role="switch" aria-label="开启练习提示">
+          <i aria-hidden="true"></i>
+        </label>
         <button id="trainStartButton" class="primary" type="button" disabled><span>载入路线…</span><span aria-hidden="true">→</span></button>
         <p id="startStatus" class="note" role="status">正在准备 13 个站点。点击发车后才开始计时。</p>
       </article>
-      <aside class="board" aria-label="挑战说明"><span>SHORT ROUTE</span><strong>13</strong><b>STATIONS</b><dl><div><dt>目标时间</dt><dd>30–60 秒</dd></div><div><dt>输入方式</dt><dd>日语 IME</dd></div><div><dt>本机挑战</dt><dd id="totalChallengeCount">0 次</dd></div></dl></aside>
+      <aside class="board" aria-label="挑战说明"><span>YAMANOTE ARC</span><div class="board-loop" aria-hidden="true"></div><strong>13</strong><b>STATIONS</b><dl><div><dt>目标时间</dt><dd>30–60 秒</dd></div><div><dt>输入方式</dt><dd>日语 IME</dd></div><div><dt>本机挑战</dt><dd id="totalChallengeCount">0 次</dd></div></dl></aside>
     </section>
 
     <section class="view play-view" data-challenge-view="play" aria-labelledby="questionPrompt" hidden>
@@ -47,6 +55,14 @@
           <p class="eyebrow"><span id="challengeModeLabel">KANJI → KANA</span> / <span id="challengeIndexLabel">01</span></p>
           <h2 id="questionPrompt" lang="ja">新宿</h2>
           <p id="questionHint" class="lead">请输入这个站名的平假名读音</p>
+          <div class="practice-toolbar">
+            <label class="practice-switch compact" for="trainHintTogglePlay">
+              <span><strong>练习提示</strong><small>可随时关闭，恢复纯挑战</small></span>
+              <input id="trainHintTogglePlay" type="checkbox" role="switch" aria-label="显示当前站提示">
+              <i aria-hidden="true"></i>
+            </label>
+            <p id="stationAnswerHint" class="station-answer-hint" hidden><span id="stationAnswerHintLabel">读音</span><strong id="stationAnswerHintValue" lang="ja">しんじゅく</strong></p>
+          </div>
           <label id="answerField" class="answer"><span class="sr-only">输入答案</span><input id="trainAnswerInput" lang="ja" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入答案"><kbd>Enter</kbd></label>
           <p id="trainAnswerFeedback" class="feedback" aria-live="polite">输入答案后按 Enter。</p>
           <div class="ime-note"><b>あ</b><p><strong>日语输入法安全</strong>候选词还在组合时，回车不会提前提交。</p></div>
@@ -66,6 +82,7 @@
           <div><span>输入速度</span><strong id="resultCpm">—</strong></div>
           <div><span>最佳连续</span><strong id="resultStreak">0</strong></div>
         </div>
+        <p id="resultHintUsage" class="result-hint-usage">纯挑战 · 未使用提示</p>
         <p id="resultBest" class="best">本机最佳纪录：—</p>
       </article>
       <aside class="result-actions">

@@ -32,10 +32,13 @@
   let timerFrame = 0;
   let game = createIdleGame();
 
-  function createIdleGame(mode = 'kanji-to-kana') {
+  function createIdleGame(mode = 'kanji-to-kana', showHints = false) {
     return {
       phase: 'start',
       mode,
+      showHints:Boolean(showHints),
+      hintedStationIds:new Set(),
+      hintCount:0,
       index: 0,
       startedAt: null,
       completedAt: null,
@@ -59,7 +62,8 @@
       bestByMode: {},
       recentResults: [],
       totalChallenges: 0,
-      lastMode: 'kanji-to-kana'
+      lastMode: 'kanji-to-kana',
+      lastShowHints: false
     };
   }
 
@@ -76,7 +80,8 @@
         bestByMode: value.bestByMode && typeof value.bestByMode === 'object' ? value.bestByMode : {},
         recentResults: Array.isArray(value.recentResults) ? value.recentResults.slice(0, 5) : [],
         totalChallenges: Number.isFinite(Number(value.totalChallenges)) ? Math.max(0, Number(value.totalChallenges)) : 0,
-        lastMode: validMode(value.lastMode)
+        lastMode: validMode(value.lastMode),
+        lastShowHints: Boolean(value.lastShowHints)
       };
     } catch {
       return defaultStorage();
@@ -126,6 +131,9 @@
     return {
       phase: game.phase,
       mode: game.mode,
+      showHints: game.showHints,
+      hintCount: game.hintCount,
+      hintedStationIds: [...game.hintedStationIds],
       index: game.index,
       correctSubmissions: game.correctSubmissions,
       wrongSubmissions: game.wrongSubmissions,
@@ -149,10 +157,38 @@
     });
   }
 
+  function cubicPoint(t, start, controlA, controlB, end) {
+    const inverse = 1 - t;
+    return {
+      x: (inverse ** 3 * start.x) + (3 * inverse ** 2 * t * controlA.x) + (3 * inverse * t ** 2 * controlB.x) + (t ** 3 * end.x),
+      y: (inverse ** 3 * start.y) + (3 * inverse ** 2 * t * controlA.y) + (3 * inverse * t ** 2 * controlB.y) + (t ** 3 * end.y)
+    };
+  }
+
+  function stationLabelLines(label) {
+    const chars = [...String(label || '')];
+    if (chars.length <= 3) return [chars.join('')];
+    const splitAt = Math.ceil(chars.length / 2);
+    return [chars.slice(0, splitAt).join(''), chars.slice(splitAt).join('')];
+  }
+
   function renderStartRoute(stations) {
-    const target = document.getElementById('startRouteStops');
+    const target = document.getElementById('startRouteMap');
     if (!target) return;
-    target.innerHTML = stations.map(station => `<span title="${station.reading}">${station.display}</span>`).join('');
+    const start = { x: 80, y: 158 };
+    const controlA = { x: 220, y: 12 };
+    const controlB = { x: 680, y: 12 };
+    const end = { x: 820, y: 158 };
+    const stationMarkup = stations.map((station, index) => {
+      const point = cubicPoint(index / (stations.length - 1), start, controlA, controlB, end);
+      const labelY = point.y + (index % 2 ? 44 : 28);
+      const labelLines = stationLabelLines(station.display);
+      const tspans = labelLines.map((line, lineIndex) => `<tspan x="${point.x.toFixed(1)}" dy="${lineIndex ? 16 : 0}">${line}</tspan>`).join('');
+      const endpointClass = index === 0 || index === stations.length - 1 ? ' is-endpoint' : '';
+      const longClass = [...station.display].length >= 4 ? ' is-long' : '';
+      return `<g class="route-loop-station${endpointClass}${longClass}" data-station-id="${station.id}"><circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="13"></circle><text x="${point.x.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="middle">${tspans}</text></g>`;
+    }).join('');
+    target.innerHTML = `<svg viewBox="0 0 900 235" role="img" aria-labelledby="routeLoopTitle routeLoopDesc"><title id="routeLoopTitle">新宿到上野的山手线北侧短程</title><desc id="routeLoopDesc">按照实际车站顺序绘制的原创半环形示意图，不是官方线路图。</desc><path class="route-loop-ghost" d="M80 158 C220 236 680 236 820 158"></path><path class="route-loop-line" d="M80 158 C220 12 680 12 820 158"></path>${stationMarkup}</svg>`;
   }
 
   function renderRail() {
@@ -161,7 +197,8 @@
     if (!target || !routeData) return;
     target.innerHTML = routeData.stations.map((station, index) => {
       const className = index < game.index ? ' completed' : (index === game.index ? ' current' : '');
-      return `<span class="rail-stop${className}" aria-current="${index === game.index ? 'step' : 'false'}">${station.display}</span>`;
+      const longClass = [...station.display].length >= 4 ? ' is-long' : '';
+      return `<span class="rail-stop${className}${longClass}" aria-current="${index === game.index ? 'step' : 'false'}">${station.display}</span>`;
     }).join('');
     if (marker) {
       const progress = routeData.stations.length > 1 ? game.index / (routeData.stations.length - 1) : 0;
@@ -174,6 +211,62 @@
     return validMode(document.querySelector('input[name="mode"]:checked')?.value);
   }
 
+  function selectedHintSetting() {
+    return Boolean(document.getElementById('trainHintToggleStart')?.checked);
+  }
+
+  function syncHintToggles(enabled) {
+    for (const id of ['trainHintToggleStart', 'trainHintTogglePlay']) {
+      const input = document.getElementById(id);
+      if (input) input.checked = Boolean(enabled);
+    }
+  }
+
+  function persistHintSetting(enabled) {
+    const storage = readStorage();
+    storage.lastShowHints = Boolean(enabled);
+    writeStorage(storage);
+  }
+
+  function answerHintForStation(station) {
+    return game.mode === 'kanji-to-kana'
+      ? { label: '读音', value: station.reading }
+      : { label: '站名', value: station.display };
+  }
+
+  function renderPracticeHint({ countUsage = true } = {}) {
+    const panel = document.getElementById('stationAnswerHint');
+    if (!panel || !routeData || game.phase !== 'play') return;
+    const station = routeData.stations[game.index];
+    const hint = answerHintForStation(station);
+    panel.hidden = !game.showHints;
+    document.getElementById('stationAnswerHintLabel').textContent = hint.label;
+    document.getElementById('stationAnswerHintValue').textContent = hint.value;
+    if (game.showHints && countUsage && !game.hintedStationIds.has(station.id)) {
+      game.hintedStationIds.add(station.id);
+      game.hintCount = game.hintedStationIds.size;
+    }
+  }
+
+  function setHintEnabled(enabled, { persist = true, countUsage = true } = {}) {
+    game.showHints = Boolean(enabled);
+    syncHintToggles(game.showHints);
+    if (persist) persistHintSetting(game.showHints);
+    renderPracticeHint({ countUsage });
+  }
+
+  function focusAnswerInput({ resetScroll = false } = {}) {
+    const input = document.getElementById('trainAnswerInput');
+    window.requestAnimationFrame(() => {
+      if (resetScroll) window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      try {
+        input?.focus({ preventScroll: true });
+      } catch {
+        input?.focus();
+      }
+    });
+  }
+
   function renderStoredSummary() {
     const storage = readStorage();
     const total = document.getElementById('totalChallengeCount');
@@ -181,6 +274,7 @@
     document.querySelectorAll('input[name="mode"]').forEach(input => {
       input.checked = input.value === storage.lastMode;
     });
+    if (game.phase === 'start') syncHintToggles(storage.lastShowHints);
   }
 
   function renderMetrics() {
@@ -191,7 +285,7 @@
     document.getElementById('streakValue').textContent = String(game.currentStreak);
   }
 
-  function renderQuestion() {
+  function renderQuestion({ resetScroll = false } = {}) {
     if (!routeData) return;
     const station = routeData.stations[game.index];
     const next = routeData.stations[game.index + 1];
@@ -212,7 +306,9 @@
     feedback.textContent = '输入答案后按 Enter。';
     renderMetrics();
     renderRail();
-    setTimeout(() => input.focus(), 0);
+    syncHintToggles(game.showHints);
+    renderPracticeHint();
+    focusAnswerInput({ resetScroll });
   }
 
   function timerTick() {
@@ -230,16 +326,18 @@
     if (!routeData) return;
     stopTimer();
     const mode = selectedMode();
+    const showHints = selectedHintSetting();
     const now = performance.now();
-    game = createIdleGame(mode);
+    game = createIdleGame(mode, showHints);
     game.phase = 'play';
     game.startedAt = now;
     game.stationStartedAt = now;
     const storage = readStorage();
     storage.lastMode = mode;
+    storage.lastShowHints = showHints;
     writeStorage(storage);
     setPhase('play');
-    renderQuestion();
+    renderQuestion({ resetScroll: true });
     timerFrame = requestAnimationFrame(timerTick);
   }
 
@@ -309,12 +407,18 @@
     return candidate.cpm > current.cpm;
   }
 
+  function resultRecordKey(result) {
+    return result.hintCount > 0 ? `${result.mode}:practice` : result.mode;
+  }
+
   function persistResult(result) {
     const storage = readStorage();
     storage.totalChallenges += 1;
     storage.lastMode = result.mode;
+    storage.lastShowHints = result.hintCount > 0;
     storage.recentResults = [result, ...storage.recentResults].slice(0, 5);
-    if (isBetterResult(result, storage.bestByMode[result.mode])) storage.bestByMode[result.mode] = result;
+    const recordKey = resultRecordKey(result);
+    if (isBetterResult(result, storage.bestByMode[recordKey])) storage.bestByMode[recordKey] = result;
     writeStorage(storage);
     return storage;
   }
@@ -342,7 +446,9 @@
       bestStreak: game.bestStreak,
       correctSubmissions: game.correctSubmissions,
       wrongSubmissions: game.wrongSubmissions,
-      correctChars: game.correctChars
+      correctChars: game.correctChars,
+      hintCount: game.hintCount,
+      assisted: game.hintCount > 0
     };
     game.result = result;
     const storage = persistResult(result);
@@ -356,7 +462,10 @@
     document.getElementById('resultAverage').textContent = formatSeconds(result.averageStationMs);
     document.getElementById('resultCpm').textContent = `${Math.round(result.cpm)} CPM`;
     document.getElementById('resultStreak').textContent = String(result.bestStreak);
-    const best = storage.bestByMode[result.mode];
+    document.getElementById('resultHintUsage').textContent = result.hintCount > 0
+      ? `练习模式 · 使用提示 ${result.hintCount} 站（成绩单独记录）`
+      : '纯挑战 · 未使用提示';
+    const best = storage.bestByMode[resultRecordKey(result)];
     document.getElementById('resultBest').textContent = best
       ? `本机最佳纪录：${formatElapsed(best.elapsedMs)} · ${Math.round(best.accuracy * 100)}%`
       : '本机最佳纪录：—';
@@ -479,7 +588,10 @@
     context.fillText('抵达终点。', 118, 535);
     context.fillStyle = soft;
     context.font = '600 24px "PingFang SC", sans-serif';
-    context.fillText(resultModeName(result.mode), 122, 582);
+    const cardModeLabel = result.hintCount > 0
+      ? `${resultModeName(result.mode)} · 提示 ${result.hintCount} 站`
+      : `${resultModeName(result.mode)} · 纯挑战`;
+    context.fillText(cardModeLabel, 122, 582);
 
     context.fillStyle = ink;
     context.font = '800 142px "Hiragino Kaku Gothic ProN", Inter, sans-serif';
@@ -580,7 +692,8 @@
     if (!game.result) return false;
     const result = game.result;
     const title = 'Yomeru 电车日语输入挑战';
-    const text = `我用 ${formatElapsed(result.elapsedMs)} 完成新宿到上野挑战，正确率 ${Math.round(result.accuracy * 100)}%。`;
+    const assistText = result.hintCount > 0 ? `，使用提示 ${result.hintCount} 站` : '，纯挑战';
+    const text = `我用 ${formatElapsed(result.elapsedMs)} 完成新宿到上野挑战，正确率 ${Math.round(result.accuracy * 100)}%${assistText}。`;
     setShareButtonsBusy(true);
     setShareFeedback('正在准备分享…');
     try {
@@ -621,11 +734,12 @@
 
   function resetToStart() {
     stopTimer();
-    const mode = readStorage().lastMode;
-    game = createIdleGame(mode);
+    const storage = readStorage();
+    game = createIdleGame(storage.lastMode, storage.lastShowHints);
     setPhase('start');
     renderStoredSummary();
     setShareFeedback('');
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     document.getElementById('startStatus').textContent = '路线已就绪。点击发车后才开始计时。';
   }
 
@@ -634,6 +748,13 @@
     document.getElementById('trainRetryButton')?.addEventListener('click', resetToStart);
     document.getElementById('saveResultCardButton')?.addEventListener('click', saveResultCard);
     document.getElementById('shareResultButton')?.addEventListener('click', shareResult);
+    document.getElementById('trainHintToggleStart')?.addEventListener('change', event => {
+      syncHintToggles(event.currentTarget.checked);
+      persistHintSetting(event.currentTarget.checked);
+    });
+    document.getElementById('trainHintTogglePlay')?.addEventListener('change', event => {
+      setHintEnabled(event.currentTarget.checked);
+    });
   }
 
   function bindIme() {

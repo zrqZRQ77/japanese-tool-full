@@ -32,6 +32,11 @@ assert.match(html, /id="trainStartButton"/);
 assert.match(html, /id="resultCpm"/);
 assert.match(html, /id="saveResultCardButton"/);
 assert.match(html, /id="shareResultButton"/);
+assert.match(html, /id="startRouteMap"/);
+assert.match(html, /id="trainHintToggleStart"/);
+assert.match(html, /id="trainHintTogglePlay"/);
+assert.match(html, /id="stationAnswerHint"/);
+assert.match(html, /id="resultHintUsage"/);
 assert.match(html, /不是铁路运营机构官方产品/);
 assert.match(html, /href="\/challenge\/train\/train-challenge\.css"/);
 assert.match(html, /src="\/challenge\/train\/train-challenge\.js"/);
@@ -42,8 +47,14 @@ assert.match(js, /new URL\('\/challenge\/train\/', window\.location\.origin\)/);
 assert.match(js, /compositionstart/);
 assert.match(js, /event\.isComposing/);
 assert.match(js, /recentResults.*slice\(0, 5\)/s);
+assert.match(js, /lastShowHints/);
+assert.match(js, /resultRecordKey/);
+assert.match(js, /preventScroll/);
+assert.match(js, /route-loop-ghost/);
 assert.match(js, /Number\.NEGATIVE_INFINITY/);
 assert.match(readme, /最后一站只能触发一次结算/);
+assert.match(css, /route-loop-line/);
+assert.match(css, /answer\.is-error:focus-within/);
 assert.match(css, /prefers-reduced-motion/);
 
 const mime = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml'};
@@ -114,6 +125,12 @@ try {
     assert.equal(loadedAssets.stylesheet, true, 'challenge stylesheet did not load from the clean URL');
     assert.equal(loadedAssets.script, true, 'challenge script did not load from the clean URL');
     assert.notEqual(loadedAssets.ticketRadius, '0px', 'challenge styles were not applied');
+    assert.equal(await page.locator('#startRouteMap svg').count(), 1);
+    assert.equal(await page.locator('#startRouteMap .route-loop-station').count(), 13);
+    assert.equal(await page.locator('#startRouteMap .route-loop-line').count(), 1);
+    assert.equal(await page.locator('#startRouteMap .route-loop-ghost').count(), 1);
+    assert.ok(await page.locator('#startRouteMap tspan').count() > 13, 'long station names were not split across lines');
+    assert.equal(await page.locator('#trainHintToggleStart').isChecked(), false);
     assert.equal(await page.locator('#trainStartButton').isEnabled(), true);
     assert.equal(await hasOverflow(page), false, 'mobile-390 start view overflows');
     assert.equal(await page.evaluate(() => document.getElementById('trainStartButton').getBoundingClientRect().bottom <= innerHeight), true, 'departure button is below first viewport');
@@ -124,6 +141,13 @@ try {
     await page.locator('#trainStartButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'play');
     assert.equal(await page.evaluate(() => document.activeElement?.id === 'trainAnswerInput'), true);
+    const initialFocusState = await page.evaluate(() => ({
+      scrollY: window.scrollY,
+      outlineColor: getComputedStyle(document.getElementById('answerField')).outlineColor
+    }));
+    assert.ok(initialFocusState.scrollY <= 1, `departure focus scrolled the page to ${initialFocusState.scrollY}`);
+    assert.notEqual(initialFocusState.outlineColor, 'rgb(228, 90, 70)', 'normal focus still looks like an error');
+    assert.equal(await page.locator('#stationAnswerHint').isVisible(), false);
     await page.waitForTimeout(180);
     assert.ok((await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot())).elapsedMs >= 100);
 
@@ -174,8 +198,12 @@ try {
     assert.equal(state.wrongSubmissions, 1);
     assert.equal(state.stationTimes.length, 13);
     assert.equal(state.bestStreak, 13);
+    assert.equal(state.hintCount, 0);
+    assert.equal(state.result.hintCount, 0);
+    assert.equal(state.result.assisted, false);
     assert.ok(state.result.elapsedMs > 0);
     assert.equal(Math.round(state.result.accuracy * 100), 93);
+    assert.equal(await page.locator('#resultHintUsage').textContent(), '纯挑战 · 未使用提示');
     assert.equal(await hasOverflow(page), false, 'mobile-390 result view overflows');
 
     const stored = await page.evaluate(() => ({
@@ -186,7 +214,9 @@ try {
     assert.equal(stored.train.schemaVersion, 1);
     assert.equal(stored.train.totalChallenges, 1);
     assert.equal(stored.train.recentResults.length, 1);
+    assert.equal(stored.train.lastShowHints, false);
     assert.ok(stored.train.bestByMode['kanji-to-kana']);
+    assert.equal(stored.train.bestByMode['kanji-to-kana:practice'], undefined);
     assert.equal(stored.vocab, 'vocab-sentinel');
     assert.equal(stored.history, 'history-sentinel');
 
@@ -247,9 +277,23 @@ try {
     await page.goto(appUrl, {waitUntil:'networkidle'});
     await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE?.route()?.stations?.length === 13);
     await page.locator('input[value="kana-to-kanji"]').check();
+    await page.locator('label[for="trainHintToggleStart"]').click();
+    assert.equal(await page.locator('#trainHintToggleStart').isChecked(), true);
     await page.locator('#trainStartButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'play');
     assert.equal(await page.locator('#questionPrompt').textContent(), 'しんじゅく');
+    assert.equal(await page.locator('#stationAnswerHint').isVisible(), true);
+    assert.equal(await page.locator('#stationAnswerHintLabel').textContent(), '站名');
+    assert.equal(await page.locator('#stationAnswerHintValue').textContent(), '新宿');
+    let practiceState = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
+    assert.equal(practiceState.showHints, true);
+    assert.equal(practiceState.hintCount, 1);
+    await page.locator('label[for="trainHintTogglePlay"]').click();
+    assert.equal(await page.locator('#trainHintTogglePlay').isChecked(), false);
+    assert.equal(await page.locator('#stationAnswerHint').isVisible(), false);
+    practiceState = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
+    assert.equal(practiceState.showHints, false);
+    assert.equal(practiceState.hintCount, 1);
     await submit(page, '新　宿');
     await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE.snapshot().index === 1);
     await submit(page, 'シンオオクボ');
@@ -267,6 +311,13 @@ try {
     await page.goto(appUrl, {waitUntil:'networkidle'});
     await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE?.route()?.stations?.length === 13);
     assert.equal(await hasOverflow(page), false, 'desktop start view overflows');
+    const startLayout = await page.evaluate(() => ({
+      boardHeight: Math.round(document.querySelector('.board').getBoundingClientRect().height),
+      ticketHeight: Math.round(document.querySelector('.ticket').getBoundingClientRect().height),
+      longRailLabels: document.querySelectorAll('.route-loop-station.is-long').length
+    }));
+    assert.ok(startLayout.boardHeight < startLayout.ticketHeight, JSON.stringify(startLayout));
+    assert.ok(startLayout.longRailLabels >= 3, JSON.stringify(startLayout));
     await page.locator('#trainStartButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'play');
     assert.equal(await hasOverflow(page), false, 'desktop play view overflows');
