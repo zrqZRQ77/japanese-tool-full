@@ -76,23 +76,6 @@
       "priorityScore": 37
     },
     {
-      "word": "開く",
-      "reading": "あく",
-      "count": 3,
-      "categories": [
-        "ambiguity",
-        "verbs"
-      ],
-      "jlptLevels": [],
-      "jmdictAvailable": true,
-      "examples": [
-        "LQ-082",
-        "LQ-174",
-        "LQ-175"
-      ],
-      "priorityScore": 32
-    },
-    {
       "word": "来る",
       "reading": "くる",
       "count": 3,
@@ -107,23 +90,6 @@
         "LQ-069"
       ],
       "priorityScore": 32
-    },
-    {
-      "word": "一日",
-      "reading": "いちにち",
-      "count": 2,
-      "categories": [
-        "ambiguity"
-      ],
-      "jlptLevels": [
-        "N5"
-      ],
-      "jmdictAvailable": true,
-      "examples": [
-        "LQ-178",
-        "LQ-179"
-      ],
-      "priorityScore": 27
     },
     {
       "word": "飲む",
@@ -379,6 +345,22 @@
       "priorityScore": 22
     },
     {
+      "word": "開く",
+      "reading": "あく",
+      "count": 2,
+      "categories": [
+        "ambiguity",
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-082",
+        "LQ-174"
+      ],
+      "priorityScore": 22
+    },
+    {
       "word": "終わる",
       "reading": "おわる",
       "count": 2,
@@ -390,21 +372,6 @@
       "examples": [
         "LQ-095",
         "LQ-096"
-      ],
-      "priorityScore": 22
-    },
-    {
-      "word": "人気",
-      "reading": "にんき",
-      "count": 2,
-      "categories": [
-        "ambiguity"
-      ],
-      "jlptLevels": [],
-      "jmdictAvailable": true,
-      "examples": [
-        "LQ-180",
-        "LQ-181"
       ],
       "priorityScore": 22
     },
@@ -422,6 +389,38 @@
         "LQ-098"
       ],
       "priorityScore": 22
+    },
+    {
+      "word": "一日",
+      "reading": "いちにち",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-178"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "一日",
+      "reading": "ついたち",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-179"
+      ],
+      "priorityScore": 17
     },
     {
       "word": "雨",
@@ -914,6 +913,20 @@
       "priorityScore": 12
     },
     {
+      "word": "開く",
+      "reading": "ひらく",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-175"
+      ],
+      "priorityScore": 12
+    },
+    {
       "word": "開ける",
       "reading": "あける",
       "count": 1,
@@ -994,6 +1007,34 @@
       "jmdictAvailable": true,
       "examples": [
         "LQ-170"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "人気",
+      "reading": "にんき",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-180"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "人気",
+      "reading": "ひとけ",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-181"
       ],
       "priorityScore": 12
     },

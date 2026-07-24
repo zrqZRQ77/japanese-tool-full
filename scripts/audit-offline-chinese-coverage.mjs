@@ -93,9 +93,10 @@ const unresolved = chineseMisses.filter(item => !item.jmdictHit);
 
 const frequency = new Map();
 for (const item of chineseMisses) {
-  const key = item.lemma || item.surface;
+  const word = item.lemma || item.surface;
+  const key = `${word}\u0000${item.reading || ''}`;
   const current = frequency.get(key) || {
-    word: key,
+    word,
     reading: item.reading,
     count: 0,
     categories: new Set(),
@@ -126,7 +127,7 @@ const report = {
   schemaVersion: 1,
   generatedAt: '2026-07-23T00:00:00.000Z',
   baseline: {
-    mainCommit: '01ccdb78c9988a9513199344439d5d5240c758f3',
+    mainCommit: '6a821a65d56af7576e4312ef4b1df33eb6d889f4',
     chineseDataVersion: chineseMetadata.dataVersion,
     jmdictDataVersion: jmdictMetadata.dataVersion,
     jlptDataVersion: jlptMetadata.dataVersion,

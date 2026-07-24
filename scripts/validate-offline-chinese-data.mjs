@@ -122,6 +122,7 @@ const validPriorities = new Set(['P0', 'P1', 'P2', 'P3']);
 const validReviewerStatuses = new Set(['pending', 'drafted', 'approved', 'rejected']);
 const queueAlreadyCovered = [];
 const homophoneGroups = new Map();
+const readingsByWord = new Map();
 let multiPosEvidence = 0;
 
 for (const item of queue.items) {
@@ -145,7 +146,13 @@ for (const item of queue.items) {
     if (item.candidateChinese !== null) addFinding(errors, 'pending-has-candidate', 'pending 项目不应包含正式中文候选。', { queueId: item.queueId });
     if (item.reviewer || item.reviewedAt || item.decision) addFinding(errors, 'pending-has-review-metadata', 'pending 项目不应包含审核完成字段。', { queueId: item.queueId });
   }
-  if (item.reviewerStatus === 'drafted' && !nonEmptyString(item.candidateChinese)) addFinding(errors, 'drafted-empty-candidate', 'drafted 项目必须包含中文候选。', { queueId: item.queueId });
+  if (item.reviewerStatus === 'drafted') {
+    if (!nonEmptyString(item.candidateChinese)) addFinding(errors, 'drafted-empty-candidate', 'drafted 项目必须包含中文候选。', { queueId: item.queueId });
+    if (!nonEmptyString(item.reviewer) || !nonEmptyString(item.reviewedAt)) addFinding(errors, 'drafted-missing-reviewer', 'drafted 项目缺少审核代理或时间。', { queueId: item.queueId });
+    if (!item.evidence?.length) addFinding(errors, 'drafted-missing-evidence', 'drafted 项目缺少证据。', { queueId: item.queueId });
+    if (item.decision !== 'recommend-approve') addFinding(errors, 'drafted-invalid-decision', '当前 drafted 项目的 decision 必须为 recommend-approve。', { queueId: item.queueId });
+    if (!item.notes?.includes('置信度：')) addFinding(errors, 'drafted-missing-confidence', 'drafted 项目必须在 notes 中记录置信度。', { queueId: item.queueId });
+  }
   if (item.reviewerStatus === 'approved') {
     if (!nonEmptyString(item.candidateChinese)) addFinding(errors, 'approved-empty-candidate', 'approved 项目缺少中文释义。', { queueId: item.queueId });
     if (!nonEmptyString(item.reviewer) || !nonEmptyString(item.reviewedAt)) addFinding(errors, 'approved-missing-reviewer', 'approved 项目缺少审核人或时间。', { queueId: item.queueId });
@@ -158,6 +165,10 @@ for (const item of queue.items) {
     const group = homophoneGroups.get(item.reading) || [];
     group.push(item.word);
     homophoneGroups.set(item.reading, group);
+
+    const readings = readingsByWord.get(item.word) || [];
+    readings.push(item.reading);
+    readingsByWord.set(item.word, readings);
   }
 }
 
@@ -167,7 +178,12 @@ const homophones = [...homophoneGroups.entries()]
   .filter(([, words]) => new Set(words).size > 1)
   .map(([reading, words]) => ({ reading, words: [...new Set(words)].sort((a, b) => a.localeCompare(b, 'ja')) }))
   .sort((a, b) => a.reading.localeCompare(b.reading, 'ja'));
+const sameWrittenFormGroups = [...readingsByWord.entries()]
+  .filter(([, readings]) => new Set(readings).size > 1)
+  .map(([word, readings]) => ({ word, readings: [...new Set(readings)].sort((a, b) => a.localeCompare(b, 'ja')) }))
+  .sort((a, b) => a.word.localeCompare(b.word, 'ja'));
 if (homophones.length) addFinding(notes, 'homophone-review-groups', '审核队列中存在需要分别处理的同音词组。', { groups: homophones });
+if (sameWrittenFormGroups.length) addFinding(notes, 'same-written-form-review-groups', '审核队列中存在需要按读音分别处理的同形异读词组。', { groups: sameWrittenFormGroups });
 if (multiPosEvidence) addFinding(notes, 'multi-pos-evidence', '部分 JMdict 证据包含多个词性，审核时需要按义项选择。', { itemCount: multiPosEvidence });
 
 const inputHashMap = Object.fromEntries(inputHashes);
@@ -175,7 +191,7 @@ const report = {
   schemaVersion: 1,
   generatedAt: GENERATED_AT,
   baseline: {
-    mainCommit: '01ccdb78c9988a9513199344439d5d5240c758f3',
+    mainCommit: '6a821a65d56af7576e4312ef4b1df33eb6d889f4',
     chineseDataVersion: metadata.dataVersion,
     reviewQueueVersion: '20260723'
   },
@@ -191,9 +207,13 @@ const report = {
     indexedEntries: metadata.indexedEntryCount,
     indexedForms: metadata.formCount,
     reviewQueueItems: queue.items.length,
+    reviewedItems: queue.items.filter(item => item.reviewerStatus !== 'pending').length,
     pendingItems: queue.items.filter(item => item.reviewerStatus === 'pending').length,
+    draftedItems: queue.items.filter(item => item.reviewerStatus === 'drafted').length,
     approvedItems: queue.items.filter(item => item.reviewerStatus === 'approved').length,
+    rejectedItems: queue.items.filter(item => item.reviewerStatus === 'rejected').length,
     homophoneGroups: homophones.length,
+    sameWrittenFormGroups: sameWrittenFormGroups.length,
     multiPosEvidenceItems: multiPosEvidence
   },
   errors,
@@ -212,7 +232,7 @@ const markdown = [
   `- 错误：${report.summary.errors}`,
   `- 警告：${report.summary.warnings}`,
   `- 信息项：${report.summary.notes}`,
-  `- 当前审核队列：${report.summary.reviewQueueItems} 项，批准 ${report.summary.approvedItems} 项。`,
+  `- 当前审核队列：${report.summary.reviewQueueItems} 项；逐项审核 ${report.summary.reviewedItems} 项，其中 drafted ${report.summary.draftedItems}、approved ${report.summary.approvedItems}、pending ${report.summary.pendingItems}。`,
   `- 中文索引：${report.summary.indexedEntries} 条、${report.summary.indexedForms} 个检索形式。`,
   '',
   '## 警告',
@@ -226,7 +246,8 @@ const markdown = [
   '## 门禁说明',
   '',
   '- pending 项目必须保持中文候选为空。',
-  '- approved 项目必须有中文释义、证据、审核人、审核时间和 approve 决定。',
+  '- drafted 项目必须有中文草稿、证据、审核代理、时间、建议结论和置信度，但不得进入正式中文发布层。',
+  '- approved 项目必须有中文释义、证据、人工审核人、审核时间和 approve 决定。',
   '- rejected 项目必须填写拒绝原因。',
   '- 审核证据只能引用来源注册表中的 sourceId。',
   '- 已被中文索引覆盖的词不得继续留在缺口审核队列。',

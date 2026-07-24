@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedAt": "2026-07-23T00:00:00.000Z",
   "baseline": {
-    "mainCommit": "01ccdb78c9988a9513199344439d5d5240c758f3",
+    "mainCommit": "6a821a65d56af7576e4312ef4b1df33eb6d889f4",
     "chineseDataVersion": "20260717",
     "reviewQueueVersion": "20260723"
   },
@@ -10,24 +10,28 @@
     "dictionary": "69b343c085de93e14e32ee3508509a2971944168acf3e34e53eb07cafb45e45a",
     "supplement": "e221bfc6e261f355ad47d1689c744a067e95a801dbf467ca959e75b006bf76a1",
     "chineseMetadata": "63aaedb8a1265a7b66d119007dbcde3e705e48fb51bcdd104ad8635887be245f",
-    "reviewQueue": "535e7285d911be8e830bb9d703578e6b3daa58fb1bfb981c0f3a00d9deedc884",
+    "reviewQueue": "1ebf5d21773deeabb7b973d3ef8c789cbd336e86cc68f528986b549abd727e43",
     "sourceRegistry": "22e6a4862f0392566a77fc6c9ba6f6c9d788ede4426b59eaecf7ad0f97446fdb"
   },
   "summary": {
     "valid": true,
     "errors": 0,
     "warnings": 1,
-    "notes": 2,
+    "notes": 3,
     "dictionaryEntries": 137,
     "supplementEntries": 22,
     "curatedOverlaps": 1,
     "indexedEntries": 158,
     "indexedForms": 285,
-    "reviewQueueItems": 93,
-    "pendingItems": 93,
+    "reviewQueueItems": 96,
+    "reviewedItems": 15,
+    "pendingItems": 81,
+    "draftedItems": 15,
     "approvedItems": 0,
+    "rejectedItems": 0,
     "homophoneGroups": 6,
-    "multiPosEvidenceItems": 34
+    "sameWrittenFormGroups": 3,
+    "multiPosEvidenceItems": 37
   },
   "errors": [],
   "warnings": [
@@ -90,9 +94,36 @@
       ]
     },
     {
+      "code": "same-written-form-review-groups",
+      "message": "审核队列中存在需要按读音分别处理的同形异读词组。",
+      "groups": [
+        {
+          "word": "一日",
+          "readings": [
+            "いちにち",
+            "ついたち"
+          ]
+        },
+        {
+          "word": "開く",
+          "readings": [
+            "あく",
+            "ひらく"
+          ]
+        },
+        {
+          "word": "人気",
+          "readings": [
+            "にんき",
+            "ひとけ"
+          ]
+        }
+      ]
+    },
+    {
       "code": "multi-pos-evidence",
       "message": "部分 JMdict 证据包含多个词性，审核时需要按义项选择。",
-      "itemCount": 34
+      "itemCount": 37
     }
   ]
 }

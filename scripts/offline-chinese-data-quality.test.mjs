@@ -6,6 +6,8 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '..');
+execFileSync(process.execPath, [resolve(ROOT, 'scripts/audit-offline-chinese-coverage.mjs')], { cwd: ROOT, stdio: 'pipe' });
+execFileSync(process.execPath, [resolve(ROOT, 'scripts/build-offline-chinese-review-queue.mjs')], { cwd: ROOT, stdio: 'pipe' });
 execFileSync(process.execPath, [resolve(ROOT, 'scripts/validate-offline-chinese-data.mjs')], { cwd: ROOT, stdio: 'pipe' });
 
 const report = JSON.parse(readFileSync(resolve(ROOT, 'audits/offline-chinese-coverage/20260723/data-quality-report.json'), 'utf8'));
@@ -13,20 +15,25 @@ const markdown = readFileSync(resolve(ROOT, 'audits/offline-chinese-coverage/202
 
 assert.equal(report.schemaVersion, 1);
 assert.equal(report.generatedAt, '2026-07-23T00:00:00.000Z');
+assert.equal(report.baseline.mainCommit, '6a821a65d56af7576e4312ef4b1df33eb6d889f4');
 assert.equal(report.summary.valid, true);
 assert.equal(report.summary.errors, 0);
 assert.equal(report.summary.warnings, 1);
-assert.equal(report.summary.notes, 2);
+assert.equal(report.summary.notes, 3);
 assert.equal(report.summary.dictionaryEntries, 137);
 assert.equal(report.summary.supplementEntries, 22);
 assert.equal(report.summary.curatedOverlaps, 1);
 assert.equal(report.summary.indexedEntries, 158);
 assert.equal(report.summary.indexedForms, 285);
-assert.equal(report.summary.reviewQueueItems, 93);
-assert.equal(report.summary.pendingItems, 93);
+assert.equal(report.summary.reviewQueueItems, 96);
+assert.equal(report.summary.reviewedItems, 15);
+assert.equal(report.summary.pendingItems, 81);
+assert.equal(report.summary.draftedItems, 15);
 assert.equal(report.summary.approvedItems, 0);
+assert.equal(report.summary.rejectedItems, 0);
 assert.equal(report.summary.homophoneGroups, 6);
-assert.equal(report.summary.multiPosEvidenceItems, 34);
+assert.equal(report.summary.sameWrittenFormGroups, 3);
+assert.equal(report.summary.multiPosEvidenceItems, 37);
 
 assert.equal(report.warnings[0].code, 'curated-source-overlap');
 assert.deepEqual(report.warnings[0].words, ['企業']);
@@ -40,10 +47,18 @@ assert.deepEqual(homophones.groups, [
   { reading: 'はし', words: ['橋', '箸'] },
   { reading: 'はな', words: ['花', '鼻'] }
 ]);
+const sameWritten = report.notes.find(item => item.code === 'same-written-form-review-groups');
+assert.ok(sameWritten);
+assert.deepEqual(sameWritten.groups, [
+  { word: '一日', readings: ['いちにち', 'ついたち'] },
+  { word: '開く', readings: ['あく', 'ひらく'] },
+  { word: '人気', readings: ['にんき', 'ひとけ'] }
+]);
 assert.ok(Object.values(report.inputSha256).every(value => /^[a-f0-9]{64}$/.test(value)));
 assert.match(markdown, /状态：PASS/);
 assert.match(markdown, /企業/);
-assert.match(markdown, /approved 项目必须有中文释义、证据、审核人、审核时间/);
+assert.match(markdown, /drafted 项目必须有中文草稿/);
+assert.match(markdown, /approved 项目必须有中文释义、证据、人工审核人/);
 assert.match(markdown, /同音词和多词性证据不自动报错/);
 
-process.stdout.write('Offline Chinese data-quality and release-gate tests passed.\n');
+process.stdout.write('Offline Chinese data-quality, assisted-review, and release-gate tests passed.\n');

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedAt": "2026-07-23T00:00:00.000Z",
   "baseline": {
-    "mainCommit": "01ccdb78c9988a9513199344439d5d5240c758f3",
+    "mainCommit": "6a821a65d56af7576e4312ef4b1df33eb6d889f4",
     "coverageAudit": "20260723",
     "jmdictDataVersion": "20260713",
     "sourceRegistry": "audits/offline-chinese-coverage/20260723/source-registry.json"
@@ -16,24 +16,67 @@
     "requiredEvidenceCount": 1
   },
   "summary": {
-    "totalItems": 93,
+    "totalItems": 96,
     "priorityCounts": {
-      "P0": 6,
-      "P1": 42,
-      "P2": 19,
+      "P0": 5,
+      "P1": 43,
+      "P2": 22,
       "P3": 26
+    },
+    "remainingPriorityCounts": {
+      "P1": 33,
+      "P2": 22,
+      "P3": 26
+    },
+    "draftedPriorityCounts": {
+      "P0": 5,
+      "P1": 10
     },
     "reviewTypeCounts": {
       "high-frequency-lexical": 15,
       "manual-research-required": 26,
-      "sense-disambiguation": 45,
+      "sense-disambiguation": 48,
       "standard-lexical": 7
     },
-    "withJmdictEvidence": 67,
+    "reviewerStatusCounts": {
+      "drafted": 15,
+      "pending": 81
+    },
+    "reviewedItems": 15,
+    "pendingItems": 81,
+    "draftedItems": 15,
+    "approvedItems": 0,
+    "rejectedItems": 0,
+    "blockedItems": 0,
+    "withJmdictEvidence": 70,
     "manualResearchRequired": 26,
-    "ambiguityReview": 45,
-    "candidateChineseFilled": 0
+    "ambiguityReview": 48,
+    "sameWrittenFormGroups": 3,
+    "candidateChineseFilled": 15
   },
+  "sameWrittenFormGroups": [
+    {
+      "word": "一日",
+      "readings": [
+        "いちにち",
+        "ついたち"
+      ]
+    },
+    {
+      "word": "開く",
+      "readings": [
+        "あく",
+        "ひらく"
+      ]
+    },
+    {
+      "word": "人気",
+      "readings": [
+        "にんき",
+        "ひとけ"
+      ]
+    }
+  ],
   "items": [
     {
       "queueId": "zh-review-001",
@@ -88,13 +131,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "回去；回家；返回原处",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：帰る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为回去、回家、返回原处，不纳入棒球等专门义。多义与混淆：同音名词「蛙（かえる）」必须按日文表记隔离。证据：JLPT N5；JMdict 1221270，CC BY-SA 4.0，仅作词形、读音、词性和语义范围证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-002",
@@ -143,13 +186,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "写；书写；创作（文章等）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：書く；词性：五段カ行动词、他动词（JMdict v5k/vt）。核心义限定为写、书写和创作文字内容。多义与混淆：同音的「描く」「掻く」以及其他「かく」词条不得由读音覆盖；本草稿不纳入绘画义。证据：JLPT N5；JMdict 1343950，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-003",
@@ -200,13 +243,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "安静；寂静；平静",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：静か；词性：ナ形容词/形容动词（JMdict adj-na；当前语料解析器表面词性显示为名词）。核心义覆盖环境安静、寂静及状态平静，不扩展为所有“缓慢、从容”语境。多义与混淆：无需要合并的同形异读词。证据：JLPT N5；JMdict 1381820，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-004",
@@ -259,77 +302,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "等；等待；期待",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：待つ；词性：五段タ行动词，可作自动词或他动词（JMdict v5t/vi/vt）。核心义覆盖等待、等候和期待；不把“依赖、需要”等低频结构直接并入核心释义。多义与混淆：与同音名词「松（まつ）」按表记隔离。证据：JLPT N5；JMdict 1410590，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-005",
-      "priority": "P0",
-      "word": "開く",
-      "reading": "あく",
-      "corpusFrequency": 3,
-      "corpusCategories": [
-        "ambiguity",
-        "verbs"
-      ],
-      "jlptLevels": [],
-      "exampleCaseIds": [
-        "LQ-082",
-        "LQ-174",
-        "LQ-175"
-      ],
-      "reviewType": "sense-disambiguation",
-      "riskFlags": [
-        "ambiguity",
-        "broad-sense-range"
-      ],
-      "evidence": [
-        {
-          "sourceId": "jmdict-edrdg",
-          "license": "CC-BY-SA-4.0",
-          "entryIds": [
-            "1586270"
-          ],
-          "headwords": [
-            "開く"
-          ],
-          "readings": [
-            "あく"
-          ],
-          "partsOfSpeech": [
-            "v5k",
-            "vi",
-            "vt"
-          ],
-          "englishGlosses": [
-            "to open (e.g. doors)",
-            "to open (e.g. business, etc.)",
-            "to be empty",
-            "to be vacant",
-            "to be available",
-            "to be free",
-            "to be open (e.g. neckline, etc.)",
-            "to have been opened (of one's eyes, mouth, etc.)"
-          ],
-          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
-          "retrievedAt": "2026-07-23"
-        }
-      ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
-      "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
-    },
-    {
-      "queueId": "zh-review-006",
       "priority": "P0",
       "word": "来る",
       "reading": "くる",
@@ -379,72 +361,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "来；到来；来到",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：来る；词性：カ变自动词（JMdict vk/vi，另有助动词用法）。核心释义只覆盖独立动词“来、到来、来到”，不把「〜てくる」等补助动词语法义混入词条核心义。多义与混淆：表记和读音对应明确，无需按同音词扩展。证据：本地 JLPT 参考未提供等级；JMdict 1547720，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
-      "queueId": "zh-review-007",
-      "priority": "P1",
-      "word": "一日",
-      "reading": "いちにち",
-      "corpusFrequency": 2,
-      "corpusCategories": [
-        "ambiguity"
-      ],
-      "jlptLevels": [
-        "N5"
-      ],
-      "exampleCaseIds": [
-        "LQ-178",
-        "LQ-179"
-      ],
-      "reviewType": "sense-disambiguation",
-      "riskFlags": [
-        "ambiguity"
-      ],
-      "evidence": [
-        {
-          "sourceId": "jmdict-edrdg",
-          "license": "CC-BY-SA-4.0",
-          "entryIds": [
-            "1576260"
-          ],
-          "headwords": [
-            "一日"
-          ],
-          "readings": [
-            "いちにち"
-          ],
-          "partsOfSpeech": [
-            "adv",
-            "n"
-          ],
-          "englishGlosses": [
-            "one day",
-            "all day (long)",
-            "the whole day",
-            "from morning till night",
-            "first day of the month"
-          ],
-          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
-          "retrievedAt": "2026-07-23"
-        }
-      ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
-      "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
-    },
-    {
-      "queueId": "zh-review-008",
+      "queueId": "zh-review-006",
       "priority": "P1",
       "word": "飲む",
       "reading": "のむ",
@@ -494,16 +420,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "喝；吞服（药物）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：飲む；词性：五段マ行动词、他动词（JMdict v5m/vt）。核心义覆盖喝饮料及吞服药物；不把吸烟、吞没或压抑情绪等引申义并入基础释义。多义与混淆：无需要合并的同形异读词。证据：JLPT N5；JMdict 1169870，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
-      "queueId": "zh-review-009",
+      "queueId": "zh-review-007",
       "priority": "P1",
       "word": "古い",
       "reading": "ふるい",
@@ -552,16 +478,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "旧的；古老的；陈旧的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：古い；词性：イ形容词（JMdict adj-i）。核心义覆盖年代久、使用时间长或观念陈旧；不扩展为与词形无关的“长时间”副词义。多义与混淆：表记和读音对应明确。证据：JLPT N5；JMdict 1265070，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
-      "queueId": "zh-review-010",
+      "queueId": "zh-review-008",
       "priority": "P1",
       "word": "呼ぶ",
       "reading": "よぶ",
@@ -611,16 +537,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "叫；呼喊；叫来；称呼",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：呼ぶ；词性：五段バ行动词、他动词（JMdict v5b/vt）。核心义覆盖出声叫、召来某人以及称呼或命名；不将品牌化等低频引申义扩大为核心义。多义与混淆：表记和读音对应明确。证据：JLPT N5；JMdict 1266440，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
-      "queueId": "zh-review-011",
+      "queueId": "zh-review-009",
       "priority": "P1",
       "word": "降る",
       "reading": "ふる",
@@ -670,16 +596,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "下（雨、雪等）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：降る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为雨、雪、灰等从空中落下，符合当前语料；阳光照射、幸运降临等引申义不并入基础释义。多义与混淆：与同音「振る（ふる）」及其他同音词按表记隔离。证据：JLPT N5；JMdict 1282790，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
-      "queueId": "zh-review-012",
+      "queueId": "zh-review-010",
       "priority": "P1",
       "word": "座る",
       "reading": "すわる",
@@ -728,16 +654,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "坐；坐下",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：座る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为坐、坐下或就座；任职、占据职位等引申义不并入基础释义。多义与混淆：表记和读音对应明确。证据：JLPT N5；JMdict 1291800，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
-      "queueId": "zh-review-013",
+      "queueId": "zh-review-011",
       "priority": "P1",
       "word": "撮る",
       "reading": "とる",
@@ -781,16 +707,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "拍摄；录制",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：撮る；词性：五段ラ行动词、他动词（JMdict v5r/vt）。核心义覆盖拍照、摄影以及录制音频或视频。多义与混淆：同音的「取る」「採る」「捕る」等必须按表记隔离，不能由读音查询覆盖。证据：JLPT N5；JMdict 1298790，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
-      "queueId": "zh-review-014",
+      "queueId": "zh-review-012",
       "priority": "P1",
       "word": "持つ",
       "reading": "もつ",
@@ -841,16 +767,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "拿；携带；拥有",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：持つ；词性：五段タ行动词，可作自动词或他动词（JMdict v5t/vi/vt）。核心义覆盖手持、携带和拥有；维持、耐久、承担等扩展义暂不并入基础释义。多义与混淆：语义范围较宽，但表记和读音对应明确。证据：JLPT N5；JMdict 1315720，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
     },
     {
-      "queueId": "zh-review-015",
+      "queueId": "zh-review-013",
       "priority": "P1",
       "word": "暑い",
       "reading": "あつい",
@@ -899,16 +825,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "（天气、环境）炎热的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：暑い；词性：イ形容词（JMdict adj-i）。核心义严格限定天气、气温或环境炎热，不覆盖「熱い」的物体温度、感情热烈，也不覆盖「厚い」。多义与混淆：与同音「熱い」「厚い」按日文表记隔离。证据：JLPT N5；JMdict 1343460，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
-      "queueId": "zh-review-016",
+      "queueId": "zh-review-014",
       "priority": "P1",
       "word": "乗る",
       "reading": "のる",
@@ -958,16 +884,16 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "乘坐；上（车、船等）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：乗る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为登上并乘坐交通工具，符合当前语料；踩上物体、顺势、参与等引申义不并入基础释义。多义与混淆：同音「載る（のる）」等按表记隔离。证据：JLPT N5；JMdict 1355120，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
-      "queueId": "zh-review-017",
+      "queueId": "zh-review-015",
       "priority": "P1",
       "word": "青い",
       "reading": "あおい",
@@ -1025,7 +951,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-018",
+      "queueId": "zh-review-016",
       "priority": "P1",
       "word": "聞く",
       "reading": "きく",
@@ -1084,7 +1010,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-019",
+      "queueId": "zh-review-017",
       "priority": "P1",
       "word": "便利",
       "reading": "べんり",
@@ -1135,7 +1061,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-020",
+      "queueId": "zh-review-018",
       "priority": "P1",
       "word": "冷たい",
       "reading": "つめたい",
@@ -1193,7 +1119,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-021",
+      "queueId": "zh-review-019",
       "priority": "P1",
       "word": "話す",
       "reading": "はなす",
@@ -1252,7 +1178,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-022",
+      "queueId": "zh-review-020",
       "priority": "P1",
       "word": "会う",
       "reading": "あう",
@@ -1304,7 +1230,68 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-023",
+      "queueId": "zh-review-021",
+      "priority": "P1",
+      "word": "開く",
+      "reading": "あく",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "ambiguity",
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-082",
+        "LQ-174"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1586270"
+          ],
+          "headwords": [
+            "開く"
+          ],
+          "readings": [
+            "あく"
+          ],
+          "partsOfSpeech": [
+            "v5k",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to open (e.g. doors)",
+            "to open (e.g. business, etc.)",
+            "to be empty",
+            "to be vacant",
+            "to be available",
+            "to be free",
+            "to be open (e.g. neckline, etc.)",
+            "to have been opened (of one's eyes, mouth, etc.)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "（门、店等）开；空出来、有空位",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：開く；目标读音：あく；词性：五段カ行动词，本审核限定自动词用法（JMdict v5k/vi；证据记录同时含 vt 标签）。核心义覆盖门打开、店开门营业，以及时间、空间或座位空出来。多义与混淆：同一表记的「開く（ひらく）」必须拆分为独立词条；不得用本草稿覆盖“打开书本、召开”等 ひらく 用法，也不得仅凭读音覆盖「空く」。语料 LQ-175 属于 ひらく，修正分组后已移出本词条。证据：本地 JLPT 参考未提供等级；JMdict 1586270，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-022",
       "priority": "P1",
       "word": "終わる",
       "reading": "おわる",
@@ -1363,63 +1350,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-024",
-      "priority": "P1",
-      "word": "人気",
-      "reading": "にんき",
-      "corpusFrequency": 2,
-      "corpusCategories": [
-        "ambiguity"
-      ],
-      "jlptLevels": [],
-      "exampleCaseIds": [
-        "LQ-180",
-        "LQ-181"
-      ],
-      "reviewType": "sense-disambiguation",
-      "riskFlags": [
-        "ambiguity",
-        "broad-sense-range"
-      ],
-      "evidence": [
-        {
-          "sourceId": "jmdict-edrdg",
-          "license": "CC-BY-SA-4.0",
-          "entryIds": [
-            "1367010"
-          ],
-          "headwords": [
-            "人気"
-          ],
-          "readings": [
-            "にんき"
-          ],
-          "partsOfSpeech": [
-            "adj-no",
-            "n"
-          ],
-          "englishGlosses": [
-            "popularity",
-            "public favor",
-            "condition (e.g. market)",
-            "tone",
-            "character",
-            "nature"
-          ],
-          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
-          "retrievedAt": "2026-07-23"
-        }
-      ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
-      "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
-    },
-    {
-      "queueId": "zh-review-025",
+      "queueId": "zh-review-023",
       "priority": "P1",
       "word": "買う",
       "reading": "かう",
@@ -1462,6 +1393,118 @@
             "to appreciate",
             "to recognize",
             "to incur (someone's anger, displeasure, etc.)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-024",
+      "priority": "P1",
+      "word": "一日",
+      "reading": "いちにち",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-178"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1576260"
+          ],
+          "headwords": [
+            "一日"
+          ],
+          "readings": [
+            "いちにち"
+          ],
+          "partsOfSpeech": [
+            "adv",
+            "n"
+          ],
+          "englishGlosses": [
+            "one day",
+            "all day (long)",
+            "the whole day",
+            "from morning till night",
+            "first day of the month"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-025",
+      "priority": "P1",
+      "word": "一日",
+      "reading": "ついたち",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-179"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1576260"
+          ],
+          "headwords": [
+            "一日"
+          ],
+          "readings": [
+            "いちにち"
+          ],
+          "partsOfSpeech": [
+            "adv",
+            "n"
+          ],
+          "englishGlosses": [
+            "one day",
+            "all day (long)",
+            "the whole day",
+            "from morning till night",
+            "first day of the month"
           ],
           "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
           "retrievedAt": "2026-07-23"
@@ -3113,6 +3156,65 @@
     {
       "queueId": "zh-review-057",
       "priority": "P2",
+      "word": "開く",
+      "reading": "ひらく",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-175"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1202440"
+          ],
+          "headwords": [
+            "開く"
+          ],
+          "readings": [
+            "ひらく"
+          ],
+          "partsOfSpeech": [
+            "v5k",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to open",
+            "to undo",
+            "to unseal",
+            "to unpack",
+            "to bloom",
+            "to unfold",
+            "to spread out",
+            "to open (for business, e.g. in the morning)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-058",
+      "priority": "P2",
       "word": "開ける",
       "reading": "あける",
       "corpusFrequency": 1,
@@ -3168,7 +3270,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-058",
+      "queueId": "zh-review-059",
       "priority": "P2",
       "word": "蛙",
       "reading": "かえる",
@@ -3216,7 +3318,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-059",
+      "queueId": "zh-review-060",
       "priority": "P2",
       "word": "携帯電話",
       "reading": "けいたいでんわ",
@@ -3263,7 +3365,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-060",
+      "queueId": "zh-review-061",
       "priority": "P2",
       "word": "見合わせる",
       "reading": "みあわせる",
@@ -3319,7 +3421,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-061",
+      "queueId": "zh-review-062",
       "priority": "P2",
       "word": "高速道路",
       "reading": "こうそくどうろ",
@@ -3368,7 +3470,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-062",
+      "queueId": "zh-review-063",
       "priority": "P2",
       "word": "神",
       "reading": "かみ",
@@ -3426,7 +3528,119 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-063",
+      "queueId": "zh-review-064",
+      "priority": "P2",
+      "word": "人気",
+      "reading": "にんき",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-180"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1367010"
+          ],
+          "headwords": [
+            "人気"
+          ],
+          "readings": [
+            "にんき"
+          ],
+          "partsOfSpeech": [
+            "adj-no",
+            "n"
+          ],
+          "englishGlosses": [
+            "popularity",
+            "public favor",
+            "condition (e.g. market)",
+            "tone",
+            "character",
+            "nature"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-065",
+      "priority": "P2",
+      "word": "人気",
+      "reading": "ひとけ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-181"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1367010"
+          ],
+          "headwords": [
+            "人気"
+          ],
+          "readings": [
+            "にんき"
+          ],
+          "partsOfSpeech": [
+            "adj-no",
+            "n"
+          ],
+          "englishGlosses": [
+            "popularity",
+            "public favor",
+            "condition (e.g. market)",
+            "tone",
+            "character",
+            "nature"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": null,
+      "reviewerStatus": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "decision": null,
+      "rejectionReason": null,
+      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+    },
+    {
+      "queueId": "zh-review-066",
       "priority": "P2",
       "word": "生",
       "reading": "なま",
@@ -3484,7 +3698,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-064",
+      "queueId": "zh-review-067",
       "priority": "P2",
       "word": "大学院生",
       "reading": "だいがくいんせい",
@@ -3531,7 +3745,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-065",
+      "queueId": "zh-review-068",
       "priority": "P2",
       "word": "地球温暖化",
       "reading": "ちきゅうおんだんか",
@@ -3577,7 +3791,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-066",
+      "queueId": "zh-review-069",
       "priority": "P2",
       "word": "地方自治体",
       "reading": "ちほうじちたい",
@@ -3627,7 +3841,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-067",
+      "queueId": "zh-review-070",
       "priority": "P2",
       "word": "電子部品",
       "reading": "でんしぶひん",
@@ -3674,7 +3888,7 @@
       "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
     },
     {
-      "queueId": "zh-review-068",
+      "queueId": "zh-review-071",
       "priority": "P3",
       "word": "サイバー攻撃",
       "reading": "さいばーこうげき",
@@ -3700,7 +3914,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-069",
+      "queueId": "zh-review-072",
       "priority": "P3",
       "word": "医療機関",
       "reading": "いりょうきかん",
@@ -3726,7 +3940,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-070",
+      "queueId": "zh-review-073",
       "priority": "P3",
       "word": "医療保険制度",
       "reading": "いりょうほけんせいど",
@@ -3752,7 +3966,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-071",
+      "queueId": "zh-review-074",
       "priority": "P3",
       "word": "海外市場",
       "reading": "かいがいしじょう",
@@ -3778,7 +3992,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-072",
+      "queueId": "zh-review-075",
       "priority": "P3",
       "word": "外国人観光客",
       "reading": "がいこくじんかんこうきゃく",
@@ -3804,7 +4018,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-073",
+      "queueId": "zh-review-076",
       "priority": "P3",
       "word": "共同研究",
       "reading": "きょうどうけんきゅう",
@@ -3830,7 +4044,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-074",
+      "queueId": "zh-review-077",
       "priority": "P3",
       "word": "経済成長",
       "reading": "けいざいせいちょう",
@@ -3856,7 +4070,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-075",
+      "queueId": "zh-review-078",
       "priority": "P3",
       "word": "研究チーム",
       "reading": "けんきゅうちーむ",
@@ -3882,7 +4096,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-076",
+      "queueId": "zh-review-079",
       "priority": "P3",
       "word": "研究開発費",
       "reading": "けんきゅうかいはつひ",
@@ -3908,7 +4122,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-077",
+      "queueId": "zh-review-080",
       "priority": "P3",
       "word": "個人情報",
       "reading": "こじんじょうほう",
@@ -3934,7 +4148,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-078",
+      "queueId": "zh-review-081",
       "priority": "P3",
       "word": "雇用情勢",
       "reading": "こようじょうせい",
@@ -3960,7 +4174,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-079",
+      "queueId": "zh-review-082",
       "priority": "P3",
       "word": "公共交通機関",
       "reading": "こうきょうこうつうきかん",
@@ -3986,7 +4200,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-080",
+      "queueId": "zh-review-083",
       "priority": "P3",
       "word": "今日中",
       "reading": "きょうじゅう",
@@ -4013,7 +4227,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-081",
+      "queueId": "zh-review-084",
       "priority": "P3",
       "word": "再生可能エネルギー",
       "reading": "さいせいかのうえねるぎー",
@@ -4039,7 +4253,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-082",
+      "queueId": "zh-review-085",
       "priority": "P3",
       "word": "自然災害",
       "reading": "しぜんさいがい",
@@ -4065,7 +4279,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-083",
+      "queueId": "zh-review-086",
       "priority": "P3",
       "word": "少子高齢化",
       "reading": "しょうしこうれいか",
@@ -4091,7 +4305,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-084",
+      "queueId": "zh-review-087",
       "priority": "P3",
       "word": "上昇率",
       "reading": "じょうしょうりつ",
@@ -4117,7 +4331,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-085",
+      "queueId": "zh-review-088",
       "priority": "P3",
       "word": "情報通信技術",
       "reading": "じょうほうつうしんぎじゅつ",
@@ -4143,7 +4357,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-086",
+      "queueId": "zh-review-089",
       "priority": "P3",
       "word": "中央銀行",
       "reading": "ちゅうおうぎんこう",
@@ -4169,7 +4383,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-087",
+      "queueId": "zh-review-090",
       "priority": "P3",
       "word": "投票率",
       "reading": "とうひょうりつ",
@@ -4195,7 +4409,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-088",
+      "queueId": "zh-review-091",
       "priority": "P3",
       "word": "排出量",
       "reading": "はいしゅつりょう",
@@ -4221,7 +4435,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-089",
+      "queueId": "zh-review-092",
       "priority": "P3",
       "word": "半導体メモリー",
       "reading": "はんどうたいめもりー",
@@ -4247,7 +4461,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-090",
+      "queueId": "zh-review-093",
       "priority": "P3",
       "word": "避難所",
       "reading": "ひなんじょ",
@@ -4273,7 +4487,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-091",
+      "queueId": "zh-review-094",
       "priority": "P3",
       "word": "訪日客数",
       "reading": "ほうにちきゃくすう",
@@ -4299,7 +4513,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-092",
+      "queueId": "zh-review-095",
       "priority": "P3",
       "word": "輸出額",
       "reading": "ゆしゅつがく",
@@ -4325,7 +4539,7 @@
       "notes": "需要独立人工调查；不得由 AI 自动生成正式释义。"
     },
     {
-      "queueId": "zh-review-093",
+      "queueId": "zh-review-096",
       "priority": "P3",
       "word": "労働市場",
       "reading": "ろうどうしじょう",

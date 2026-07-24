@@ -35,9 +35,7 @@ Generated: 2026-07-23T00:00:00.000Z
 | 書く | かく | 3 | verbs | N5 | 有 |
 | 静か | しずか | 3 | adjectives | N5 | 有 |
 | 待つ | まつ | 3 | verbs | N5 | 有 |
-| 開く | あく | 3 | ambiguity, verbs |  | 有 |
 | 来る | くる | 3 | verbs |  | 有 |
-| 一日 | いちにち | 2 | ambiguity | N5 | 有 |
 | 飲む | のむ | 2 | verbs | N5 | 有 |
 | 古い | ふるい | 2 | adjectives | N5 | 有 |
 | 呼ぶ | よぶ | 2 | verbs | N5 | 有 |
@@ -53,9 +51,11 @@ Generated: 2026-07-23T00:00:00.000Z
 | 冷たい | つめたい | 2 | adjectives | N5 | 有 |
 | 話す | はなす | 2 | verbs | N5 | 有 |
 | 会う | あう | 2 | verbs |  | 有 |
+| 開く | あく | 2 | ambiguity, verbs |  | 有 |
 | 終わる | おわる | 2 | verbs |  | 有 |
-| 人気 | にんき | 2 | ambiguity |  | 有 |
 | 買う | かう | 2 | verbs |  | 有 |
+| 一日 | いちにち | 1 | ambiguity | N5 | 有 |
+| 一日 | ついたち | 1 | ambiguity | N5 | 有 |
 | 雨 | あめ | 1 | ambiguity | N5 | 有 |
 | 駅 | えき | 1 | basic | N5 | 有 |
 | 音楽 | おんがく | 1 | basic | N5 | 有 |
