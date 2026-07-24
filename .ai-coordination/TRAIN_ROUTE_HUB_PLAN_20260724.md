@@ -9,12 +9,12 @@ Owner: Codex / ChatGPT
 - Phase 0–8：100%
 - 总体完成度：100%
 - 分支：`feat/train-route-hub`
-- 最新功能提交：`1943d84`
+- 最新功能提交：`51ac4cd`
 - 远端分支：已推送
-- Preview：`https://japanese-tool-pfjqm73jq-zrq-projects1.vercel.app`
-- Preview Deployment：`dpl_9A2gt9xtxBkN7FSP2e2CasSsZVWJ` / Ready
+- Preview：`https://japanese-tool-lbv7n0irs-zrq-projects1.vercel.app`
+- Preview Deployment：`dpl_CbHZMCvmvZ8VgZczrXufuktUEXyH` / Ready
 - Draft PR：`#8` / Draft
-- 用户反馈微调：已删除主页说明文字并简化右侧路线示意图
+- 用户反馈微调：Hero 标题缩小并增加行距；右侧改为新宿→上野单路线，显示 7 个站点且起终点标签不遮挡圆点
 - Production：未修改
 
 ## 1. 项目目标
