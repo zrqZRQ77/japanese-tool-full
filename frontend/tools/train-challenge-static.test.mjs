@@ -471,6 +471,9 @@ try {
       const question = document.querySelector('.question').getBoundingClientRect();
       const main = document.querySelector('.question-main').getBoundingClientRect();
       const tools = document.querySelector('.question-tools').getBoundingClientRect();
+      const firstStop = document.querySelector('.rail-stop:first-child').getBoundingClientRect();
+      const lastStop = document.querySelector('.rail-stop:last-child').getBoundingClientRect();
+      const marker = document.getElementById('trainMarker').getBoundingClientRect();
       return {
         playWidth: Math.round(document.querySelector('.play-view').getBoundingClientRect().width),
         metricsPosition: getComputedStyle(document.querySelector('.metrics')).position,
@@ -480,6 +483,14 @@ try {
         questionHeight: Math.round(question.height),
         questionBottom: Math.round(question.bottom),
         railWidth: Math.round(rail.width),
+        railTop: Math.round(rail.top),
+        railBottom: Math.round(rail.bottom),
+        railLeft: Math.round(rail.left),
+        railRight: Math.round(rail.right),
+        firstStopTop: Math.round(firstStop.top),
+        lastStopBottom: Math.round(lastStop.bottom),
+        markerLeft: Math.round(marker.left),
+        markerRight: Math.round(marker.right),
         promptFontSize: Number.parseFloat(getComputedStyle(document.getElementById('questionPrompt')).fontSize),
         toolsLeft: Math.round(tools.left),
         mainRight: Math.round(main.right),
@@ -490,9 +501,13 @@ try {
     assert.equal(desktopPlayLayout.metricsPosition, 'static');
     assert.ok(desktopPlayLayout.metricsHeight <= 56, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.metricsBottom < desktopPlayLayout.questionTop, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.railWidth <= 130, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.questionHeight <= 380, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.railWidth <= 150, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.questionHeight <= 300, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.questionBottom <= desktopPlayLayout.viewportHeight, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.firstStopTop >= desktopPlayLayout.railTop, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.lastStopBottom <= desktopPlayLayout.railBottom, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.markerLeft >= desktopPlayLayout.railLeft + 90, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.markerRight <= desktopPlayLayout.railRight, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.promptFontSize <= 60, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.toolsLeft >= desktopPlayLayout.mainRight, JSON.stringify(desktopPlayLayout));
     assert.equal(await hasOverflow(page), false, 'desktop play view overflows');

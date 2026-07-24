@@ -218,7 +218,7 @@
     const progress = routeData.stations.length > 1 ? game.index / (routeData.stations.length - 1) : 0;
     target.parentElement?.style.setProperty('--route-progress-ratio', String(progress));
     if (marker) {
-      marker.style.setProperty('--train-position', `${8 + progress * 76}%`);
+      marker.style.setProperty('--train-position', `${6 + progress * 88}%`);
       marker.alt = `列车当前位于${routeData.stations[game.index]?.display || '终点'}`;
     }
   }
