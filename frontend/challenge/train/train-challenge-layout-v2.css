@@ -671,6 +671,141 @@
   }
 }
 
+/* Screenshot-reviewed layout pass: center the main task and keep secondary controls compact. */
+.question-main {
+  align-self: stretch;
+  width: 100%;
+}
+
+.question-core {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  padding: 16px 0 10px;
+}
+
+.question h2[data-prompt-size="short"],
+.question h2[data-prompt-size="medium"],
+.question h2[data-prompt-size="long"],
+.question h2[data-prompt-size="extra-long"] {
+  margin: 0 auto 30px;
+}
+
+.answer,
+.feedback,
+.question-tools {
+  width: min(100%, 540px);
+  align-self: center;
+}
+
+.answer {
+  flex: 0 0 auto;
+}
+
+@media (min-width: 601px) {
+  .answer {
+    width: min(100%, 520px);
+    min-width: min(100%, 500px);
+  }
+}
+
+.question-tools {
+  justify-content: center;
+  gap: 14px;
+  margin: 0 auto;
+  padding-top: 8px;
+}
+
+.answer-toggle {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.station-answer-hint {
+  flex: 0 1 auto;
+  max-width: 250px;
+  white-space: nowrap;
+}
+
+.station-answer-hint strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-view {
+  grid-template-columns: minmax(0, 1fr) 168px;
+  gap: 16px;
+}
+
+.result-actions {
+  width: 168px;
+  gap: 8px;
+}
+
+.result-actions > button {
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 14px;
+  border-radius: 14px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.result-actions a {
+  padding: 9px 4px;
+  font-size: 11px;
+}
+
+@media (max-width: 840px) {
+  .result-view {
+    grid-template-columns: 1fr;
+  }
+
+  .result-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .result-actions a,
+  .result-actions .share-feedback {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .question-core {
+    padding: 20px 0 10px;
+  }
+
+  .question h2[data-prompt-size="short"],
+  .question h2[data-prompt-size="medium"],
+  .question h2[data-prompt-size="long"],
+  .question h2[data-prompt-size="extra-long"] {
+    margin: 0 auto 16px;
+  }
+
+  .question-tools {
+    flex-wrap: wrap;
+    margin-top: 4px;
+    padding-top: 0;
+  }
+
+  .result-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .result-actions > button {
+    min-height: 44px;
+    padding-inline: 6px;
+    border-radius: 12px;
+    font-size: 11px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .answer-toggle i,
   .answer-toggle i::before {

@@ -60,14 +60,16 @@
               <p class="station-context"><span>当前站</span> <strong id="currentStationName">新宿（しんじゅく）</strong><i></i><span>下一站</span> <strong id="nextStationName">新大久保（しんおおくぼ）</strong></p>
               <p class="eyebrow"><span id="challengeModeLabel">KANJI → KANA</span> / <span id="challengeIndexLabel">01</span></p>
             </div>
-            <h2 id="questionPrompt" lang="ja">新宿</h2>
-            <p id="questionHint" class="sr-only">请输入这个站名的平假名读音</p>
-            <form id="trainAnswerForm" class="answer" autocomplete="off">
-              <label class="sr-only" for="trainAnswerInput">输入答案</label>
-              <input id="trainAnswerInput" lang="ja" inputmode="text" enterkeyhint="done" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入答案">
-              <button id="trainAnswerSubmitButton" type="submit" disabled>确认</button>
-            </form>
-            <p id="trainAnswerFeedback" class="feedback" aria-live="polite">输入答案后点击确认，或按 Enter。</p>
+            <div class="question-core">
+              <h2 id="questionPrompt" lang="ja">新宿</h2>
+              <p id="questionHint" class="sr-only">请输入这个站名的平假名读音</p>
+              <form id="trainAnswerForm" class="answer" autocomplete="off">
+                <label class="sr-only" for="trainAnswerInput">输入答案</label>
+                <input id="trainAnswerInput" lang="ja" inputmode="text" enterkeyhint="done" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入答案">
+                <button id="trainAnswerSubmitButton" type="submit" disabled>确认</button>
+              </form>
+              <p id="trainAnswerFeedback" class="feedback" aria-live="polite">输入答案后点击确认，或按 Enter。</p>
+            </div>
           </div>
           <div class="question-tools" aria-label="辅助设置">
             <label class="answer-toggle" for="trainHintTogglePlay">
@@ -97,9 +99,9 @@
         <p id="resultBest" class="best">纯挑战最佳纪录：—</p>
       </article>
       <aside class="result-actions">
-        <button id="trainRetryButton" class="primary" type="button"><span>重新挑战</span><span aria-hidden="true">↻</span></button>
-        <button id="saveResultCardButton" type="button"><span>保存成绩卡</span><small>PNG</small></button>
-        <button id="shareResultButton" type="button"><span>系统分享</span><small>或复制链接</small></button>
+        <button id="trainRetryButton" class="primary" type="button">重新挑战</button>
+        <button id="saveResultCardButton" type="button">保存成绩</button>
+        <button id="shareResultButton" type="button">分享成绩</button>
         <p id="shareFeedback" class="share-feedback" role="status" aria-live="polite"></p>
         <a href="/">去 Yomeru 阅读日语 →</a>
       </aside>
