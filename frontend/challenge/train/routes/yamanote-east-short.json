@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "routeId": "yamanote-east-short",
+  "lineNameZh": "山手线",
+  "lineNameJa": "山手線",
+  "titleZh": "上野 → 品川",
+  "subtitleZh": "东侧短程",
+  "difficulty": "初级",
+  "recommendedJlpt": "N5–N4",
+  "theme": {
+    "signal": "#b8dc63",
+    "signalDark": "#789d35",
+    "arrival": "#e45a46"
+  },
+  "share": {
+    "title": "Yomeru 山手线日语输入挑战",
+    "pureTemplate": "我用 {elapsed} 完成上野到品川纯挑战，正确率 {accuracy}%。",
+    "practiceTemplate": "我完成了上野到品川站名练习，用时 {elapsed}，使用提示 {hints} 站，正确率 {accuracy}%。",
+    "cardPrompt": "你能用日语从上野开到品川吗？"
+  },
+  "disclaimerZh": "站名与顺序为事实数据。本挑战为 Yomeru 原创学习活动，不是铁路运营机构官方产品。",
+  "source": {
+    "organization": "JR东日本",
+    "title": "山手线车站列表",
+    "url": "https://media.jreast.co.jp/articles/1214",
+    "verifiedAt": "2026-07-24"
+  },
+  "stations": [
+    {"id":"station-ueno","display":"上野","reading":"うえの","romaji":"Ueno","acceptedKana":["うえの"],"acceptedKanji":["上野"],"order":1},
+    {"id":"station-okachimachi","display":"御徒町","reading":"おかちまち","romaji":"Okachimachi","acceptedKana":["おかちまち"],"acceptedKanji":["御徒町"],"order":2},
+    {"id":"station-akihabara","display":"秋葉原","reading":"あきはばら","romaji":"Akihabara","acceptedKana":["あきはばら"],"acceptedKanji":["秋葉原"],"order":3},
+    {"id":"station-kanda","display":"神田","reading":"かんだ","romaji":"Kanda","acceptedKana":["かんだ"],"acceptedKanji":["神田"],"order":4},
+    {"id":"station-tokyo","display":"東京","reading":"とうきょう","romaji":"Tokyo","acceptedKana":["とうきょう"],"acceptedKanji":["東京","东京"],"order":5},
+    {"id":"station-yurakucho","display":"有楽町","reading":"ゆうらくちょう","romaji":"Yurakucho","acceptedKana":["ゆうらくちょう"],"acceptedKanji":["有楽町","有乐町"],"order":6},
+    {"id":"station-shimbashi","display":"新橋","reading":"しんばし","romaji":"Shimbashi","acceptedKana":["しんばし"],"acceptedKanji":["新橋","新桥"],"order":7},
+    {"id":"station-hamamatsucho","display":"浜松町","reading":"はままつちょう","romaji":"Hamamatsucho","acceptedKana":["はままつちょう"],"acceptedKanji":["浜松町","滨松町"],"order":8},
+    {"id":"station-tamachi","display":"田町","reading":"たまち","romaji":"Tamachi","acceptedKana":["たまち"],"acceptedKanji":["田町"],"order":9},
+    {"id":"station-takanawa-gateway","display":"高輪ゲートウェイ","reading":"たかなわげーとうぇい","romaji":"Takanawa Gateway","acceptedKana":["たかなわげーとうぇい"],"acceptedKanji":["高輪ゲートウェイ","高轮ゲートウェイ"],"order":10},
+    {"id":"station-shinagawa","display":"品川","reading":"しながわ","romaji":"Shinagawa","acceptedKana":["しながわ"],"acceptedKanji":["品川"],"order":11}
+  ]
+}

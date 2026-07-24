@@ -1,15 +1,29 @@
 {
-  "schemaVersion": 1,
-  "routeId": "yamanote-short-shinjuku-ueno",
-  "nameZh": "山手线短线",
-  "nameJa": "山手線ショートルート",
-  "directionZh": "新宿 → 上野",
+  "schemaVersion": 2,
+  "routeId": "yamanote-north-short",
+  "lineNameZh": "山手线",
+  "lineNameJa": "山手線",
+  "titleZh": "新宿 → 上野",
+  "subtitleZh": "北侧短程",
+  "difficulty": "初级",
+  "recommendedJlpt": "N5–N4",
+  "theme": {
+    "signal": "#b8dc63",
+    "signalDark": "#789d35",
+    "arrival": "#e45a46"
+  },
+  "share": {
+    "title": "Yomeru 山手线日语输入挑战",
+    "pureTemplate": "我用 {elapsed} 完成新宿到上野纯挑战，正确率 {accuracy}%。",
+    "practiceTemplate": "我完成了新宿到上野站名练习，用时 {elapsed}，使用提示 {hints} 站，正确率 {accuracy}%。",
+    "cardPrompt": "你能用日语开完新宿到上野吗？"
+  },
   "disclaimerZh": "站名与顺序为事实数据。本挑战为 Yomeru 原创学习活动，不是铁路运营机构官方产品。",
   "source": {
     "organization": "JR东日本",
     "title": "山手线车站列表与线路图",
     "url": "https://www.jreast.co.jp/map/",
-    "verifiedAt": "2026-07-23"
+    "verifiedAt": "2026-07-24"
   },
   "stations": [
     {"id":"station-shinjuku","display":"新宿","reading":"しんじゅく","romaji":"Shinjuku","acceptedKana":["しんじゅく"],"acceptedKanji":["新宿"],"order":1},

@@ -2,13 +2,18 @@
 
 import { createServer } from 'node:http';
 import { createReadStream } from 'node:fs';
-import { access, mkdir, rm, writeFile } from 'node:fs/promises';
+import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const FRONTEND_DIR = resolve(SCRIPT_DIR, '..');
-const OUTPUT_DIR = resolve(FRONTEND_DIR, 'audit-screenshots/train-challenge-latest');
+const OUTPUT_DIR = resolve(FRONTEND_DIR, 'audit-screenshots/train-route-hub-latest');
+const REGISTRY = JSON.parse(await readFile(resolve(FRONTEND_DIR, 'challenge/train/routes/index.json'), 'utf8'));
+const ROUTES = await Promise.all(REGISTRY.routes.map(async entry => ({
+  entry,
+  data: JSON.parse(await readFile(resolve(FRONTEND_DIR, `.${entry.path}`), 'utf8'))
+})));
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -17,7 +22,6 @@ const MIME = {
   '.svg': 'image/svg+xml',
   '.png': 'image/png'
 };
-
 const VIEWPORTS = [
   { id: 'desktop', width: 1440, height: 900 },
   { id: 'narrow', width: 820, height: 900 },
@@ -26,9 +30,10 @@ const VIEWPORTS = [
 
 function pathFor(url) {
   const pathname = decodeURIComponent(new URL(url, 'http://127.0.0.1').pathname);
-  const normalized = pathname === '/' || pathname === '/challenge/train' || pathname === '/challenge/train/'
-    ? '/challenge/train/index.html'
-    : pathname;
+  let normalized = pathname;
+  if (pathname === '/') normalized = '/index.html';
+  if (pathname === '/challenge/train' || pathname === '/challenge/train/') normalized = '/challenge/train/index.html';
+  if (pathname === '/challenge/train/play' || pathname === '/challenge/train/play/') normalized = '/challenge/train/play/index.html';
   const filePath = resolve(FRONTEND_DIR, `.${normalized}`);
   return filePath.startsWith(FRONTEND_DIR) ? filePath : null;
 }
@@ -36,11 +41,7 @@ function pathFor(url) {
 function startServer(port) {
   const server = createServer(async (request, response) => {
     const pathname = new URL(request.url || '/', 'http://127.0.0.1').pathname;
-    if (pathname === '/favicon.ico') {
-      response.writeHead(204);
-      response.end();
-      return;
-    }
+    if (pathname === '/favicon.ico') return response.writeHead(204).end();
     const filePath = pathFor(request.url || '/');
     if (!filePath) return response.writeHead(403).end('Forbidden');
     try {
@@ -64,7 +65,7 @@ function startServer(port) {
 }
 
 async function availableServer() {
-  for (let port = 5260; port < 5290; port += 1) {
+  for (let port = 5260; port < 5295; port += 1) {
     try {
       return { server: await startServer(port), port };
     } catch (error) {
@@ -74,91 +75,125 @@ async function availableServer() {
   throw new Error('No local port available for train visual review.');
 }
 
+function rectSnapshot(element) {
+  if (!element) return null;
+  const box = element.getBoundingClientRect();
+  const style = getComputedStyle(element);
+  return {
+    left: Math.round(box.left),
+    top: Math.round(box.top),
+    right: Math.round(box.right),
+    bottom: Math.round(box.bottom),
+    width: Math.round(box.width),
+    height: Math.round(box.height),
+    display: style.display,
+    overflowX: style.overflowX,
+    overflowY: style.overflowY
+  };
+}
+
 async function pageMetrics(page) {
   return page.evaluate(() => {
-    const rect = selector => {
-      const element = document.querySelector(selector);
+    const visible = element => Boolean(element && getComputedStyle(element).display !== 'none' && element.getBoundingClientRect().width > 0 && element.getBoundingClientRect().height > 0);
+    const firstVisible = selector => [...document.querySelectorAll(selector)].find(visible) || null;
+    const rectSnapshot = element => {
       if (!element) return null;
       const box = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
       return {
         left: Math.round(box.left),
         top: Math.round(box.top),
         right: Math.round(box.right),
         bottom: Math.round(box.bottom),
         width: Math.round(box.width),
-        height: Math.round(box.height)
+        height: Math.round(box.height),
+        display: style.display,
+        overflowX: style.overflowX,
+        overflowY: style.overflowY
       };
     };
+    const clipping = [...document.querySelectorAll('h1,h2,h3,p,strong,span,a,button,input')]
+      .filter(visible)
+      .filter(element => element.scrollWidth > element.clientWidth + 2 || element.scrollHeight > element.clientHeight + 2)
+      .map(element => ({
+        tag: element.tagName,
+        id: element.id || '',
+        className: typeof element.className === 'string' ? element.className : '',
+        text: (element.textContent || element.value || '').trim().slice(0, 80),
+        scrollWidth: element.scrollWidth,
+        clientWidth: element.clientWidth,
+        scrollHeight: element.scrollHeight,
+        clientHeight: element.clientHeight
+      }))
+      .slice(0, 30);
+    const overlaps = [];
+    const important = [...document.querySelectorAll('.route-card,.route-card-action,.hub-summary,.ticket,.metrics,.rail-map,.question,.answer,.question-tools,.result-card,.result-actions')].filter(visible);
+    for (let leftIndex = 0; leftIndex < important.length; leftIndex += 1) {
+      const a = important[leftIndex];
+      const ar = a.getBoundingClientRect();
+      for (let rightIndex = leftIndex + 1; rightIndex < important.length; rightIndex += 1) {
+        const b = important[rightIndex];
+        if (a.contains(b) || b.contains(a)) continue;
+        const br = b.getBoundingClientRect();
+        const width = Math.min(ar.right, br.right) - Math.max(ar.left, br.left);
+        const height = Math.min(ar.bottom, br.bottom) - Math.max(ar.top, br.top);
+        if (width > 3 && height > 3) overlaps.push({
+          a: a.id || a.className,
+          b: b.id || b.className,
+          width: Math.round(width),
+          height: Math.round(height)
+        });
+      }
+    }
+    const answer = document.querySelector('.answer');
+    const saveButton = document.getElementById('saveResultCardButton');
     return {
-      state: document.body.dataset.gameState,
+      state: document.body.dataset.gameState || (document.body.dataset.routeHubReady ? 'hub' : 'unknown'),
+      routeId: document.body.dataset.routeId || '',
       viewport: { width: innerWidth, height: innerHeight },
       document: {
         width: document.documentElement.scrollWidth,
         height: document.documentElement.scrollHeight,
         overflowX: document.documentElement.scrollWidth > innerWidth + 1
       },
-      shell: rect('.shell'),
-      ticket: rect('.ticket'),
-      playView: rect('.play-view'),
-      question: rect('.question'),
-      questionMain: rect('.question-main'),
-      questionCore: rect('.question-core'),
-      answer: rect('.answer'),
-      answerStyle: (() => {
-        const element = document.querySelector('.answer');
-        if (!element) return null;
-        const style = getComputedStyle(element);
-        return {
-          width: style.width,
-          maxWidth: style.maxWidth,
-          minWidth: style.minWidth,
-          alignSelf: style.alignSelf,
-          flex: style.flex,
-          outlineWidth: style.outlineWidth,
-          outlineStyle: style.outlineStyle,
-          outlineColor: style.outlineColor,
-          boxShadow: style.boxShadow,
-          className: element.className,
-          focusWithin: element.matches(':focus-within'),
-          activeElementId: document.activeElement?.id || ''
-        };
-      })(),
-      feedback: rect('.feedback'),
-      tools: rect('.question-tools'),
-      resultCard: rect('.result-card'),
-      resultActions: rect('.result-actions'),
-      saveResultStyle: (() => {
-        const element = document.querySelector('#saveResultCardButton');
-        if (!element) return null;
-        const style = getComputedStyle(element);
-        return {
-          activeElementId: document.activeElement?.id || '',
-          focusVisible: element.matches(':focus-visible'),
-          outlineWidth: style.outlineWidth,
-          outlineStyle: style.outlineStyle,
-          boxShadow: style.boxShadow
-        };
-      })(),
-      ticketNotches: (() => {
-        const element = document.querySelector('.ticket');
-        if (!element) return null;
-        return {
-          before: getComputedStyle(element, '::before').display,
-          after: getComputedStyle(element, '::after').display
-        };
-      })()
+      hubHero: rectSnapshot(document.querySelector('.hub-hero')),
+      routeGrid: rectSnapshot(document.querySelector('.route-grid')),
+      routeCards: [...document.querySelectorAll('.route-card')].map(rectSnapshot),
+      ticket: rectSnapshot(firstVisible('.ticket')),
+      playView: rectSnapshot(firstVisible('.play-view')),
+      metrics: rectSnapshot(firstVisible('.metrics')),
+      railMap: rectSnapshot(firstVisible('.rail-map')),
+      question: rectSnapshot(firstVisible('.question')),
+      prompt: rectSnapshot(firstVisible('#questionPrompt')),
+      answer: rectSnapshot(answer),
+      tools: rectSnapshot(firstVisible('.question-tools')),
+      resultCard: rectSnapshot(firstVisible('.result-card')),
+      resultActions: rectSnapshot(firstVisible('.result-actions')),
+      visibleStops: [...document.querySelectorAll('.rail-stop')].filter(visible).length,
+      totalStops: document.querySelectorAll('.rail-stop').length,
+      clipping,
+      overlaps,
+      answerFocus: answer ? {
+        focusWithin: answer.matches(':focus-within'),
+        activeElementId: document.activeElement?.id || '',
+        outlineStyle: getComputedStyle(answer).outlineStyle,
+        outlineWidth: getComputedStyle(answer).outlineWidth,
+        boxShadow: getComputedStyle(answer).boxShadow
+      } : null,
+      saveFocus: saveButton ? {
+        activeElementId: document.activeElement?.id || '',
+        focusVisible: saveButton.matches(':focus-visible'),
+        outlineStyle: getComputedStyle(saveButton).outlineStyle,
+        outlineWidth: getComputedStyle(saveButton).outlineWidth,
+        boxShadow: getComputedStyle(saveButton).boxShadow
+      } : null
     };
   });
 }
 
-async function capture(page, viewportId, state, options = {}) {
-  const filename = `${viewportId}-${state}${options.fullPage ? '-full' : ''}.png`;
-  const filePath = join(OUTPUT_DIR, filename);
-  await page.screenshot({
-    path: filePath,
-    fullPage: Boolean(options.fullPage),
-    animations: 'disabled'
-  });
+async function capture(page, name, { fullPage = false } = {}) {
+  const filename = `${name}${fullPage ? '-full' : ''}.png`;
+  await page.screenshot({ path: join(OUTPUT_DIR, filename), fullPage, animations: 'disabled' });
   return filename;
 }
 
@@ -174,16 +209,41 @@ async function completeRoute(page, route) {
   }
 }
 
+function reviewPage(report, item) {
+  const { metrics, viewport, state, routeId } = item;
+  const page = [viewport, routeId, state].filter(Boolean).join(':');
+  if (metrics.document.overflowX) report.errors.push({ type: 'horizontal-overflow', page });
+  if (metrics.overlaps.length) report.errors.push({ type: 'unexpected-overlap', page, overlaps: metrics.overlaps });
+  const meaningfulClipping = metrics.clipping.filter(value => !/skip-link|sr-only|rail-stop/.test(value.className));
+  if (meaningfulClipping.length) report.errors.push({ type: 'content-clipping', page, elements: meaningfulClipping });
+  if (state === 'hub') {
+    const expectedColumns = viewport === 'desktop' ? 3 : viewport === 'narrow' ? 2 : 1;
+    const cards = metrics.routeCards;
+    if (cards.length !== 3) report.errors.push({ type: 'hub-route-count', page, value: cards.length });
+    if (cards.length && viewport === 'desktop' && new Set(cards.map(card => card.top)).size !== 1) report.errors.push({ type: 'hub-desktop-row', page, cards });
+    if (cards.length && viewport === 'mobile' && new Set(cards.map(card => card.left)).size !== 1) report.errors.push({ type: 'hub-mobile-column', page, cards });
+    if (expectedColumns === 2 && cards.length >= 2 && cards[0].top !== cards[1].top) report.errors.push({ type: 'hub-narrow-grid', page, cards });
+  }
+  if (state === 'start') {
+    if (!metrics.ticket || metrics.ticket.width > (viewport === 'mobile' ? 390 : 900)) report.errors.push({ type: 'start-ticket-width', page, value: metrics.ticket });
+  }
+  if (state === 'play' || state === 'play-hint') {
+    if (state === 'play' && (!metrics.answerFocus?.focusWithin || metrics.answerFocus.activeElementId !== 'trainAnswerInput')) report.errors.push({ type: 'answer-focus-missing', page, value: metrics.answerFocus });
+    if (state === 'play' && metrics.answerFocus?.outlineStyle !== 'none') report.errors.push({ type: 'answer-focus-outline', page, value: metrics.answerFocus });
+    if (metrics.totalStops < 8 || metrics.totalStops > 15) report.errors.push({ type: 'station-count', page, value: metrics.totalStops });
+    if (viewport === 'mobile' && metrics.visibleStops !== metrics.totalStops) report.errors.push({ type: 'mobile-stations-hidden', page, visible: metrics.visibleStops, total: metrics.totalStops });
+    const maxQuestionHeight = viewport === 'mobile' ? 300 : 430;
+    if (metrics.question?.height > maxQuestionHeight) report.errors.push({ type: 'question-height', page, value: metrics.question.height, max: maxQuestionHeight });
+  }
+  if (state === 'result-after-save' && (metrics.saveFocus?.activeElementId === 'saveResultCardButton' || metrics.saveFocus?.focusVisible)) {
+    report.errors.push({ type: 'save-result-focus-residue', page, value: metrics.saveFocus });
+  }
+}
+
 async function run() {
   const { chromium } = await import('playwright');
-  const route = JSON.parse(await (await import('node:fs/promises')).readFile(resolve(FRONTEND_DIR, 'challenge/train/routes/yamanote-short.json'), 'utf8'));
   const { server, port } = await availableServer();
-  const browser = await chromium.launch({
-    headless: true,
-    ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE
-      ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE }
-      : {})
-  });
+  const browser = await chromium.launch({ headless: true });
   const report = {
     generatedAt: new Date().toISOString(),
     outputDir: OUTPUT_DIR,
@@ -191,7 +251,6 @@ async function run() {
     pages: [],
     errors: []
   };
-
   await rm(OUTPUT_DIR, { recursive: true, force: true });
   await mkdir(OUTPUT_DIR, { recursive: true });
 
@@ -205,92 +264,75 @@ async function run() {
       });
 
       await page.goto(`http://127.0.0.1:${port}/challenge/train`, { waitUntil: 'networkidle' });
-      await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE?.route()?.stations?.length === 13);
-      report.screenshots.push(await capture(page, viewport.id, 'start'));
-      report.pages.push({ viewport: viewport.id, state: 'start', metrics: await pageMetrics(page) });
+      await page.waitForFunction(() => document.body.dataset.routeHubReady === 'true');
+      report.screenshots.push(await capture(page, `${viewport.id}-hub`, { fullPage: viewport.id === 'mobile' }));
+      report.pages.push({ viewport: viewport.id, routeId: 'hub', state: 'hub', metrics: await pageMetrics(page) });
 
-      await page.locator('#trainStartButton').click();
-      await page.waitForFunction(() => document.body.dataset.gameState === 'play');
-      await page.waitForTimeout(120);
-      report.screenshots.push(await capture(page, viewport.id, 'play'));
-      report.pages.push({ viewport: viewport.id, state: 'play', metrics: await pageMetrics(page) });
+      for (const { entry, data: route } of ROUTES) {
+        await page.goto(`http://127.0.0.1:${port}/challenge/train/play?route=${entry.routeId}`, { waitUntil: 'networkidle' });
+        await page.waitForFunction(routeId => window.YOMERU_TRAIN_CHALLENGE?.route()?.routeId === routeId, entry.routeId);
+        report.screenshots.push(await capture(page, `${viewport.id}-${entry.routeId}-start`, { fullPage: viewport.id === 'mobile' }));
+        report.pages.push({ viewport: viewport.id, routeId: entry.routeId, state: 'start', metrics: await pageMetrics(page) });
 
-      await page.locator('label[for="trainHintTogglePlay"]').click();
-      await page.waitForTimeout(80);
-      report.screenshots.push(await capture(page, viewport.id, 'play-hint'));
-      report.pages.push({ viewport: viewport.id, state: 'play-hint', metrics: await pageMetrics(page) });
+        await page.locator('input[value="kanji-to-kana"]').check();
+        await page.locator('#trainStartButton').click();
+        await page.waitForFunction(() => document.body.dataset.gameState === 'play');
+        await page.waitForFunction(() => document.activeElement?.id === 'trainAnswerInput');
+        report.screenshots.push(await capture(page, `${viewport.id}-${entry.routeId}-play`));
+        report.pages.push({ viewport: viewport.id, routeId: entry.routeId, state: 'play', metrics: await pageMetrics(page) });
 
-      await completeRoute(page, route);
-      await page.waitForTimeout(80);
-      report.screenshots.push(await capture(page, viewport.id, 'result'));
-      if (viewport.id === 'mobile') report.screenshots.push(await capture(page, viewport.id, 'result', { fullPage: true }));
-      report.pages.push({ viewport: viewport.id, state: 'result', metrics: await pageMetrics(page) });
-      const downloadPromise = page.waitForEvent('download');
-      await page.locator('#saveResultCardButton').click();
-      const download = await downloadPromise;
-      await page.waitForTimeout(40);
-      report.pages.push({ viewport: viewport.id, state: 'result-after-save', metrics: await pageMetrics(page) });
-      if (viewport.id === 'mobile') {
-        report.screenshots.push(await capture(page, viewport.id, 'result-after-save', { fullPage: true }));
-      } else {
-        const filename = 'result-card.png';
-        await download.saveAs(join(OUTPUT_DIR, filename));
-        report.screenshots.push(filename);
+        await page.locator('label[for="trainHintTogglePlay"]').click();
+        await page.waitForTimeout(60);
+        report.screenshots.push(await capture(page, `${viewport.id}-${entry.routeId}-play-hint`));
+        report.pages.push({ viewport: viewport.id, routeId: entry.routeId, state: 'play-hint', metrics: await pageMetrics(page) });
+
+        await page.locator('label[for="trainHintTogglePlay"]').click();
+        await completeRoute(page, route);
+        await page.waitForTimeout(60);
+        report.screenshots.push(await capture(page, `${viewport.id}-${entry.routeId}-result`, { fullPage: viewport.id === 'mobile' }));
+        report.pages.push({ viewport: viewport.id, routeId: entry.routeId, state: 'result', metrics: await pageMetrics(page) });
+
+        if (viewport.id === 'mobile') {
+          const downloadPromise = page.waitForEvent('download');
+          await page.locator('#saveResultCardButton').click();
+          await downloadPromise;
+          await page.waitForTimeout(40);
+          report.screenshots.push(await capture(page, `${viewport.id}-${entry.routeId}-result-after-save`, { fullPage: true }));
+          report.pages.push({ viewport: viewport.id, routeId: entry.routeId, state: 'result-after-save', metrics: await pageMetrics(page) });
+        }
       }
       await context.close();
     }
+
+    // Save one generated card per route for direct image review.
+    const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await context.newPage();
+    for (const { entry, data: route } of ROUTES) {
+      await page.goto(`http://127.0.0.1:${port}/challenge/train/play?route=${entry.routeId}`, { waitUntil: 'networkidle' });
+      await page.waitForFunction(routeId => window.YOMERU_TRAIN_CHALLENGE?.route()?.routeId === routeId, entry.routeId);
+      await page.locator('input[value="kanji-to-kana"]').check();
+      await page.locator('#trainStartButton').click();
+      await completeRoute(page, route);
+      const downloadPromise = page.waitForEvent('download');
+      await page.locator('#saveResultCardButton').click();
+      const download = await downloadPromise;
+      const filename = `card-${entry.routeId}.png`;
+      await download.saveAs(join(OUTPUT_DIR, filename));
+      report.screenshots.push(filename);
+    }
+    await context.close();
   } finally {
     await browser.close();
     await new Promise(resolveClose => server.close(resolveClose));
   }
 
-  const overflowPages = report.pages.filter(item => item.metrics.document.overflowX);
-  if (overflowPages.length) {
-    report.errors.push({ type: 'horizontal-overflow', pages: overflowPages.map(item => `${item.viewport}:${item.state}`) });
-  }
-  const playPages = report.pages.filter(item => item.state === 'play' || item.state === 'play-hint');
-  for (const item of playPages) {
-    const { metrics } = item;
-    if (metrics.answerStyle?.focusWithin && metrics.answerStyle.outlineStyle !== 'none') {
-      report.errors.push({
-        type: 'answer-focus-outline',
-        page: `${item.viewport}:${item.state}`,
-        value: {
-          width: metrics.answerStyle.outlineWidth,
-          style: metrics.answerStyle.outlineStyle,
-          color: metrics.answerStyle.outlineColor
-        }
-      });
-    }
-    const gap = metrics.feedback && metrics.tools ? metrics.tools.top - metrics.feedback.bottom : 0;
-    if (gap > 32) {
-      report.errors.push({ type: 'answer-tools-gap', page: `${item.viewport}:${item.state}`, gap });
-    }
-    const maxQuestionHeight = item.viewport === 'mobile' ? 280 : 420;
-    if (metrics.question?.height > maxQuestionHeight) {
-      report.errors.push({ type: 'question-height', page: `${item.viewport}:${item.state}`, height: metrics.question.height, max: maxQuestionHeight });
-    }
-  }
-  const mobileStart = report.pages.find(item => item.viewport === 'mobile' && item.state === 'start');
-  if (mobileStart?.metrics.ticketNotches?.before !== 'none' || mobileStart?.metrics.ticketNotches?.after !== 'none') {
-    report.errors.push({ type: 'mobile-ticket-notches', value: mobileStart?.metrics.ticketNotches });
-  }
-  const afterSavePages = report.pages.filter(item => item.state === 'result-after-save');
-  for (const item of afterSavePages) {
-    if (item.metrics.saveResultStyle?.activeElementId === 'saveResultCardButton'
-      || item.metrics.saveResultStyle?.focusVisible) {
-      report.errors.push({
-        type: 'save-result-focus-residue',
-        page: `${item.viewport}:${item.state}`,
-        value: item.metrics.saveResultStyle
-      });
-    }
-  }
+  for (const item of report.pages) reviewPage(report, item);
   await writeFile(join(OUTPUT_DIR, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify({
     status: report.errors.length ? 'failed' : 'ok',
     output: OUTPUT_DIR,
     screenshots: report.screenshots.length,
+    pages: report.pages.length,
     errors: report.errors.length
   }));
   if (report.errors.length) process.exitCode = 1;
