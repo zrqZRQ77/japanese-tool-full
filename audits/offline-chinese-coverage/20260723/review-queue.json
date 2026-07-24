@@ -24,13 +24,12 @@
       "P3": 26
     },
     "remainingPriorityCounts": {
-      "P1": 33,
       "P2": 22,
       "P3": 26
     },
     "draftedPriorityCounts": {
       "P0": 5,
-      "P1": 10
+      "P1": 43
     },
     "reviewTypeCounts": {
       "high-frequency-lexical": 15,
@@ -39,12 +38,12 @@
       "standard-lexical": 7
     },
     "reviewerStatusCounts": {
-      "drafted": 15,
-      "pending": 81
+      "drafted": 48,
+      "pending": 48
     },
-    "reviewedItems": 15,
-    "pendingItems": 81,
-    "draftedItems": 15,
+    "reviewedItems": 48,
+    "pendingItems": 48,
+    "draftedItems": 48,
     "approvedItems": 0,
     "rejectedItems": 0,
     "blockedItems": 0,
@@ -52,7 +51,7 @@
     "manualResearchRequired": 26,
     "ambiguityReview": 48,
     "sameWrittenFormGroups": 3,
-    "candidateChineseFilled": 15
+    "candidateChineseFilled": 48
   },
   "sameWrittenFormGroups": [
     {
@@ -942,13 +941,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "蓝色的；青绿色的；青涩的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：青い；词性：イ形容词（JMdict adj-i）。核心义覆盖蓝色、日语传统色彩范围中的青绿色，以及果实未熟或经验不足的“青涩”；脸色苍白等语境属于次级义，不扩大为所有灰色表达。多义与混淆：颜色范围与中文“蓝/绿”不能机械一一对应，需保留语境限制。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
     },
     {
       "queueId": "zh-review-016",
@@ -1001,13 +1000,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "听；听说；询问",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：聞く；词性：五段カ行动词、他动词（JMdict v5k/vt）。核心义覆盖听声音、听说消息和向他人询问。多义与混淆：必须与同音「効く（起作用）」「利く（灵验、好用）」等按表记隔离，不允许只凭读音覆盖。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-017",
@@ -1052,13 +1051,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "方便；便利；实用",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：便利；词性：ナ形容词（JMdict adj-na）。核心义覆盖使用方便、便利和实用，不扩大为抽象的“有利”。多义与混淆：词形、读音和语义范围明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-018",
@@ -1110,13 +1109,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "冰凉的；冷淡的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：冷たい；词性：イ形容词（JMdict adj-i）。核心义区分接触温度低的“冰凉”和态度、感情上的“冷淡”，不与天气寒冷的「寒い」混用。多义与混淆：语义有物理与情感两类，但均由同一词形和读音承载。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-019",
@@ -1169,13 +1168,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "说；说话；交谈；讲述",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：話す；词性：五段サ行动词、他动词（JMdict v5s/vt）。核心义覆盖说话、交谈、讲述或说明内容。多义与混淆：与同音「放す（放开）」「離す（分开）」必须按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-020",
@@ -1221,13 +1220,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "见面；遇见",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：会う；词性：五段ワ行动词、自动词（JMdict v5u/vi）。核心义限定为人与人见面或遇见，不纳入事故、坏事等通常由「遭う」承担的语义。多义与混淆：必须与同音「合う（符合、合适）」「遭う（遭遇）」按表记隔离。证据：本地 JLPT 参考未提供等级；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-021",
@@ -1341,13 +1340,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "结束；完毕",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：終わる；词性：五段ラ行动词，主要作自动词，也存在他动词及接尾用法（JMdict v5r/vi/vt/suf）。核心义限定为事情、工作或时间结束、完毕；不与「終える」的主动完成用法混同。多义与混淆：当前语料均为自动词结束义。证据：本地 JLPT 参考未提供等级；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-023",
@@ -1398,13 +1397,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "买；购买",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：買う；词性：五段ワ行动词、他动词（JMdict v5u/vt）。核心义限定为用金钱购买商品或服务；“高度评价”“招致不满”等引申义不并入基础释义。多义与混淆：必须与同音「飼う（饲养）」按表记隔离。证据：本地 JLPT 参考未提供等级；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-024",
@@ -1454,13 +1453,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "一天；一整天",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：一日；目标读音：いちにち；词性：名词、副词（JMdict n/adv）。核心义限定为一天或一整天。多义与混淆：同一表记的「一日（ついたち，每月一日）」必须保持独立记录，不得由表记查询混合返回。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-025",
@@ -1510,13 +1509,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "每月一日；一号",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：一日；目标读音：ついたち；词性：名词（JMdict 证据记录同时包含 n/adv）。核心义限定为月份中的第一天，即一号。多义与混淆：同一表记的「一日（いちにち，一天）」必须保持独立记录，不得由表记查询混合返回。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-026",
@@ -1563,13 +1562,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "雨；雨天",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：雨；词性：名词（JMdict n）。核心义覆盖雨和下雨的天气，不纳入花札牌组等专门义。多义与混淆：必须与同音「飴（糖果）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-027",
@@ -1615,13 +1614,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "车站；火车站",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：駅；词性：名词，另有计数用法（JMdict n/ctr）。核心义限定为铁路或电车车站，不纳入古代驿站与计数词用法。多义与混淆：现代基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-028",
@@ -1663,13 +1662,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "音乐",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：音楽；词性：名词（JMdict n）。核心义为音乐，词形、读音和语义范围明确。多义与混淆：未发现需要隔离的同形或同音词。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-029",
@@ -1720,13 +1719,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "房子；家；住所",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：家；目标读音：いえ；词性：名词（JMdict n）。核心义限定为房屋、住所和作为生活场所的家，不纳入家族、血统、姓氏等扩展义。多义与混淆：同一汉字还可能读作「うち」「け」并承载不同语义，必须按读音与语境隔离。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-030",
@@ -1779,13 +1778,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "花；花朵",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：花；词性：名词，也可作「の」形容修饰（JMdict n/adj-no）。核心义限定为花、花朵或花开，不纳入美人、精华、插花等引申或专门义。多义与混淆：必须与同音「鼻（はな）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-031",
@@ -1827,13 +1826,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "桌子；书桌",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：机；词性：名词（JMdict n）。核心义为桌子，基础学习语境中通常指书桌。多义与混淆：词形、读音和语义明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-032",
@@ -1877,13 +1876,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "桥；桥梁",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：橋；词性：名词（JMdict n）。核心义为桥或桥梁。多义与混淆：必须与同音「箸（筷子）」「端（边、端）」按表记隔离，不能只凭读音返回。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-033",
@@ -1935,13 +1934,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "狗；犬",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：犬；词性：名词及名词前缀（JMdict n/n-pref）。核心义限定为动物“狗、犬”，不纳入告密者、间谍等贬义引申。多义与混淆：基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-034",
@@ -1983,13 +1982,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "公园",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：公園；词性：名词（JMdict n）。核心义为公共公园，词形、读音和语义范围明确。多义与混淆：与同音「講演」「公演」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-035",
@@ -2032,13 +2031,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "昨天",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：昨日；目标读音：きのう；词性：名词、副词（JMdict n/adv）。核心义为昨天。多义与混淆：同一表记还存在书面读音「さくじつ」，必须按读音与语体隔离；本记录只处理基础口语读音。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-036",
@@ -2091,13 +2090,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "工作；职业；任务",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：仕事；词性：名词，也可与「する」构成动词表达（JMdict n/vi/vs）。核心义覆盖工作、职业和具体任务，不扩大为所有商业活动。多义与混淆：语义范围较宽但核心边界明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-037",
@@ -2198,13 +2197,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "纸；纸张",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：紙；词性：名词（JMdict n）。核心义为纸或纸张。多义与混淆：必须与同音「髪（头发）」「神（神）」按表记隔离，不能只凭读音覆盖。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-039",
@@ -2253,13 +2252,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "照片；摄影",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：写真；词性：名词（JMdict n）。核心义覆盖照片以及摄影这一活动或领域；电影、活动影像等历史或扩展义不并入基础释义。多义与混淆：现代学习语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-040",
@@ -2361,13 +2360,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "水；凉水",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：水；词性：名词（JMdict n）。核心义限定为水，尤其与热水「湯」相对的常温或凉水；体液、洪水、相扑用水等扩展义不并入基础释义。多义与混淆：基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-042",
@@ -2471,13 +2470,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "切；剪；关闭（电源等）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：切る；词性：五段ラ行动词、他动词，另有接尾用法（JMdict v5r/vt/suf）。核心义覆盖切断、剪切，以及关闭电源或中断连接等常见引申；手术、断交、期限等细分义不全部展开。多义与混淆：必须与同音「着る（穿）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
     },
     {
       "queueId": "zh-review-044",
@@ -2519,13 +2518,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "窗；窗户",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：窓；词性：名词（JMdict n）。核心义为窗或窗户，词形、读音和语义范围明确。多义与混淆：无需要合并的同形异读词。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-045",
@@ -2573,13 +2572,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "穿；穿上（衣服）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：着る；词性：一段动词、他动词（JMdict v1/vt）。核心义限定为穿上衣服，尤其是上半身或覆盖身体的服装；承担责任、背黑锅等引申义不并入基础释义。多义与混淆：必须与同音「切る（切、剪）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-046",
@@ -2622,13 +2621,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "电车；列车",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：電車；词性：名词（JMdict n）。核心义为以电力驱动的铁路列车，基础语境可译为电车或列车。多义与混淆：词形和读音明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-047",
@@ -2678,13 +2677,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "猫",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：猫；词性：名词（JMdict n）。核心义限定为动物“猫”，不纳入三味线、艺伎、手推车等俗语或历史扩展义。多义与混淆：基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-048",
@@ -2728,13 +2727,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "筷子",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：箸；词性：名词（JMdict n）。核心义为筷子。多义与混淆：必须与同音「橋（桥）」「端（边、端）」按表记隔离，不能只凭读音返回。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-049",
@@ -2778,13 +2777,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "头发",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：髪；词性：名词（JMdict n）。核心义限定为头发。多义与混淆：必须与同音「紙（纸）」「神（神）」按表记隔离。证据：JLPT N4；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-050",
@@ -2928,13 +2927,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "鼻子",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：鼻；词性：名词（JMdict n）。核心义为鼻子。多义与混淆：必须与同音「花（花朵）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-053",
@@ -2987,13 +2986,13 @@
           "retrievedAt": "2026-07-23"
         }
       ],
-      "candidateChinese": null,
-      "reviewerStatus": "pending",
-      "reviewer": null,
-      "reviewedAt": null,
-      "decision": null,
+      "candidateChinese": "烹饪；菜肴；料理",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
       "rejectionReason": null,
-      "notes": "JMdict 英文只作审核证据；中文措辞必须独立人工确认。"
+      "notes": "基本形：料理；词性：名词，也可与「する」构成他动词表达（JMdict n/vs/vt）。核心义覆盖烹饪行为、菜肴和料理类别；处理事务、管理等引申义不并入基础释义。多义与混淆：语义范围明确且符合当前语料。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
     },
     {
       "queueId": "zh-review-054",

@@ -19,24 +19,24 @@ assert.equal(queue.policy.automaticApprovalAllowed, false);
 assert.equal(queue.policy.aiDraftPublishAllowed, false);
 assert.equal(queue.summary.totalItems, 96);
 assert.deepEqual(queue.summary.priorityCounts, { P0: 5, P1: 43, P2: 22, P3: 26 });
-assert.deepEqual(queue.summary.remainingPriorityCounts, { P1: 33, P2: 22, P3: 26 });
-assert.deepEqual(queue.summary.draftedPriorityCounts, { P0: 5, P1: 10 });
+assert.deepEqual(queue.summary.remainingPriorityCounts, { P2: 22, P3: 26 });
+assert.deepEqual(queue.summary.draftedPriorityCounts, { P0: 5, P1: 43 });
 assert.deepEqual(queue.summary.reviewTypeCounts, {
   'high-frequency-lexical': 15,
   'manual-research-required': 26,
   'sense-disambiguation': 48,
   'standard-lexical': 7
 });
-assert.deepEqual(queue.summary.reviewerStatusCounts, { drafted: 15, pending: 81 });
-assert.equal(queue.summary.reviewedItems, 15);
-assert.equal(queue.summary.pendingItems, 81);
-assert.equal(queue.summary.draftedItems, 15);
+assert.deepEqual(queue.summary.reviewerStatusCounts, { drafted: 48, pending: 48 });
+assert.equal(queue.summary.reviewedItems, 48);
+assert.equal(queue.summary.pendingItems, 48);
+assert.equal(queue.summary.draftedItems, 48);
 assert.equal(queue.summary.approvedItems, 0);
 assert.equal(queue.summary.blockedItems, 0);
 assert.equal(queue.summary.withJmdictEvidence, 70);
 assert.equal(queue.summary.manualResearchRequired, 26);
 assert.equal(queue.summary.sameWrittenFormGroups, 3);
-assert.equal(queue.summary.candidateChineseFilled, 15);
+assert.equal(queue.summary.candidateChineseFilled, 48);
 assert.equal(new Set(queue.items.map(item => item.queueId)).size, queue.items.length);
 assert.equal(new Set(queue.items.map(item => `${item.word}\u0000${item.reading || ''}`)).size, queue.items.length);
 assert.ok(queue.items.filter(item => item.reviewerStatus === 'pending').every(item => item.candidateChinese === null));
@@ -98,7 +98,11 @@ assert.deepEqual(queue.sameWrittenFormGroups, [
 
 const drafted = queue.items.filter(candidate => candidate.reviewerStatus === 'drafted');
 assert.deepEqual(drafted.filter(candidate => candidate.priority === 'P0').map(candidate => candidate.word), ['帰る', '書く', '静か', '待つ', '来る']);
-assert.deepEqual(drafted.filter(candidate => candidate.priority === 'P1').map(candidate => candidate.word), ['飲む', '古い', '呼ぶ', '降る', '座る', '撮る', '持つ', '暑い', '乗る', '開く']);
+assert.equal(drafted.filter(candidate => candidate.priority === 'P1').length, 43);
+assert.ok(queue.items.filter(candidate => candidate.priority === 'P1').every(candidate => candidate.reviewerStatus === 'drafted'));
+assert.equal(item('青い', 'あおい').candidateChinese, '蓝色的；青绿色的；青涩的');
+assert.equal(item('一日', 'ついたち').candidateChinese, '每月一日；一号');
+assert.equal(item('着る', 'きる').candidateChinese, '穿；穿上（衣服）');
 
 const manual = queue.items.filter(candidate => candidate.reviewType === 'manual-research-required');
 assert.equal(manual.length, 26);
