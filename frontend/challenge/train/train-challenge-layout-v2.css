@@ -264,10 +264,10 @@
   min-height: 72px;
   margin-inline: auto;
   padding: 6px 7px 6px 20px;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--ink);
   border-radius: 18px;
   background: #fff;
-  box-shadow: 0 0 0 1px rgb(120 157 53 / 28%);
+  box-shadow: none;
 }
 
 .answer input {
@@ -715,14 +715,14 @@
   border-color: var(--ink);
   outline-width: 0 !important;
   outline-style: none !important;
-  box-shadow: 0 0 0 3px rgb(120 157 53 / 22%) !important;
+  box-shadow: 0 0 0 2px rgb(120 157 53 / 16%) !important;
 }
 
 .question .answer.is-error:focus-within {
   border-color: var(--arrival);
   outline-width: 0 !important;
   outline-style: none !important;
-  box-shadow: 0 0 0 3px rgb(228 90 70 / 18%) !important;
+  box-shadow: 0 0 0 2px rgb(228 90 70 / 16%) !important;
 }
 
 @media (min-width: 601px) {

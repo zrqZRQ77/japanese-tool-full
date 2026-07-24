@@ -839,7 +839,11 @@
   function bindControls() {
     document.getElementById('trainStartButton')?.addEventListener('click', startGame);
     document.getElementById('trainRetryButton')?.addEventListener('click', resetToStart);
-    document.getElementById('saveResultCardButton')?.addEventListener('click', saveResultCard);
+    const saveResultButton = document.getElementById('saveResultCardButton');
+    saveResultButton?.addEventListener('click', saveResultCard);
+    saveResultButton?.addEventListener('pointerup', event => {
+      event.currentTarget.blur();
+    });
     document.getElementById('shareResultButton')?.addEventListener('click', shareResult);
     document.querySelectorAll('input[name="mode"]').forEach(input => {
       input.addEventListener('change', () => {

@@ -127,6 +127,18 @@ async function pageMetrics(page) {
       tools: rect('.question-tools'),
       resultCard: rect('.result-card'),
       resultActions: rect('.result-actions'),
+      saveResultStyle: (() => {
+        const element = document.querySelector('#saveResultCardButton');
+        if (!element) return null;
+        const style = getComputedStyle(element);
+        return {
+          activeElementId: document.activeElement?.id || '',
+          focusVisible: element.matches(':focus-visible'),
+          outlineWidth: style.outlineWidth,
+          outlineStyle: style.outlineStyle,
+          boxShadow: style.boxShadow
+        };
+      })(),
       ticketNotches: (() => {
         const element = document.querySelector('.ticket');
         if (!element) return null;
@@ -213,10 +225,14 @@ async function run() {
       report.screenshots.push(await capture(page, viewport.id, 'result'));
       if (viewport.id === 'mobile') report.screenshots.push(await capture(page, viewport.id, 'result', { fullPage: true }));
       report.pages.push({ viewport: viewport.id, state: 'result', metrics: await pageMetrics(page) });
-      if (viewport.id === 'desktop') {
-        const downloadPromise = page.waitForEvent('download');
-        await page.locator('#saveResultCardButton').click();
-        const download = await downloadPromise;
+      const downloadPromise = page.waitForEvent('download');
+      await page.locator('#saveResultCardButton').click();
+      const download = await downloadPromise;
+      await page.waitForTimeout(40);
+      report.pages.push({ viewport: viewport.id, state: 'result-after-save', metrics: await pageMetrics(page) });
+      if (viewport.id === 'mobile') {
+        report.screenshots.push(await capture(page, viewport.id, 'result-after-save', { fullPage: true }));
+      } else {
         const filename = 'result-card.png';
         await download.saveAs(join(OUTPUT_DIR, filename));
         report.screenshots.push(filename);
@@ -258,6 +274,17 @@ async function run() {
   const mobileStart = report.pages.find(item => item.viewport === 'mobile' && item.state === 'start');
   if (mobileStart?.metrics.ticketNotches?.before !== 'none' || mobileStart?.metrics.ticketNotches?.after !== 'none') {
     report.errors.push({ type: 'mobile-ticket-notches', value: mobileStart?.metrics.ticketNotches });
+  }
+  const afterSavePages = report.pages.filter(item => item.state === 'result-after-save');
+  for (const item of afterSavePages) {
+    if (item.metrics.saveResultStyle?.activeElementId === 'saveResultCardButton'
+      || item.metrics.saveResultStyle?.focusVisible) {
+      report.errors.push({
+        type: 'save-result-focus-residue',
+        page: `${item.viewport}:${item.state}`,
+        value: item.metrics.saveResultStyle
+      });
+    }
   }
   await writeFile(join(OUTPUT_DIR, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify({

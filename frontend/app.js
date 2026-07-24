@@ -5728,21 +5728,51 @@ async function showDetail(word, el){
   renderSampleFlow();
 }
 
-function showTokenDetail(tokenId, el){
+async function showTokenDetail(tokenId, el){
   if(IS_ANNOTATION_EDITING) return;
-  DETAIL_REQUEST_GENERATION += 1;
+  const generation = ++DETAIL_REQUEST_GENERATION;
   selectReadingWord(el);
 
   const token = window.KUROMOJI_TOKEN_CACHE[tokenId];
   if(!token) return;
   const { surface, info } = token;
-  const detailAction = readingDetailAction(surface, info);
-  const needsLookup = info.source === 'kuromoji' || info.source === 'fallback';
-  if(needsLookup) info.lookupState = 'loading';
-  const addAction = detailAction.action || (detailAction.type === 'vocab' ? `requestTokenVocabSave(${tokenId})` : '');
   const area = document.getElementById('detailArea');
   setReadingDetailVisible(true);
   setDetailHeadActions();
+  const detailAction = readingDetailAction(surface, info);
+  const needsLookup = info.source === 'kuromoji' || info.source === 'fallback';
+  if(needsLookup){
+    info.lookupState = 'loading';
+    area.innerHTML = `
+      <div class="detail-box detail-selected-box" aria-busy="true">
+        <div class="detail-word">${escapeHtml(surface)}</div>
+        ${detailDefinitionHtml('正在加载读音和 JLPT 等级……')}
+      </div>
+    `;
+    const lexicalAnalysis = token.analysis || info.lexicalAnalysis || analyzeLexicalToken(token.token || {});
+    const lookupPlan = buildLexicalLookupPlan(lexicalAnalysis, {
+      fallbackTerms:[surface, info.lookupWord, info.baseForm, token.token?.basic_form]
+    });
+    token.lookupPlan = lookupPlan;
+    try{
+      const [level, dictionaryResult] = await Promise.all([
+        lookupJlptReference(lookupPlan),
+        lookupJmdictCommonWithCompoundFallback(lookupPlan, surface)
+      ]);
+      if(generation !== DETAIL_REQUEST_GENERATION) return;
+      if(level){
+        info.level = level;
+        info.levelSource = 'jlpt-reference';
+      }
+      if(!info.reading && dictionaryResult?.entry?.r){
+        info.reading = katakanaToHiragana(dictionaryResult.entry.r);
+      }
+    }catch(error){
+      console.warn('词汇详情元数据预加载失败', error);
+    }
+  }
+  if(generation !== DETAIL_REQUEST_GENERATION) return;
+  const addAction = detailAction.action || (detailAction.type === 'vocab' ? `requestTokenVocabSave(${tokenId})` : '');
   area.innerHTML = `
     <div class="detail-box detail-selected-box">
       ${detailWordHeaderHtml(surface, addAction, `speakEncodedJapanese('${encodeURIComponent(surface)}', this, false)`, detailAction.type)}
