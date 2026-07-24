@@ -108,11 +108,33 @@ async function pageMetrics(page) {
         const element = document.querySelector('.answer');
         if (!element) return null;
         const style = getComputedStyle(element);
-        return { width: style.width, maxWidth: style.maxWidth, minWidth: style.minWidth, alignSelf: style.alignSelf, flex: style.flex };
+        return {
+          width: style.width,
+          maxWidth: style.maxWidth,
+          minWidth: style.minWidth,
+          alignSelf: style.alignSelf,
+          flex: style.flex,
+          outlineWidth: style.outlineWidth,
+          outlineStyle: style.outlineStyle,
+          outlineColor: style.outlineColor,
+          boxShadow: style.boxShadow,
+          className: element.className,
+          focusWithin: element.matches(':focus-within'),
+          activeElementId: document.activeElement?.id || ''
+        };
       })(),
+      feedback: rect('.feedback'),
       tools: rect('.question-tools'),
       resultCard: rect('.result-card'),
-      resultActions: rect('.result-actions')
+      resultActions: rect('.result-actions'),
+      ticketNotches: (() => {
+        const element = document.querySelector('.ticket');
+        if (!element) return null;
+        return {
+          before: getComputedStyle(element, '::before').display,
+          after: getComputedStyle(element, '::after').display
+        };
+      })()
     };
   });
 }
@@ -175,18 +197,30 @@ async function run() {
       report.screenshots.push(await capture(page, viewport.id, 'start'));
       report.pages.push({ viewport: viewport.id, state: 'start', metrics: await pageMetrics(page) });
 
-      await page.locator('label[for="trainHintToggleStart"]').click();
       await page.locator('#trainStartButton').click();
       await page.waitForFunction(() => document.body.dataset.gameState === 'play');
       await page.waitForTimeout(120);
       report.screenshots.push(await capture(page, viewport.id, 'play'));
       report.pages.push({ viewport: viewport.id, state: 'play', metrics: await pageMetrics(page) });
 
+      await page.locator('label[for="trainHintTogglePlay"]').click();
+      await page.waitForTimeout(80);
+      report.screenshots.push(await capture(page, viewport.id, 'play-hint'));
+      report.pages.push({ viewport: viewport.id, state: 'play-hint', metrics: await pageMetrics(page) });
+
       await completeRoute(page, route);
       await page.waitForTimeout(80);
       report.screenshots.push(await capture(page, viewport.id, 'result'));
       if (viewport.id === 'mobile') report.screenshots.push(await capture(page, viewport.id, 'result', { fullPage: true }));
       report.pages.push({ viewport: viewport.id, state: 'result', metrics: await pageMetrics(page) });
+      if (viewport.id === 'desktop') {
+        const downloadPromise = page.waitForEvent('download');
+        await page.locator('#saveResultCardButton').click();
+        const download = await downloadPromise;
+        const filename = 'result-card.png';
+        await download.saveAs(join(OUTPUT_DIR, filename));
+        report.screenshots.push(filename);
+      }
       await context.close();
     }
   } finally {
@@ -197,6 +231,33 @@ async function run() {
   const overflowPages = report.pages.filter(item => item.metrics.document.overflowX);
   if (overflowPages.length) {
     report.errors.push({ type: 'horizontal-overflow', pages: overflowPages.map(item => `${item.viewport}:${item.state}`) });
+  }
+  const playPages = report.pages.filter(item => item.state === 'play' || item.state === 'play-hint');
+  for (const item of playPages) {
+    const { metrics } = item;
+    if (metrics.answerStyle?.focusWithin && metrics.answerStyle.outlineStyle !== 'none') {
+      report.errors.push({
+        type: 'answer-focus-outline',
+        page: `${item.viewport}:${item.state}`,
+        value: {
+          width: metrics.answerStyle.outlineWidth,
+          style: metrics.answerStyle.outlineStyle,
+          color: metrics.answerStyle.outlineColor
+        }
+      });
+    }
+    const gap = metrics.feedback && metrics.tools ? metrics.tools.top - metrics.feedback.bottom : 0;
+    if (gap > 32) {
+      report.errors.push({ type: 'answer-tools-gap', page: `${item.viewport}:${item.state}`, gap });
+    }
+    const maxQuestionHeight = item.viewport === 'mobile' ? 280 : 420;
+    if (metrics.question?.height > maxQuestionHeight) {
+      report.errors.push({ type: 'question-height', page: `${item.viewport}:${item.state}`, height: metrics.question.height, max: maxQuestionHeight });
+    }
+  }
+  const mobileStart = report.pages.find(item => item.viewport === 'mobile' && item.state === 'start');
+  if (mobileStart?.metrics.ticketNotches?.before !== 'none' || mobileStart?.metrics.ticketNotches?.after !== 'none') {
+    report.errors.push({ type: 'mobile-ticket-notches', value: mobileStart?.metrics.ticketNotches });
   }
   await writeFile(join(OUTPUT_DIR, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify({

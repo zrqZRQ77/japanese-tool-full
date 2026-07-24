@@ -672,19 +672,24 @@
 }
 
 /* Screenshot-reviewed layout pass: center the main task and keep secondary controls compact. */
+.question {
+  gap: 0;
+}
+
 .question-main {
+  flex: 0 0 auto;
   align-self: stretch;
   width: 100%;
 }
 
 .question-core {
   display: flex;
-  flex: 1;
+  flex: 0 0 auto;
   flex-direction: column;
   justify-content: center;
   width: 100%;
   min-height: 0;
-  padding: 16px 0 10px;
+  padding: 30px 0 0;
 }
 
 .question h2[data-prompt-size="short"],
@@ -703,6 +708,21 @@
 
 .answer {
   flex: 0 0 auto;
+  box-shadow: none;
+}
+
+.question .answer:focus-within {
+  border-color: var(--ink);
+  outline-width: 0 !important;
+  outline-style: none !important;
+  box-shadow: 0 0 0 3px rgb(120 157 53 / 22%) !important;
+}
+
+.question .answer.is-error:focus-within {
+  border-color: var(--arrival);
+  outline-width: 0 !important;
+  outline-style: none !important;
+  box-shadow: 0 0 0 3px rgb(228 90 70 / 18%) !important;
 }
 
 @media (min-width: 601px) {
@@ -715,8 +735,8 @@
 .question-tools {
   justify-content: center;
   gap: 14px;
-  margin: 0 auto;
-  padding-top: 8px;
+  margin: 16px auto 0;
+  padding-top: 0;
 }
 
 .answer-toggle {
@@ -751,7 +771,22 @@
   padding: 0 14px;
   border-radius: 14px;
   font-size: 12px;
+  outline: 0;
   text-align: center;
+}
+
+.result-actions > button:not(.primary) {
+  border-color: var(--line);
+}
+
+.result-actions > button:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+.result-actions > button:focus-visible {
+  outline: 3px solid var(--signal-dark);
+  outline-offset: 3px;
 }
 
 .result-actions a {
@@ -776,8 +811,15 @@
 }
 
 @media (max-width: 600px) {
+  .ticket::before,
+  .ticket::after,
+  .result-card::before,
+  .result-card::after {
+    display: none;
+  }
+
   .question-core {
-    padding: 20px 0 10px;
+    padding: 22px 0 0;
   }
 
   .question h2[data-prompt-size="short"],
@@ -788,9 +830,14 @@
   }
 
   .question-tools {
-    flex-wrap: wrap;
-    margin-top: 4px;
+    flex-wrap: nowrap;
+    margin-top: 14px;
     padding-top: 0;
+  }
+
+  .station-answer-hint {
+    width: auto;
+    max-width: 190px;
   }
 
   .result-actions {
@@ -803,6 +850,27 @@
     padding-inline: 6px;
     border-radius: 12px;
     font-size: 11px;
+  }
+}
+
+@media (min-width: 601px) {
+  .rail-map,
+  .question {
+    height: 400px;
+  }
+
+  .rail-map {
+    min-height: 400px;
+  }
+
+  .question {
+    min-height: 400px;
+  }
+}
+
+@media (hover: none) {
+  .result-actions > button:not(.primary):not(:disabled):hover {
+    border-color: var(--line);
   }
 }
 

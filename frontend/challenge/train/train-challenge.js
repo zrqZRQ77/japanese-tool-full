@@ -3,6 +3,7 @@
 
   const ROUTE_URL = '/challenge/train/routes/yamanote-short.json';
   const PUBLIC_CHALLENGE_URL = 'https://yomeru.japanese-hub.com/challenge/train';
+  const PUBLIC_CHALLENGE_DISPLAY_URL = 'yomeru.japanese-hub.com/challenge/train';
   const STORAGE_KEY = 'yomeru_train_typing_v1';
   const MODES = Object.freeze({
     'kanji-to-kana': Object.freeze({
@@ -574,6 +575,28 @@
     context.restore();
   }
 
+  function drawYomeruMark(context, x, y, scale = 1) {
+    context.save();
+    context.translate(x, y);
+    context.scale(scale, scale);
+    context.strokeStyle = '#6750a4';
+    context.fillStyle = '#6750a4';
+    context.lineWidth = 8.5;
+    context.lineCap = 'round';
+    context.beginPath();
+    context.moveTo(48, 78);
+    context.lineTo(48, 51);
+    context.moveTo(48, 51);
+    context.lineTo(28, 31);
+    context.moveTo(48, 51);
+    context.lineTo(70, 28);
+    context.stroke();
+    context.beginPath();
+    context.arc(48, 51, 5.2, 0, Math.PI * 2);
+    context.fill();
+    context.restore();
+  }
+
   function drawResultCard(result) {
     const canvas = document.createElement('canvas');
     canvas.width = 1080;
@@ -591,9 +614,10 @@
     context.fillStyle = signal;
     context.fillRect(0, 0, 22, canvas.height);
 
+    drawYomeruMark(context, 58, 35, 0.82);
     context.fillStyle = card;
     context.font = '800 52px "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif';
-    context.fillText('Yomeru', 82, 104);
+    context.fillText('Yomeru', 142, 104);
     context.fillStyle = signal;
     context.font = '800 22px Inter, sans-serif';
     context.letterSpacing = '4px';
@@ -687,7 +711,7 @@
     );
     context.fillStyle = signal;
     context.font = '700 20px Inter, sans-serif';
-    context.fillText(challengeUrl(), 82, 1260);
+    context.fillText(PUBLIC_CHALLENGE_DISPLAY_URL, 82, 1260);
     context.fillStyle = '#ffffff9e';
     context.font = '500 17px "PingFang SC", sans-serif';
     context.fillText('原创学习活动 · 非铁路运营机构官方产品', 82, 1304);
