@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "routeId": "ginza-east-short",
+  "lineNameZh": "银座线",
+  "lineNameJa": "銀座線",
+  "titleZh": "浅草 → 银座",
+  "subtitleZh": "下町到都心",
+  "difficulty": "中级",
+  "recommendedJlpt": "N4–N3",
+  "theme": {
+    "signal": "#f2a33a",
+    "signalDark": "#b76d11",
+    "arrival": "#d84f45"
+  },
+  "share": {
+    "title": "Yomeru 银座线日语输入挑战",
+    "pureTemplate": "我用 {elapsed} 完成浅草到银座纯挑战，正确率 {accuracy}%。",
+    "practiceTemplate": "我完成了浅草到银座站名练习，用时 {elapsed}，使用提示 {hints} 站，正确率 {accuracy}%。",
+    "cardPrompt": "你能用日语从浅草开到银座吗？"
+  },
+  "disclaimerZh": "站名与顺序为事实数据。本挑战为 Yomeru 原创学习活动，不是铁路运营机构官方产品。",
+  "source": {
+    "organization": "东京地铁",
+    "title": "银座线车站列表",
+    "url": "https://www.tokyometro.jp/station/line_ginza/index.html",
+    "verifiedAt": "2026-07-24"
+  },
+  "stations": [
+    {"id":"station-asakusa","display":"浅草","reading":"あさくさ","romaji":"Asakusa","acceptedKana":["あさくさ"],"acceptedKanji":["浅草"],"order":1},
+    {"id":"station-tawaramachi","display":"田原町","reading":"たわらまち","romaji":"Tawaramachi","acceptedKana":["たわらまち"],"acceptedKanji":["田原町"],"order":2},
+    {"id":"station-inaricho","display":"稲荷町","reading":"いなりちょう","romaji":"Inaricho","acceptedKana":["いなりちょう"],"acceptedKanji":["稲荷町","稻荷町"],"order":3},
+    {"id":"station-ueno","display":"上野","reading":"うえの","romaji":"Ueno","acceptedKana":["うえの"],"acceptedKanji":["上野"],"order":4},
+    {"id":"station-ueno-hirokoji","display":"上野広小路","reading":"うえのひろこうじ","romaji":"Ueno-hirokoji","acceptedKana":["うえのひろこうじ"],"acceptedKanji":["上野広小路","上野广小路"],"order":5},
+    {"id":"station-suehirocho","display":"末広町","reading":"すえひろちょう","romaji":"Suehirocho","acceptedKana":["すえひろちょう"],"acceptedKanji":["末広町","末广町"],"order":6},
+    {"id":"station-kanda","display":"神田","reading":"かんだ","romaji":"Kanda","acceptedKana":["かんだ"],"acceptedKanji":["神田"],"order":7},
+    {"id":"station-mitsukoshimae","display":"三越前","reading":"みつこしまえ","romaji":"Mitsukoshimae","acceptedKana":["みつこしまえ"],"acceptedKanji":["三越前"],"order":8},
+    {"id":"station-nihombashi","display":"日本橋","reading":"にほんばし","romaji":"Nihombashi","acceptedKana":["にほんばし"],"acceptedKanji":["日本橋","日本桥"],"order":9},
+    {"id":"station-kyobashi","display":"京橋","reading":"きょうばし","romaji":"Kyobashi","acceptedKana":["きょうばし"],"acceptedKanji":["京橋","京桥"],"order":10},
+    {"id":"station-ginza","display":"銀座","reading":"ぎんざ","romaji":"Ginza","acceptedKana":["ぎんざ"],"acceptedKanji":["銀座","银座"],"order":11}
+  ]
+}

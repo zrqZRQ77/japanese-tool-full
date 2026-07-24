@@ -89,9 +89,13 @@ const vocabListJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-list.js'), 'utf8')
 const vocabReviewJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-review.js'), 'utf8');
 const vocabExportJs = readFileSync(resolve(FRONTEND_DIR, 'vocab-export.js'), 'utf8');
 const contentFeedJs = readFileSync(resolve(FRONTEND_DIR, 'content-feed.js'), 'utf8');
-const trainChallengeHtml = readFileSync(resolve(FRONTEND_DIR, 'challenge/train/index.html'), 'utf8');
+const trainHubHtml = readFileSync(resolve(FRONTEND_DIR, 'challenge/train/index.html'), 'utf8');
+const trainPlayHtml = readFileSync(resolve(FRONTEND_DIR, 'challenge/train/play/index.html'), 'utf8');
+const trainSharedJs = readFileSync(resolve(FRONTEND_DIR, 'challenge/train/train-shared.js'), 'utf8');
+const trainHubJs = readFileSync(resolve(FRONTEND_DIR, 'challenge/train/train-hub.js'), 'utf8');
 const trainChallengeJs = readFileSync(resolve(FRONTEND_DIR, 'challenge/train/train-challenge.js'), 'utf8');
-const trainChallengeRoute = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'challenge/train/routes/yamanote-short.json'), 'utf8'));
+const trainRouteRegistry = JSON.parse(readFileSync(resolve(FRONTEND_DIR, 'challenge/train/routes/index.json'), 'utf8'));
+const trainRoutes = trainRouteRegistry.routes.map(route => JSON.parse(readFileSync(resolve(FRONTEND_DIR, route.path.replace('/challenge/train/', 'challenge/train/')), 'utf8')));
 const lexicalLookupIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-lookup-integration.js'), 'utf8');
 const lexicalDetailIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-detail-integration.js'), 'utf8');
 const lexicalVocabIntegrationJs = readFileSync(resolve(FRONTEND_DIR, 'lexical-vocab-integration.js'), 'utf8');
@@ -111,14 +115,15 @@ const inlineSource = `${appJs}\n${lexicalLookupJs}\n${lexicalRecordJs}\n${vocabS
 const globalSearchSource = appJs.match(/const GLOBAL_SEARCH_ITEMS = \[[\s\S]*?\n\];/)?.[0] || '';
 const { css, designSystem, grammarLayout, typography, heroMenu, lexicalLookup, lexicalRecord, vocabStore, vocabList, vocabReview, vocabExport, contentFeed, js, lexicalIntegration, lexicalDetail, lexicalVocab } = cacheVersions(indexHtml);
 const duplicateIdList = duplicateIds(indexHtml);
-const trainDuplicateIdList = duplicateIds(trainChallengeHtml);
+const trainHubDuplicateIdList = duplicateIds(trainHubHtml);
+const trainPlayDuplicateIdList = duplicateIds(trainPlayHtml);
 const hardcodedFontSizes = hardcodedFontSizeLocations([
   ['index.html', indexHtml],
   ['styles.css', stylesCss],
   ['design-system.css', designSystemCss],
   ['grammar-layout.css', grammarLayoutCss]
 ]);
-const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'lexical-lookup.js', 'lexical-record.js', 'vocab-store.js', 'vocab-list.js', 'vocab-review.js', 'vocab-export.js', 'content-feed.js', 'app.js', 'data/content-feed-fallback.json', 'lexical-lookup-integration.js', 'lexical-detail-integration.js', 'lexical-vocab-integration.js', 'challenge/train/index.html', 'challenge/train/train-challenge.css', 'challenge/train/train-challenge.js', 'challenge/train/routes/yamanote-short.json', 'challenge/train/assets/train.svg', 'tools/train-challenge-static.test.mjs'];
+const requiredFiles = ['styles.css', 'design-system.css', 'grammar-layout.css', 'typography.css', 'lexical-lookup.js', 'lexical-record.js', 'vocab-store.js', 'vocab-list.js', 'vocab-review.js', 'vocab-export.js', 'content-feed.js', 'app.js', 'data/content-feed-fallback.json', 'lexical-lookup-integration.js', 'lexical-detail-integration.js', 'lexical-vocab-integration.js', 'challenge/train/index.html', 'challenge/train/play/index.html', 'challenge/train/train-hub.css', 'challenge/train/train-hub.js', 'challenge/train/train-play.css', 'challenge/train/train-shared.js', 'challenge/train/train-challenge.css', 'challenge/train/train-challenge.js', 'challenge/train/routes/index.json', 'challenge/train/routes/yamanote-short.json', 'challenge/train/routes/yamanote-east-short.json', 'challenge/train/routes/ginza-east-short.json', 'challenge/train/assets/train.svg', 'tools/train-challenge-static.test.mjs'];
 const requiredKuromojiPocFiles = [
   'kuromoji-worker-poc.js',
   'poc/kuromoji-worker-poc.html',
@@ -205,6 +210,8 @@ run('vocabulary review syntax', 'node', ['--check', 'vocab-review.js']);
 run('vocabulary export syntax', 'node', ['--check', 'vocab-export.js']);
 run('content feed syntax', 'node', ['--check', 'content-feed.js']);
 run('content feed browser test syntax', 'node', ['--check', 'tools/content-feed-browser.test.mjs']);
+run('train shared runtime syntax', 'node', ['--check', 'challenge/train/train-shared.js']);
+run('train route hub syntax', 'node', ['--check', 'challenge/train/train-hub.js']);
 run('train challenge syntax', 'node', ['--check', 'challenge/train/train-challenge.js']);
 run('train challenge browser test syntax', 'node', ['--check', 'tools/train-challenge-static.test.mjs']);
 run('lexical lookup integration syntax', 'node', ['--check', 'lexical-lookup-integration.js']);
@@ -217,10 +224,11 @@ run('git whitespace diff', 'git', ['diff', '--check'], { optional: true });
 assertCheck(!/\b(?:alert|confirm)\s*\(/.test(inlineSource), 'no native alert() / confirm() in app.js or index.html');
 assertCheck(!/(?:上传 PDF|选择的 PDF|pdfModeSelect|pdfCleanupSelect|排版方向|网页打印\/导出的PDF)/i.test(indexHtml), 'public HTML does not expose withdrawn PDF controls or copy');
 assertCheck(requiredFiles.every(file => existsSync(resolve(FRONTEND_DIR, file))), 'required frontend files exist');
-assertCheck(trainChallengeRoute.schemaVersion === 1 && trainChallengeRoute.stations?.length === 13 && trainChallengeRoute.stations.every((station, index) => station.order === index + 1 && station.acceptedKana?.includes(station.reading) && station.acceptedKanji?.includes(station.display)), 'train challenge has 13 ordered stations with strict accepted answers');
-assertCheck(trainDuplicateIdList.length === 0, `train challenge HTML ids are unique${trainDuplicateIdList.length ? `: ${trainDuplicateIdList.join(', ')}` : ''}`);
-assertCheck(trainChallengeJs.includes("const STORAGE_KEY = 'yomeru_train_typing_v1'") && !trainChallengeJs.includes('reading_vocab_list') && trainChallengeJs.includes('event.isComposing') && trainChallengeJs.includes('createResultCardBlob') && trainChallengeJs.includes('navigator.share'), 'train challenge keeps isolated storage, IME safety, result cards, and sharing');
-assertCheck(trainChallengeHtml.includes('不是铁路运营机构官方产品') && !/(JR東日本|JR东日本)[^<]{0,20}(?:logo|ロゴ)/i.test(trainChallengeHtml), 'train challenge keeps the non-official disclaimer and avoids operator logos');
+assertCheck(trainRouteRegistry.schemaVersion === 1 && trainRouteRegistry.routes.length === 3 && new Set(trainRouteRegistry.routes.map(route => route.routeId)).size === 3, 'train route registry exposes three unique routes');
+assertCheck(trainRoutes.every(route => route.schemaVersion === 2 && route.stations?.length >= 8 && route.stations.length <= 15 && route.stations.every((station, index) => station.order === index + 1 && station.acceptedKana?.includes(station.reading) && station.acceptedKanji?.includes(station.display))), 'all train routes have ordered stations with strict accepted answers');
+assertCheck(trainHubDuplicateIdList.length === 0 && trainPlayDuplicateIdList.length === 0, `train hub and play HTML ids are unique${trainHubDuplicateIdList.length || trainPlayDuplicateIdList.length ? `: ${[...trainHubDuplicateIdList, ...trainPlayDuplicateIdList].join(', ')}` : ''}`);
+assertCheck(trainSharedJs.includes("const STORAGE_KEY = 'yomeru_train_typing_v2'") && trainSharedJs.includes("const LEGACY_STORAGE_KEY = 'yomeru_train_typing_v1'") && trainSharedJs.includes('migrateLegacyStorage') && trainChallengeJs.includes('routeStorageIsolation') && !trainChallengeJs.includes('reading_vocab_list') && trainChallengeJs.includes('event.isComposing') && trainChallengeJs.includes('createResultCardBlob') && trainChallengeJs.includes('navigator.share'), 'train challenge keeps v1 migration, route-isolated storage, IME safety, result cards, and sharing');
+assertCheck(trainHubHtml.includes('选择挑战路线') && trainHubJs.includes('routePlayPath') && trainPlayHtml.includes('选择其他路线') && `${trainHubHtml}${trainPlayHtml}`.includes('非铁路运营机构官方产品') && !/(JR東日本|JR东日本|東京メトロ|东京地铁)[^<]{0,20}(?:logo|ロゴ)/i.test(`${trainHubHtml}${trainPlayHtml}`), 'train hub and play pages keep navigation, disclaimer, and avoid operator logos');
 assertCheck(!indexHtml.includes('contentFeedSection') && indexHtml.includes('gradedSourceFilters') && appJs.includes('getUnifiedReadingMaterials') && contentFeedJs.includes('getContentFeedItems') && contentFeedJs.includes('openContentFeedQueueItem'), 'official feed is merged into the unified reading-material system');
 assertCheck(contentFeedFallback.schemaVersion === 1 && Array.isArray(contentFeedFallback.items) && contentFeedFallback.items.length >= 3 && contentFeedJs.includes('BUNDLED_FALLBACK_PAYLOAD'), 'bundled content feed fallback is valid and available at runtime');
 assertCheck(!/(editorial|internalNotes|reviewedBy)/.test(JSON.stringify(contentFeedFallback)), 'bundled content feed fallback excludes internal editorial fields');
