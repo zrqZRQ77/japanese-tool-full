@@ -39,14 +39,15 @@ const currentVocabStore = indexHtml.match(/vocab-store\.js\?v=([^"']+)/)?.[1] ||
 const currentVocabList = indexHtml.match(/vocab-list\.js\?v=([^"']+)/)?.[1] || '';
 const currentVocabReview = indexHtml.match(/vocab-review\.js\?v=([^"']+)/)?.[1] || '';
 const currentVocabExport = indexHtml.match(/vocab-export\.js\?v=([^"']+)/)?.[1] || '';
+const currentContentFeed = indexHtml.match(/content-feed\.js\?v=([^"']+)/)?.[1] || '';
 const currentJs = indexHtml.match(/app\.js\?v=([^"']+)/)?.[1] || '';
 const currentLexicalIntegration = indexHtml.match(/lexical-lookup-integration\.js\?v=([^"']+)/)?.[1] || '';
 const currentLexicalDetail = indexHtml.match(/lexical-detail-integration\.js\?v=([^"']+)/)?.[1] || '';
 const currentLexicalVocab = indexHtml.match(/lexical-vocab-integration\.js\?v=([^"']+)/)?.[1] || '';
-const versionedAssets = [currentCss, currentDesignSystem, currentGrammarLayout, currentTypography, currentHeroMenu, currentLexicalLookup, currentLexicalRecord, currentVocabStore, currentVocabList, currentVocabReview, currentVocabExport, currentJs, currentLexicalIntegration, currentLexicalDetail, currentLexicalVocab].filter(Boolean);
+const versionedAssets = [currentCss, currentDesignSystem, currentGrammarLayout, currentTypography, currentHeroMenu, currentLexicalLookup, currentLexicalRecord, currentVocabStore, currentVocabList, currentVocabReview, currentVocabExport, currentContentFeed, currentJs, currentLexicalIntegration, currentLexicalDetail, currentLexicalVocab].filter(Boolean);
 const current = versionedAssets.length && versionedAssets.every(value => value === versionedAssets[0])
   ? versionedAssets[0]
-  : currentJs || currentVocabStore || currentVocabList || currentVocabReview || currentVocabExport || currentLexicalLookup || currentLexicalRecord || currentLexicalIntegration || currentLexicalDetail || currentLexicalVocab || currentCss || currentDesignSystem || currentGrammarLayout || currentTypography || currentHeroMenu;
+  : currentJs || currentVocabStore || currentVocabList || currentVocabReview || currentVocabExport || currentContentFeed || currentLexicalLookup || currentLexicalRecord || currentLexicalIntegration || currentLexicalDetail || currentLexicalVocab || currentCss || currentDesignSystem || currentGrammarLayout || currentTypography || currentHeroMenu;
 const version = nextVersion(current, requested);
 
 const updated = indexHtml
@@ -61,6 +62,7 @@ const updated = indexHtml
   .replace(/vocab-list\.js\?v=[^"']+/g, `vocab-list.js?v=${version}`)
   .replace(/vocab-review\.js\?v=[^"']+/g, `vocab-review.js?v=${version}`)
   .replace(/vocab-export\.js\?v=[^"']+/g, `vocab-export.js?v=${version}`)
+  .replace(/content-feed\.js\?v=[^"']+/g, `content-feed.js?v=${version}`)
   .replace(/app\.js\?v=[^"']+/g, `app.js?v=${version}`)
   .replace(/lexical-lookup-integration\.js\?v=[^"']+/g, `lexical-lookup-integration.js?v=${version}`)
   .replace(/lexical-detail-integration\.js\?v=[^"']+/g, `lexical-detail-integration.js?v=${version}`)

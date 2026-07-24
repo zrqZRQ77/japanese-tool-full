@@ -131,7 +131,7 @@ await test('Core vocab persistence and full flashcard round', async () => {
   await page.locator('#vocabPrimaryAction').click();
   await page.locator('#flashArea .flash-stage').click();
   await page.locator('#flashArea .rate-easy').click();
-  await page.getByText('复习完成。', { exact:true }).waitFor({ state:'visible', timeout:5000 });
+  await page.getByText('复习完成', { exact:true }).waitFor({ state:'visible', timeout:5000 });
   const state = await page.evaluate(() => ({
     vocab:JSON.parse(localStorage.getItem('reading_vocab_list') || '[]'),
     practice:JSON.parse(localStorage.getItem('reading_practice_history') || '[]')

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#17242d">
+  <title>Yomeru 电车日语输入挑战</title>
+  <meta name="description" content="输入日语站名，让列车从新宿开到上野。">
+  <link rel="stylesheet" href="/challenge/train/train-challenge.css">
+  <link rel="stylesheet" href="/challenge/train/train-challenge-layout-v2.css">
+</head>
+<body data-game-state="start">
+  <a class="skip-link" href="#challengeMain">跳到挑战内容</a>
+  <header class="page-header">
+    <a class="brand" href="/"><img src="/assets/brand/yomeru-mark.svg" alt="" width="34" height="34">Yomeru</a>
+    <div class="route-chip"><i></i>山手线短线 · 新宿 → 上野</div>
+  </header>
+
+  <main id="challengeMain" class="shell">
+    <section class="view start-view" data-challenge-view="start" aria-labelledby="startTitle">
+      <article class="ticket">
+        <p class="eyebrow">YOMERU TRAIN TYPING / 01</p>
+        <h1 id="startTitle">输入站名，开到终点。</h1>
+        <div class="route-loop" aria-label="新宿到上野的十三站原创环线示意图">
+          <div class="route-loop-heading"><span>山手线北侧短程 · 13 站</span></div>
+          <div id="startRouteMap" class="route-loop-map"></div>
+        </div>
+        <div class="start-controls">
+          <fieldset class="modes">
+            <legend>选择挑战方式</legend>
+            <label><input type="radio" name="mode" value="kanji-to-kana" checked><b>A</b><span><strong>汉字 → 假名</strong><small>输入读音</small></span></label>
+            <label><input type="radio" name="mode" value="kana-to-kanji"><b>B</b><span><strong>假名 → 汉字</strong><small>输入汉字</small></span></label>
+          </fieldset>
+          <label class="practice-switch start-practice" for="trainHintToggleStart">
+            <span><strong>练习提示</strong><small>显示当前答案</small></span>
+            <input id="trainHintToggleStart" type="checkbox" role="switch" aria-label="开启练习提示">
+            <i aria-hidden="true"></i>
+          </label>
+          <button id="trainStartButton" class="primary start-button" type="button" disabled><span>载入路线…</span><span aria-hidden="true">→</span></button>
+        </div>
+        <p id="startStatus" class="note" role="status">路线加载中…</p>
+      </article>
+    </section>
+
+    <section class="view play-view" data-challenge-view="play" aria-labelledby="questionPrompt" hidden>
+      <div class="metrics" aria-label="本局状态">
+        <div><span>用时</span><strong id="elapsedValue">00:00.0</strong></div>
+        <div><span>进度</span><strong id="progressValue">01 / 13</strong></div>
+        <div><span>正确率</span><strong id="accuracyValue">—</strong></div>
+        <div><span>连续</span><strong id="streakValue">0</strong></div>
+      </div>
+      <div class="play-grid">
+        <aside id="railMap" class="rail-map" aria-label="列车路线进度">
+          <div id="playRouteStops" class="rail-stops"></div>
+          <img id="trainMarker" src="/challenge/train/assets/train.svg" alt="列车当前位置" class="train-marker">
+        </aside>
+        <article class="question">
+          <div class="question-main">
+            <div class="question-topline">
+              <p class="station-context"><span>当前站</span> <strong id="currentStationName">新宿（しんじゅく）</strong><i></i><span>下一站</span> <strong id="nextStationName">新大久保（しんおおくぼ）</strong></p>
+              <p class="eyebrow"><span id="challengeModeLabel">KANJI → KANA</span> / <span id="challengeIndexLabel">01</span></p>
+            </div>
+            <div class="question-core">
+              <h2 id="questionPrompt" lang="ja">新宿</h2>
+              <p id="questionHint" class="sr-only">请输入这个站名的平假名读音</p>
+              <form id="trainAnswerForm" class="answer" autocomplete="off">
+                <label class="sr-only" for="trainAnswerInput">输入答案</label>
+                <input id="trainAnswerInput" lang="ja" inputmode="text" enterkeyhint="done" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入答案">
+                <button id="trainAnswerSubmitButton" type="submit" disabled>确认</button>
+              </form>
+              <p id="trainAnswerFeedback" class="feedback" aria-live="polite">输入答案后点击确认，或按 Enter。</p>
+            </div>
+          </div>
+          <div class="question-tools" aria-label="辅助设置">
+            <label class="answer-toggle" for="trainHintTogglePlay">
+              <span>显示答案</span>
+              <input id="trainHintTogglePlay" type="checkbox" role="switch" aria-label="显示当前站答案">
+              <i aria-hidden="true"></i>
+            </label>
+            <p id="stationAnswerHint" class="station-answer-hint" hidden><span id="stationAnswerHintLabel">答案：</span><strong id="stationAnswerHintValue" lang="ja">新宿</strong></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="view result-view" data-challenge-view="result" aria-labelledby="resultTitle" hidden>
+      <article class="result-card" id="resultCard">
+        <div class="result-route"><span>新宿</span><i></i><span>上野</span><img src="/challenge/train/assets/train.svg" alt="列车已抵达上野" width="60" height="60"></div>
+        <p class="eyebrow">ARRIVED / 挑战完成</p>
+        <h2 id="resultTitle">抵达终点。</h2>
+        <p id="resultHintUsage" class="result-hint-usage">纯挑战 · 未使用提示</p>
+        <div class="finish-time"><strong id="resultElapsed">00:00.0</strong><span>完成时间</span></div>
+        <div class="result-stats">
+          <div><span>正确率</span><strong id="resultAccuracy">—</strong></div>
+          <div><span>平均每站</span><strong id="resultAverage">—</strong></div>
+          <div><span>错误次数</span><strong id="resultErrors">0</strong></div>
+          <div><span>最佳连续</span><strong id="resultStreak">0</strong></div>
+        </div>
+        <p id="resultBest" class="best">纯挑战最佳纪录：—</p>
+      </article>
+      <aside class="result-actions">
+        <button id="trainRetryButton" class="primary" type="button">重新挑战</button>
+        <button id="saveResultCardButton" type="button">保存成绩</button>
+        <button id="shareResultButton" type="button">分享成绩</button>
+        <p id="shareFeedback" class="share-feedback" role="status" aria-live="polite"></p>
+        <a href="/">去 Yomeru 阅读日语 →</a>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="page-footer"><a href="https://www.jreast.co.jp/map/" target="_blank" rel="noopener noreferrer">站序参考 JR 东日本 · 不是铁路运营机构官方产品</a></footer>
+  <script src="/challenge/train/train-challenge.js"></script>
+</body>
+</html>

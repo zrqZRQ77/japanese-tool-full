@@ -44,7 +44,7 @@ for (const file of FILES) {
   await cp(resolve(FRONTEND_DIR, file), resolve(DIST_DIR, file));
 }
 
-for (const directory of ['assets', 'data']) {
+for (const directory of ['assets', 'data', 'challenge']) {
   await cp(resolve(FRONTEND_DIR, directory), resolve(DIST_DIR, directory), { recursive: true });
 }
 

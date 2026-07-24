@@ -228,7 +228,7 @@ function reviewAllVocab(){
 function showNextCard(){
   cardFlipped = false;
   if(reviewQueue.length===0){
-    setFlashArea('复习完成。');
+    setFlashArea('复习完成');
     updateFlashProgress('复习完成');
     return;
   }
