@@ -12,7 +12,10 @@ const FRONTEND_DIR = resolve(SCRIPT_DIR, '..');
 const TRAIN_DIR = resolve(FRONTEND_DIR, 'challenge/train');
 const route = JSON.parse(readFileSync(resolve(TRAIN_DIR, 'routes/yamanote-short.json'), 'utf8'));
 const html = readFileSync(resolve(TRAIN_DIR, 'index.html'), 'utf8');
-const css = readFileSync(resolve(TRAIN_DIR, 'train-challenge.css'), 'utf8');
+const css = [
+  readFileSync(resolve(TRAIN_DIR, 'train-challenge.css'), 'utf8'),
+  readFileSync(resolve(TRAIN_DIR, 'train-challenge-layout-v2.css'), 'utf8')
+].join('\n');
 const js = readFileSync(resolve(TRAIN_DIR, 'train-challenge.js'), 'utf8');
 const readme = readFileSync(resolve(TRAIN_DIR, 'README.md'), 'utf8');
 const expected = ['新宿','新大久保','高田馬場','目白','池袋','大塚','巣鴨','駒込','田端','西日暮里','日暮里','鶯谷','上野'];
@@ -41,6 +44,10 @@ assert.doesNotMatch(html, /原创简化示意 · 按实际站序/);
 assert.doesNotMatch(html, /class="board"/);
 assert.match(html, /class="question-main"/);
 assert.match(html, /class="question-tools"/);
+assert.match(html, /class="answer-toggle"/);
+assert.doesNotMatch(html, /class="ime-note"/);
+assert.match(html, /src="\/assets\/brand\/yomeru-mark\.svg"/);
+assert.doesNotMatch(html, /src="\/assets\/logo-brand-y-path-mark\.svg"/);
 assert.match(html, /id="resultErrors"/);
 assert.doesNotMatch(html, /id="resultCpm"/);
 assert.match(html, /class="result-route"><span>新宿<\/span><i><\/i><span>上野<\/span><img/);
@@ -58,6 +65,7 @@ assert.match(html, /站序参考 JR 东日本 · 不是铁路运营机构官方�
 assert.doesNotMatch(html, /站名与顺序为事实数据/);
 assert.doesNotMatch(html, /核验来源：JR东日本线路图/);
 assert.match(html, /href="\/challenge\/train\/train-challenge\.css"/);
+assert.match(html, /href="\/challenge\/train\/train-challenge-layout-v2\.css"/);
 assert.match(html, /src="\/challenge\/train\/train-challenge\.js"/);
 assert.match(html, /src="\/challenge\/train\/assets\/train\.svg"/);
 assert.match(js, /yomeru_train_typing_v1/);
@@ -387,9 +395,10 @@ try {
     assert.equal(await page.locator('#trainHintToggleStart').isChecked(), true);
     await page.locator('#trainStartButton').click();
     await page.waitForFunction(() => document.body.dataset.gameState === 'play');
-    assert.equal(await page.locator('#currentStationName').textContent(), '第 1 站');
-    assert.equal(await page.locator('#nextStationName').textContent(), '第 2 站');
-    assert.equal(await page.locator('.rail-stop.current').textContent(), '01');
+    assert.equal(await page.locator('#currentStationName').textContent(), '新宿（しんじゅく）');
+    assert.equal(await page.locator('#nextStationName').textContent(), '新大久保（しんおおくぼ）');
+    assert.equal(await page.locator('.rail-stop.current .rail-stop-index').textContent(), '01');
+    assert.equal(await page.locator('.rail-stop.current .rail-stop-label').textContent(), 'しんじゅく');
     assert.equal((await page.locator('#playRouteStops').textContent()).includes('新宿'), false, 'current/future kanji answers leak in the route');
     assert.equal(await page.locator('#questionPrompt').textContent(), 'しんじゅく');
     const kanaPromptStyle = await page.evaluate(() => ({
@@ -399,7 +408,7 @@ try {
     assert.equal(kanaPromptStyle.size, 'long');
     assert.ok(kanaPromptStyle.fontSize <= 68, JSON.stringify(kanaPromptStyle));
     assert.equal(await page.locator('#stationAnswerHint').isVisible(), true);
-    assert.equal(await page.locator('#stationAnswerHintLabel').textContent(), '站名');
+    assert.equal(await page.locator('#stationAnswerHintLabel').textContent(), '答案：');
     assert.equal(await page.locator('#stationAnswerHintValue').textContent(), '新宿');
     let practiceState = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
     assert.equal(practiceState.showHints, true);
@@ -407,13 +416,16 @@ try {
     await page.locator('label[for="trainHintTogglePlay"]').click();
     assert.equal(await page.locator('#trainHintTogglePlay').isChecked(), false);
     assert.equal(await page.locator('#stationAnswerHint').isVisible(), false);
+    assert.equal(await page.locator('#currentStationName').textContent(), 'しんじゅく');
+    assert.equal(await page.locator('#nextStationName').textContent(), 'しんおおくぼ');
     practiceState = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
     assert.equal(practiceState.showHints, false);
     assert.equal(practiceState.hintCount, 1);
     await submit(page, '新　宿');
     await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE.snapshot().index === 1);
-    assert.equal(await page.locator('.rail-stop.completed').first().textContent(), '新宿');
-    assert.equal(await page.locator('.rail-stop.current').textContent(), '02');
+    assert.equal(await page.locator('.rail-stop.completed').first().textContent(), '01しんじゅく');
+    assert.equal(await page.locator('.rail-stop.current .rail-stop-index').textContent(), '02');
+    assert.equal(await page.locator('.rail-stop.current .rail-stop-label').textContent(), 'しんおおくぼ');
     await submit(page, 'シンオオクボ');
     let state = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
     assert.equal(state.index, 1);
@@ -482,6 +494,12 @@ try {
         questionTop: document.getElementById('questionPrompt').getBoundingClientRect().top,
         questionHeight: Math.round(question.height),
         questionBottom: Math.round(question.bottom),
+        questionLeft: Math.round(question.left),
+        questionRight: Math.round(question.right),
+        answerWidth: Math.round(document.getElementById('trainAnswerForm').getBoundingClientRect().width),
+        answerLeft: Math.round(document.getElementById('trainAnswerForm').getBoundingClientRect().left),
+        answerRight: Math.round(document.getElementById('trainAnswerForm').getBoundingClientRect().right),
+        toolsRight: Math.round(tools.right),
         railWidth: Math.round(rail.width),
         railTop: Math.round(rail.top),
         railBottom: Math.round(rail.bottom),
@@ -499,17 +517,21 @@ try {
     });
     assert.ok(desktopPlayLayout.playWidth <= 900, JSON.stringify(desktopPlayLayout));
     assert.equal(desktopPlayLayout.metricsPosition, 'static');
-    assert.ok(desktopPlayLayout.metricsHeight <= 56, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.metricsHeight <= 60, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.metricsBottom < desktopPlayLayout.questionTop, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.railWidth <= 150, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.questionHeight <= 300, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.railWidth <= 210, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.questionHeight <= 470, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.questionBottom <= desktopPlayLayout.viewportHeight, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.firstStopTop >= desktopPlayLayout.railTop, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.lastStopBottom <= desktopPlayLayout.railBottom, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.markerLeft >= desktopPlayLayout.railLeft + 90, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.markerLeft >= desktopPlayLayout.railLeft + 150, JSON.stringify(desktopPlayLayout));
     assert.ok(desktopPlayLayout.markerRight <= desktopPlayLayout.railRight, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.promptFontSize <= 60, JSON.stringify(desktopPlayLayout));
-    assert.ok(desktopPlayLayout.toolsLeft >= desktopPlayLayout.mainRight, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.promptFontSize <= 72, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.answerWidth <= 600, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.answerLeft > desktopPlayLayout.questionLeft, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.answerRight < desktopPlayLayout.questionRight, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.toolsLeft >= desktopPlayLayout.questionLeft, JSON.stringify(desktopPlayLayout));
+    assert.ok(desktopPlayLayout.toolsRight <= desktopPlayLayout.questionRight, JSON.stringify(desktopPlayLayout));
     assert.equal(await hasOverflow(page), false, 'desktop play view overflows');
     await context.close();
   }

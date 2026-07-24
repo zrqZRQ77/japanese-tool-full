@@ -7,11 +7,12 @@
   <title>Yomeru 电车日语输入挑战</title>
   <meta name="description" content="输入日语站名，让列车从新宿开到上野。">
   <link rel="stylesheet" href="/challenge/train/train-challenge.css">
+  <link rel="stylesheet" href="/challenge/train/train-challenge-layout-v2.css">
 </head>
 <body data-game-state="start">
   <a class="skip-link" href="#challengeMain">跳到挑战内容</a>
   <header class="page-header">
-    <a class="brand" href="/"><img src="/assets/logo-brand-y-path-mark.svg" alt="" width="34" height="34">Yomeru</a>
+    <a class="brand" href="/"><img src="/assets/brand/yomeru-mark.svg" alt="" width="34" height="34">Yomeru</a>
     <div class="route-chip"><i></i>山手线短线 · 新宿 → 上野</div>
   </header>
 
@@ -49,11 +50,14 @@
         <div><span>连续</span><strong id="streakValue">0</strong></div>
       </div>
       <div class="play-grid">
-        <aside id="railMap" class="rail-map" aria-label="列车路线进度"><div id="playRouteStops" class="rail-stops"></div><img id="trainMarker" src="/challenge/train/assets/train.svg" alt="列车当前位置" class="train-marker"></aside>
+        <aside id="railMap" class="rail-map" aria-label="列车路线进度">
+          <div id="playRouteStops" class="rail-stops"></div>
+          <img id="trainMarker" src="/challenge/train/assets/train.svg" alt="列车当前位置" class="train-marker">
+        </aside>
         <article class="question">
           <div class="question-main">
             <div class="question-topline">
-              <p class="station-context">当前站 <strong id="currentStationName">新宿</strong><i></i>下一站 <strong id="nextStationName">新大久保</strong></p>
+              <p class="station-context"><span>当前站</span> <strong id="currentStationName">新宿（しんじゅく）</strong><i></i><span>下一站</span> <strong id="nextStationName">新大久保（しんおおくぼ）</strong></p>
               <p class="eyebrow"><span id="challengeModeLabel">KANJI → KANA</span> / <span id="challengeIndexLabel">01</span></p>
             </div>
             <h2 id="questionPrompt" lang="ja">新宿</h2>
@@ -65,15 +69,14 @@
             </form>
             <p id="trainAnswerFeedback" class="feedback" aria-live="polite">输入答案后点击确认，或按 Enter。</p>
           </div>
-          <aside class="question-tools" aria-label="辅助设置">
-            <label class="practice-switch compact" for="trainHintTogglePlay">
-              <span><strong>练习提示</strong><small>显示答案</small></span>
-              <input id="trainHintTogglePlay" type="checkbox" role="switch" aria-label="显示当前站提示">
+          <div class="question-tools" aria-label="辅助设置">
+            <label class="answer-toggle" for="trainHintTogglePlay">
+              <span>显示答案</span>
+              <input id="trainHintTogglePlay" type="checkbox" role="switch" aria-label="显示当前站答案">
               <i aria-hidden="true"></i>
             </label>
-            <p id="stationAnswerHint" class="station-answer-hint" hidden><span id="stationAnswerHintLabel">读音</span><strong id="stationAnswerHintValue" lang="ja">しんじゅく</strong></p>
-            <p class="ime-note"><b>あ</b><span>选词时不会提前提交</span></p>
-          </aside>
+            <p id="stationAnswerHint" class="station-answer-hint" hidden><span id="stationAnswerHintLabel">答案：</span><strong id="stationAnswerHintValue" lang="ja">新宿</strong></p>
+          </div>
         </article>
       </div>
     </section>

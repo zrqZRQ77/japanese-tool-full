@@ -199,9 +199,8 @@
     target.innerHTML = `<svg viewBox="0 0 900 235" role="img" aria-label="新宿到上野的山手线北侧短程，按照实际车站顺序绘制的原创半环形示意图"><desc>按照实际车站顺序绘制的原创半环形示意图，不是官方线路图。</desc><path class="route-loop-ghost" d="M104 158 C234 236 666 236 796 158"></path><path class="route-loop-line" d="M104 158 C234 12 666 12 796 158"></path>${stationMarkup}</svg>`;
   }
 
-  function stationProgressLabel(station, index) {
-    if (game.mode !== 'kana-to-kanji' || index < game.index) return station.display;
-    return String(index + 1).padStart(2, '0');
+  function stationProgressLabel(station) {
+    return game.mode === 'kana-to-kanji' ? station.reading : station.display;
   }
 
   function renderRail() {
@@ -210,10 +209,11 @@
     if (!target || !routeData) return;
     target.innerHTML = routeData.stations.map((station, index) => {
       const className = index < game.index ? ' completed' : (index === game.index ? ' current' : '');
-      const label = stationProgressLabel(station, index);
-      const longClass = [...label].length >= 4 ? ' is-long' : '';
+      const label = stationProgressLabel(station);
+      const longClass = [...label].length >= 6 ? ' is-long' : '';
       const nearClass = Math.abs(index - game.index) <= 2 ? ' is-near' : '';
-      return `<span class="rail-stop${className}${longClass}${nearClass}" data-station-index="${index}" aria-current="${index === game.index ? 'step' : 'false'}"><span class="rail-stop-label">${label}</span></span>`;
+      const stationNumber = String(index + 1).padStart(2, '0');
+      return `<span class="rail-stop${className}${longClass}${nearClass}" data-station-index="${index}" aria-current="${index === game.index ? 'step' : 'false'}"><span class="rail-stop-index">${stationNumber}</span><span class="rail-stop-dot" aria-hidden="true"></span><span class="rail-stop-label" lang="ja">${label}</span></span>`;
     }).join('');
     const progress = routeData.stations.length > 1 ? game.index / (routeData.stations.length - 1) : 0;
     target.parentElement?.style.setProperty('--route-progress-ratio', String(progress));
@@ -239,9 +239,24 @@
   }
 
   function answerHintForStation(station) {
-    return game.mode === 'kanji-to-kana'
-      ? { label: '读音', value: station.reading }
-      : { label: '站名', value: station.display };
+    return {
+      label: '答案：',
+      value: game.mode === 'kanji-to-kana' ? station.reading : station.display
+    };
+  }
+
+  function stationContextText(station) {
+    if (!station) return '终点';
+    if (game.showHints) return `${station.display}（${station.reading}）`;
+    return game.mode === 'kana-to-kanji' ? station.reading : station.display;
+  }
+
+  function renderStationContext() {
+    if (!routeData || game.phase !== 'play') return;
+    const station = routeData.stations[game.index];
+    const next = routeData.stations[game.index + 1];
+    document.getElementById('currentStationName').textContent = stationContextText(station);
+    document.getElementById('nextStationName').textContent = stationContextText(next);
   }
 
   function renderPracticeHint({ countUsage = true } = {}) {
@@ -262,6 +277,7 @@
     game.showHints = Boolean(enabled);
     syncHintToggles(game.showHints);
     renderPracticeHint({ countUsage });
+    renderStationContext();
   }
 
   function focusAnswerInput({ resetScroll = false } = {}) {
@@ -305,14 +321,8 @@
   function renderQuestion({ resetScroll = false } = {}) {
     if (!routeData) return;
     const station = routeData.stations[game.index];
-    const next = routeData.stations[game.index + 1];
     const mode = MODES[game.mode];
-    const currentContext = game.mode === 'kana-to-kanji' ? `第 ${game.index + 1} 站` : station.display;
-    const nextContext = next
-      ? (game.mode === 'kana-to-kanji' ? `第 ${game.index + 2} 站` : next.display)
-      : '终点';
-    document.getElementById('currentStationName').textContent = currentContext;
-    document.getElementById('nextStationName').textContent = nextContext;
+    renderStationContext();
     document.getElementById('challengeModeLabel').textContent = mode.label;
     document.getElementById('challengeIndexLabel').textContent = String(game.index + 1).padStart(2, '0');
     const prompt = mode.prompt(station);
