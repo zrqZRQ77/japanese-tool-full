@@ -253,6 +253,122 @@ const MANUAL_REVIEW_DRAFTS = {
     candidateChinese: '烹饪；菜肴；料理',
     confidence: '高',
     notes: '基本形：料理；词性：名词，也可与「する」构成他动词表达（JMdict n/vs/vt）。核心义覆盖烹饪行为、菜肴和料理类别；处理事务、管理等引申义不并入基础释义。多义与混淆：语义范围明确且符合当前语料。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '施行\u0000しこう': {
+    candidateChinese: '施行；实施；执行（法律、政策等）',
+    confidence: '高',
+    notes: '基本形：施行；词性：名词及サ变他动词（JMdict n/vs/vt）。核心义覆盖法律生效施行、政策或计划实施执行。多义与混淆：必须与同音「試行（试行、尝试）」按表记隔离。证据：JLPT N1；JMdict 1579510，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '審議\u0000しんぎ': {
+    candidateChinese: '审议；讨论研究',
+    confidence: '高',
+    notes: '基本形：審議；词性：名词及サ变他动词（JMdict n/vs/vt）。核心义为对议案、政策等进行审议、讨论和研究。多义与混淆：词形、读音及语义范围明确。证据：JLPT N1；JMdict 1360360，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '政府\u0000せいふ': {
+    candidateChinese: '政府；政府机构',
+    confidence: '高',
+    notes: '基本形：政府；词性：名词（JMdict n）。核心义覆盖国家或地区政府及其行政机构，不扩大为单一部门的专名。多义与混淆：现代新闻语境明确。证据：JLPT N3；JMdict 1376070，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '比率\u0000ひりつ': {
+    candidateChinese: '比率；比例；百分比',
+    confidence: '高',
+    notes: '基本形：比率；词性：名词（JMdict n）。核心义覆盖两个数量之间的比率、比例，以及以百分数表达的比率。多义与混淆：不得在没有百分号语境时强制译为百分比。证据：JLPT N1；JMdict 1483680，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '被害\u0000ひがい': {
+    candidateChinese: '损害；受害情况',
+    confidence: '高',
+    notes: '基本形：被害；词性：名词（JMdict n）。核心义覆盖因事故、灾害或犯罪造成的损害、伤害及受害情况。多义与混淆：不等同于具体受害者「被害者」。证据：JLPT N3；JMdict 1484350，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '飴\u0000あめ': {
+    candidateChinese: '糖果；糖稀',
+    confidence: '中高',
+    notes: '基本形：飴；词性：名词（JMdict n）。核心义覆盖硬糖、太妃糖等糖果，以及由淀粉制成的糖稀；琥珀色等颜色义不并入基础释义。多义与混淆：必须与同音「雨（あめ）」按表记隔离。证据：JMdict 1153520，CC BY-SA 4.0；本地 JLPT 参考未提供等级。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。'
+  },
+  '易しい\u0000やさしい': {
+    candidateChinese: '容易的；简单的',
+    confidence: '高',
+    notes: '基本形：易しい；词性：イ形容词（JMdict adj-i）。核心义为容易、简单、易懂。多义与混淆：必须与同音「優しい（温柔、亲切）」按表记隔离。证据：JMdict 1157000，CC BY-SA 4.0；本地 JLPT 参考未提供等级。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '運行\u0000うんこう': {
+    candidateChinese: '运行；行驶（交通工具）',
+    confidence: '高',
+    notes: '基本形：運行；词性：名词及サ变动词，可作自动或他动表达（JMdict n/vi/vs/vt）。核心义限定为公交、列车等交通服务的运行、行驶；天体运行等义不并入本阶段核心释义。多义与混淆：新闻交通语境明确。证据：JMdict 1172750，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '開く\u0000ひらく': {
+    candidateChinese: '打开；展开；开设；举行',
+    confidence: '中高',
+    notes: '基本形：開く；目标读音：ひらく；词性：五段カ行动词，可作自动词或他动词（JMdict v5k/vi/vt）。核心义覆盖打开书本或容器、展开，以及开设店铺或举行活动等常见义。多义与混淆：必须与同形异读「開く（あく，自动打开或空出）」分开处理。证据：JMdict 1202440，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。'
+  },
+  '開ける\u0000あける': {
+    candidateChinese: '打开；开启；腾出（空间）',
+    confidence: '高',
+    notes: '基本形：開ける；词性：一段动词，可作他动词或自动词（JMdict v1/vi/vt）。核心义覆盖主动打开门窗或包装、解锁，以及腾出空间。多义与混淆：需与同音「明ける（天亮、期限结束）」按表记隔离，也不得与自动词「開く（あく）」混同。证据：JMdict 1202450，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '蛙\u0000かえる': {
+    candidateChinese: '青蛙；蛙',
+    confidence: '高',
+    notes: '基本形：蛙；词性：名词（JMdict n）。核心义为青蛙或蛙类。多义与混淆：必须与同音动词「帰る（回去、回家）」按表记隔离。证据：JMdict 1577460，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '携帯電話\u0000けいたいでんわ': {
+    candidateChinese: '手机；移动电话',
+    confidence: '高',
+    notes: '基本形：携帯電話；词性：名词（JMdict n）。核心义为移动电话或手机。多义与混淆：不将简称「携帯」自动等同于所有便携物品。证据：JMdict 1250690，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '見合わせる\u0000みあわせる': {
+    candidateChinese: '暂停；暂缓；推迟',
+    confidence: '中高',
+    notes: '基本形：見合わせる；词性：一段他动词（JMdict v1/vt）。当前新闻语料核心义为暂停运行、暂缓或推迟实施；“互相对视”“比较”属于其他义项，不并入本阶段核心释义。多义与混淆：必须依赖上下文，尤其交通新闻中的「運転を見合わせる」。证据：JMdict 1259570，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。'
+  },
+  '高速道路\u0000こうそくどうろ': {
+    candidateChinese: '高速公路',
+    confidence: '高',
+    notes: '基本形：高速道路；词性：名词（JMdict n）。核心义为高速公路、快速道路或高速路。多义与混淆：词形、读音和现代交通语义明确。证据：JMdict 1283720，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '神\u0000かみ': {
+    candidateChinese: '神；神明',
+    confidence: '高',
+    notes: '基本形：神；目标读音：かみ；词性：名词、名词前缀，亦有形容动词化网络用法（JMdict n/n-pref/adj-na）。核心义限定为神、神明或神灵；“神级、太棒了”等网络引申不并入基础释义。多义与混淆：必须与同音「紙（纸）」「髪（头发）」按表记隔离。证据：JMdict 1364440，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '人気\u0000にんき': {
+    candidateChinese: '人气；受欢迎程度',
+    confidence: '高',
+    notes: '基本形：人気；目标读音：にんき；词性：名词及「の」形容修饰（JMdict n/adj-no）。核心义限定为人气、受欢迎程度或公众喜爱。多义与混淆：必须与同形异读「人気（ひとけ，人的气息或有人存在的迹象）」分开处理；后者当前因证据不足保持 blocked。证据：JMdict 1367010，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '生\u0000なま': {
+    candidateChinese: '生的；未加工的；新鲜的',
+    confidence: '中高',
+    notes: '基本形：生；目标读音：なま；词性：名词、前缀及「の」形容修饰（JMdict n/pref/adj-no）。核心义覆盖食物未烹饪、材料未加工，以及现场或未经编辑处理的状态；成人语境等其他义项不并入基础释义。多义与混淆：同一表记「生」有「せい」「しょう」等多种读音，必须按读音和上下文隔离。证据：JMdict 1378450，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。'
+  },
+  '大学院生\u0000だいがくいんせい': {
+    candidateChinese: '研究生；大学院学生',
+    confidence: '高',
+    notes: '基本形：大学院生；词性：名词（JMdict n）。核心义为在日本大学院攻读硕士或博士阶段课程的学生，中文通常称研究生。多义与混淆：注意中文“研究生”与日语「研究生」制度含义不同，本词对应正式大学院在籍学生。证据：JMdict 2077500，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '地球温暖化\u0000ちきゅうおんだんか': {
+    candidateChinese: '全球变暖',
+    confidence: '高',
+    notes: '基本形：地球温暖化；词性：名词（JMdict n）。核心义为全球变暖或地球气候变暖。多义与混淆：术语含义明确，不扩大为整个气候变化概念。证据：JMdict 1420980，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '地方自治体\u0000ちほうじちたい': {
+    candidateChinese: '地方政府；地方自治体',
+    confidence: '高',
+    notes: '基本形：地方自治体；词性：名词（JMdict n）。核心义为依法实行地方自治的地方政府或地方公共团体。多义与混淆：在日本行政语境中可涵盖都道府县和市区町村，不应仅译为单一“市政府”。证据：JMdict 1763330，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  },
+  '電子部品\u0000でんしぶひん': {
+    candidateChinese: '电子元件；电子零部件',
+    confidence: '高',
+    notes: '基本形：電子部品；词性：名词（JMdict n）。核心义为电子设备使用的电子元件或电子零部件。多义与混淆：词形、读音和专业语义明确。证据：JMdict 2132850，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。'
+  }
+};
+
+const BLOCKED_REVIEW_ITEMS = {
+  '一日\u0000ついたち': {
+    reason: 'JMdict common 子集没有「一日（ついたち）」的精确词形＋读音记录，当前证据错误指向「一日（いちにち）」。',
+    notes: '已核验日文表记与目标读音，但当前 JMdict common 证据不包含「ついたち」。不能使用同表记另一读音的义项替代，也不能仅凭 JLPT N5 参考直接批准。下一步需要引入许可明确且包含该读音的独立词典证据，或在更新后的 JMdict 数据中找到精确记录。审核结论：blocked；置信度：高。'
+  },
+  '人気\u0000ひとけ': {
+    reason: 'JMdict common 子集没有「人気（ひとけ）」的精确词形＋读音记录，当前证据错误指向「人気（にんき）」。',
+    notes: '语料目标为「ひとけ」，通常涉及人的气息或有人存在的迹象，但当前证据只支持「にんき（人气、受欢迎程度）」。为避免同形异读错误覆盖，不生成中文候选。下一步需要许可明确的精确读音与义项证据。审核结论：blocked；置信度：高。'
   }
 };
 
@@ -286,9 +402,7 @@ function matchingEntries(gap, index) {
   }
   const uniqueEntries = [...byId.values()];
   const exact = uniqueEntries.filter(entry => entry.w === gap.word && (!gap.reading || entry.r === gap.reading));
-  const headword = uniqueEntries.filter(entry => entry.w === gap.word);
-  const selected = exact.length ? exact : (headword.length ? headword : uniqueEntries.filter(entry => entry.r === gap.reading));
-  return selected.sort((a, b) => String(a.id).localeCompare(String(b.id)));
+  return exact.sort((a, b) => String(a.id).localeCompare(String(b.id)));
 }
 
 function priorityTier(gap) {
@@ -325,7 +439,9 @@ function queueItem(gap, index, position) {
   const flags = riskFlags(gap, entries);
   const englishGlosses = unique(entries.flatMap(entry => entry.g || [])).slice(0, 16);
   const partsOfSpeech = unique(entries.flatMap(entry => entry.p || [])).sort();
-  const review = MANUAL_REVIEW_DRAFTS[`${gap.word}\u0000${gap.reading || ''}`];
+  const reviewKey = `${gap.word}\u0000${gap.reading || ''}`;
+  const review = MANUAL_REVIEW_DRAFTS[reviewKey];
+  const blocked = BLOCKED_REVIEW_ITEMS[reviewKey];
   const base = {
     queueId: `zh-review-${String(position + 1).padStart(3, '0')}`,
     priority: priorityTier(gap),
@@ -359,7 +475,18 @@ function queueItem(gap, index, position) {
       : 'JMdict 英文只作审核证据；中文措辞必须独立人工确认。'
   };
 
-  if (!review) return base;
+  if (blocked) {
+    return {
+      ...base,
+      reviewerStatus: 'blocked',
+      reviewer: REVIEWER,
+      reviewedAt: REVIEWED_AT,
+      decision: 'block',
+      rejectionReason: blocked.reason,
+      notes: blocked.notes
+    };
+  }
+  if (!review || !entries.length) return base;
   return {
     ...base,
     candidateChinese: review.candidateChinese,
@@ -403,6 +530,7 @@ const pendingItems = items.filter(item => item.reviewerStatus === 'pending');
 const draftedItems = items.filter(item => item.reviewerStatus === 'drafted');
 const approvedItems = items.filter(item => item.reviewerStatus === 'approved');
 const rejectedItems = items.filter(item => item.reviewerStatus === 'rejected');
+const blockedItems = items.filter(item => item.reviewerStatus === 'blocked');
 const queue = {
   schemaVersion: 1,
   generatedAt: GENERATED_AT,
@@ -432,7 +560,7 @@ const queue = {
     draftedItems: draftedItems.length,
     approvedItems: approvedItems.length,
     rejectedItems: rejectedItems.length,
-    blockedItems: 0,
+    blockedItems: blockedItems.length,
     withJmdictEvidence: items.filter(item => item.evidence.length).length,
     manualResearchRequired: items.filter(item => !item.evidence.length).length,
     ambiguityReview: items.filter(item => item.reviewType === 'sense-disambiguation').length,

@@ -407,22 +407,6 @@
       "priorityScore": 17
     },
     {
-      "word": "一日",
-      "reading": "ついたち",
-      "count": 1,
-      "categories": [
-        "ambiguity"
-      ],
-      "jlptLevels": [
-        "N5"
-      ],
-      "jmdictAvailable": true,
-      "examples": [
-        "LQ-179"
-      ],
-      "priorityScore": 17
-    },
-    {
       "word": "雨",
       "reading": "あめ",
       "count": 1,
@@ -871,6 +855,22 @@
       "priorityScore": 17
     },
     {
+      "word": "一日",
+      "reading": "ついたち",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-179"
+      ],
+      "priorityScore": 15
+    },
+    {
       "word": "飴",
       "reading": "あめ",
       "count": 1,
@@ -1021,20 +1021,6 @@
       "jmdictAvailable": true,
       "examples": [
         "LQ-180"
-      ],
-      "priorityScore": 12
-    },
-    {
-      "word": "人気",
-      "reading": "ひとけ",
-      "count": 1,
-      "categories": [
-        "ambiguity"
-      ],
-      "jlptLevels": [],
-      "jmdictAvailable": true,
-      "examples": [
-        "LQ-181"
       ],
       "priorityScore": 12
     },
@@ -1357,6 +1343,20 @@
       "jmdictAvailable": false,
       "examples": [
         "LQ-195"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "人気",
+      "reading": "ひとけ",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-181"
       ],
       "priorityScore": 10
     },

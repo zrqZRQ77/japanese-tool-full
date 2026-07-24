@@ -27,6 +27,21 @@ async function loadShardKeys(directory) {
   return { files, keys };
 }
 
+async function loadJmdictIndex(directory) {
+  const files = (await readdir(directory)).filter(file => /^shard-\d+\.json$/.test(file)).sort();
+  const keys = new Set();
+  const entriesByForm = new Map();
+  for (const file of files) {
+    const shard = await readJson(resolve(directory, file));
+    for (const [form, entries] of Object.entries(shard)) {
+      keys.add(form);
+      const existing = entriesByForm.get(form) || [];
+      entriesByForm.set(form, [...existing, ...entries]);
+    }
+  }
+  return { files, keys, entriesByForm };
+}
+
 function candidateForms(item) {
   return [...new Set([
     item.surface,
@@ -38,6 +53,15 @@ function candidateForms(item) {
 
 function firstHit(forms, keys) {
   return forms.find(form => keys.has(form)) || null;
+}
+
+function exactJmdictHit(item, entriesByForm) {
+  const word = String(item.expectedLemma || item.surface || '').trim();
+  const reading = String(item.expectedLemmaReading || item.expectedSurfaceReading || '').trim();
+  if (!word || !reading) return null;
+  const entries = [...(entriesByForm.get(word) || []), ...(entriesByForm.get(reading) || [])];
+  const exact = entries.find(entry => entry.w === word && entry.r === reading);
+  return exact ? `${exact.w}\u0000${exact.r}` : null;
 }
 
 function countBy(items, selector) {
@@ -61,14 +85,14 @@ const [dictionary, supplement, chineseMetadata, jmdictMetadata, jlptMetadata, co
   readJson(resolve(JLPT_DIR, 'metadata.json')),
   readJson(CORPUS_PATH),
   loadShardKeys(CHINESE_DIR),
-  loadShardKeys(JMDICT_DIR)
+  loadJmdictIndex(JMDICT_DIR)
 ]);
 
 const excludedClasses = new Set(['function-word', 'proper-noun-unresolved', 'numeric-or-latin', 'context-dependent']);
 const caseResults = corpus.map(item => {
   const forms = candidateForms(item);
   const chineseHit = firstHit(forms, chineseIndex.keys);
-  const jmdictHit = firstHit(forms, jmdictIndex.keys);
+  const jmdictHit = exactJmdictHit(item, jmdictIndex.entriesByForm);
   const eligible = !excludedClasses.has(item.expectedMeaningClass);
   return {
     id: item.id,

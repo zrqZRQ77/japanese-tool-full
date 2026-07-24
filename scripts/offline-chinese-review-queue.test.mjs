@@ -18,25 +18,25 @@ assert.equal(queue.baseline.mainCommit, '6a821a65d56af7576e4312ef4b1df33eb6d889f
 assert.equal(queue.policy.automaticApprovalAllowed, false);
 assert.equal(queue.policy.aiDraftPublishAllowed, false);
 assert.equal(queue.summary.totalItems, 96);
-assert.deepEqual(queue.summary.priorityCounts, { P0: 5, P1: 43, P2: 22, P3: 26 });
-assert.deepEqual(queue.summary.remainingPriorityCounts, { P2: 22, P3: 26 });
-assert.deepEqual(queue.summary.draftedPriorityCounts, { P0: 5, P1: 43 });
+assert.deepEqual(queue.summary.priorityCounts, { P0: 5, P1: 43, P2: 21, P3: 27 });
+assert.deepEqual(queue.summary.remainingPriorityCounts, { P3: 26 });
+assert.deepEqual(queue.summary.draftedPriorityCounts, { P0: 5, P1: 42, P2: 21 });
 assert.deepEqual(queue.summary.reviewTypeCounts, {
   'high-frequency-lexical': 15,
-  'manual-research-required': 26,
-  'sense-disambiguation': 48,
+  'manual-research-required': 28,
+  'sense-disambiguation': 46,
   'standard-lexical': 7
 });
-assert.deepEqual(queue.summary.reviewerStatusCounts, { drafted: 48, pending: 48 });
-assert.equal(queue.summary.reviewedItems, 48);
-assert.equal(queue.summary.pendingItems, 48);
-assert.equal(queue.summary.draftedItems, 48);
+assert.deepEqual(queue.summary.reviewerStatusCounts, { blocked: 2, drafted: 68, pending: 26 });
+assert.equal(queue.summary.reviewedItems, 70);
+assert.equal(queue.summary.pendingItems, 26);
+assert.equal(queue.summary.draftedItems, 68);
 assert.equal(queue.summary.approvedItems, 0);
-assert.equal(queue.summary.blockedItems, 0);
-assert.equal(queue.summary.withJmdictEvidence, 70);
-assert.equal(queue.summary.manualResearchRequired, 26);
+assert.equal(queue.summary.blockedItems, 2);
+assert.equal(queue.summary.withJmdictEvidence, 68);
+assert.equal(queue.summary.manualResearchRequired, 28);
 assert.equal(queue.summary.sameWrittenFormGroups, 3);
-assert.equal(queue.summary.candidateChineseFilled, 48);
+assert.equal(queue.summary.candidateChineseFilled, 68);
 assert.equal(new Set(queue.items.map(item => item.queueId)).size, queue.items.length);
 assert.equal(new Set(queue.items.map(item => `${item.word}\u0000${item.reading || ''}`)).size, queue.items.length);
 assert.ok(queue.items.filter(item => item.reviewerStatus === 'pending').every(item => item.candidateChinese === null));
@@ -48,7 +48,17 @@ assert.ok(queue.items.filter(item => item.reviewerStatus === 'drafted').every(it
   && item.notes.includes('置信度：')
 )));
 assert.ok(queue.items.every(item => item.evidence.length || item.reviewType === 'manual-research-required'));
-assert.ok(queue.items.filter(item => item.evidence.length).every(item => item.evidence[0].license === 'CC-BY-SA-4.0'));
+assert.ok(queue.items.filter(item => item.evidence.length).every(item => (
+  item.evidence[0].license === 'CC-BY-SA-4.0'
+  && item.evidence[0].headwords.includes(item.word)
+  && item.evidence[0].readings.includes(item.reading)
+)));
+assert.ok(queue.items.filter(item => item.reviewerStatus === 'blocked').every(item => (
+  item.candidateChinese === null
+  && item.decision === 'block'
+  && item.rejectionReason
+  && item.notes.includes('下一步')
+)));
 
 function item(word, reading) {
   const found = queue.items.find(candidate => candidate.word === word && candidate.reading === reading);
@@ -82,14 +92,20 @@ assert.deepEqual(openHiraku.exampleCaseIds, ['LQ-175']);
 assert.deepEqual(openAku.evidence[0].readings, ['あく']);
 assert.deepEqual(openHiraku.evidence[0].readings, ['ひらく']);
 assert.equal(openAku.reviewerStatus, 'drafted');
-assert.equal(openHiraku.reviewerStatus, 'pending');
+assert.equal(openHiraku.reviewerStatus, 'drafted');
 assert.ok(openAku.riskFlags.includes('same-written-form-multiple-readings'));
 assert.ok(openHiraku.riskFlags.includes('same-written-form-multiple-readings'));
 
 assert.deepEqual(item('一日', 'いちにち').exampleCaseIds, ['LQ-178']);
-assert.deepEqual(item('一日', 'ついたち').exampleCaseIds, ['LQ-179']);
+const firstDay = item('一日', 'ついたち');
+assert.deepEqual(firstDay.exampleCaseIds, ['LQ-179']);
+assert.equal(firstDay.reviewerStatus, 'blocked');
+assert.equal(firstDay.evidence.length, 0);
 assert.deepEqual(item('人気', 'にんき').exampleCaseIds, ['LQ-180']);
-assert.deepEqual(item('人気', 'ひとけ').exampleCaseIds, ['LQ-181']);
+const humanPresence = item('人気', 'ひとけ');
+assert.deepEqual(humanPresence.exampleCaseIds, ['LQ-181']);
+assert.equal(humanPresence.reviewerStatus, 'blocked');
+assert.equal(humanPresence.evidence.length, 0);
 assert.deepEqual(queue.sameWrittenFormGroups, [
   { word: '一日', readings: ['いちにち', 'ついたち'] },
   { word: '開く', readings: ['あく', 'ひらく'] },
@@ -98,17 +114,22 @@ assert.deepEqual(queue.sameWrittenFormGroups, [
 
 const drafted = queue.items.filter(candidate => candidate.reviewerStatus === 'drafted');
 assert.deepEqual(drafted.filter(candidate => candidate.priority === 'P0').map(candidate => candidate.word), ['帰る', '書く', '静か', '待つ', '来る']);
-assert.equal(drafted.filter(candidate => candidate.priority === 'P1').length, 43);
-assert.ok(queue.items.filter(candidate => candidate.priority === 'P1').every(candidate => candidate.reviewerStatus === 'drafted'));
+assert.equal(drafted.filter(candidate => candidate.priority === 'P1').length, 42);
+assert.deepEqual(queue.items.filter(candidate => candidate.priority === 'P1').map(candidate => candidate.reviewerStatus).sort(), ['blocked', ...Array(42).fill('drafted')].sort());
+assert.equal(drafted.filter(candidate => candidate.priority === 'P2').length, 21);
+assert.ok(queue.items.filter(candidate => candidate.priority === 'P2').every(candidate => candidate.reviewerStatus === 'drafted'));
 assert.equal(item('青い', 'あおい').candidateChinese, '蓝色的；青绿色的；青涩的');
-assert.equal(item('一日', 'ついたち').candidateChinese, '每月一日；一号');
 assert.equal(item('着る', 'きる').candidateChinese, '穿；穿上（衣服）');
+assert.equal(item('施行', 'しこう').candidateChinese, '施行；实施；执行（法律、政策等）');
+assert.equal(item('人気', 'にんき').candidateChinese, '人气；受欢迎程度');
+assert.equal(item('電子部品', 'でんしぶひん').candidateChinese, '电子元件；电子零部件');
 
 const manual = queue.items.filter(candidate => candidate.reviewType === 'manual-research-required');
-assert.equal(manual.length, 26);
-assert.ok(manual.every(candidate => candidate.reviewerStatus === 'pending'));
+assert.equal(manual.length, 28);
+assert.equal(manual.filter(candidate => candidate.reviewerStatus === 'pending').length, 26);
+assert.equal(manual.filter(candidate => candidate.reviewerStatus === 'blocked').length, 2);
 assert.ok(manual.every(candidate => candidate.riskFlags.includes('no-jmdict-evidence')));
-assert.ok(manual.every(candidate => candidate.notes.includes('不得由 AI 自动生成正式释义')));
+assert.ok(manual.filter(candidate => candidate.reviewerStatus === 'pending').every(candidate => candidate.notes.includes('不得由 AI 自动生成正式释义')));
 
 assert.match(markdown, /`drafted` 表示已逐项核验证据/);
 assert.match(markdown, /JMdict 英文释义只作审核证据/);

@@ -26,14 +26,15 @@ assert.equal(report.summary.curatedOverlaps, 1);
 assert.equal(report.summary.indexedEntries, 158);
 assert.equal(report.summary.indexedForms, 285);
 assert.equal(report.summary.reviewQueueItems, 96);
-assert.equal(report.summary.reviewedItems, 48);
-assert.equal(report.summary.pendingItems, 48);
-assert.equal(report.summary.draftedItems, 48);
+assert.equal(report.summary.reviewedItems, 70);
+assert.equal(report.summary.pendingItems, 26);
+assert.equal(report.summary.draftedItems, 68);
 assert.equal(report.summary.approvedItems, 0);
 assert.equal(report.summary.rejectedItems, 0);
+assert.equal(report.summary.blockedItems, 2);
 assert.equal(report.summary.homophoneGroups, 6);
 assert.equal(report.summary.sameWrittenFormGroups, 3);
-assert.equal(report.summary.multiPosEvidenceItems, 37);
+assert.equal(report.summary.multiPosEvidenceItems, 35);
 
 assert.equal(report.warnings[0].code, 'curated-source-overlap');
 assert.deepEqual(report.warnings[0].words, ['企業']);
@@ -59,6 +60,8 @@ assert.match(markdown, /状态：PASS/);
 assert.match(markdown, /企業/);
 assert.match(markdown, /drafted 项目必须有中文草稿/);
 assert.match(markdown, /approved 项目必须有中文释义、证据、人工审核人/);
+assert.match(markdown, /blocked 项目不得生成中文候选/);
+assert.match(markdown, /词形与读音必须精确匹配目标项目/);
 assert.match(markdown, /同音词和多词性证据不自动报错/);
 
 process.stdout.write('Offline Chinese data-quality, assisted-review, and release-gate tests passed.\n');

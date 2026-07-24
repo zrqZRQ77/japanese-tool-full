@@ -30,10 +30,10 @@
     "chineseHits": 83,
     "chineseMisses": 124,
     "chineseCoveragePercent": 40.1,
-    "jmdictFallbackHits": 98,
-    "unresolvedAfterJmdict": 26,
-    "combinedResolvableCases": 181,
-    "combinedResolvablePercent": 87.4,
+    "jmdictFallbackHits": 96,
+    "unresolvedAfterJmdict": 28,
+    "combinedResolvableCases": 179,
+    "combinedResolvablePercent": 86.5,
     "meaningClassDistribution": {
       "jmdict-fallback": 121,
       "known-chinese": 60,
@@ -64,7 +64,7 @@
     "unresolvedByCategory": {
       "news": 14,
       "compounds": 11,
-      "ambiguity": 1
+      "ambiguity": 3
     }
   },
   "architecture": {
@@ -475,22 +475,6 @@
       "jmdictAvailable": true,
       "examples": [
         "LQ-178"
-      ],
-      "priorityScore": 17
-    },
-    {
-      "word": "一日",
-      "reading": "ついたち",
-      "count": 1,
-      "categories": [
-        "ambiguity"
-      ],
-      "jlptLevels": [
-        "N5"
-      ],
-      "jmdictAvailable": true,
-      "examples": [
-        "LQ-179"
       ],
       "priorityScore": 17
     },
@@ -943,6 +927,22 @@
       "priorityScore": 17
     },
     {
+      "word": "一日",
+      "reading": "ついたち",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-179"
+      ],
+      "priorityScore": 15
+    },
+    {
       "word": "飴",
       "reading": "あめ",
       "count": 1,
@@ -1093,20 +1093,6 @@
       "jmdictAvailable": true,
       "examples": [
         "LQ-180"
-      ],
-      "priorityScore": 12
-    },
-    {
-      "word": "人気",
-      "reading": "ひとけ",
-      "count": 1,
-      "categories": [
-        "ambiguity"
-      ],
-      "jlptLevels": [],
-      "jmdictAvailable": true,
-      "examples": [
-        "LQ-181"
       ],
       "priorityScore": 12
     },
@@ -1433,6 +1419,20 @@
       "priorityScore": 10
     },
     {
+      "word": "人気",
+      "reading": "ひとけ",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-181"
+      ],
+      "priorityScore": 10
+    },
+    {
       "word": "中央銀行",
       "reading": "ちゅうおうぎんこう",
       "count": 1,
@@ -1546,6 +1546,32 @@
     }
   ],
   "unresolvedCases": [
+    {
+      "id": "LQ-179",
+      "category": "ambiguity",
+      "surface": "一日",
+      "lemma": "一日",
+      "reading": "ついたち",
+      "jlpt": "N5",
+      "expectedMeaningClass": "jmdict-fallback",
+      "eligible": true,
+      "chineseHit": null,
+      "jmdictHit": null,
+      "resolution": "unresolved"
+    },
+    {
+      "id": "LQ-181",
+      "category": "ambiguity",
+      "surface": "人気",
+      "lemma": "人気",
+      "reading": "ひとけ",
+      "jlpt": null,
+      "expectedMeaningClass": "jmdict-fallback",
+      "eligible": true,
+      "chineseHit": null,
+      "jmdictHit": null,
+      "resolution": "unresolved"
+    },
     {
       "id": "LQ-184",
       "category": "ambiguity",

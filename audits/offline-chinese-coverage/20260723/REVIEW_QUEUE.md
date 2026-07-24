@@ -17,17 +17,17 @@ First assisted review batch: 2026-07-24
 - 总项目：96
 - P0：5
 - P1：43
-- P2：22
-- P3：26
-- 已逐项审核并形成草稿：48
-- drafted：48
+- P2：21
+- P3：27
+- 已逐项审核并形成草稿：70
+- drafted：68
 - approved：0
-- pending：48
-- blocked：0
-- 待处理 P0/P1/P2/P3：0/0/22/26
-- 有 JMdict 证据：70
-- 需独立人工调查：26
-- 歧义审核：48
+- pending：26
+- blocked：2
+- 待处理 P0/P1/P2/P3：0/0/0/26
+- 有 JMdict 证据：68
+- 需独立人工调查：28
+- 歧义审核：46
 - 同形异读组：3
 
 ## 同形异读隔离
@@ -64,22 +64,22 @@ First assisted review batch: 2026-07-24
 | zh-review-022 | P1 | drafted | 終わる | おわる | 2 | — | 结束；完毕 | sense-disambiguation | broad-sense-range |
 | zh-review-023 | P1 | drafted | 買う | かう | 2 | — | 买；购买 | sense-disambiguation | broad-sense-range |
 | zh-review-024 | P1 | drafted | 一日 | いちにち | 1 | N5 | 一天；一整天 | sense-disambiguation | ambiguity, same-written-form-multiple-readings |
-| zh-review-025 | P1 | drafted | 一日 | ついたち | 1 | N5 | 每月一日；一号 | sense-disambiguation | ambiguity, same-written-form-multiple-readings |
-| zh-review-026 | P1 | drafted | 雨 | あめ | 1 | N5 | 雨；雨天 | sense-disambiguation | ambiguity |
-| zh-review-027 | P1 | drafted | 駅 | えき | 1 | N5 | 车站；火车站 | high-frequency-lexical | — |
-| zh-review-028 | P1 | drafted | 音楽 | おんがく | 1 | N5 | 音乐 | high-frequency-lexical | — |
-| zh-review-029 | P1 | drafted | 家 | いえ | 1 | N5 | 房子；家；住所 | sense-disambiguation | broad-sense-range |
-| zh-review-030 | P1 | drafted | 花 | はな | 1 | N5 | 花；花朵 | sense-disambiguation | ambiguity, broad-sense-range |
-| zh-review-031 | P1 | drafted | 机 | つくえ | 1 | N5 | 桌子；书桌 | high-frequency-lexical | — |
-| zh-review-032 | P1 | drafted | 橋 | はし | 1 | N5 | 桥；桥梁 | sense-disambiguation | ambiguity |
-| zh-review-033 | P1 | drafted | 犬 | いぬ | 1 | N5 | 狗；犬 | sense-disambiguation | broad-sense-range |
-| zh-review-034 | P1 | drafted | 公園 | こうえん | 1 | N5 | 公园 | high-frequency-lexical | — |
-| zh-review-035 | P1 | drafted | 昨日 | きのう | 1 | N5 | 昨天 | high-frequency-lexical | — |
-| zh-review-036 | P1 | drafted | 仕事 | しごと | 1 | N5 | 工作；职业；任务 | sense-disambiguation | broad-sense-range |
-| zh-review-037 | P2 | pending | 施行 | しこう | 1 | N1 | — | sense-disambiguation | broad-sense-range |
-| zh-review-038 | P1 | drafted | 紙 | かみ | 1 | N5 | 纸；纸张 | sense-disambiguation | ambiguity |
-| zh-review-039 | P1 | drafted | 写真 | しゃしん | 1 | N5 | 照片；摄影 | sense-disambiguation | broad-sense-range |
-| zh-review-040 | P2 | pending | 審議 | しんぎ | 1 | N1 | — | high-frequency-lexical | — |
+| zh-review-025 | P1 | drafted | 雨 | あめ | 1 | N5 | 雨；雨天 | sense-disambiguation | ambiguity |
+| zh-review-026 | P1 | drafted | 駅 | えき | 1 | N5 | 车站；火车站 | high-frequency-lexical | — |
+| zh-review-027 | P1 | drafted | 音楽 | おんがく | 1 | N5 | 音乐 | high-frequency-lexical | — |
+| zh-review-028 | P1 | drafted | 家 | いえ | 1 | N5 | 房子；家；住所 | sense-disambiguation | broad-sense-range |
+| zh-review-029 | P1 | drafted | 花 | はな | 1 | N5 | 花；花朵 | sense-disambiguation | ambiguity, broad-sense-range |
+| zh-review-030 | P1 | drafted | 机 | つくえ | 1 | N5 | 桌子；书桌 | high-frequency-lexical | — |
+| zh-review-031 | P1 | drafted | 橋 | はし | 1 | N5 | 桥；桥梁 | sense-disambiguation | ambiguity |
+| zh-review-032 | P1 | drafted | 犬 | いぬ | 1 | N5 | 狗；犬 | sense-disambiguation | broad-sense-range |
+| zh-review-033 | P1 | drafted | 公園 | こうえん | 1 | N5 | 公园 | high-frequency-lexical | — |
+| zh-review-034 | P1 | drafted | 昨日 | きのう | 1 | N5 | 昨天 | high-frequency-lexical | — |
+| zh-review-035 | P1 | drafted | 仕事 | しごと | 1 | N5 | 工作；职业；任务 | sense-disambiguation | broad-sense-range |
+| zh-review-036 | P2 | drafted | 施行 | しこう | 1 | N1 | 施行；实施；执行（法律、政策等） | sense-disambiguation | broad-sense-range |
+| zh-review-037 | P1 | drafted | 紙 | かみ | 1 | N5 | 纸；纸张 | sense-disambiguation | ambiguity |
+| zh-review-038 | P1 | drafted | 写真 | しゃしん | 1 | N5 | 照片；摄影 | sense-disambiguation | broad-sense-range |
+| zh-review-039 | P2 | drafted | 審議 | しんぎ | 1 | N1 | 审议；讨论研究 | high-frequency-lexical | — |
+| zh-review-040 | P1 | drafted | 水 | みず | 1 | N5 | 水；凉水 | sense-disambiguation | broad-sense-range |
 
 ## 审核动作
 

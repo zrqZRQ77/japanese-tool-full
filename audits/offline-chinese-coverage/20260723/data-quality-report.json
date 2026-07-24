@@ -10,7 +10,7 @@
     "dictionary": "69b343c085de93e14e32ee3508509a2971944168acf3e34e53eb07cafb45e45a",
     "supplement": "e221bfc6e261f355ad47d1689c744a067e95a801dbf467ca959e75b006bf76a1",
     "chineseMetadata": "63aaedb8a1265a7b66d119007dbcde3e705e48fb51bcdd104ad8635887be245f",
-    "reviewQueue": "9d186d4d596600fd9967d3d4b88200d35ab8680c95c18f2fee47d42b059ed32d",
+    "reviewQueue": "97173d0f52fd134e4c1c95db8f7e4f38e971d84df945ff330c8e92e59aecbc78",
     "sourceRegistry": "22e6a4862f0392566a77fc6c9ba6f6c9d788ede4426b59eaecf7ad0f97446fdb"
   },
   "summary": {
@@ -24,14 +24,15 @@
     "indexedEntries": 158,
     "indexedForms": 285,
     "reviewQueueItems": 96,
-    "reviewedItems": 48,
-    "pendingItems": 48,
-    "draftedItems": 48,
+    "reviewedItems": 70,
+    "pendingItems": 26,
+    "draftedItems": 68,
     "approvedItems": 0,
     "rejectedItems": 0,
+    "blockedItems": 2,
     "homophoneGroups": 6,
     "sameWrittenFormGroups": 3,
-    "multiPosEvidenceItems": 37
+    "multiPosEvidenceItems": 35
   },
   "errors": [],
   "warnings": [
@@ -123,7 +124,7 @@
     {
       "code": "multi-pos-evidence",
       "message": "部分 JMdict 证据包含多个词性，审核时需要按义项选择。",
-      "itemCount": 37
+      "itemCount": 35
     }
   ]
 }
