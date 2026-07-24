@@ -1,10 +1,22 @@
 (() => {
   'use strict';
 
-  const ROUTE_URL = '/challenge/train/routes/yamanote-short.json';
-  const PUBLIC_CHALLENGE_URL = 'https://yomeru.japanese-hub.com/challenge/train';
-  const PUBLIC_CHALLENGE_DISPLAY_URL = 'yomeru.japanese-hub.com/challenge/train';
-  const STORAGE_KEY = 'yomeru_train_typing_v1';
+  const shared = window.YOMERU_TRAIN_SHARED;
+  if (!shared) throw new Error('Yomeru train shared runtime is missing.');
+
+  const {
+    STORAGE_KEY,
+    DEFAULT_ROUTE_ID,
+    validMode,
+    readStorage,
+    writeStorage,
+    getRouteState,
+    resultRecordKey,
+    formatElapsed,
+    routeShareUrl,
+    loadRegistry
+  } = shared;
+
   const MODES = Object.freeze({
     'kanji-to-kana': Object.freeze({
       label: 'KANJI → KANA',
@@ -19,6 +31,7 @@
       answers: station => station.acceptedKanji
     })
   });
+
   const RULES = Object.freeze({
     timerStartsOnDeparture: true,
     ignoreEnterWhileComposing: true,
@@ -26,21 +39,28 @@
     kanaMode: 'listed-hiragana-only',
     kanjiMode: 'listed-kanji-only',
     scorePriority: ['completed', 'accuracy', 'elapsedMs', 'cpm'],
-    localStorageNamespace: STORAGE_KEY
+    localStorageNamespace: STORAGE_KEY,
+    routeStorageIsolation: true
   });
 
+  let registry = null;
+  let registryEntry = null;
   let routeData = null;
   let compositionActive = false;
   let timerFrame = 0;
   let game = createIdleGame();
 
+  function requestedRouteId() {
+    return new URLSearchParams(window.location.search).get('route') || DEFAULT_ROUTE_ID;
+  }
+
   function createIdleGame(mode = 'kanji-to-kana', showHints = false) {
     return {
       phase: 'start',
       mode,
-      showHints:Boolean(showHints),
-      hintedStationIds:new Set(),
-      hintCount:0,
+      showHints: Boolean(showHints),
+      hintedStationIds: new Set(),
+      hintCount: 0,
       index: 0,
       startedAt: null,
       completedAt: null,
@@ -58,60 +78,11 @@
     };
   }
 
-  function defaultStorage() {
-    return {
-      schemaVersion: 1,
-      bestByMode: {},
-      recentResults: [],
-      totalChallenges: 0,
-      lastMode: 'kanji-to-kana',
-      lastShowHints: false
-    };
-  }
-
-  function validMode(value) {
-    return Object.hasOwn(MODES, value) ? value : 'kanji-to-kana';
-  }
-
-  function readStorage() {
-    try {
-      const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-      if (!value || value.schemaVersion !== 1) return defaultStorage();
-      return {
-        schemaVersion: 1,
-        bestByMode: value.bestByMode && typeof value.bestByMode === 'object' ? value.bestByMode : {},
-        recentResults: Array.isArray(value.recentResults) ? value.recentResults.slice(0, 5) : [],
-        totalChallenges: Number.isFinite(Number(value.totalChallenges)) ? Math.max(0, Number(value.totalChallenges)) : 0,
-        lastMode: validMode(value.lastMode),
-        lastShowHints: Boolean(value.lastShowHints)
-      };
-    } catch {
-      return defaultStorage();
-    }
-  }
-
-  function writeStorage(value) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
   function normalizeAnswer(value) {
     return String(value || '')
       .normalize('NFKC')
       .trim()
       .replace(/[\s\u3000]+/g, '');
-  }
-
-  function formatElapsed(milliseconds) {
-    const safe = Math.max(0, Number(milliseconds) || 0);
-    const minutes = Math.floor(safe / 60000);
-    const seconds = Math.floor((safe % 60000) / 1000);
-    const tenths = Math.floor((safe % 1000) / 100);
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${tenths}`;
   }
 
   function formatSeconds(milliseconds) {
@@ -131,6 +102,7 @@
 
   function snapshot() {
     return {
+      routeId: routeData?.routeId || requestedRouteId(),
       phase: game.phase,
       mode: game.mode,
       showHints: game.showHints,
@@ -159,6 +131,37 @@
     });
   }
 
+  function applyRouteTheme() {
+    const theme = routeData?.theme || registryEntry?.theme || {};
+    const root = document.documentElement;
+    if (theme.signal) root.style.setProperty('--signal', theme.signal);
+    if (theme.signalDark) root.style.setProperty('--signal-dark', theme.signalDark);
+    if (theme.arrival) root.style.setProperty('--arrival', theme.arrival);
+    document.body.dataset.routeId = routeData.routeId;
+  }
+
+  function applyRouteMetadata() {
+    const stations = routeData.stations;
+    const first = stations[0];
+    const last = stations.at(-1);
+    const routeLabel = `${routeData.lineNameZh} · ${routeData.titleZh}`;
+    document.title = `${routeData.titleZh}｜Yomeru 电车日语输入挑战`;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', `${routeData.lineNameZh}${routeData.titleZh}，输入日语站名，把列车开到终点。`);
+    document.getElementById('routeChip').querySelector('span').textContent = routeLabel;
+    document.getElementById('routeEyebrow').textContent = `${routeData.lineNameJa} / ${routeData.subtitleZh}`;
+    document.getElementById('routeLoopHeading').textContent = `${routeData.lineNameZh}${routeData.subtitleZh} · ${stations.length} 站`;
+    document.getElementById('startRouteLoop').setAttribute('aria-label', `${first.display}到${last.display}的${stations.length}站原创路线示意图`);
+    document.getElementById('resultStartStation').textContent = first.display;
+    document.getElementById('resultEndStation').textContent = last.display;
+    document.getElementById('resultTrainIcon').alt = `列车已抵达${last.display}`;
+    document.getElementById('resultEyebrow').textContent = `${routeData.lineNameJa} / ARRIVED`;
+    const sourceLink = document.getElementById('routeSourceLink');
+    sourceLink.href = routeData.source.url;
+    sourceLink.target = '_blank';
+    sourceLink.textContent = `站序参考 ${routeData.source.organization} · 不是铁路运营机构官方产品`;
+    document.querySelector('.rail-stops')?.style.setProperty('--station-count', String(stations.length));
+  }
+
   function cubicPoint(t, start, controlA, controlB, end) {
     const inverse = 1 - t;
     return {
@@ -182,7 +185,7 @@
 
   function renderStartRoute(stations, mode = selectedMode()) {
     const target = document.getElementById('startRouteMap');
-    if (!target) return;
+    if (!target || stations.length < 2) return;
     const start = { x: 104, y: 158 };
     const controlA = { x: 234, y: 12 };
     const controlB = { x: 666, y: 12 };
@@ -197,7 +200,9 @@
       const longClass = [...label].length >= 4 ? ' is-long' : '';
       return `<g class="route-loop-station${endpointClass}${longClass}" data-station-id="${station.id}"><circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="13"></circle><text x="${point.x.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="middle">${tspans}</text></g>`;
     }).join('');
-    target.innerHTML = `<svg viewBox="0 0 900 235" role="img" aria-label="新宿到上野的山手线北侧短程，按照实际车站顺序绘制的原创半环形示意图"><desc>按照实际车站顺序绘制的原创半环形示意图，不是官方线路图。</desc><path class="route-loop-ghost" d="M104 158 C234 236 666 236 796 158"></path><path class="route-loop-line" d="M104 158 C234 12 666 12 796 158"></path>${stationMarkup}</svg>`;
+    const first = stations[0];
+    const last = stations.at(-1);
+    target.innerHTML = `<svg viewBox="0 0 900 235" role="img" aria-label="${first.display}到${last.display}的${routeData.lineNameZh}${routeData.subtitleZh}原创示意图"><desc>按照实际车站顺序绘制的原创半环形示意图，不是官方线路图。</desc><path class="route-loop-ghost" d="M104 158 C234 236 666 236 796 158"></path><path class="route-loop-line" d="M104 158 C234 12 666 12 796 158"></path>${stationMarkup}</svg>`;
   }
 
   function stationProgressLabel(station) {
@@ -208,6 +213,7 @@
     const target = document.getElementById('playRouteStops');
     const marker = document.getElementById('trainMarker');
     if (!target || !routeData) return;
+    target.style.setProperty('--station-count', String(routeData.stations.length));
     target.innerHTML = routeData.stations.map((station, index) => {
       const className = index < game.index ? ' completed' : (index === game.index ? ' current' : '');
       const label = stationProgressLabel(station);
@@ -220,7 +226,7 @@
     target.parentElement?.style.setProperty('--route-progress-ratio', String(progress));
     if (marker) {
       marker.style.setProperty('--train-position', `${6 + progress * 88}%`);
-      marker.alt = `列车当前位于${routeData.stations[game.index]?.display || '终点'}`;
+      marker.alt = `列车当前位于${routeData.stations[game.index]?.display || routeData.stations.at(-1).display}`;
     }
   }
 
@@ -254,10 +260,8 @@
 
   function renderStationContext() {
     if (!routeData || game.phase !== 'play') return;
-    const station = routeData.stations[game.index];
-    const next = routeData.stations[game.index + 1];
-    document.getElementById('currentStationName').textContent = stationContextText(station);
-    document.getElementById('nextStationName').textContent = stationContextText(next);
+    document.getElementById('currentStationName').textContent = stationContextText(routeData.stations[game.index]);
+    document.getElementById('nextStationName').textContent = stationContextText(routeData.stations[game.index + 1]);
   }
 
   function renderPracticeHint({ countUsage = true } = {}) {
@@ -293,29 +297,34 @@
     });
   }
 
-  function renderStoredSummary() {
+  function currentRouteState({ create = false } = {}) {
     const storage = readStorage();
-    const total = document.getElementById('totalChallengeCount');
-    if (total) total.textContent = `${storage.totalChallenges} 次`;
+    return { storage, state: getRouteState(storage, routeData.routeId, { create }) };
+  }
+
+  function renderStoredSummary() {
+    if (!routeData) return;
+    const { state } = currentRouteState();
     document.querySelectorAll('input[name="mode"]').forEach(input => {
-      input.checked = input.value === storage.lastMode;
+      input.checked = input.value === state.lastMode;
     });
     if (game.phase === 'start') syncHintToggles(false);
   }
 
   function renderMetrics() {
     const totalSubmissions = game.correctSubmissions + game.wrongSubmissions;
+    const stationCount = routeData?.stations.length || 0;
     document.getElementById('elapsedValue').textContent = formatElapsed(elapsedNow());
-    document.getElementById('progressValue').textContent = `${String(game.index + 1).padStart(2, '0')} / ${String(routeData?.stations.length || 13).padStart(2, '0')}`;
+    document.getElementById('progressValue').textContent = `${String(Math.min(game.index + 1, stationCount)).padStart(2, '0')} / ${String(stationCount).padStart(2, '0')}`;
     document.getElementById('accuracyValue').textContent = totalSubmissions ? `${Math.round(accuracyValue() * 100)}%` : '—';
     document.getElementById('streakValue').textContent = String(game.currentStreak);
   }
 
   function promptSizeFor(value) {
     const length = [...String(value || '')].length;
-    if (length >= 6) return 'extra-long';
-    if (length >= 4) return 'long';
-    if (length === 3) return 'medium';
+    if (length >= 8) return 'extra-long';
+    if (length >= 5) return 'long';
+    if (length >= 3) return 'medium';
     return 'short';
   }
 
@@ -369,9 +378,9 @@
     game.phase = 'play';
     game.startedAt = now;
     game.stationStartedAt = now;
-    const storage = readStorage();
-    storage.lastMode = mode;
-    storage.lastShowHints = false;
+    const { storage, state } = currentRouteState({ create: true });
+    state.lastMode = mode;
+    storage.lastRouteId = routeData.routeId;
     writeStorage(storage);
     setPhase('play');
     renderQuestion({ resetScroll: true });
@@ -395,14 +404,12 @@
     const now = performance.now();
     if (now - game.lastSubmitAt < 120) return false;
     game.lastSubmitAt = now;
-
     const input = document.getElementById('trainAnswerInput');
     const answer = normalizeAnswer(input.value);
     if (!answer) {
       setFeedback('请输入答案后再确认。', 'error');
       return false;
     }
-
     const station = routeData.stations[game.index];
     if (!expectedAnswers(station).includes(answer)) {
       game.wrongSubmissions += 1;
@@ -411,7 +418,6 @@
       renderMetrics();
       return false;
     }
-
     game.correctSubmissions += 1;
     game.currentStreak += 1;
     game.bestStreak = Math.max(game.bestStreak, game.currentStreak);
@@ -420,14 +426,8 @@
     game.locked = true;
     document.getElementById('trainAnswerSubmitButton').disabled = true;
     const usedKanjiVariant = game.mode === 'kana-to-kanji' && answer !== normalizeAnswer(station.display);
-    setFeedback(
-      usedKanjiVariant
-        ? `已接受。日文标准站名写作「${station.display}」。`
-        : `正确：${station.display}（${station.reading}）`,
-      'correct'
-    );
+    setFeedback(usedKanjiVariant ? `已接受。日文标准站名写作「${station.display}」。` : `正确：${station.display}（${station.reading}）`, 'correct');
     renderMetrics();
-
     const completedIndex = game.index;
     window.setTimeout(() => {
       if (game.finished || game.index !== completedIndex) return;
@@ -450,26 +450,22 @@
     return candidate.cpm > current.cpm;
   }
 
-  function resultRecordKey(result) {
-    return result.hintCount > 0 ? `${result.mode}:practice` : result.mode;
-  }
-
   function resultPracticeLabel(result) {
-    if (result.hintCount >= (routeData?.stations.length || 13)) return '练习模式 · 全程使用提示';
+    if (result.hintCount >= routeData.stations.length) return '练习模式 · 全程使用提示';
     if (result.hintCount > 0) return `练习模式 · 使用提示 ${result.hintCount} 站`;
     return '纯挑战 · 未使用提示';
   }
 
   function persistResult(result) {
-    const storage = readStorage();
-    storage.totalChallenges += 1;
-    storage.lastMode = result.mode;
-    storage.lastShowHints = false;
-    storage.recentResults = [result, ...storage.recentResults].slice(0, 5);
+    const { storage, state } = currentRouteState({ create: true });
+    state.totalChallenges += 1;
+    state.lastMode = result.mode;
+    state.recentResults = [result, ...state.recentResults].slice(0, 5);
     const recordKey = resultRecordKey(result);
-    if (isBetterResult(result, storage.bestByMode[recordKey])) storage.bestByMode[recordKey] = result;
+    if (isBetterResult(result, state.bestByMode[recordKey])) state.bestByMode[recordKey] = result;
+    storage.lastRouteId = routeData.routeId;
     writeStorage(storage);
-    return storage;
+    return state;
   }
 
   function finishGame() {
@@ -480,11 +476,15 @@
     stopTimer();
     const elapsedMs = elapsedNow();
     const accuracy = accuracyValue();
-    const averageStationMs = routeData?.stations.length ? elapsedMs / routeData.stations.length : 0;
+    const averageStationMs = elapsedMs / routeData.stations.length;
     const elapsedMinutes = elapsedMs / 60000;
     const cpm = elapsedMinutes > 0 ? game.correctChars / elapsedMinutes : 0;
     const result = {
-      schemaVersion: 1,
+      schemaVersion: 2,
+      routeId: routeData.routeId,
+      routeTitle: routeData.titleZh,
+      lineNameZh: routeData.lineNameZh,
+      stationCount: routeData.stations.length,
       completed: true,
       mode: game.mode,
       completedAt: new Date().toISOString(),
@@ -500,12 +500,12 @@
       assisted: game.hintCount > 0
     };
     game.result = result;
-    const storage = persistResult(result);
-    renderResult(result, storage);
+    const routeState = persistResult(result);
+    renderResult(result, routeState);
     setPhase('result');
   }
 
-  function renderResult(result, storage) {
+  function renderResult(result, routeState) {
     document.getElementById('resultElapsed').textContent = formatElapsed(result.elapsedMs);
     document.getElementById('resultAccuracy').textContent = `${Math.round(result.accuracy * 100)}%`;
     document.getElementById('resultAverage').textContent = formatSeconds(result.averageStationMs);
@@ -514,17 +514,27 @@
     const hintUsage = document.getElementById('resultHintUsage');
     hintUsage.textContent = resultPracticeLabel(result);
     hintUsage.className = `result-hint-usage${result.hintCount > 0 ? ' is-assisted' : ''}`;
-    const best = storage.bestByMode[resultRecordKey(result)];
+    const best = routeState.bestByMode[resultRecordKey(result)];
     const recordLabel = result.hintCount > 0 ? '练习模式最佳纪录' : '纯挑战最佳纪录';
     document.getElementById('resultBest').textContent = best
       ? `${recordLabel}：${formatElapsed(best.elapsedMs)} · ${Math.round(best.accuracy * 100)}%`
       : `${recordLabel}：—`;
-    renderStoredSummary();
   }
 
   function challengeUrl() {
-    if (window.location.hostname === 'yomeru.japanese-hub.com') return PUBLIC_CHALLENGE_URL;
-    return new URL('/challenge/train', window.location.origin).href;
+    const origin = window.location.hostname === 'yomeru.japanese-hub.com'
+      ? 'https://yomeru.japanese-hub.com'
+      : window.location.origin;
+    return routeShareUrl(routeData.routeId, origin);
+  }
+
+  function challengeDisplayUrl() {
+    try {
+      const url = new URL(challengeUrl());
+      return `${url.host}${url.pathname}${url.search}`;
+    } catch {
+      return challengeUrl();
+    }
   }
 
   function resultModeName(mode) {
@@ -534,7 +544,7 @@
   function cardFilename(result) {
     const date = String(result.completedAt || new Date().toISOString()).slice(0, 10).replaceAll('-', '');
     const mode = result.mode === 'kana-to-kanji' ? 'kana-kanji' : 'kanji-kana';
-    return `yomeru-train-${mode}-${date}.png`;
+    return `yomeru-train-${result.routeId}-${mode}-${date}.png`;
   }
 
   function roundedRectPath(context, x, y, width, height, radius) {
@@ -558,7 +568,7 @@
     roundedRectPath(context, -45, -58, 90, 108, 24);
     context.fill();
     context.stroke();
-    context.fillStyle = '#b8dc63';
+    context.fillStyle = routeData.theme.signal;
     context.strokeStyle = '#17242d';
     context.lineWidth = 5;
     context.fillRect(-30, -36, 60, 38);
@@ -567,7 +577,7 @@
     context.moveTo(0, -36);
     context.lineTo(0, 2);
     context.stroke();
-    context.fillStyle = '#e45a46';
+    context.fillStyle = routeData.theme.arrival;
     context.beginPath();
     context.arc(-22, 27, 7, 0, Math.PI * 2);
     context.arc(22, 27, 7, 0, Math.PI * 2);
@@ -605,15 +615,17 @@
     const ink = '#17242d';
     const paper = '#f6f4ee';
     const card = '#fffdf8';
-    const signal = '#b8dc63';
-    const arrival = '#e45a46';
+    const signal = routeData.theme.signal;
+    const signalDark = routeData.theme.signalDark;
+    const arrival = routeData.theme.arrival;
     const soft = '#536068';
+    const first = routeData.stations[0];
+    const last = routeData.stations.at(-1);
 
     context.fillStyle = ink;
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = signal;
     context.fillRect(0, 0, 22, canvas.height);
-
     drawYomeruMark(context, 58, 35, 0.82);
     context.fillStyle = card;
     context.font = '800 52px "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif';
@@ -623,65 +635,67 @@
     context.letterSpacing = '4px';
     context.fillText('TRAIN TYPING CHALLENGE', 82, 148);
     context.letterSpacing = '0px';
+    context.fillStyle = card;
+    context.font = '700 25px "PingFang SC", sans-serif';
+    context.fillText(`${routeData.lineNameZh} · ${routeData.titleZh}`, 82, 194);
 
     context.strokeStyle = signal;
     context.lineWidth = 12;
     context.lineCap = 'round';
     context.beginPath();
-    context.moveTo(150, 250);
-    context.lineTo(930, 250);
+    context.moveTo(150, 270);
+    context.lineTo(930, 270);
     context.stroke();
-    for (let index = 0; index < 13; index += 1) {
-      const x = 150 + (780 / 12) * index;
-      context.fillStyle = index === 0 || index === 12 ? arrival : card;
+    const lastIndex = routeData.stations.length - 1;
+    routeData.stations.forEach((station, index) => {
+      const x = 150 + (780 / lastIndex) * index;
+      context.fillStyle = index === 0 || index === lastIndex ? arrival : card;
       context.strokeStyle = ink;
       context.lineWidth = 7;
       context.beginPath();
-      context.arc(x, 250, index === 0 || index === 12 ? 18 : 13, 0, Math.PI * 2);
+      context.arc(x, 270, index === 0 || index === lastIndex ? 18 : 13, 0, Math.PI * 2);
       context.fill();
       context.stroke();
-    }
-    drawTrainIcon(context, 930, 250, 0.72);
+    });
+    drawTrainIcon(context, 930, 270, 0.72);
     context.fillStyle = card;
     context.font = '700 24px "Hiragino Kaku Gothic ProN", sans-serif';
     context.textAlign = 'left';
-    context.fillText('新宿', 120, 310);
+    context.fillText(first.display, 120, 330);
     context.textAlign = 'right';
-    context.fillText('上野', 960, 310);
+    context.fillText(last.display, 960, 330);
 
-    roundedRectPath(context, 64, 360, 952, 770, 54);
+    roundedRectPath(context, 64, 380, 952, 750, 54);
     context.fillStyle = card;
     context.fill();
-
     context.textAlign = 'left';
-    context.fillStyle = '#789d35';
+    context.fillStyle = signalDark;
     context.font = '800 22px Inter, sans-serif';
-    context.fillText('ARRIVED / 挑战完成', 122, 438);
+    context.fillText('ARRIVED / 挑战完成', 122, 458);
     context.fillStyle = ink;
     context.font = '800 74px "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif';
-    context.fillText('抵达终点。', 118, 535);
+    context.fillText('抵达终点。', 118, 555);
     const assisted = result.hintCount > 0;
     const practiceLabel = resultPracticeLabel(result);
     context.font = '700 21px "PingFang SC", sans-serif';
     const badgeWidth = Math.min(760, context.measureText(practiceLabel).width + 42);
-    roundedRectPath(context, 118, 548, badgeWidth, 46, 23);
+    roundedRectPath(context, 118, 568, badgeWidth, 46, 23);
     context.fillStyle = assisted ? '#edf4dd' : paper;
     context.fill();
-    context.strokeStyle = assisted ? '#789d35' : '#d2d7d1';
+    context.strokeStyle = assisted ? signalDark : '#d2d7d1';
     context.lineWidth = 2;
     context.stroke();
-    context.fillStyle = assisted ? '#789d35' : soft;
-    context.fillText(practiceLabel, 140, 579);
+    context.fillStyle = assisted ? signalDark : soft;
+    context.fillText(practiceLabel, 140, 599);
     context.fillStyle = soft;
     context.font = '600 22px "PingFang SC", sans-serif';
-    context.fillText(resultModeName(result.mode), 122, 626);
-
+    context.fillText(resultModeName(result.mode), 122, 646);
     context.fillStyle = ink;
     context.font = '800 142px "Hiragino Kaku Gothic ProN", Inter, sans-serif';
-    context.fillText(formatElapsed(result.elapsedMs), 112, 758);
+    context.fillText(formatElapsed(result.elapsedMs), 112, 778);
     context.fillStyle = soft;
     context.font = '600 22px "PingFang SC", sans-serif';
-    context.fillText('完成时间', 122, 798);
+    context.fillText('完成时间', 122, 818);
 
     const stats = [
       ['正确率', `${Math.round(result.accuracy * 100)}%`],
@@ -693,7 +707,7 @@
       const column = index % 2;
       const row = Math.floor(index / 2);
       const x = 122 + column * 440;
-      const y = 890 + row * 118;
+      const y = 910 + row * 112;
       context.fillStyle = soft;
       context.font = '600 21px "PingFang SC", sans-serif';
       context.fillText(label, x, y);
@@ -704,14 +718,10 @@
 
     context.fillStyle = paper;
     context.font = '600 24px "PingFang SC", sans-serif';
-    context.fillText(
-      result.hintCount > 0 ? '我完成了山手线站名练习。' : '你能用日语开完这条线吗？',
-      82,
-      1214
-    );
+    context.fillText(result.hintCount > 0 ? `我完成了${routeData.titleZh}站名练习。` : routeData.share.cardPrompt, 82, 1214);
     context.fillStyle = signal;
-    context.font = '700 20px Inter, sans-serif';
-    context.fillText(PUBLIC_CHALLENGE_DISPLAY_URL, 82, 1260);
+    context.font = '700 18px Inter, sans-serif';
+    context.fillText(challengeDisplayUrl(), 82, 1260);
     context.fillStyle = '#ffffff9e';
     context.font = '500 17px "PingFang SC", sans-serif';
     context.fillText('原创学习活动 · 非铁路运营机构官方产品', 82, 1304);
@@ -775,20 +785,26 @@
     return true;
   }
 
+  function shareText(result) {
+    const values = {
+      elapsed: formatElapsed(result.elapsedMs),
+      accuracy: Math.round(result.accuracy * 100),
+      hints: result.hintCount
+    };
+    const template = result.hintCount > 0 ? routeData.share.practiceTemplate : routeData.share.pureTemplate;
+    return template.replaceAll('{elapsed}', values.elapsed).replaceAll('{accuracy}', String(values.accuracy)).replaceAll('{hints}', String(values.hints));
+  }
+
   async function shareResult() {
     if (!game.result) return false;
     const result = game.result;
-    const title = 'Yomeru 电车日语输入挑战';
-    const text = result.hintCount > 0
-      ? `我完成了山手线站名练习，用时 ${formatElapsed(result.elapsedMs)}，使用提示 ${result.hintCount} 站，正确率 ${Math.round(result.accuracy * 100)}%。`
-      : `我用 ${formatElapsed(result.elapsedMs)} 完成新宿到上野纯挑战，正确率 ${Math.round(result.accuracy * 100)}%。`;
     setShareButtonsBusy(true);
     setShareFeedback('正在准备分享…');
     try {
       const blob = await createResultCardBlob(result);
       const file = typeof File === 'function' ? new File([blob], cardFilename(result), { type: 'image/png' }) : null;
       if (typeof navigator.share === 'function') {
-        const payload = { title, text, url: challengeUrl() };
+        const payload = { title: routeData.share.title, text: shareText(result), url: challengeUrl() };
         if (file && typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] })) payload.files = [file];
         await navigator.share(payload);
         setShareFeedback('已打开系统分享。', 'success');
@@ -822,13 +838,12 @@
 
   function resetToStart() {
     stopTimer();
-    const storage = readStorage();
-    storage.lastShowHints = false;
+    const { storage, state } = currentRouteState({ create: true });
     writeStorage(storage);
-    game = createIdleGame(storage.lastMode, false);
+    game = createIdleGame(state.lastMode, false);
     setPhase('start');
     renderStoredSummary();
-    renderStartRoute(routeData?.stations || [], storage.lastMode);
+    renderStartRoute(routeData.stations, state.lastMode);
     setShareFeedback('');
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     const status = document.getElementById('startStatus');
@@ -841,21 +856,15 @@
     document.getElementById('trainRetryButton')?.addEventListener('click', resetToStart);
     const saveResultButton = document.getElementById('saveResultCardButton');
     saveResultButton?.addEventListener('click', saveResultCard);
-    saveResultButton?.addEventListener('pointerup', event => {
-      event.currentTarget.blur();
-    });
+    saveResultButton?.addEventListener('pointerup', event => event.currentTarget.blur());
     document.getElementById('shareResultButton')?.addEventListener('click', shareResult);
     document.querySelectorAll('input[name="mode"]').forEach(input => {
       input.addEventListener('change', () => {
         if (routeData) renderStartRoute(routeData.stations, selectedMode());
       });
     });
-    document.getElementById('trainHintToggleStart')?.addEventListener('change', event => {
-      syncHintToggles(event.currentTarget.checked);
-    });
-    document.getElementById('trainHintTogglePlay')?.addEventListener('change', event => {
-      setHintEnabled(event.currentTarget.checked);
-    });
+    document.getElementById('trainHintToggleStart')?.addEventListener('change', event => syncHintToggles(event.currentTarget.checked));
+    document.getElementById('trainHintTogglePlay')?.addEventListener('change', event => setHintEnabled(event.currentTarget.checked));
   }
 
   function bindIme() {
@@ -863,15 +872,11 @@
     const input = document.getElementById('trainAnswerInput');
     const submitButton = document.getElementById('trainAnswerSubmitButton');
     if (!form || !input || !submitButton) return;
-
     function updateSubmitState() {
       submitButton.disabled = game.locked || !normalizeAnswer(input.value);
     }
-
     input.addEventListener('input', updateSubmitState);
-    submitButton.addEventListener('pointerdown', event => {
-      event.preventDefault();
-    });
+    submitButton.addEventListener('pointerdown', event => event.preventDefault());
     input.addEventListener('compositionstart', () => {
       compositionActive = true;
       submitButton.disabled = true;
@@ -899,14 +904,30 @@
     });
   }
 
+  function validateRoute(payload, entry) {
+    if (payload?.schemaVersion !== 2 || payload.routeId !== entry.routeId) throw new Error('Route metadata does not match registry.');
+    if (!Array.isArray(payload.stations) || payload.stations.length < 2 || payload.stations.length > 20) throw new Error('Route station count is invalid.');
+    payload.stations.forEach((station, index) => {
+      if (station.order !== index + 1 || !station.display || !station.reading || !station.acceptedKana?.includes(station.reading) || !station.acceptedKanji?.includes(station.display)) {
+        throw new Error(`Route station ${index + 1} is invalid.`);
+      }
+    });
+    return payload;
+  }
+
   async function loadRoute() {
-    const response = await fetch(ROUTE_URL, { cache: 'no-store' });
+    registry = await loadRegistry();
+    registryEntry = registry.routes.find(route => route.routeId === requestedRouteId());
+    if (!registryEntry) throw new Error(`Unknown route: ${requestedRouteId()}`);
+    const response = await fetch(registryEntry.path, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Route data failed: HTTP ${response.status}`);
-    const payload = await response.json();
-    if (!Array.isArray(payload.stations) || payload.stations.length !== 13) throw new Error('Route must contain exactly 13 stations.');
-    routeData = payload;
+    routeData = validateRoute(await response.json(), registryEntry);
+    applyRouteTheme();
+    applyRouteMetadata();
+    const { state } = currentRouteState();
+    game = createIdleGame(state.lastMode, false);
     renderStoredSummary();
-    renderStartRoute(payload.stations, selectedMode());
+    renderStartRoute(routeData.stations, selectedMode());
     const startButton = document.getElementById('trainStartButton');
     startButton.disabled = false;
     startButton.firstElementChild.textContent = '发车';
@@ -919,20 +940,20 @@
     bindControls();
     bindIme();
     setPhase('start');
-    renderStoredSummary();
     try {
       await loadRoute();
     } catch (error) {
       console.error(error);
       document.body.dataset.routeError = 'true';
-      const status = document.getElementById('startStatus');
-      status.hidden = false;
-      status.textContent = '路线数据载入失败，请刷新页面重试。';
+      document.getElementById('routeErrorMessage').textContent = `无法载入「${requestedRouteId()}」。请返回路线主页重新选择。`;
+      setPhase('error');
     }
   }
 
   window.YOMERU_TRAIN_CHALLENGE = Object.freeze({
     route: () => routeData,
+    registry: () => registry,
+    requestedRouteId,
     rules: RULES,
     storageKey: STORAGE_KEY,
     normalizeAnswer,

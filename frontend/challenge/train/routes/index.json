@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "defaultRouteId": "yamanote-north-short",
+  "routes": [
+    {
+      "routeId": "yamanote-north-short",
+      "path": "/challenge/train/routes/yamanote-short.json",
+      "lineNameZh": "山手线",
+      "lineNameJa": "山手線",
+      "titleZh": "新宿 → 上野",
+      "subtitleZh": "北侧短程",
+      "stationCount": 13,
+      "difficulty": "初级",
+      "recommendedJlpt": "N5–N4",
+      "badge": "推荐",
+      "theme": {
+        "signal": "#b8dc63",
+        "signalDark": "#789d35",
+        "arrival": "#e45a46"
+      }
+    },
+    {
+      "routeId": "yamanote-east-short",
+      "path": "/challenge/train/routes/yamanote-east-short.json",
+      "lineNameZh": "山手线",
+      "lineNameJa": "山手線",
+      "titleZh": "上野 → 品川",
+      "subtitleZh": "东侧短程",
+      "stationCount": 11,
+      "difficulty": "初级",
+      "recommendedJlpt": "N5–N4",
+      "badge": "新路线",
+      "theme": {
+        "signal": "#b8dc63",
+        "signalDark": "#789d35",
+        "arrival": "#e45a46"
+      }
+    },
+    {
+      "routeId": "ginza-east-short",
+      "path": "/challenge/train/routes/ginza-east-short.json",
+      "lineNameZh": "银座线",
+      "lineNameJa": "銀座線",
+      "titleZh": "浅草 → 银座",
+      "subtitleZh": "下町到都心",
+      "stationCount": 11,
+      "difficulty": "中级",
+      "recommendedJlpt": "N4–N3",
+      "badge": "新路线",
+      "theme": {
+        "signal": "#f2a33a",
+        "signalDark": "#b76d11",
+        "arrival": "#d84f45"
+      }
+    }
+  ]
+}
