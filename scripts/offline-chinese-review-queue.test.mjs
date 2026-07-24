@@ -1,0 +1,157 @@
+#!/usr/bin/env node
+
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const ROOT = resolve(import.meta.dirname, '..');
+execFileSync(process.execPath, [resolve(ROOT, 'scripts/audit-offline-chinese-coverage.mjs')], { cwd: ROOT, stdio: 'pipe' });
+execFileSync(process.execPath, [resolve(ROOT, 'scripts/build-offline-chinese-review-queue.mjs')], { cwd: ROOT, stdio: 'pipe' });
+
+const queue = JSON.parse(readFileSync(resolve(ROOT, 'audits/offline-chinese-coverage/20260723/review-queue.json'), 'utf8'));
+const markdown = readFileSync(resolve(ROOT, 'audits/offline-chinese-coverage/20260723/REVIEW_QUEUE.md'), 'utf8');
+
+assert.equal(queue.schemaVersion, 1);
+assert.equal(queue.generatedAt, '2026-07-23T00:00:00.000Z');
+assert.equal(queue.baseline.mainCommit, '6a821a65d56af7576e4312ef4b1df33eb6d889f4');
+assert.equal(queue.policy.automaticApprovalAllowed, false);
+assert.equal(queue.policy.aiDraftPublishAllowed, false);
+assert.equal(queue.summary.totalItems, 96);
+assert.deepEqual(queue.summary.priorityCounts, { P0: 5, P1: 43, P2: 21, P3: 27 });
+assert.deepEqual(queue.summary.remainingPriorityCounts, {});
+assert.deepEqual(queue.summary.draftedPriorityCounts, { P0: 5, P1: 42, P2: 21, P3: 26 });
+assert.deepEqual(queue.summary.reviewTypeCounts, {
+  'high-frequency-lexical': 15,
+  'manual-research-required': 28,
+  'sense-disambiguation': 46,
+  'standard-lexical': 7
+});
+assert.deepEqual(queue.summary.reviewerStatusCounts, { blocked: 2, drafted: 94 });
+assert.equal(queue.summary.reviewedItems, 96);
+assert.equal(queue.summary.pendingItems, 0);
+assert.equal(queue.summary.draftedItems, 94);
+assert.equal(queue.summary.approvedItems, 0);
+assert.equal(queue.summary.blockedItems, 2);
+assert.equal(queue.summary.withExactJmdictEvidence, 68);
+assert.equal(queue.summary.withCompositionalJmdictEvidence, 22);
+assert.equal(queue.summary.withJmdictEvidence, 90);
+assert.equal(queue.summary.withExternalSemanticEvidence, 4);
+assert.equal(queue.summary.manualResearchRequired, 28);
+assert.equal(queue.summary.manualResearchCompleted, 26);
+assert.equal(queue.summary.manualResearchBlocked, 2);
+assert.equal(queue.summary.sameWrittenFormGroups, 3);
+assert.equal(queue.summary.candidateChineseFilled, 94);
+assert.equal(new Set(queue.items.map(item => item.queueId)).size, queue.items.length);
+assert.equal(new Set(queue.items.map(item => `${item.word}\u0000${item.reading || ''}`)).size, queue.items.length);
+assert.ok(queue.items.filter(item => item.reviewerStatus === 'pending').every(item => item.candidateChinese === null));
+assert.ok(queue.items.filter(item => item.reviewerStatus === 'drafted').every(item => (
+  item.candidateChinese
+  && item.reviewer
+  && item.reviewedAt === '2026-07-24'
+  && item.decision === 'recommend-approve'
+  && item.notes.includes('置信度：')
+)));
+assert.ok(queue.items.every(item => item.evidence.length || item.reviewerStatus === 'blocked'));
+assert.ok(queue.items.filter(item => item.reviewType !== 'manual-research-required').every(item => {
+  const evidence = item.evidence[0];
+  return evidence.license === 'CC-BY-SA-4.0'
+    && evidence.headwords.includes(item.word)
+    && evidence.readings.includes(item.reading);
+}));
+assert.ok(queue.items.filter(item => item.priority === 'P3' && item.reviewerStatus === 'drafted').every(item => (
+  item.evidence.length === 2
+  && item.evidence[0].matchType === 'exact-corpus'
+  && ['compositional', 'semantic-external'].includes(item.evidence[1].matchType)
+)));
+assert.ok(queue.items.filter(item => item.reviewerStatus === 'blocked').every(item => (
+  item.candidateChinese === null
+  && item.decision === 'block'
+  && item.rejectionReason
+  && item.notes.includes('下一步')
+)));
+
+function item(word, reading) {
+  const found = queue.items.find(candidate => candidate.word === word && candidate.reading === reading);
+  assert.ok(found, `Missing queue item for ${word} (${reading})`);
+  return found;
+}
+
+const write = item('書く', 'かく');
+assert.deepEqual(write.evidence[0].headwords, ['書く']);
+assert.deepEqual(write.evidence[0].readings, ['かく']);
+assert.ok(write.evidence[0].englishGlosses.includes('to write'));
+assert.ok(!write.evidence[0].englishGlosses.includes('each'));
+assert.ok(!write.evidence[0].englishGlosses.includes('stroke (of a kanji)'));
+assert.equal(write.candidateChinese, '写；书写；创作（文章等）');
+assert.equal(write.reviewerStatus, 'drafted');
+
+const wait = item('待つ', 'まつ');
+assert.deepEqual(wait.evidence[0].headwords, ['待つ']);
+assert.ok(wait.evidence[0].englishGlosses.includes('to wait'));
+assert.ok(!wait.evidence[0].englishGlosses.includes('pine tree (Pinus spp.)'));
+
+const rain = item('雨', 'あめ');
+assert.deepEqual(rain.evidence[0].headwords, ['雨']);
+assert.ok(rain.evidence[0].englishGlosses.includes('rain'));
+assert.ok(!rain.evidence[0].englishGlosses.includes('(hard) candy'));
+
+const openAku = item('開く', 'あく');
+const openHiraku = item('開く', 'ひらく');
+assert.deepEqual(openAku.exampleCaseIds, ['LQ-082', 'LQ-174']);
+assert.deepEqual(openHiraku.exampleCaseIds, ['LQ-175']);
+assert.deepEqual(openAku.evidence[0].readings, ['あく']);
+assert.deepEqual(openHiraku.evidence[0].readings, ['ひらく']);
+assert.equal(openAku.reviewerStatus, 'drafted');
+assert.equal(openHiraku.reviewerStatus, 'drafted');
+assert.ok(openAku.riskFlags.includes('same-written-form-multiple-readings'));
+assert.ok(openHiraku.riskFlags.includes('same-written-form-multiple-readings'));
+
+assert.deepEqual(item('一日', 'いちにち').exampleCaseIds, ['LQ-178']);
+const firstDay = item('一日', 'ついたち');
+assert.deepEqual(firstDay.exampleCaseIds, ['LQ-179']);
+assert.equal(firstDay.reviewerStatus, 'blocked');
+assert.equal(firstDay.evidence.length, 0);
+assert.deepEqual(item('人気', 'にんき').exampleCaseIds, ['LQ-180']);
+const humanPresence = item('人気', 'ひとけ');
+assert.deepEqual(humanPresence.exampleCaseIds, ['LQ-181']);
+assert.equal(humanPresence.reviewerStatus, 'blocked');
+assert.equal(humanPresence.evidence.length, 0);
+assert.deepEqual(queue.sameWrittenFormGroups, [
+  { word: '一日', readings: ['いちにち', 'ついたち'] },
+  { word: '開く', readings: ['あく', 'ひらく'] },
+  { word: '人気', readings: ['にんき', 'ひとけ'] }
+]);
+
+const drafted = queue.items.filter(candidate => candidate.reviewerStatus === 'drafted');
+assert.deepEqual(drafted.filter(candidate => candidate.priority === 'P0').map(candidate => candidate.word), ['帰る', '書く', '静か', '待つ', '来る']);
+assert.equal(drafted.filter(candidate => candidate.priority === 'P1').length, 42);
+assert.deepEqual(queue.items.filter(candidate => candidate.priority === 'P1').map(candidate => candidate.reviewerStatus).sort(), ['blocked', ...Array(42).fill('drafted')].sort());
+assert.equal(drafted.filter(candidate => candidate.priority === 'P2').length, 21);
+assert.ok(queue.items.filter(candidate => candidate.priority === 'P2').every(candidate => candidate.reviewerStatus === 'drafted'));
+assert.equal(item('青い', 'あおい').candidateChinese, '蓝色的；青绿色的；青涩的');
+assert.equal(item('着る', 'きる').candidateChinese, '穿；穿上（衣服）');
+assert.equal(item('施行', 'しこう').candidateChinese, '施行；实施；执行（法律、政策等）');
+assert.equal(item('人気', 'にんき').candidateChinese, '人气；受欢迎程度');
+assert.equal(item('電子部品', 'でんしぶひん').candidateChinese, '电子元件；电子零部件');
+assert.equal(drafted.filter(candidate => candidate.priority === 'P3').length, 26);
+assert.equal(item('サイバー攻撃', 'さいばーこうげき').candidateChinese, '网络攻击；网络系统攻击');
+assert.equal(item('今日中', 'きょうじゅう').evidence[1].sourceId, 'wiktionary-text');
+assert.equal(item('再生可能エネルギー', 'さいせいかのうえねるぎー').evidence[1].entityIds[0], 'Q12705');
+assert.equal(item('少子高齢化', 'しょうしこうれいか').evidence[1].sourceId, 'japan-government-pdl1');
+assert.equal(item('労働市場', 'ろうどうしじょう').evidence[1].matchType, 'compositional');
+
+const manual = queue.items.filter(candidate => candidate.reviewType === 'manual-research-required');
+assert.equal(manual.length, 28);
+assert.equal(manual.filter(candidate => candidate.reviewerStatus === 'drafted').length, 26);
+assert.equal(manual.filter(candidate => candidate.reviewerStatus === 'blocked').length, 2);
+assert.ok(manual.every(candidate => candidate.riskFlags.includes('no-jmdict-evidence')));
+assert.ok(manual.filter(candidate => candidate.reviewerStatus === 'drafted').every(candidate => candidate.evidence.length === 2));
+
+assert.match(markdown, /`drafted` 表示已逐项核验证据/);
+assert.match(markdown, /JMdict 英文释义只作审核证据/);
+assert.match(markdown, /同形异读隔离/);
+assert.match(markdown, /只有状态改为 `approved`/);
+assert.match(markdown, /AI 辅助结果只能保留为 drafted/);
+
+process.stdout.write('Offline Chinese review queue, assisted-review, and homograph-isolation tests passed.\n');

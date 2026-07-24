@@ -1,0 +1,6157 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-23T00:00:00.000Z",
+  "baseline": {
+    "mainCommit": "6a821a65d56af7576e4312ef4b1df33eb6d889f4",
+    "coverageAudit": "20260723",
+    "jmdictDataVersion": "20260713",
+    "sourceRegistry": "audits/offline-chinese-coverage/20260723/source-registry.json"
+  },
+  "policy": {
+    "officialChineseLayer": "human-reviewed-yomeru-curated-only",
+    "automaticApprovalAllowed": false,
+    "aiDraftAllowed": true,
+    "aiDraftPublishAllowed": false,
+    "requiredReviewerStatus": "approved",
+    "requiredEvidenceCount": 1
+  },
+  "summary": {
+    "totalItems": 96,
+    "priorityCounts": {
+      "P0": 5,
+      "P1": 43,
+      "P2": 21,
+      "P3": 27
+    },
+    "remainingPriorityCounts": {},
+    "draftedPriorityCounts": {
+      "P0": 5,
+      "P1": 42,
+      "P2": 21,
+      "P3": 26
+    },
+    "reviewTypeCounts": {
+      "high-frequency-lexical": 15,
+      "manual-research-required": 28,
+      "sense-disambiguation": 46,
+      "standard-lexical": 7
+    },
+    "reviewerStatusCounts": {
+      "blocked": 2,
+      "drafted": 94
+    },
+    "reviewedItems": 96,
+    "pendingItems": 0,
+    "draftedItems": 94,
+    "approvedItems": 0,
+    "rejectedItems": 0,
+    "blockedItems": 2,
+    "withExactJmdictEvidence": 68,
+    "withCompositionalJmdictEvidence": 22,
+    "withJmdictEvidence": 90,
+    "withExternalSemanticEvidence": 4,
+    "manualResearchRequired": 28,
+    "manualResearchCompleted": 26,
+    "manualResearchBlocked": 2,
+    "ambiguityReview": 46,
+    "sameWrittenFormGroups": 3,
+    "candidateChineseFilled": 94
+  },
+  "sameWrittenFormGroups": [
+    {
+      "word": "一日",
+      "readings": [
+        "いちにち",
+        "ついたち"
+      ]
+    },
+    {
+      "word": "開く",
+      "readings": [
+        "あく",
+        "ひらく"
+      ]
+    },
+    {
+      "word": "人気",
+      "readings": [
+        "にんき",
+        "ひとけ"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "queueId": "zh-review-001",
+      "priority": "P0",
+      "word": "帰る",
+      "reading": "かえる",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "ambiguity",
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-074",
+        "LQ-075",
+        "LQ-161"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1221270"
+          ],
+          "headwords": [
+            "帰る"
+          ],
+          "readings": [
+            "かえる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to return",
+            "to come home",
+            "to go home",
+            "to go back",
+            "to leave (of a guest, customer, etc.)",
+            "to get home",
+            "to get to home plate"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "回去；回家；返回原处",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：帰る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为回去、回家、返回原处，不纳入棒球等专门义。多义与混淆：同音名词「蛙（かえる）」必须按日文表记隔离。证据：JLPT N5；JMdict 1221270，CC BY-SA 4.0，仅作词形、读音、词性和语义范围证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-002",
+      "priority": "P0",
+      "word": "書く",
+      "reading": "かく",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-046",
+        "LQ-047",
+        "LQ-048"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1343950"
+          ],
+          "headwords": [
+            "書く"
+          ],
+          "readings": [
+            "かく"
+          ],
+          "partsOfSpeech": [
+            "v5k",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to write",
+            "to compose",
+            "to pen",
+            "to draw",
+            "to paint"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "写；书写；创作（文章等）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：書く；词性：五段カ行动词、他动词（JMdict v5k/vt）。核心义限定为写、书写和创作文字内容。多义与混淆：同音的「描く」「掻く」以及其他「かく」词条不得由读音覆盖；本草稿不纳入绘画义。证据：JLPT N5；JMdict 1343950，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-003",
+      "priority": "P0",
+      "word": "静か",
+      "reading": "しずか",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-105",
+        "LQ-106",
+        "LQ-107"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1381820"
+          ],
+          "headwords": [
+            "静か"
+          ],
+          "readings": [
+            "しずか"
+          ],
+          "partsOfSpeech": [
+            "adj-na"
+          ],
+          "englishGlosses": [
+            "quiet",
+            "silent",
+            "slow",
+            "unhurried",
+            "calm",
+            "peaceful"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "安静；寂静；平静",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：静か；词性：ナ形容词/形容动词（JMdict adj-na；当前语料解析器表面词性显示为名词）。核心义覆盖环境安静、寂静及状态平静，不扩展为所有“缓慢、从容”语境。多义与混淆：无需要合并的同形异读词。证据：JLPT N5；JMdict 1381820，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-004",
+      "priority": "P0",
+      "word": "待つ",
+      "reading": "まつ",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-052",
+        "LQ-053",
+        "LQ-054"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1410590"
+          ],
+          "headwords": [
+            "待つ"
+          ],
+          "readings": [
+            "まつ"
+          ],
+          "partsOfSpeech": [
+            "v5t",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to wait",
+            "to await",
+            "to look forward to",
+            "to anticipate",
+            "to depend on",
+            "to need"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "等；等待；期待",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：待つ；词性：五段タ行动词，可作自动词或他动词（JMdict v5t/vi/vt）。核心义覆盖等待、等候和期待；不把“依赖、需要”等低频结构直接并入核心释义。多义与混淆：与同音名词「松（まつ）」按表记隔离。证据：JLPT N5；JMdict 1410590，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-005",
+      "priority": "P0",
+      "word": "来る",
+      "reading": "くる",
+      "corpusFrequency": 3,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-066",
+        "LQ-068",
+        "LQ-069"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1547720"
+          ],
+          "headwords": [
+            "来る"
+          ],
+          "readings": [
+            "くる"
+          ],
+          "partsOfSpeech": [
+            "aux-v",
+            "vi",
+            "vk"
+          ],
+          "englishGlosses": [
+            "to come (spatially or temporally)",
+            "to approach",
+            "to arrive",
+            "to come back",
+            "to do ... and come back",
+            "to come to be",
+            "to become",
+            "to get"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "来；到来；来到",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：来る；词性：カ变自动词（JMdict vk/vi，另有助动词用法）。核心释义只覆盖独立动词“来、到来、来到”，不把「〜てくる」等补助动词语法义混入词条核心义。多义与混淆：表记和读音对应明确，无需按同音词扩展。证据：本地 JLPT 参考未提供等级；JMdict 1547720，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-006",
+      "priority": "P1",
+      "word": "飲む",
+      "reading": "のむ",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-070",
+        "LQ-071"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1169870"
+          ],
+          "headwords": [
+            "飲む"
+          ],
+          "readings": [
+            "のむ"
+          ],
+          "partsOfSpeech": [
+            "v5m",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to drink",
+            "to swallow",
+            "to take (medicine)",
+            "to smoke (tobacco)",
+            "to swallow up",
+            "to engulf",
+            "to suppress (one's anger, bitter feelings, etc.)",
+            "to keep down"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "喝；吞服（药物）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：飲む；词性：五段マ行动词、他动词（JMdict v5m/vt）。核心义覆盖喝饮料及吞服药物；不把吸烟、吞没或压抑情绪等引申义并入基础释义。多义与混淆：无需要合并的同形异读词。证据：JLPT N5；JMdict 1169870，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-007",
+      "priority": "P1",
+      "word": "古い",
+      "reading": "ふるい",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-110",
+        "LQ-111"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1265070"
+          ],
+          "headwords": [
+            "古い"
+          ],
+          "readings": [
+            "ふるい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "old",
+            "aged",
+            "ancient",
+            "antiquated",
+            "antique",
+            "timeworn",
+            "long",
+            "since long ago"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "旧的；古老的；陈旧的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：古い；词性：イ形容词（JMdict adj-i）。核心义覆盖年代久、使用时间长或观念陈旧；不扩展为与词形无关的“长时间”副词义。多义与混淆：表记和读音对应明确。证据：JLPT N5；JMdict 1265070，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-008",
+      "priority": "P1",
+      "word": "呼ぶ",
+      "reading": "よぶ",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-099",
+        "LQ-100"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1266440"
+          ],
+          "headwords": [
+            "呼ぶ"
+          ],
+          "readings": [
+            "よぶ"
+          ],
+          "partsOfSpeech": [
+            "v5b",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to call out (to)",
+            "to call",
+            "to invoke",
+            "to summon (a doctor, etc.)",
+            "to invite",
+            "to designate",
+            "to name",
+            "to brand"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "叫；呼喊；叫来；称呼",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：呼ぶ；词性：五段バ行动词、他动词（JMdict v5b/vt）。核心义覆盖出声叫、召来某人以及称呼或命名；不将品牌化等低频引申义扩大为核心义。多义与混淆：表记和读音对应明确。证据：JLPT N5；JMdict 1266440，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-009",
+      "priority": "P1",
+      "word": "降る",
+      "reading": "ふる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-093",
+        "LQ-094"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1282790"
+          ],
+          "headwords": [
+            "降る"
+          ],
+          "readings": [
+            "ふる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to fall (of rain, snow, ash, etc.)",
+            "to come down",
+            "to form (of frost)",
+            "to beam down (of sunlight or moonlight)",
+            "to pour in",
+            "to visit (of luck, misfortune, etc.)",
+            "to come",
+            "to arrive"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "下（雨、雪等）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：降る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为雨、雪、灰等从空中落下，符合当前语料；阳光照射、幸运降临等引申义不并入基础释义。多义与混淆：与同音「振る（ふる）」及其他同音词按表记隔离。证据：JLPT N5；JMdict 1282790，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-010",
+      "priority": "P1",
+      "word": "座る",
+      "reading": "すわる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-087",
+        "LQ-088"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1291800"
+          ],
+          "headwords": [
+            "座る"
+          ],
+          "readings": [
+            "すわる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to sit (down)",
+            "to have a seat",
+            "to be seated",
+            "to kneel (on the floor)",
+            "to assume (a position)",
+            "to take on (a duty)",
+            "to occupy (a post)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "坐；坐下",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：座る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为坐、坐下或就座；任职、占据职位等引申义不并入基础释义。多义与混淆：表记和读音对应明确。证据：JLPT N5；JMdict 1291800，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-011",
+      "priority": "P1",
+      "word": "撮る",
+      "reading": "とる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-076",
+        "LQ-077"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1298790"
+          ],
+          "headwords": [
+            "撮る"
+          ],
+          "readings": [
+            "とる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to take (a photograph)",
+            "to record (audio or video)",
+            "to film",
+            "to shoot"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "拍摄；录制",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：撮る；词性：五段ラ行动词、他动词（JMdict v5r/vt）。核心义覆盖拍照、摄影以及录制音频或视频。多义与混淆：同音的「取る」「採る」「捕る」等必须按表记隔离，不能由读音查询覆盖。证据：JLPT N5；JMdict 1298790，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-012",
+      "priority": "P1",
+      "word": "持つ",
+      "reading": "もつ",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-089",
+        "LQ-090"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1315720"
+          ],
+          "headwords": [
+            "持つ"
+          ],
+          "readings": [
+            "もつ"
+          ],
+          "partsOfSpeech": [
+            "v5t",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to hold (in one's hand)",
+            "to take",
+            "to carry",
+            "to possess",
+            "to have",
+            "to own",
+            "to maintain",
+            "to keep"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "拿；携带；拥有",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：持つ；词性：五段タ行动词，可作自动词或他动词（JMdict v5t/vi/vt）。核心义覆盖手持、携带和拥有；维持、耐久、承担等扩展义暂不并入基础释义。多义与混淆：语义范围较宽，但表记和读音对应明确。证据：JLPT N5；JMdict 1315720，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-013",
+      "priority": "P1",
+      "word": "暑い",
+      "reading": "あつい",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-112",
+        "LQ-113"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1343460"
+          ],
+          "headwords": [
+            "暑い"
+          ],
+          "readings": [
+            "あつい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "hot",
+            "warm",
+            "sultry",
+            "heated",
+            "passionate",
+            "impassioned",
+            "burning (desire, etc.)",
+            "on everybody's mind"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "（天气、环境）炎热的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：暑い；词性：イ形容词（JMdict adj-i）。核心义严格限定天气、气温或环境炎热，不覆盖「熱い」的物体温度、感情热烈，也不覆盖「厚い」。多义与混淆：与同音「熱い」「厚い」按日文表记隔离。证据：JLPT N5；JMdict 1343460，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-014",
+      "priority": "P1",
+      "word": "乗る",
+      "reading": "のる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-083",
+        "LQ-084"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1355120"
+          ],
+          "headwords": [
+            "乗る"
+          ],
+          "readings": [
+            "のる"
+          ],
+          "partsOfSpeech": [
+            "v5r",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to get on (train, plane, bus, ship, etc.)",
+            "to get in",
+            "to board",
+            "to take",
+            "to embark",
+            "to get on (e.g. a footstool)",
+            "to step on",
+            "to jump on"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "乘坐；上（车、船等）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：乗る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为登上并乘坐交通工具，符合当前语料；踩上物体、顺势、参与等引申义不并入基础释义。多义与混淆：同音「載る（のる）」等按表记隔离。证据：JLPT N5；JMdict 1355120，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-015",
+      "priority": "P1",
+      "word": "青い",
+      "reading": "あおい",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-129",
+        "LQ-130"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1381390"
+          ],
+          "headwords": [
+            "青い"
+          ],
+          "readings": [
+            "あおい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "blue",
+            "azure",
+            "green",
+            "pale (facial color)",
+            "gray",
+            "grey",
+            "unripe",
+            "inexperienced"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "蓝色的；青绿色的；青涩的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：青い；词性：イ形容词（JMdict adj-i）。核心义覆盖蓝色、日语传统色彩范围中的青绿色，以及果实未熟或经验不足的“青涩”；脸色苍白等语境属于次级义，不扩大为所有灰色表达。多义与混淆：颜色范围与中文“蓝/绿”不能机械一一对应，需保留语境限制。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-016",
+      "priority": "P1",
+      "word": "聞く",
+      "reading": "きく",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-072",
+        "LQ-073"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1591110"
+          ],
+          "headwords": [
+            "聞く"
+          ],
+          "readings": [
+            "きく"
+          ],
+          "partsOfSpeech": [
+            "v5k",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to hear",
+            "to listen (e.g. to music)",
+            "to ask",
+            "to enquire",
+            "to query",
+            "to hear about",
+            "to hear of",
+            "to learn of"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "听；听说；询问",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：聞く；词性：五段カ行动词、他动词（JMdict v5k/vt）。核心义覆盖听声音、听说消息和向他人询问。多义与混淆：必须与同音「効く（起作用）」「利く（灵验、好用）」等按表记隔离，不允许只凭读音覆盖。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-017",
+      "priority": "P1",
+      "word": "便利",
+      "reading": "べんり",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-121",
+        "LQ-122"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1512610"
+          ],
+          "headwords": [
+            "便利"
+          ],
+          "readings": [
+            "べんり"
+          ],
+          "partsOfSpeech": [
+            "adj-na"
+          ],
+          "englishGlosses": [
+            "convenient",
+            "handy",
+            "useful"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "方便；便利；实用",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：便利；词性：ナ形容词（JMdict adj-na）。核心义覆盖使用方便、便利和实用，不扩大为抽象的“有利”。多义与混淆：词形、读音和语义范围明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-018",
+      "priority": "P1",
+      "word": "冷たい",
+      "reading": "つめたい",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-114",
+        "LQ-115"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1556730"
+          ],
+          "headwords": [
+            "冷たい"
+          ],
+          "readings": [
+            "つめたい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "cold (to the touch)",
+            "chilly",
+            "icy",
+            "freezing",
+            "(emotionally) cold",
+            "coldhearted",
+            "unfeeling",
+            "indifferent"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "冰凉的；冷淡的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：冷たい；词性：イ形容词（JMdict adj-i）。核心义区分接触温度低的“冰凉”和态度、感情上的“冷淡”，不与天气寒冷的「寒い」混用。多义与混淆：语义有物理与情感两类，但均由同一词形和读音承载。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-019",
+      "priority": "P1",
+      "word": "話す",
+      "reading": "はなす",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-091",
+        "LQ-092"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1562350"
+          ],
+          "headwords": [
+            "話す"
+          ],
+          "readings": [
+            "はなす"
+          ],
+          "partsOfSpeech": [
+            "v5s",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to talk",
+            "to speak",
+            "to converse",
+            "to chat",
+            "to tell",
+            "to explain",
+            "to narrate",
+            "to mention"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "说；说话；交谈；讲述",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：話す；词性：五段サ行动词、他动词（JMdict v5s/vt）。核心义覆盖说话、交谈、讲述或说明内容。多义与混淆：与同音「放す（放开）」「離す（分开）」必须按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-020",
+      "priority": "P1",
+      "word": "会う",
+      "reading": "あう",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-078",
+        "LQ-079"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1198180"
+          ],
+          "headwords": [
+            "会う"
+          ],
+          "readings": [
+            "あう"
+          ],
+          "partsOfSpeech": [
+            "v5u",
+            "vi"
+          ],
+          "englishGlosses": [
+            "to meet",
+            "to encounter",
+            "to see",
+            "to have an accident",
+            "to have a bad experience"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "见面；遇见",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：会う；词性：五段ワ行动词、自动词（JMdict v5u/vi）。核心义限定为人与人见面或遇见，不纳入事故、坏事等通常由「遭う」承担的语义。多义与混淆：必须与同音「合う（符合、合适）」「遭う（遭遇）」按表记隔离。证据：本地 JLPT 参考未提供等级；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-021",
+      "priority": "P1",
+      "word": "開く",
+      "reading": "あく",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "ambiguity",
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-082",
+        "LQ-174"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1586270"
+          ],
+          "headwords": [
+            "開く"
+          ],
+          "readings": [
+            "あく"
+          ],
+          "partsOfSpeech": [
+            "v5k",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to open (e.g. doors)",
+            "to open (e.g. business, etc.)",
+            "to be empty",
+            "to be vacant",
+            "to be available",
+            "to be free",
+            "to be open (e.g. neckline, etc.)",
+            "to have been opened (of one's eyes, mouth, etc.)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "（门、店等）开；空出来、有空位",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：開く；目标读音：あく；词性：五段カ行动词，本审核限定自动词用法（JMdict v5k/vi；证据记录同时含 vt 标签）。核心义覆盖门打开、店开门营业，以及时间、空间或座位空出来。多义与混淆：同一表记的「開く（ひらく）」必须拆分为独立词条；不得用本草稿覆盖“打开书本、召开”等 ひらく 用法，也不得仅凭读音覆盖「空く」。语料 LQ-175 属于 ひらく，修正分组后已移出本词条。证据：本地 JLPT 参考未提供等级；JMdict 1586270，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-022",
+      "priority": "P1",
+      "word": "終わる",
+      "reading": "おわる",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-095",
+        "LQ-096"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1589600"
+          ],
+          "headwords": [
+            "終わる"
+          ],
+          "readings": [
+            "おわる"
+          ],
+          "partsOfSpeech": [
+            "suf",
+            "v5r",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to end",
+            "to come to an end",
+            "to finish",
+            "to close",
+            "to be over",
+            "to complete",
+            "to conclude",
+            "to finish doing"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "结束；完毕",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：終わる；词性：五段ラ行动词，主要作自动词，也存在他动词及接尾用法（JMdict v5r/vi/vt/suf）。核心义限定为事情、工作或时间结束、完毕；不与「終える」的主动完成用法混同。多义与混淆：当前语料均为自动词结束义。证据：本地 JLPT 参考未提供等级；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-023",
+      "priority": "P1",
+      "word": "買う",
+      "reading": "かう",
+      "corpusFrequency": 2,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-097",
+        "LQ-098"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1473740"
+          ],
+          "headwords": [
+            "買う"
+          ],
+          "readings": [
+            "かう"
+          ],
+          "partsOfSpeech": [
+            "v5u",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to buy",
+            "to purchase",
+            "to value (highly)",
+            "to think highly of",
+            "to have a high opinion of",
+            "to appreciate",
+            "to recognize",
+            "to incur (someone's anger, displeasure, etc.)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "买；购买",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：買う；词性：五段ワ行动词、他动词（JMdict v5u/vt）。核心义限定为用金钱购买商品或服务；“高度评价”“招致不满”等引申义不并入基础释义。多义与混淆：必须与同音「飼う（饲养）」按表记隔离。证据：本地 JLPT 参考未提供等级；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-024",
+      "priority": "P1",
+      "word": "一日",
+      "reading": "いちにち",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-178"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1576260"
+          ],
+          "headwords": [
+            "一日"
+          ],
+          "readings": [
+            "いちにち"
+          ],
+          "partsOfSpeech": [
+            "adv",
+            "n"
+          ],
+          "englishGlosses": [
+            "one day",
+            "all day (long)",
+            "the whole day",
+            "from morning till night",
+            "first day of the month"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "一天；一整天",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：一日；目标读音：いちにち；词性：名词、副词（JMdict n/adv）。核心义限定为一天或一整天。多义与混淆：同一表记的「一日（ついたち，每月一日）」必须保持独立记录，不得由表记查询混合返回。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-025",
+      "priority": "P1",
+      "word": "雨",
+      "reading": "あめ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-167"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1171900"
+          ],
+          "headwords": [
+            "雨"
+          ],
+          "readings": [
+            "あめ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "rain",
+            "rainy day",
+            "rainy weather",
+            "the November suit (in hanafuda)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "雨；雨天",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：雨；词性：名词（JMdict n）。核心义覆盖雨和下雨的天气，不纳入花札牌组等专门义。多义与混淆：必须与同音「飴（糖果）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-026",
+      "priority": "P1",
+      "word": "駅",
+      "reading": "えき",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-021"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1175140"
+          ],
+          "headwords": [
+            "駅"
+          ],
+          "readings": [
+            "えき"
+          ],
+          "partsOfSpeech": [
+            "ctr",
+            "n"
+          ],
+          "englishGlosses": [
+            "railway station",
+            "train station",
+            "staging post on a highway (in pre-modern Japan)",
+            "counter for railway stations and bus stations"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "车站；火车站",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：駅；词性：名词，另有计数用法（JMdict n/ctr）。核心义限定为铁路或电车车站，不纳入古代驿站与计数词用法。多义与混淆：现代基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-027",
+      "priority": "P1",
+      "word": "音楽",
+      "reading": "おんがく",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-027"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1183720"
+          ],
+          "headwords": [
+            "音楽"
+          ],
+          "readings": [
+            "おんがく"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "music"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "音乐",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：音楽；词性：名词（JMdict n）。核心义为音乐，词形、读音和语义范围明确。多义与混淆：未发现需要隔离的同形或同音词。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-028",
+      "priority": "P1",
+      "word": "家",
+      "reading": "いえ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-023"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1191730"
+          ],
+          "headwords": [
+            "家"
+          ],
+          "readings": [
+            "いえ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "house",
+            "residence",
+            "dwelling",
+            "home",
+            "family",
+            "household",
+            "lineage",
+            "family name"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "房子；家；住所",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：家；目标读音：いえ；词性：名词（JMdict n）。核心义限定为房屋、住所和作为生活场所的家，不纳入家族、血统、姓氏等扩展义。多义与混淆：同一汉字还可能读作「うち」「け」并承载不同语义，必须按读音与语境隔离。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-029",
+      "priority": "P1",
+      "word": "花",
+      "reading": "はな",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-165"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1194500"
+          ],
+          "headwords": [
+            "花"
+          ],
+          "readings": [
+            "はな"
+          ],
+          "partsOfSpeech": [
+            "adj-no",
+            "n"
+          ],
+          "englishGlosses": [
+            "flower",
+            "blossom",
+            "bloom",
+            "petal",
+            "cherry blossom",
+            "beauty",
+            "blooming (esp. of cherry blossoms)",
+            "ikebana"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "花；花朵",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：花；词性：名词，也可作「の」形容修饰（JMdict n/adj-no）。核心义限定为花、花朵或花开，不纳入美人、精华、插花等引申或专门义。多义与混淆：必须与同音「鼻（はな）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-030",
+      "priority": "P1",
+      "word": "机",
+      "reading": "つくえ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-035"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1220210"
+          ],
+          "headwords": [
+            "机"
+          ],
+          "readings": [
+            "つくえ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "desk"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "桌子；书桌",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：机；词性：名词（JMdict n）。核心义为桌子，基础学习语境中通常指书桌。多义与混淆：词形、读音和语义明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-031",
+      "priority": "P1",
+      "word": "橋",
+      "reading": "はし",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-163"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1237410"
+          ],
+          "headwords": [
+            "橋"
+          ],
+          "readings": [
+            "はし"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "bridge"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "桥；桥梁",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：橋；词性：名词（JMdict n）。核心义为桥或桥梁。多义与混淆：必须与同音「箸（筷子）」「端（边、端）」按表记隔离，不能只凭读音返回。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-032",
+      "priority": "P1",
+      "word": "犬",
+      "reading": "いぬ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-036"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1258330"
+          ],
+          "headwords": [
+            "犬"
+          ],
+          "readings": [
+            "いぬ"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "n-pref"
+          ],
+          "englishGlosses": [
+            "dog (Canis (lupus) familiaris)",
+            "canine",
+            "squealer",
+            "rat",
+            "snitch",
+            "informer",
+            "informant",
+            "spy"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "狗；犬",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：犬；词性：名词及名词前缀（JMdict n/n-pref）。核心义限定为动物“狗、犬”，不纳入告密者、间谍等贬义引申。多义与混淆：基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-033",
+      "priority": "P1",
+      "word": "公園",
+      "reading": "こうえん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-019"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1273270"
+          ],
+          "headwords": [
+            "公園"
+          ],
+          "readings": [
+            "こうえん"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "(public) park"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "公园",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：公園；词性：名词（JMdict n）。核心义为公共公园，词形、读音和语义范围明确。多义与混淆：与同音「講演」「公演」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-034",
+      "priority": "P1",
+      "word": "昨日",
+      "reading": "きのう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-031"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1579260"
+          ],
+          "headwords": [
+            "昨日"
+          ],
+          "readings": [
+            "きのう"
+          ],
+          "partsOfSpeech": [
+            "adv",
+            "n"
+          ],
+          "englishGlosses": [
+            "yesterday"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "昨天",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：昨日；目标读音：きのう；词性：名词、副词（JMdict n/adv）。核心义为昨天。多义与混淆：同一表记还存在书面读音「さくじつ」，必须按读音与语体隔离；本记录只处理基础口语读音。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-035",
+      "priority": "P1",
+      "word": "仕事",
+      "reading": "しごと",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-030"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1304970"
+          ],
+          "headwords": [
+            "仕事"
+          ],
+          "readings": [
+            "しごと"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vi",
+            "vs"
+          ],
+          "englishGlosses": [
+            "work",
+            "job",
+            "labor",
+            "labour",
+            "business",
+            "task",
+            "assignment",
+            "occupation"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "工作；职业；任务",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：仕事；词性：名词，也可与「する」构成动词表达（JMdict n/vi/vs）。核心义覆盖工作、职业和具体任务，不扩大为所有商业活动。多义与混淆：语义范围较宽但核心边界明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-036",
+      "priority": "P2",
+      "word": "施行",
+      "reading": "しこう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N1"
+      ],
+      "exampleCaseIds": [
+        "LQ-244"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1579510"
+          ],
+          "headwords": [
+            "施行"
+          ],
+          "readings": [
+            "しこう"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vs",
+            "vt"
+          ],
+          "englishGlosses": [
+            "putting in force (a law)",
+            "putting into operation",
+            "putting into effect",
+            "enforcement",
+            "carrying out (a plan, policy, etc.)",
+            "execution"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "施行；实施；执行（法律、政策等）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：施行；词性：名词及サ变他动词（JMdict n/vs/vt）。核心义覆盖法律生效施行、政策或计划实施执行。多义与混淆：必须与同音「試行（试行、尝试）」按表记隔离。证据：JLPT N1；JMdict 1579510，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-037",
+      "priority": "P1",
+      "word": "紙",
+      "reading": "かみ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-169"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1311530"
+          ],
+          "headwords": [
+            "紙"
+          ],
+          "readings": [
+            "かみ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "paper"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "纸；纸张",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：紙；词性：名词（JMdict n）。核心义为纸或纸张。多义与混淆：必须与同音「髪（头发）」「神（神）」按表记隔离，不能只凭读音覆盖。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-038",
+      "priority": "P1",
+      "word": "写真",
+      "reading": "しゃしん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-028"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1321900"
+          ],
+          "headwords": [
+            "写真"
+          ],
+          "readings": [
+            "しゃしん"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "photograph",
+            "photo",
+            "picture",
+            "photography",
+            "moving picture",
+            "movie"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "照片；摄影",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：写真；词性：名词（JMdict n）。核心义覆盖照片以及摄影这一活动或领域；电影、活动影像等历史或扩展义不并入基础释义。多义与混淆：现代学习语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-039",
+      "priority": "P2",
+      "word": "審議",
+      "reading": "しんぎ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N1"
+      ],
+      "exampleCaseIds": [
+        "LQ-257"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1360360"
+          ],
+          "headwords": [
+            "審議"
+          ],
+          "readings": [
+            "しんぎ"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vs",
+            "vt"
+          ],
+          "englishGlosses": [
+            "deliberation",
+            "discussion",
+            "consideration"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "审议；讨论研究",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：審議；词性：名词及サ变他动词（JMdict n/vs/vt）。核心义为对议案、政策等进行审议、讨论和研究。多义与混淆：词形、读音及语义范围明确。证据：JLPT N1；JMdict 1360360，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-040",
+      "priority": "P1",
+      "word": "水",
+      "reading": "みず",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-020"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1371260"
+          ],
+          "headwords": [
+            "水"
+          ],
+          "readings": [
+            "みず"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "water (esp. cool or cold)",
+            "fluid (esp. in an animal tissue)",
+            "liquid",
+            "flood",
+            "floodwaters",
+            "water offered to wrestlers just prior to a bout",
+            "break granted to wrestlers engaged in a prolonged bout"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "水；凉水",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：水；词性：名词（JMdict n）。核心义限定为水，尤其与热水「湯」相对的常温或凉水；体液、洪水、相扑用水等扩展义不并入基础释义。多义与混淆：基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-041",
+      "priority": "P2",
+      "word": "政府",
+      "reading": "せいふ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N3"
+      ],
+      "exampleCaseIds": [
+        "LQ-231"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1376070"
+          ],
+          "headwords": [
+            "政府"
+          ],
+          "readings": [
+            "せいふ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "government",
+            "administration",
+            "ministry"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "政府；政府机构",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：政府；词性：名词（JMdict n）。核心义覆盖国家或地区政府及其行政机构，不扩大为单一部门的专名。多义与混淆：现代新闻语境明确。证据：JLPT N3；JMdict 1376070，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-042",
+      "priority": "P1",
+      "word": "切る",
+      "reading": "きる",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-172"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1384830"
+          ],
+          "headwords": [
+            "切る"
+          ],
+          "readings": [
+            "きる"
+          ],
+          "partsOfSpeech": [
+            "suf",
+            "v5r",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to cut",
+            "to cut through",
+            "to perform (surgery)",
+            "to sever (connections, ties)",
+            "to turn off (e.g. the light)",
+            "to terminate (e.g. a conversation)",
+            "to hang up (the phone)",
+            "to disconnect"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "切；剪；关闭（电源等）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：切る；词性：五段ラ行动词、他动词，另有接尾用法（JMdict v5r/vt/suf）。核心义覆盖切断、剪切，以及关闭电源或中断连接等常见引申；手术、断交、期限等细分义不全部展开。多义与混淆：必须与同音「着る（穿）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-043",
+      "priority": "P1",
+      "word": "窓",
+      "reading": "まど",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-040"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1401400"
+          ],
+          "headwords": [
+            "窓"
+          ],
+          "readings": [
+            "まど"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "window"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "窗；窗户",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：窓；词性：名词（JMdict n）。核心义为窗或窗户，词形、读音和语义范围明确。多义与混淆：无需要合并的同形异读词。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-044",
+      "priority": "P1",
+      "word": "着る",
+      "reading": "きる",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-173"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1423000"
+          ],
+          "headwords": [
+            "着る"
+          ],
+          "readings": [
+            "きる"
+          ],
+          "partsOfSpeech": [
+            "v1",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to wear (from the shoulders down)",
+            "to put on",
+            "to take (the blame, responsibility)",
+            "to bear"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "穿；穿上（衣服）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：着る；词性：一段动词、他动词（JMdict v1/vt）。核心义限定为穿上衣服，尤其是上半身或覆盖身体的服装；承担责任、背黑锅等引申义不并入基础释义。多义与混淆：必须与同音「切る（切、剪）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-045",
+      "priority": "P1",
+      "word": "電車",
+      "reading": "でんしゃ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-022"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1443530"
+          ],
+          "headwords": [
+            "電車"
+          ],
+          "readings": [
+            "でんしゃ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "train",
+            "electric train"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "电车；列车",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：電車；词性：名词（JMdict n）。核心义为以电力驱动的铁路列车，基础语境可译为电车或列车。多义与混淆：词形和读音明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-046",
+      "priority": "P1",
+      "word": "猫",
+      "reading": "ねこ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-018"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1467640"
+          ],
+          "headwords": [
+            "猫"
+          ],
+          "readings": [
+            "ねこ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "cat (esp. the domestic cat, Felis catus)",
+            "feline",
+            "shamisen",
+            "geisha",
+            "wheelbarrow",
+            "clay bed-warmer",
+            "bottom (submissive partner of a homosexual relationship)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "猫",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：猫；词性：名词（JMdict n）。核心义限定为动物“猫”，不纳入三味线、艺伎、手推车等俗语或历史扩展义。多义与混淆：基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-047",
+      "priority": "P1",
+      "word": "箸",
+      "reading": "はし",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-164"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1476410"
+          ],
+          "headwords": [
+            "箸"
+          ],
+          "readings": [
+            "はし"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "chopsticks"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "筷子",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：箸；词性：名词（JMdict n）。核心义为筷子。多义与混淆：必须与同音「橋（桥）」「端（边、端）」按表记隔离，不能只凭读音返回。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-048",
+      "priority": "P1",
+      "word": "髪",
+      "reading": "かみ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N4"
+      ],
+      "exampleCaseIds": [
+        "LQ-171"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1477950"
+          ],
+          "headwords": [
+            "髪"
+          ],
+          "readings": [
+            "かみ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "hair (on the head)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "头发",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：髪；词性：名词（JMdict n）。核心义限定为头发。多义与混淆：必须与同音「紙（纸）」「神（神）」按表记隔离。证据：JLPT N4；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-049",
+      "priority": "P2",
+      "word": "比率",
+      "reading": "ひりつ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N1"
+      ],
+      "exampleCaseIds": [
+        "LQ-255"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1483680"
+          ],
+          "headwords": [
+            "比率"
+          ],
+          "readings": [
+            "ひりつ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "ratio",
+            "proportion",
+            "percentage"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "比率；比例；百分比",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：比率；词性：名词（JMdict n）。核心义覆盖两个数量之间的比率、比例，以及以百分数表达的比率。多义与混淆：不得在没有百分号语境时强制译为百分比。证据：JLPT N1；JMdict 1483680，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-050",
+      "priority": "P2",
+      "word": "被害",
+      "reading": "ひがい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N3"
+      ],
+      "exampleCaseIds": [
+        "LQ-246"
+      ],
+      "reviewType": "high-frequency-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1484350"
+          ],
+          "headwords": [
+            "被害"
+          ],
+          "readings": [
+            "ひがい"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "(suffering) damage",
+            "injury",
+            "harm"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "损害；受害情况",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：被害；词性：名词（JMdict n）。核心义覆盖因事故、灾害或犯罪造成的损害、伤害及受害情况。多义与混淆：不等同于具体受害者「被害者」。证据：JLPT N3；JMdict 1484350，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-051",
+      "priority": "P1",
+      "word": "鼻",
+      "reading": "はな",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-166"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1486720"
+          ],
+          "headwords": [
+            "鼻"
+          ],
+          "readings": [
+            "はな"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "nose"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "鼻子",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：鼻；词性：名词（JMdict n）。核心义为鼻子。多义与混淆：必须与同音「花（花朵）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-052",
+      "priority": "P1",
+      "word": "料理",
+      "reading": "りょうり",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-029"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1554310"
+          ],
+          "headwords": [
+            "料理"
+          ],
+          "readings": [
+            "りょうり"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vs",
+            "vt"
+          ],
+          "englishGlosses": [
+            "cooking",
+            "cookery",
+            "cuisine",
+            "food",
+            "dish",
+            "dealing with (skillfully)",
+            "handling (well)",
+            "managing"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "烹饪；菜肴；料理",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：料理；词性：名词，也可与「する」构成他动词表达（JMdict n/vs/vt）。核心义覆盖烹饪行为、菜肴和料理类别；处理事务、管理等引申义不并入基础释义。多义与混淆：语义范围明确且符合当前语料。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-053",
+      "priority": "P1",
+      "word": "一日",
+      "reading": "ついたち",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "exampleCaseIds": [
+        "LQ-179"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "ambiguity",
+        "no-jmdict-evidence",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "blocked",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "block",
+      "rejectionReason": "JMdict common 子集没有「一日（ついたち）」的精确词形＋读音记录，当前证据错误指向「一日（いちにち）」。",
+      "notes": "已核验日文表记与目标读音，但当前 JMdict common 证据不包含「ついたち」。不能使用同表记另一读音的义项替代，也不能仅凭 JLPT N5 参考直接批准。下一步需要引入许可明确且包含该读音的独立词典证据，或在更新后的 JMdict 数据中找到精确记录。审核结论：blocked；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-054",
+      "priority": "P2",
+      "word": "飴",
+      "reading": "あめ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-168"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1153520"
+          ],
+          "headwords": [
+            "飴"
+          ],
+          "readings": [
+            "あめ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "(hard) candy",
+            "toffee",
+            "rice-sugar",
+            "sugar made from the starch of rice, potatoes, etc.",
+            "amber",
+            "yellowish-brown"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "糖果；糖稀",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：飴；词性：名词（JMdict n）。核心义覆盖硬糖、太妃糖等糖果，以及由淀粉制成的糖稀；琥珀色等颜色义不并入基础释义。多义与混淆：必须与同音「雨（あめ）」按表记隔离。证据：JMdict 1153520，CC BY-SA 4.0；本地 JLPT 参考未提供等级。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-055",
+      "priority": "P2",
+      "word": "易しい",
+      "reading": "やさしい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "adjectives"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-118"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1157000"
+          ],
+          "headwords": [
+            "易しい"
+          ],
+          "readings": [
+            "やさしい"
+          ],
+          "partsOfSpeech": [
+            "adj-i"
+          ],
+          "englishGlosses": [
+            "easy",
+            "plain",
+            "simple"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "容易的；简单的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：易しい；词性：イ形容词（JMdict adj-i）。核心义为容易、简单、易懂。多义与混淆：必须与同音「優しい（温柔、亲切）」按表记隔离。证据：JMdict 1157000，CC BY-SA 4.0；本地 JLPT 参考未提供等级。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-056",
+      "priority": "P2",
+      "word": "運行",
+      "reading": "うんこう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-249"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1172750"
+          ],
+          "headwords": [
+            "運行"
+          ],
+          "readings": [
+            "うんこう"
+          ],
+          "partsOfSpeech": [
+            "n",
+            "vi",
+            "vs",
+            "vt"
+          ],
+          "englishGlosses": [
+            "operation (of a bus or train service)",
+            "service",
+            "running",
+            "movement (of a heavenly body)",
+            "motion",
+            "revolution"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "运行；行驶（交通工具）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：運行；词性：名词及サ变动词，可作自动或他动表达（JMdict n/vi/vs/vt）。核心义限定为公交、列车等交通服务的运行、行驶；天体运行等义不并入本阶段核心释义。多义与混淆：新闻交通语境明确。证据：JMdict 1172750，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-057",
+      "priority": "P2",
+      "word": "開く",
+      "reading": "ひらく",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-175"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1202440"
+          ],
+          "headwords": [
+            "開く"
+          ],
+          "readings": [
+            "ひらく"
+          ],
+          "partsOfSpeech": [
+            "v5k",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to open",
+            "to undo",
+            "to unseal",
+            "to unpack",
+            "to bloom",
+            "to unfold",
+            "to spread out",
+            "to open (for business, e.g. in the morning)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "打开；展开；开设；举行",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：開く；目标读音：ひらく；词性：五段カ行动词，可作自动词或他动词（JMdict v5k/vi/vt）。核心义覆盖打开书本或容器、展开，以及开设店铺或举行活动等常见义。多义与混淆：必须与同形异读「開く（あく，自动打开或空出）」分开处理。证据：JMdict 1202440，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-058",
+      "priority": "P2",
+      "word": "開ける",
+      "reading": "あける",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-080"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1202450"
+          ],
+          "headwords": [
+            "開ける"
+          ],
+          "readings": [
+            "あける"
+          ],
+          "partsOfSpeech": [
+            "v1",
+            "vi",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to open (a door, etc.)",
+            "to unwrap (e.g. parcel, package)",
+            "to unlock",
+            "to open (for business, etc.)",
+            "to empty",
+            "to remove",
+            "to make space",
+            "to make room"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "打开；开启；腾出（空间）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：開ける；词性：一段动词，可作他动词或自动词（JMdict v1/vi/vt）。核心义覆盖主动打开门窗或包装、解锁，以及腾出空间。多义与混淆：需与同音「明ける（天亮、期限结束）」按表记隔离，也不得与自动词「開く（あく）」混同。证据：JMdict 1202450，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-059",
+      "priority": "P2",
+      "word": "蛙",
+      "reading": "かえる",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-162"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1577460"
+          ],
+          "headwords": [
+            "蛙"
+          ],
+          "readings": [
+            "かえる"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "frog"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "青蛙；蛙",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：蛙；词性：名词（JMdict n）。核心义为青蛙或蛙类。多义与混淆：必须与同音动词「帰る（回去、回家）」按表记隔离。证据：JMdict 1577460，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-060",
+      "priority": "P2",
+      "word": "携帯電話",
+      "reading": "けいたいでんわ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-210"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1250690"
+          ],
+          "headwords": [
+            "携帯電話"
+          ],
+          "readings": [
+            "けいたいでんわ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "mobile phone",
+            "cell phone"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "手机；移动电话",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：携帯電話；词性：名词（JMdict n）。核心义为移动电话或手机。多义与混淆：不将简称「携帯」自动等同于所有便携物品。证据：JMdict 1250690，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-061",
+      "priority": "P2",
+      "word": "見合わせる",
+      "reading": "みあわせる",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-248"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1259570"
+          ],
+          "headwords": [
+            "見合わせる"
+          ],
+          "readings": [
+            "みあわせる"
+          ],
+          "partsOfSpeech": [
+            "v1",
+            "vt"
+          ],
+          "englishGlosses": [
+            "to exchange glances",
+            "to look at each other",
+            "to postpone",
+            "to put off",
+            "to withhold",
+            "to abandon",
+            "to contrast",
+            "to compare"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "暂停；暂缓；推迟",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：見合わせる；词性：一段他动词（JMdict v1/vt）。当前新闻语料核心义为暂停运行、暂缓或推迟实施；“互相对视”“比较”属于其他义项，不并入本阶段核心释义。多义与混淆：必须依赖上下文，尤其交通新闻中的「運転を見合わせる」。证据：JMdict 1259570，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-062",
+      "priority": "P2",
+      "word": "高速道路",
+      "reading": "こうそくどうろ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-209"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1283720"
+          ],
+          "headwords": [
+            "高速道路"
+          ],
+          "readings": [
+            "こうそくどうろ"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "highway",
+            "freeway",
+            "expressway",
+            "motorway"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "高速公路",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：高速道路；词性：名词（JMdict n）。核心义为高速公路、快速道路或高速路。多义与混淆：词形、读音和现代交通语义明确。证据：JMdict 1283720，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-063",
+      "priority": "P2",
+      "word": "神",
+      "reading": "かみ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-170"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1364440"
+          ],
+          "headwords": [
+            "神"
+          ],
+          "readings": [
+            "かみ"
+          ],
+          "partsOfSpeech": [
+            "adj-na",
+            "n",
+            "n-pref"
+          ],
+          "englishGlosses": [
+            "god",
+            "deity",
+            "divinity",
+            "spirit",
+            "kami",
+            "god-tier",
+            "incredible",
+            "fantastic"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "神；神明",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：神；目标读音：かみ；词性：名词、名词前缀，亦有形容动词化网络用法（JMdict n/n-pref/adj-na）。核心义限定为神、神明或神灵；“神级、太棒了”等网络引申不并入基础释义。多义与混淆：必须与同音「紙（纸）」「髪（头发）」按表记隔离。证据：JMdict 1364440，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-064",
+      "priority": "P2",
+      "word": "人気",
+      "reading": "にんき",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-180"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1367010"
+          ],
+          "headwords": [
+            "人気"
+          ],
+          "readings": [
+            "にんき"
+          ],
+          "partsOfSpeech": [
+            "adj-no",
+            "n"
+          ],
+          "englishGlosses": [
+            "popularity",
+            "public favor",
+            "condition (e.g. market)",
+            "tone",
+            "character",
+            "nature"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "人气；受欢迎程度",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：人気；目标读音：にんき；词性：名词及「の」形容修饰（JMdict n/adj-no）。核心义限定为人气、受欢迎程度或公众喜爱。多义与混淆：必须与同形异读「人気（ひとけ，人的气息或有人存在的迹象）」分开处理；后者当前因证据不足保持 blocked。证据：JMdict 1367010，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-065",
+      "priority": "P2",
+      "word": "生",
+      "reading": "なま",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-176"
+      ],
+      "reviewType": "sense-disambiguation",
+      "riskFlags": [
+        "ambiguity",
+        "broad-sense-range"
+      ],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1378450"
+          ],
+          "headwords": [
+            "生"
+          ],
+          "readings": [
+            "なま"
+          ],
+          "partsOfSpeech": [
+            "adj-no",
+            "n",
+            "pref"
+          ],
+          "englishGlosses": [
+            "raw",
+            "uncooked",
+            "fresh",
+            "natural",
+            "as it is",
+            "unedited",
+            "unprocessed",
+            "unprotected (sex)"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "生的；未加工的；新鲜的",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：生；目标读音：なま；词性：名词、前缀及「の」形容修饰（JMdict n/pref/adj-no）。核心义覆盖食物未烹饪、材料未加工，以及现场或未经编辑处理的状态；成人语境等其他义项不并入基础释义。多义与混淆：同一表记「生」有「せい」「しょう」等多种读音，必须按读音和上下文隔离。证据：JMdict 1378450，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-066",
+      "priority": "P2",
+      "word": "大学院生",
+      "reading": "だいがくいんせい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-207"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "2077500"
+          ],
+          "headwords": [
+            "大学院生"
+          ],
+          "readings": [
+            "だいがくいんせい"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "graduate student",
+            "postgraduate student"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "研究生；大学院学生",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：大学院生；词性：名词（JMdict n）。核心义为在日本大学院攻读硕士或博士阶段课程的学生，中文通常称研究生。多义与混淆：注意中文“研究生”与日语「研究生」制度含义不同，本词对应正式大学院在籍学生。证据：JMdict 2077500，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-067",
+      "priority": "P2",
+      "word": "地球温暖化",
+      "reading": "ちきゅうおんだんか",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-197"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1420980"
+          ],
+          "headwords": [
+            "地球温暖化"
+          ],
+          "readings": [
+            "ちきゅうおんだんか"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "global warming"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "全球变暖",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：地球温暖化；词性：名词（JMdict n）。核心义为全球变暖或地球气候变暖。多义与混淆：术语含义明确，不扩大为整个气候变化概念。证据：JMdict 1420980，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-068",
+      "priority": "P2",
+      "word": "地方自治体",
+      "reading": "ちほうじちたい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-206"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "1763330"
+          ],
+          "headwords": [
+            "地方自治体"
+          ],
+          "readings": [
+            "ちほうじちたい"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "local authority",
+            "local government",
+            "locality",
+            "local self-governing body",
+            "municipality"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "地方政府；地方自治体",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：地方自治体；词性：名词（JMdict n）。核心义为依法实行地方自治的地方政府或地方公共团体。多义与混淆：在日本行政语境中可涵盖都道府县和市区町村，不应仅译为单一“市政府”。证据：JMdict 1763330，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-069",
+      "priority": "P2",
+      "word": "電子部品",
+      "reading": "でんしぶひん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-205"
+      ],
+      "reviewType": "standard-lexical",
+      "riskFlags": [],
+      "evidence": [
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "entryIds": [
+            "2132850"
+          ],
+          "headwords": [
+            "電子部品"
+          ],
+          "readings": [
+            "でんしぶひん"
+          ],
+          "partsOfSpeech": [
+            "n"
+          ],
+          "englishGlosses": [
+            "electronic parts",
+            "electronic components"
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-23"
+        }
+      ],
+      "candidateChinese": "电子元件；电子零部件",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：電子部品；词性：名词（JMdict n）。核心义为电子设备使用的电子元件或电子零部件。多义与混淆：词形、读音和专业语义明确。证据：JMdict 2132850，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-070",
+      "priority": "P3",
+      "word": "サイバー攻撃",
+      "reading": "さいばーこうげき",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-254"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-254"
+          ],
+          "headwords": [
+            "サイバー攻撃"
+          ],
+          "readings": [
+            "さいばーこうげき"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "サイバー攻撃への対策を急ぐ。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "wikidata",
+          "license": "CC0-1.0",
+          "entityIds": [
+            "Q4071928"
+          ],
+          "labels": {
+            "en": "cyberattack",
+            "zh": "网络攻击"
+          },
+          "sourceUrl": "https://www.wikidata.org/wiki/Q4071928",
+          "retrievedAt": "2026-07-24",
+          "matchType": "semantic-external"
+        }
+      ],
+      "candidateChinese": "网络攻击；网络系统攻击",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：サイバー攻撃；读音：さいばーこうげき；词性：名词（项目语料）。核心释义：网络攻击；网络系统攻击。多义与混淆：指针对计算机、网络或数字系统实施的未授权访问、破坏、窃取或干扰行为，不扩大为一般舆论攻击。证据：Yomeru 语料确认完整词形、读音与上下文；wikidata 提供隔离的外部语义证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-071",
+      "priority": "P3",
+      "word": "医療機関",
+      "reading": "いりょうきかん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-250"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-250"
+          ],
+          "headwords": [
+            "医療機関"
+          ],
+          "readings": [
+            "いりょうきかん"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "医療機関の負担を軽減する。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1160140",
+              "word": "医療",
+              "reading": "いりょう",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "medical treatment",
+                "medical care"
+              ]
+            },
+            {
+              "entryId": "1220870",
+              "word": "機関",
+              "reading": "きかん",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "engine",
+                "agency",
+                "organisation",
+                "organization",
+                "institution",
+                "organ",
+                "body",
+                "system"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "医疗机构",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：医療機関；读音：いりょうきかん；词性：名词（项目语料）。核心释义：医疗机构。多义与混淆：指提供医疗服务的医院、诊所等机构；不等同于单一医院。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-072",
+      "priority": "P3",
+      "word": "医療保険制度",
+      "reading": "いりょうほけんせいど",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-202"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-202"
+          ],
+          "headwords": [
+            "医療保険制度"
+          ],
+          "readings": [
+            "いりょうほけんせいど"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "医療保険制度を改革する。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1160140",
+              "word": "医療",
+              "reading": "いりょう",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "medical treatment",
+                "medical care"
+              ]
+            },
+            {
+              "entryId": "1513440",
+              "word": "保険",
+              "reading": "ほけん",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "insurance",
+                "guarantee",
+                "warranty"
+              ]
+            },
+            {
+              "entryId": "1374880",
+              "word": "制度",
+              "reading": "せいど",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "system",
+                "institution",
+                "organization",
+                "organisation"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "医疗保险制度",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：医療保険制度；读音：いりょうほけんせいど；词性：名词（项目语料）。核心释义：医疗保险制度。多义与混淆：指以保险方式分担医疗费用的制度，不扩大为全部社会保障制度。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-073",
+      "priority": "P3",
+      "word": "海外市場",
+      "reading": "かいがいしじょう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-259"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-259"
+          ],
+          "headwords": [
+            "海外市場"
+          ],
+          "readings": [
+            "かいがいしじょう"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "海外市場で販売を開始する。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1201260",
+              "word": "海外",
+              "reading": "かいがい",
+              "partsOfSpeech": [
+                "adj-no",
+                "n"
+              ],
+              "englishGlosses": [
+                "foreign",
+                "abroad",
+                "overseas"
+              ]
+            },
+            {
+              "entryId": "1308305",
+              "word": "市場",
+              "reading": "しじょう",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "market (financial, stock, domestic, etc.)",
+                "marketplace",
+                "exchange",
+                "(street) market"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "海外市场",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：海外市場；读音：かいがいしじょう；词性：名词（项目语料）。核心释义：海外市场。多义与混淆：指本国以外的商品、金融或商业市场；市場在本词中读作しじょう。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-074",
+      "priority": "P3",
+      "word": "外国人観光客",
+      "reading": "がいこくじんかんこうきゃく",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-208"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-208"
+          ],
+          "headwords": [
+            "外国人観光客"
+          ],
+          "readings": [
+            "がいこくじんかんこうきゃく"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "外国人観光客が増えた。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1203650",
+              "word": "外国人",
+              "reading": "がいこくじん",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "foreigner",
+                "foreign citizen",
+                "foreign national",
+                "alien",
+                "non-Japanese"
+              ]
+            },
+            {
+              "entryId": "1214870",
+              "word": "観光客",
+              "reading": "かんこうきゃく",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "tourist"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "外国游客；外国观光客",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：外国人観光客；读音：がいこくじんかんこうきゃく；词性：名词（项目语料）。核心释义：外国游客；外国观光客。多义与混淆：指来自外国、以旅游为目的的游客，不等同于所有外国居民。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-075",
+      "priority": "P3",
+      "word": "共同研究",
+      "reading": "きょうどうけんきゅう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-236"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-236"
+          ],
+          "headwords": [
+            "共同研究"
+          ],
+          "readings": [
+            "きょうどうけんきゅう"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "大学と企業が共同研究を始めた。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1591660",
+              "word": "共同",
+              "reading": "きょうどう",
+              "partsOfSpeech": [
+                "adj-no",
+                "n",
+                "n-pref",
+                "vi",
+                "vs"
+              ],
+              "englishGlosses": [
+                "cooperation",
+                "collaboration",
+                "association",
+                "partnership",
+                "(acting in) unison",
+                "community",
+                "communal use",
+                "common possession"
+              ]
+            },
+            {
+              "entryId": "1258520",
+              "word": "研究",
+              "reading": "けんきゅう",
+              "partsOfSpeech": [
+                "n",
+                "vs",
+                "vt"
+              ],
+              "englishGlosses": [
+                "research",
+                "study",
+                "investigation"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "共同研究；合作研究",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：共同研究；读音：きょうどうけんきゅう；词性：名词（项目语料）。核心释义：共同研究；合作研究。多义与混淆：指两个或多个个人、机构共同开展的研究。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-076",
+      "priority": "P3",
+      "word": "経済成長",
+      "reading": "けいざいせいちょう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-198"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-198"
+          ],
+          "headwords": [
+            "経済成長"
+          ],
+          "readings": [
+            "けいざいせいちょう"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "経済成長が続く。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1251320",
+              "word": "経済",
+              "reading": "けいざい",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "economy",
+                "economics",
+                "finance",
+                "(one's) finances",
+                "financial circumstances",
+                "being economical",
+                "thrift"
+              ]
+            },
+            {
+              "entryId": "1375790",
+              "word": "成長",
+              "reading": "せいちょう",
+              "partsOfSpeech": [
+                "n",
+                "vi",
+                "vs"
+              ],
+              "englishGlosses": [
+                "growth",
+                "development",
+                "growing up",
+                "becoming an adult",
+                "growth (of a company, the economy, etc.)"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "经济增长",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：経済成長；读音：けいざいせいちょう；词性：名词（项目语料）。核心释义：经济增长。多义与混淆：指经济规模、产出或经济活动增长，不等同于所有经济发展指标。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-077",
+      "priority": "P3",
+      "word": "研究チーム",
+      "reading": "けんきゅうちーむ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-251"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-251"
+          ],
+          "headwords": [
+            "研究チーム"
+          ],
+          "readings": [
+            "けんきゅうちーむ"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "研究チームが成果を公表した。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1258520",
+              "word": "研究",
+              "reading": "けんきゅう",
+              "partsOfSpeech": [
+                "n",
+                "vs",
+                "vt"
+              ],
+              "englishGlosses": [
+                "research",
+                "study",
+                "investigation"
+              ]
+            },
+            {
+              "entryId": "1077360",
+              "word": "チーム",
+              "reading": "チーム",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "team"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "研究团队",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：研究チーム；读音：けんきゅうちーむ；词性：名词（项目语料）。核心释义：研究团队。多义与混淆：指共同从事研究工作的团队。外来语チーム的组件读音在 JMdict 中使用片假名。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-078",
+      "priority": "P3",
+      "word": "研究開発費",
+      "reading": "けんきゅうかいはつひ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-201"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-201"
+          ],
+          "headwords": [
+            "研究開発費"
+          ],
+          "readings": [
+            "けんきゅうかいはつひ"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "研究開発費を増やす。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1258520",
+              "word": "研究",
+              "reading": "けんきゅう",
+              "partsOfSpeech": [
+                "n",
+                "vs",
+                "vt"
+              ],
+              "englishGlosses": [
+                "research",
+                "study",
+                "investigation"
+              ]
+            },
+            {
+              "entryId": "1202880",
+              "word": "開発",
+              "reading": "かいはつ",
+              "partsOfSpeech": [
+                "n",
+                "vs",
+                "vt"
+              ],
+              "englishGlosses": [
+                "development",
+                "cultivation",
+                "application",
+                "exploitation (of resources)"
+              ]
+            },
+            {
+              "entryId": "1484590",
+              "word": "費",
+              "reading": "ひ",
+              "partsOfSpeech": [
+                "n-suf"
+              ],
+              "englishGlosses": [
+                "cost",
+                "expense"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "研发费用；研究开发费",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：研究開発費；读音：けんきゅうかいはつひ；词性：名词（项目语料）。核心释义：研发费用；研究开发费。多义与混淆：指研究与开发活动所发生的费用，不等同于全部企业投资。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-079",
+      "priority": "P3",
+      "word": "個人情報",
+      "reading": "こじんじょうほう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-253"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-253"
+          ],
+          "headwords": [
+            "個人情報"
+          ],
+          "readings": [
+            "こじんじょうほう"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "個人情報の保護を強化する。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1264770",
+              "word": "個人",
+              "reading": "こじん",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "individual",
+                "private person",
+                "personal",
+                "private",
+                "natural person"
+              ]
+            },
+            {
+              "entryId": "1356370",
+              "word": "情報",
+              "reading": "じょうほう",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "information",
+                "news",
+                "report",
+                "intelligence",
+                "information (data contained in characters, signals, code, etc.)",
+                "informatics (as a subject)"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "个人信息",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：個人情報；读音：こじんじょうほう；词性：名词（项目语料）。核心释义：个人信息。多义与混淆：指与个人有关的信息；法律语境中的具体范围由适用法律决定，本释义不自行扩大法律定义。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-080",
+      "priority": "P3",
+      "word": "雇用情勢",
+      "reading": "こようじょうせい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-240"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-240"
+          ],
+          "headwords": [
+            "雇用情勢"
+          ],
+          "readings": [
+            "こようじょうせい"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "雇用情勢は緩やかに改善した。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1267860",
+              "word": "雇用",
+              "reading": "こよう",
+              "partsOfSpeech": [
+                "n",
+                "vs",
+                "vt"
+              ],
+              "englishGlosses": [
+                "employment",
+                "hire"
+              ]
+            },
+            {
+              "entryId": "1356320",
+              "word": "情勢",
+              "reading": "じょうせい",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "state of things",
+                "state of affairs",
+                "situation",
+                "conditions",
+                "circumstances"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "就业形势；就业状况",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：雇用情勢；读音：こようじょうせい；词性：名词（项目语料）。核心释义：就业形势；就业状况。多义与混淆：指某时期或地区的就业、招聘和失业等整体状况。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-081",
+      "priority": "P3",
+      "word": "公共交通機関",
+      "reading": "こうきょうこうつうきかん",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-200"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-200"
+          ],
+          "headwords": [
+            "公共交通機関"
+          ],
+          "readings": [
+            "こうきょうこうつうきかん"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "公共交通機関を使う。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1273510",
+              "word": "公共",
+              "reading": "こうきょう",
+              "partsOfSpeech": [
+                "adj-no",
+                "n"
+              ],
+              "englishGlosses": [
+                "public (facilities, service, etc.)",
+                "communal"
+              ]
+            },
+            {
+              "entryId": "1272280",
+              "word": "交通",
+              "reading": "こうつう",
+              "partsOfSpeech": [
+                "n",
+                "vs"
+              ],
+              "englishGlosses": [
+                "traffic",
+                "transportation",
+                "communication",
+                "exchange (of ideas, etc.)",
+                "intercourse"
+              ]
+            },
+            {
+              "entryId": "1220870",
+              "word": "機関",
+              "reading": "きかん",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "engine",
+                "agency",
+                "organisation",
+                "organization",
+                "institution",
+                "organ",
+                "body",
+                "system"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "公共交通工具；公共交通系统",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：公共交通機関；读音：こうきょうこうつうきかん；词性：名词（项目语料）。核心释义：公共交通工具；公共交通系统。多义与混淆：指面向公众运营的铁路、公交等交通方式或系统；機関在该复合词中不是政府机关。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：中高。"
+    },
+    {
+      "queueId": "zh-review-082",
+      "priority": "P3",
+      "word": "今日中",
+      "reading": "きょうじゅう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-184"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "ambiguity",
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-184"
+          ],
+          "headwords": [
+            "今日中"
+          ],
+          "readings": [
+            "きょうじゅう"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "今日中に終える。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "wiktionary-text",
+          "license": "CC-BY-SA-4.0",
+          "pageTitle": "今日中に",
+          "relatedForms": [
+            "今日中",
+            "今日中に"
+          ],
+          "readings": [
+            "きょうじゅう",
+            "きょうじゅうに"
+          ],
+          "englishGlosses": [
+            "before the day is done"
+          ],
+          "sourceUrl": "https://en.wiktionary.org/wiki/今日中に",
+          "retrievedAt": "2026-07-24",
+          "matchType": "semantic-external"
+        }
+      ],
+      "candidateChinese": "今天之内；今天结束前",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：今日中；读音：きょうじゅう；词性：名词（项目语料）。核心释义：今天之内；今天结束前。多义与混淆：表示截止到今天结束之前；不与今日（こんにち，现今）混淆。证据：Yomeru 语料确认完整词形、读音与上下文；wiktionary-text 提供隔离的外部语义证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-083",
+      "priority": "P3",
+      "word": "再生可能エネルギー",
+      "reading": "さいせいかのうえねるぎー",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-204"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-204"
+          ],
+          "headwords": [
+            "再生可能エネルギー"
+          ],
+          "readings": [
+            "さいせいかのうえねるぎー"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "再生可能エネルギーを使う。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "wikidata",
+          "license": "CC0-1.0",
+          "entityIds": [
+            "Q12705"
+          ],
+          "labels": {
+            "ja": "再生可能エネルギー",
+            "en": "renewable energy",
+            "zh": "可再生能源"
+          },
+          "sourceUrl": "https://www.wikidata.org/wiki/Q12705",
+          "retrievedAt": "2026-07-24",
+          "matchType": "semantic-external"
+        }
+      ],
+      "candidateChinese": "可再生能源",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：再生可能エネルギー；读音：さいせいかのうえねるぎー；词性：名词（项目语料）。核心释义：可再生能源。多义与混淆：指从可自然补充的资源中获得的能源，不等同于所有替代能源。证据：Yomeru 语料确认完整词形、读音与上下文；wikidata 提供隔离的外部语义证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-084",
+      "priority": "P3",
+      "word": "自然災害",
+      "reading": "しぜんさいがい",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-203"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-203"
+          ],
+          "headwords": [
+            "自然災害"
+          ],
+          "readings": [
+            "しぜんさいがい"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "自然災害に備える。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1318090",
+              "word": "自然",
+              "reading": "しぜん",
+              "partsOfSpeech": [
+                "adj-na",
+                "adv",
+                "adv-to",
+                "n"
+              ],
+              "englishGlosses": [
+                "nature",
+                "natural",
+                "spontaneous",
+                "automatic",
+                "naturally",
+                "spontaneously",
+                "automatically"
+              ]
+            },
+            {
+              "entryId": "1295100",
+              "word": "災害",
+              "reading": "さいがい",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "calamity",
+                "disaster",
+                "misfortune"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "自然灾害",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：自然災害；读音：しぜんさいがい；词性：名词（项目语料）。核心释义：自然灾害。多义与混淆：指由自然现象引发并造成损害的灾害，不包括人为事故。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-085",
+      "priority": "P3",
+      "word": "少子高齢化",
+      "reading": "しょうしこうれいか",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-196"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-196"
+          ],
+          "headwords": [
+            "少子高齢化"
+          ],
+          "readings": [
+            "しょうしこうれいか"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "少子高齢化が進む。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "japan-government-pdl1",
+          "license": "PDL-1.0",
+          "publisher": "厚生労働省",
+          "headwords": [
+            "少子高齢化"
+          ],
+          "readings": [
+            "しょうしこうれいか"
+          ],
+          "sourceUrl": "https://www.mhlw.go.jp/nenkinkenshou/glossary/index.html",
+          "termsUrl": "https://www.mhlw.go.jp/chosakuken/index.html",
+          "retrievedAt": "2026-07-24",
+          "matchType": "semantic-external"
+        }
+      ],
+      "candidateChinese": "少子老龄化；低出生率与人口老龄化",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：少子高齢化；读音：しょうしこうれいか；词性：名词（项目语料）。核心释义：少子老龄化；低出生率与人口老龄化。多义与混淆：指儿童或出生人口占比下降，同时老年人口占比上升的社会人口现象。证据：Yomeru 语料确认完整词形、读音与上下文；japan-government-pdl1 提供隔离的外部语义证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-086",
+      "priority": "P3",
+      "word": "上昇率",
+      "reading": "じょうしょうりつ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-239"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-239"
+          ],
+          "headwords": [
+            "上昇率"
+          ],
+          "readings": [
+            "じょうしょうりつ"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "物価の上昇率が鈍化した。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1353450",
+              "word": "上昇",
+              "reading": "じょうしょう",
+              "partsOfSpeech": [
+                "adj-no",
+                "n",
+                "vi",
+                "vs"
+              ],
+              "englishGlosses": [
+                "rising",
+                "ascending",
+                "climbing"
+              ]
+            },
+            {
+              "entryId": "1551200",
+              "word": "率",
+              "reading": "りつ",
+              "partsOfSpeech": [
+                "n",
+                "n-suf"
+              ],
+              "englishGlosses": [
+                "rate",
+                "ratio",
+                "proportion",
+                "percentage"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "上升率；增长率",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：上昇率；读音：じょうしょうりつ；词性：名词（项目语料）。核心释义：上升率；增长率。多义与混淆：指某数值上升的比率；具体采用上升率或增长率取决于统计语境。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-087",
+      "priority": "P3",
+      "word": "情報通信技術",
+      "reading": "じょうほうつうしんぎじゅつ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-195"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-195"
+          ],
+          "headwords": [
+            "情報通信技術"
+          ],
+          "readings": [
+            "じょうほうつうしんぎじゅつ"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "情報通信技術を活用する。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1356370",
+              "word": "情報",
+              "reading": "じょうほう",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "information",
+                "news",
+                "report",
+                "intelligence",
+                "information (data contained in characters, signals, code, etc.)",
+                "informatics (as a subject)"
+              ]
+            },
+            {
+              "entryId": "1433330",
+              "word": "通信",
+              "reading": "つうしん",
+              "partsOfSpeech": [
+                "n",
+                "vi",
+                "vs",
+                "vt"
+              ],
+              "englishGlosses": [
+                "correspondence",
+                "communication",
+                "transmission",
+                "news",
+                "signal",
+                "telecommunications"
+              ]
+            },
+            {
+              "entryId": "1225130",
+              "word": "技術",
+              "reading": "ぎじゅつ",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "technology",
+                "engineering",
+                "technique",
+                "skill",
+                "art",
+                "craft"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "信息通信技术（ICT）",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：情報通信技術；读音：じょうほうつうしんぎじゅつ；词性：名词（项目语料）。核心释义：信息通信技术（ICT）。多义与混淆：指信息处理与通信相关的技术总体，常对应 ICT。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-088",
+      "priority": "P3",
+      "word": "人気",
+      "reading": "ひとけ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-181"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "ambiguity",
+        "no-jmdict-evidence",
+        "same-written-form-multiple-readings"
+      ],
+      "evidence": [],
+      "candidateChinese": null,
+      "reviewerStatus": "blocked",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "block",
+      "rejectionReason": "JMdict common 子集没有「人気（ひとけ）」的精确词形＋读音记录，当前证据错误指向「人気（にんき）」。",
+      "notes": "语料目标为「ひとけ」，通常涉及人的气息或有人存在的迹象，但当前证据只支持「にんき（人气、受欢迎程度）」。为避免同形异读错误覆盖，不生成中文候选。下一步需要许可明确的精确读音与义项证据。审核结论：blocked；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-089",
+      "priority": "P3",
+      "word": "中央銀行",
+      "reading": "ちゅうおうぎんこう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-241"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-241"
+          ],
+          "headwords": [
+            "中央銀行"
+          ],
+          "readings": [
+            "ちゅうおうぎんこう"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "中央銀行は金利を据え置いた。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1423430",
+              "word": "中央",
+              "reading": "ちゅうおう",
+              "partsOfSpeech": [
+                "adj-no",
+                "n"
+              ],
+              "englishGlosses": [
+                "centre",
+                "center",
+                "middle",
+                "heart",
+                "capital",
+                "seat of government"
+              ]
+            },
+            {
+              "entryId": "1243490",
+              "word": "銀行",
+              "reading": "ぎんこう",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "bank",
+                "banking institution"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "中央银行",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：中央銀行；读音：ちゅうおうぎんこう；词性：名词（项目语料）。核心释义：中央银行。多义与混淆：指负责货币发行、货币政策等中央银行职能的机构，不等同于一般商业银行。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-090",
+      "priority": "P3",
+      "word": "投票率",
+      "reading": "とうひょうりつ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-258"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-258"
+          ],
+          "headwords": [
+            "投票率"
+          ],
+          "readings": [
+            "とうひょうりつ"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "選挙の投票率は前回を下回った。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1447320",
+              "word": "投票",
+              "reading": "とうひょう",
+              "partsOfSpeech": [
+                "n",
+                "vi",
+                "vs"
+              ],
+              "englishGlosses": [
+                "voting",
+                "ballot",
+                "poll",
+                "vote"
+              ]
+            },
+            {
+              "entryId": "1551200",
+              "word": "率",
+              "reading": "りつ",
+              "partsOfSpeech": [
+                "n",
+                "n-suf"
+              ],
+              "englishGlosses": [
+                "rate",
+                "ratio",
+                "proportion",
+                "percentage"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "投票率；选民投票率",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：投票率；读音：とうひょうりつ；词性：名词（项目语料）。核心释义：投票率；选民投票率。多义与混淆：指实际投票人数相对于有资格投票人数等基数的比例；具体分母依统计定义确定。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-091",
+      "priority": "P3",
+      "word": "排出量",
+      "reading": "はいしゅつりょう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-256"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-256"
+          ],
+          "headwords": [
+            "排出量"
+          ],
+          "readings": [
+            "はいしゅつりょう"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "温室効果ガスの排出量を削減する。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1472360",
+              "word": "排出",
+              "reading": "はいしゅつ",
+              "partsOfSpeech": [
+                "n",
+                "vs",
+                "vt"
+              ],
+              "englishGlosses": [
+                "discharge",
+                "evacuation",
+                "emission (e.g. of CO2)",
+                "ejection",
+                "excretion"
+              ]
+            },
+            {
+              "entryId": "1554640",
+              "word": "量",
+              "reading": "りょう",
+              "partsOfSpeech": [
+                "n",
+                "n-suf"
+              ],
+              "englishGlosses": [
+                "quantity",
+                "amount",
+                "volume",
+                "capacity",
+                "portion (of food)",
+                "generosity",
+                "magnanimity",
+                "tolerance"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "排放量；排出量",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：排出量；读音：はいしゅつりょう；词性：名词（项目语料）。核心释义：排放量；排出量。多义与混淆：指气体、物质等被排放出去的数量；当前语料为温室气体排放量。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-092",
+      "priority": "P3",
+      "word": "半導体メモリー",
+      "reading": "はんどうたいめもりー",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-190"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-190"
+          ],
+          "headwords": [
+            "半導体メモリー"
+          ],
+          "readings": [
+            "はんどうたいめもりー"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "半導体メモリーを生産する。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1479790",
+              "word": "半導体",
+              "reading": "はんどうたい",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "semiconductor"
+              ]
+            },
+            {
+              "entryId": "1133860",
+              "word": "メモリー",
+              "reading": "メモリー",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "memory",
+                "recollection",
+                "remembrance"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "半导体存储器；半导体内存",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：半導体メモリー；读音：はんどうたいめもりー；词性：名词（项目语料）。核心释义：半导体存储器；半导体内存。多义与混淆：指利用半导体器件存储数据的存储器；メモリー在本词中是计算机存储器，不是人的回忆。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-093",
+      "priority": "P3",
+      "word": "避難所",
+      "reading": "ひなんじょ",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-245"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-245"
+          ],
+          "headwords": [
+            "避難所"
+          ],
+          "readings": [
+            "ひなんじょ"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "自治体は避難所を開設した。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1484660",
+              "word": "避難",
+              "reading": "ひなん",
+              "partsOfSpeech": [
+                "n",
+                "vi",
+                "vs"
+              ],
+              "englishGlosses": [
+                "taking refuge",
+                "finding shelter",
+                "evacuation",
+                "escape",
+                "seeking safe haven"
+              ]
+            },
+            {
+              "entryId": "1343100",
+              "word": "所",
+              "reading": "ところ",
+              "partsOfSpeech": [
+                "adv",
+                "n",
+                "suf"
+              ],
+              "englishGlosses": [
+                "place",
+                "spot",
+                "scene",
+                "site",
+                "address",
+                "district",
+                "area",
+                "locality"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "避难所；临时安置点",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：避難所；读音：ひなんじょ；词性：名词（项目语料）。核心释义：避难所；临时安置点。多义与混淆：指灾害或危险发生时供人员避难、暂时安置的场所。组件所的独立词典读音为ところ，复合词读音じょ由完整语料确认。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-094",
+      "priority": "P3",
+      "word": "訪日客数",
+      "reading": "ほうにちきゃくすう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-243"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-243"
+          ],
+          "headwords": [
+            "訪日客数"
+          ],
+          "readings": [
+            "ほうにちきゃくすう"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "訪日客数が過去最高となった。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1518100",
+              "word": "訪日",
+              "reading": "ほうにち",
+              "partsOfSpeech": [
+                "n",
+                "vi",
+                "vs"
+              ],
+              "englishGlosses": [
+                "visit to Japan"
+              ]
+            },
+            {
+              "entryId": "1226630",
+              "word": "客",
+              "reading": "きゃく",
+              "partsOfSpeech": [
+                "ctr",
+                "n"
+              ],
+              "englishGlosses": [
+                "guest",
+                "visitor",
+                "customer",
+                "client",
+                "shopper",
+                "spectator",
+                "audience",
+                "tourist"
+              ]
+            },
+            {
+              "entryId": "1580825",
+              "word": "数",
+              "reading": "すう",
+              "partsOfSpeech": [
+                "n",
+                "n-suf",
+                "pref"
+              ],
+              "englishGlosses": [
+                "several",
+                "a few",
+                "a number of",
+                "number",
+                "quantity",
+                "amount",
+                "counting",
+                "calculation"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "访日游客人数；入境日本游客数量",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：訪日客数；读音：ほうにちきゃくすう；词性：名词（项目语料）。核心释义：访日游客人数；入境日本游客数量。多义与混淆：指访问日本的游客人数；客数在此为人数统计，不是客户交易次数。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-095",
+      "priority": "P3",
+      "word": "輸出額",
+      "reading": "ゆしゅつがく",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-242"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-242"
+          ],
+          "headwords": [
+            "輸出額"
+          ],
+          "readings": [
+            "ゆしゅつがく"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "輸出額は前年を上回った。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1538820",
+              "word": "輸出",
+              "reading": "ゆしゅつ",
+              "partsOfSpeech": [
+                "adj-f",
+                "n",
+                "vs",
+                "vt"
+              ],
+              "englishGlosses": [
+                "export",
+                "exportation",
+                "efferent"
+              ]
+            },
+            {
+              "entryId": "1207500",
+              "word": "額",
+              "reading": "がく",
+              "partsOfSpeech": [
+                "n",
+                "n-suf"
+              ],
+              "englishGlosses": [
+                "(picture) frame",
+                "framed picture",
+                "amount (esp. of money)",
+                "sum"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "出口额",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：輸出額；读音：ゆしゅつがく；词性：名词（项目语料）。核心释义：出口额。多义与混淆：指出口商品或服务的金额，不等同于出口数量。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-096",
+      "priority": "P3",
+      "word": "労働市場",
+      "reading": "ろうどうしじょう",
+      "corpusFrequency": 1,
+      "corpusCategories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "exampleCaseIds": [
+        "LQ-199"
+      ],
+      "reviewType": "manual-research-required",
+      "riskFlags": [
+        "no-jmdict-evidence"
+      ],
+      "evidence": [
+        {
+          "sourceId": "yomeru-language-corpus",
+          "license": "project-curated",
+          "matchType": "exact-corpus",
+          "corpusVersion": "20260717-01",
+          "caseIds": [
+            "LQ-199"
+          ],
+          "headwords": [
+            "労働市場"
+          ],
+          "readings": [
+            "ろうどうしじょう"
+          ],
+          "partsOfSpeech": [
+            "名詞"
+          ],
+          "sentences": [
+            "労働市場が変化する。"
+          ],
+          "sourcePath": "frontend/test-data/language-corpus/20260717-01/cases.json",
+          "retrievedAt": "2026-07-24"
+        },
+        {
+          "sourceId": "jmdict-edrdg",
+          "license": "CC-BY-SA-4.0",
+          "matchType": "compositional",
+          "components": [
+            {
+              "entryId": "1606450",
+              "word": "労働",
+              "reading": "ろうどう",
+              "partsOfSpeech": [
+                "n",
+                "vi",
+                "vs"
+              ],
+              "englishGlosses": [
+                "labor",
+                "labour",
+                "work",
+                "Labour Party"
+              ]
+            },
+            {
+              "entryId": "1308305",
+              "word": "市場",
+              "reading": "しじょう",
+              "partsOfSpeech": [
+                "n"
+              ],
+              "englishGlosses": [
+                "market (financial, stock, domestic, etc.)",
+                "marketplace",
+                "exchange",
+                "(street) market"
+              ]
+            }
+          ],
+          "sourceUrl": "https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project",
+          "retrievedAt": "2026-07-24"
+        }
+      ],
+      "candidateChinese": "劳动力市场；劳动市场",
+      "reviewerStatus": "drafted",
+      "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+      "reviewedAt": "2026-07-24",
+      "decision": "recommend-approve",
+      "rejectionReason": null,
+      "notes": "基本形：労働市場；读音：ろうどうしじょう；词性：名词（项目语料）。核心释义：劳动力市场；劳动市场。多义与混淆：指劳动力供给与用工需求形成的市场；市場在本词中读作しじょう。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。"
+    }
+  ]
+}

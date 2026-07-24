@@ -1,0 +1,1476 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-23T00:00:00.000Z",
+  "items": [
+    {
+      "word": "帰る",
+      "reading": "かえる",
+      "count": 3,
+      "categories": [
+        "ambiguity",
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-074",
+        "LQ-075",
+        "LQ-161"
+      ],
+      "priorityScore": 37
+    },
+    {
+      "word": "書く",
+      "reading": "かく",
+      "count": 3,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-046",
+        "LQ-047",
+        "LQ-048"
+      ],
+      "priorityScore": 37
+    },
+    {
+      "word": "静か",
+      "reading": "しずか",
+      "count": 3,
+      "categories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-105",
+        "LQ-106",
+        "LQ-107"
+      ],
+      "priorityScore": 37
+    },
+    {
+      "word": "待つ",
+      "reading": "まつ",
+      "count": 3,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-052",
+        "LQ-053",
+        "LQ-054"
+      ],
+      "priorityScore": 37
+    },
+    {
+      "word": "来る",
+      "reading": "くる",
+      "count": 3,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-066",
+        "LQ-068",
+        "LQ-069"
+      ],
+      "priorityScore": 32
+    },
+    {
+      "word": "飲む",
+      "reading": "のむ",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-070",
+        "LQ-071"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "古い",
+      "reading": "ふるい",
+      "count": 2,
+      "categories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-110",
+        "LQ-111"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "呼ぶ",
+      "reading": "よぶ",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-099",
+        "LQ-100"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "降る",
+      "reading": "ふる",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-093",
+        "LQ-094"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "座る",
+      "reading": "すわる",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-087",
+        "LQ-088"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "撮る",
+      "reading": "とる",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-076",
+        "LQ-077"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "持つ",
+      "reading": "もつ",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-089",
+        "LQ-090"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "暑い",
+      "reading": "あつい",
+      "count": 2,
+      "categories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-112",
+        "LQ-113"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "乗る",
+      "reading": "のる",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-083",
+        "LQ-084"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "青い",
+      "reading": "あおい",
+      "count": 2,
+      "categories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-129",
+        "LQ-130"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "聞く",
+      "reading": "きく",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-072",
+        "LQ-073"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "便利",
+      "reading": "べんり",
+      "count": 2,
+      "categories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-121",
+        "LQ-122"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "冷たい",
+      "reading": "つめたい",
+      "count": 2,
+      "categories": [
+        "adjectives"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-114",
+        "LQ-115"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "話す",
+      "reading": "はなす",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-091",
+        "LQ-092"
+      ],
+      "priorityScore": 27
+    },
+    {
+      "word": "会う",
+      "reading": "あう",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-078",
+        "LQ-079"
+      ],
+      "priorityScore": 22
+    },
+    {
+      "word": "開く",
+      "reading": "あく",
+      "count": 2,
+      "categories": [
+        "ambiguity",
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-082",
+        "LQ-174"
+      ],
+      "priorityScore": 22
+    },
+    {
+      "word": "終わる",
+      "reading": "おわる",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-095",
+        "LQ-096"
+      ],
+      "priorityScore": 22
+    },
+    {
+      "word": "買う",
+      "reading": "かう",
+      "count": 2,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-097",
+        "LQ-098"
+      ],
+      "priorityScore": 22
+    },
+    {
+      "word": "一日",
+      "reading": "いちにち",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-178"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "雨",
+      "reading": "あめ",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-167"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "駅",
+      "reading": "えき",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-021"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "音楽",
+      "reading": "おんがく",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-027"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "家",
+      "reading": "いえ",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-023"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "花",
+      "reading": "はな",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-165"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "机",
+      "reading": "つくえ",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-035"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "橋",
+      "reading": "はし",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-163"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "犬",
+      "reading": "いぬ",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-036"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "公園",
+      "reading": "こうえん",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-019"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "昨日",
+      "reading": "きのう",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-031"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "仕事",
+      "reading": "しごと",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-030"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "施行",
+      "reading": "しこう",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N1"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-244"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "紙",
+      "reading": "かみ",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-169"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "写真",
+      "reading": "しゃしん",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-028"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "審議",
+      "reading": "しんぎ",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N1"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-257"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "水",
+      "reading": "みず",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-020"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "政府",
+      "reading": "せいふ",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N3"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-231"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "切る",
+      "reading": "きる",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-172"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "窓",
+      "reading": "まど",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-040"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "着る",
+      "reading": "きる",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-173"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "電車",
+      "reading": "でんしゃ",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-022"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "猫",
+      "reading": "ねこ",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-018"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "箸",
+      "reading": "はし",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-164"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "髪",
+      "reading": "かみ",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N4"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-171"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "比率",
+      "reading": "ひりつ",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N1"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-255"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "被害",
+      "reading": "ひがい",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [
+        "N3"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-246"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "鼻",
+      "reading": "はな",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-166"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "料理",
+      "reading": "りょうり",
+      "count": 1,
+      "categories": [
+        "basic"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-029"
+      ],
+      "priorityScore": 17
+    },
+    {
+      "word": "一日",
+      "reading": "ついたち",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [
+        "N5"
+      ],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-179"
+      ],
+      "priorityScore": 15
+    },
+    {
+      "word": "飴",
+      "reading": "あめ",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-168"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "易しい",
+      "reading": "やさしい",
+      "count": 1,
+      "categories": [
+        "adjectives"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-118"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "運行",
+      "reading": "うんこう",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-249"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "開く",
+      "reading": "ひらく",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-175"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "開ける",
+      "reading": "あける",
+      "count": 1,
+      "categories": [
+        "verbs"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-080"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "蛙",
+      "reading": "かえる",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-162"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "携帯電話",
+      "reading": "けいたいでんわ",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-210"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "見合わせる",
+      "reading": "みあわせる",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-248"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "高速道路",
+      "reading": "こうそくどうろ",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-209"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "神",
+      "reading": "かみ",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-170"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "人気",
+      "reading": "にんき",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-180"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "生",
+      "reading": "なま",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-176"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "大学院生",
+      "reading": "だいがくいんせい",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-207"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "地球温暖化",
+      "reading": "ちきゅうおんだんか",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-197"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "地方自治体",
+      "reading": "ちほうじちたい",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-206"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "電子部品",
+      "reading": "でんしぶひん",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": true,
+      "examples": [
+        "LQ-205"
+      ],
+      "priorityScore": 12
+    },
+    {
+      "word": "サイバー攻撃",
+      "reading": "さいばーこうげき",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-254"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "医療機関",
+      "reading": "いりょうきかん",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-250"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "医療保険制度",
+      "reading": "いりょうほけんせいど",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-202"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "海外市場",
+      "reading": "かいがいしじょう",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-259"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "外国人観光客",
+      "reading": "がいこくじんかんこうきゃく",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-208"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "共同研究",
+      "reading": "きょうどうけんきゅう",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-236"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "経済成長",
+      "reading": "けいざいせいちょう",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-198"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "研究チーム",
+      "reading": "けんきゅうちーむ",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-251"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "研究開発費",
+      "reading": "けんきゅうかいはつひ",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-201"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "個人情報",
+      "reading": "こじんじょうほう",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-253"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "雇用情勢",
+      "reading": "こようじょうせい",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-240"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "公共交通機関",
+      "reading": "こうきょうこうつうきかん",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-200"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "今日中",
+      "reading": "きょうじゅう",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-184"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "再生可能エネルギー",
+      "reading": "さいせいかのうえねるぎー",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-204"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "自然災害",
+      "reading": "しぜんさいがい",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-203"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "少子高齢化",
+      "reading": "しょうしこうれいか",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-196"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "上昇率",
+      "reading": "じょうしょうりつ",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-239"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "情報通信技術",
+      "reading": "じょうほうつうしんぎじゅつ",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-195"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "人気",
+      "reading": "ひとけ",
+      "count": 1,
+      "categories": [
+        "ambiguity"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-181"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "中央銀行",
+      "reading": "ちゅうおうぎんこう",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-241"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "投票率",
+      "reading": "とうひょうりつ",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-258"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "排出量",
+      "reading": "はいしゅつりょう",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-256"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "半導体メモリー",
+      "reading": "はんどうたいめもりー",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-190"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "避難所",
+      "reading": "ひなんじょ",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-245"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "訪日客数",
+      "reading": "ほうにちきゃくすう",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-243"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "輸出額",
+      "reading": "ゆしゅつがく",
+      "count": 1,
+      "categories": [
+        "news"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-242"
+      ],
+      "priorityScore": 10
+    },
+    {
+      "word": "労働市場",
+      "reading": "ろうどうしじょう",
+      "count": 1,
+      "categories": [
+        "compounds"
+      ],
+      "jlptLevels": [],
+      "jmdictAvailable": false,
+      "examples": [
+        "LQ-199"
+      ],
+      "priorityScore": 10
+    }
+  ]
+}

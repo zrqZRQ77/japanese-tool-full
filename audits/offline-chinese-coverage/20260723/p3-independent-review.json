@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-07-24",
+  "reviewer": "OpenAI ChatGPT / CodexPro assisted lexical review",
+  "items": {
+    "サイバー攻撃\u0000さいばーこうげき": {
+      "candidateChinese": "网络攻击；网络系统攻击",
+      "confidence": "高",
+      "scope": "指针对计算机、网络或数字系统实施的未授权访问、破坏、窃取或干扰行为，不扩大为一般舆论攻击。",
+      "evidenceMode": "wikidata",
+      "externalEvidence": {
+        "sourceId": "wikidata",
+        "license": "CC0-1.0",
+        "entityIds": ["Q4071928"],
+        "labels": {"en": "cyberattack", "zh": "网络攻击"},
+        "sourceUrl": "https://www.wikidata.org/wiki/Q4071928",
+        "retrievedAt": "2026-07-24"
+      }
+    },
+    "医療機関\u0000いりょうきかん": {
+      "candidateChinese": "医疗机构",
+      "confidence": "高",
+      "scope": "指提供医疗服务的医院、诊所等机构；不等同于单一医院。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"医療","reading":"いりょう"},{"word":"機関","reading":"きかん"}]
+    },
+    "医療保険制度\u0000いりょうほけんせいど": {
+      "candidateChinese": "医疗保险制度",
+      "confidence": "高",
+      "scope": "指以保险方式分担医疗费用的制度，不扩大为全部社会保障制度。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"医療","reading":"いりょう"},{"word":"保険","reading":"ほけん"},{"word":"制度","reading":"せいど"}]
+    },
+    "海外市場\u0000かいがいしじょう": {
+      "candidateChinese": "海外市场",
+      "confidence": "高",
+      "scope": "指本国以外的商品、金融或商业市场；市場在本词中读作しじょう。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"海外","reading":"かいがい"},{"word":"市場","reading":"しじょう"}]
+    },
+    "外国人観光客\u0000がいこくじんかんこうきゃく": {
+      "candidateChinese": "外国游客；外国观光客",
+      "confidence": "高",
+      "scope": "指来自外国、以旅游为目的的游客，不等同于所有外国居民。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"外国人","reading":"がいこくじん"},{"word":"観光客","reading":"かんこうきゃく"}]
+    },
+    "共同研究\u0000きょうどうけんきゅう": {
+      "candidateChinese": "共同研究；合作研究",
+      "confidence": "高",
+      "scope": "指两个或多个个人、机构共同开展的研究。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"共同","reading":"きょうどう"},{"word":"研究","reading":"けんきゅう"}]
+    },
+    "経済成長\u0000けいざいせいちょう": {
+      "candidateChinese": "经济增长",
+      "confidence": "高",
+      "scope": "指经济规模、产出或经济活动增长，不等同于所有经济发展指标。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"経済","reading":"けいざい"},{"word":"成長","reading":"せいちょう"}]
+    },
+    "研究チーム\u0000けんきゅうちーむ": {
+      "candidateChinese": "研究团队",
+      "confidence": "高",
+      "scope": "指共同从事研究工作的团队。外来语チーム的组件读音在 JMdict 中使用片假名。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"研究","reading":"けんきゅう"},{"word":"チーム","reading":"チーム"}]
+    },
+    "研究開発費\u0000けんきゅうかいはつひ": {
+      "candidateChinese": "研发费用；研究开发费",
+      "confidence": "高",
+      "scope": "指研究与开发活动所发生的费用，不等同于全部企业投资。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"研究","reading":"けんきゅう"},{"word":"開発","reading":"かいはつ"},{"word":"費","reading":"ひ"}]
+    },
+    "個人情報\u0000こじんじょうほう": {
+      "candidateChinese": "个人信息",
+      "confidence": "高",
+      "scope": "指与个人有关的信息；法律语境中的具体范围由适用法律决定，本释义不自行扩大法律定义。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"個人","reading":"こじん"},{"word":"情報","reading":"じょうほう"}]
+    },
+    "雇用情勢\u0000こようじょうせい": {
+      "candidateChinese": "就业形势；就业状况",
+      "confidence": "高",
+      "scope": "指某时期或地区的就业、招聘和失业等整体状况。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"雇用","reading":"こよう"},{"word":"情勢","reading":"じょうせい"}]
+    },
+    "公共交通機関\u0000こうきょうこうつうきかん": {
+      "candidateChinese": "公共交通工具；公共交通系统",
+      "confidence": "中高",
+      "scope": "指面向公众运营的铁路、公交等交通方式或系统；機関在该复合词中不是政府机关。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"公共","reading":"こうきょう"},{"word":"交通","reading":"こうつう"},{"word":"機関","reading":"きかん"}]
+    },
+    "今日中\u0000きょうじゅう": {
+      "candidateChinese": "今天之内；今天结束前",
+      "confidence": "高",
+      "scope": "表示截止到今天结束之前；不与今日（こんにち，现今）混淆。",
+      "evidenceMode": "wiktionary",
+      "externalEvidence": {
+        "sourceId": "wiktionary-text",
+        "license": "CC-BY-SA-4.0",
+        "pageTitle": "今日中に",
+        "relatedForms": ["今日中", "今日中に"],
+        "readings": ["きょうじゅう", "きょうじゅうに"],
+        "englishGlosses": ["before the day is done"],
+        "sourceUrl": "https://en.wiktionary.org/wiki/今日中に",
+        "retrievedAt": "2026-07-24"
+      }
+    },
+    "再生可能エネルギー\u0000さいせいかのうえねるぎー": {
+      "candidateChinese": "可再生能源",
+      "confidence": "高",
+      "scope": "指从可自然补充的资源中获得的能源，不等同于所有替代能源。",
+      "evidenceMode": "wikidata",
+      "externalEvidence": {
+        "sourceId": "wikidata",
+        "license": "CC0-1.0",
+        "entityIds": ["Q12705"],
+        "labels": {"ja": "再生可能エネルギー", "en": "renewable energy", "zh": "可再生能源"},
+        "sourceUrl": "https://www.wikidata.org/wiki/Q12705",
+        "retrievedAt": "2026-07-24"
+      }
+    },
+    "自然災害\u0000しぜんさいがい": {
+      "candidateChinese": "自然灾害",
+      "confidence": "高",
+      "scope": "指由自然现象引发并造成损害的灾害，不包括人为事故。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"自然","reading":"しぜん"},{"word":"災害","reading":"さいがい"}]
+    },
+    "少子高齢化\u0000しょうしこうれいか": {
+      "candidateChinese": "少子老龄化；低出生率与人口老龄化",
+      "confidence": "高",
+      "scope": "指儿童或出生人口占比下降，同时老年人口占比上升的社会人口现象。",
+      "evidenceMode": "japan-government",
+      "externalEvidence": {
+        "sourceId": "japan-government-pdl1",
+        "license": "PDL-1.0",
+        "publisher": "厚生労働省",
+        "headwords": ["少子高齢化"],
+        "readings": ["しょうしこうれいか"],
+        "sourceUrl": "https://www.mhlw.go.jp/nenkinkenshou/glossary/index.html",
+        "termsUrl": "https://www.mhlw.go.jp/chosakuken/index.html",
+        "retrievedAt": "2026-07-24"
+      }
+    },
+    "上昇率\u0000じょうしょうりつ": {
+      "candidateChinese": "上升率；增长率",
+      "confidence": "高",
+      "scope": "指某数值上升的比率；具体采用上升率或增长率取决于统计语境。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"上昇","reading":"じょうしょう"},{"word":"率","reading":"りつ"}]
+    },
+    "情報通信技術\u0000じょうほうつうしんぎじゅつ": {
+      "candidateChinese": "信息通信技术（ICT）",
+      "confidence": "高",
+      "scope": "指信息处理与通信相关的技术总体，常对应 ICT。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"情報","reading":"じょうほう"},{"word":"通信","reading":"つうしん"},{"word":"技術","reading":"ぎじゅつ"}]
+    },
+    "中央銀行\u0000ちゅうおうぎんこう": {
+      "candidateChinese": "中央银行",
+      "confidence": "高",
+      "scope": "指负责货币发行、货币政策等中央银行职能的机构，不等同于一般商业银行。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"中央","reading":"ちゅうおう"},{"word":"銀行","reading":"ぎんこう"}]
+    },
+    "投票率\u0000とうひょうりつ": {
+      "candidateChinese": "投票率；选民投票率",
+      "confidence": "高",
+      "scope": "指实际投票人数相对于有资格投票人数等基数的比例；具体分母依统计定义确定。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"投票","reading":"とうひょう"},{"word":"率","reading":"りつ"}]
+    },
+    "排出量\u0000はいしゅつりょう": {
+      "candidateChinese": "排放量；排出量",
+      "confidence": "高",
+      "scope": "指气体、物质等被排放出去的数量；当前语料为温室气体排放量。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"排出","reading":"はいしゅつ"},{"word":"量","reading":"りょう"}]
+    },
+    "半導体メモリー\u0000はんどうたいめもりー": {
+      "candidateChinese": "半导体存储器；半导体内存",
+      "confidence": "高",
+      "scope": "指利用半导体器件存储数据的存储器；メモリー在本词中是计算机存储器，不是人的回忆。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"半導体","reading":"はんどうたい"},{"word":"メモリー","reading":"メモリー"}]
+    },
+    "避難所\u0000ひなんじょ": {
+      "candidateChinese": "避难所；临时安置点",
+      "confidence": "高",
+      "scope": "指灾害或危险发生时供人员避难、暂时安置的场所。组件所的独立词典读音为ところ，复合词读音じょ由完整语料确认。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"避難","reading":"ひなん"},{"word":"所","reading":"ところ"}]
+    },
+    "訪日客数\u0000ほうにちきゃくすう": {
+      "candidateChinese": "访日游客人数；入境日本游客数量",
+      "confidence": "高",
+      "scope": "指访问日本的游客人数；客数在此为人数统计，不是客户交易次数。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"訪日","reading":"ほうにち"},{"word":"客","reading":"きゃく"},{"word":"数","reading":"すう"}]
+    },
+    "輸出額\u0000ゆしゅつがく": {
+      "candidateChinese": "出口额",
+      "confidence": "高",
+      "scope": "指出口商品或服务的金额，不等同于出口数量。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"輸出","reading":"ゆしゅつ"},{"word":"額","reading":"がく"}]
+    },
+    "労働市場\u0000ろうどうしじょう": {
+      "candidateChinese": "劳动力市场；劳动市场",
+      "confidence": "高",
+      "scope": "指劳动力供给与用工需求形成的市场；市場在本词中读作しじょう。",
+      "evidenceMode": "jmdict-compositional",
+      "components": [{"word":"労働","reading":"ろうどう"},{"word":"市場","reading":"しじょう"}]
+    }
+  }
+}

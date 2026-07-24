@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-23T00:00:00.000Z",
+  "baseline": {
+    "mainCommit": "6a821a65d56af7576e4312ef4b1df33eb6d889f4",
+    "chineseDataVersion": "20260717",
+    "reviewQueueVersion": "20260723"
+  },
+  "inputSha256": {
+    "dictionary": "69b343c085de93e14e32ee3508509a2971944168acf3e34e53eb07cafb45e45a",
+    "supplement": "e221bfc6e261f355ad47d1689c744a067e95a801dbf467ca959e75b006bf76a1",
+    "chineseMetadata": "63aaedb8a1265a7b66d119007dbcde3e705e48fb51bcdd104ad8635887be245f",
+    "reviewQueue": "07eab68a5a1c7e8c11ef670b86e22f0703ad70750c41b445572c0eba1b08f95b",
+    "p3IndependentReview": "d6a91bb9ea5fcc20da6cdb6e5253401fa3ce90bf1dd4a2a2b216ab1605c44b25",
+    "sourceRegistry": "e5393281f88e79e6a715331747f39e916ddde62b9b63cdd4cc1bafb01ae32581",
+    "languageCorpus": "03e245c61c1b5fef715cee5dfc0ac632e04e88e59f73418af49fe8dea389aeae"
+  },
+  "summary": {
+    "valid": true,
+    "errors": 0,
+    "warnings": 1,
+    "notes": 3,
+    "dictionaryEntries": 137,
+    "supplementEntries": 22,
+    "curatedOverlaps": 1,
+    "indexedEntries": 158,
+    "indexedForms": 285,
+    "reviewQueueItems": 96,
+    "reviewedItems": 96,
+    "pendingItems": 0,
+    "draftedItems": 94,
+    "approvedItems": 0,
+    "rejectedItems": 0,
+    "blockedItems": 2,
+    "homophoneGroups": 6,
+    "sameWrittenFormGroups": 3,
+    "multiPosEvidenceItems": 35
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "code": "curated-source-overlap",
+      "message": "基础词典与补充词典存在同词键，构建时需要明确覆盖顺序。",
+      "words": [
+        "企業"
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "code": "homophone-review-groups",
+      "message": "审核队列中存在需要分别处理的同音词组。",
+      "groups": [
+        {
+          "reading": "あめ",
+          "words": [
+            "飴",
+            "雨"
+          ]
+        },
+        {
+          "reading": "かえる",
+          "words": [
+            "蛙",
+            "帰る"
+          ]
+        },
+        {
+          "reading": "かみ",
+          "words": [
+            "紙",
+            "神",
+            "髪"
+          ]
+        },
+        {
+          "reading": "きる",
+          "words": [
+            "切る",
+            "着る"
+          ]
+        },
+        {
+          "reading": "はし",
+          "words": [
+            "橋",
+            "箸"
+          ]
+        },
+        {
+          "reading": "はな",
+          "words": [
+            "花",
+            "鼻"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "same-written-form-review-groups",
+      "message": "审核队列中存在需要按读音分别处理的同形异读词组。",
+      "groups": [
+        {
+          "word": "一日",
+          "readings": [
+            "いちにち",
+            "ついたち"
+          ]
+        },
+        {
+          "word": "開く",
+          "readings": [
+            "あく",
+            "ひらく"
+          ]
+        },
+        {
+          "word": "人気",
+          "readings": [
+            "にんき",
+            "ひとけ"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "multi-pos-evidence",
+      "message": "部分 JMdict 证据包含多个词性，审核时需要按义项选择。",
+      "itemCount": 35
+    }
+  ]
+}
