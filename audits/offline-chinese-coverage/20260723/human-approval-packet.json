@@ -19,7 +19,8 @@
     "blockedExcluded": 2,
     "approved": 0,
     "revised": 0,
-    "rejected": 0
+    "rejected": 0,
+    "completed": false
   },
   "items": [
     {

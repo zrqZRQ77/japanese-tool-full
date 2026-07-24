@@ -10,10 +10,14 @@ Generated: 2026-07-24T00:00:00.000Z
 - revise：填写修改后的 approvedChinese 和修改理由。
 - reject：填写拒绝理由，不进入正式中文词库。
 - 只有填写 humanReviewer、humanReviewedAt 和 humanDecision 后，后续脚本才允许转换为正式 approved。
+- 重新生成复核包时，词条和候选释义未变化的人工决定会被保留。
 
 ## 摘要
 
 - 等待真人审核：94
+- 已通过：0
+- 修改后通过：0
+- 已拒绝：0
 - blocked 且不进入本轮批准：2
 - 自动批准：0
 
@@ -125,5 +129,5 @@ Generated: 2026-07-24T00:00:00.000Z
 
 ## 机器可编辑文件
 
-- `human-approval-packet.json` 包含每条审核项目的空人工决定字段。
-- 不要直接修改 `review-queue.json` 为 approved；应先填写人工复核包，再由后续门禁脚本转换。
+- `human-approval-packet.json` 保存每条人工决定。
+- 不要直接修改 `review-queue.json` 为 approved；应先完成本复核包，再由门禁转换。
