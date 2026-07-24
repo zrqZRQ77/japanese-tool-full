@@ -109,8 +109,8 @@ a { color: inherit; }
 
 .hub-hero h1 {
   margin: 0;
-  font: 800 clamp(48px, 6vw, 76px)/1 var(--display);
-  letter-spacing: -.055em;
+  font: 800 clamp(44px, 4.4vw, 62px)/1.38 var(--display);
+  letter-spacing: -.045em;
 }
 
 .hub-network {
@@ -122,52 +122,54 @@ a { color: inherit; }
   background: rgb(255 255 255 / 3%);
 }
 
-.hub-network-line {
+.hub-network-route {
   position: absolute;
-  left: 48px;
-  right: 48px;
-  height: 6px;
-  border-radius: 99px;
-  background: var(--signal);
+  top: 44px;
+  left: 52px;
+  width: calc(100% - 104px);
+  height: 120px;
+  overflow: visible;
 }
 
-.hub-network-line::before,
-.hub-network-line::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 14px;
-  height: 14px;
-  transform: translateY(-50%);
-  border: 3px solid var(--paper);
-  border-radius: 50%;
-  background: var(--arrival);
+.hub-network-route path {
+  fill: none;
+  stroke: var(--signal);
+  stroke-linecap: round;
+  stroke-width: 7;
 }
 
-.hub-network-line::before { left: -2px; }
-.hub-network-line::after { right: -2px; }
-.hub-network-line-a { top: 78px; transform: rotate(-7deg); }
-.hub-network-line-b { top: 166px; background: #f2a33a; transform: rotate(7deg); }
+.hub-network-route circle {
+  fill: var(--signal);
+  stroke: var(--paper);
+  stroke-width: 4;
+}
+
+.hub-network-route circle.is-endpoint {
+  fill: var(--arrival);
+  stroke-width: 5;
+}
 
 .hub-network-node {
   position: absolute;
   z-index: 2;
-  padding: 5px 8px;
+  top: 84px;
+  min-width: 54px;
+  padding: 7px 10px;
   color: var(--ink);
   border-radius: 999px;
   background: var(--card);
-  font: 800 10px var(--display);
+  font: 800 11px var(--display);
+  text-align: center;
+  transform: translateY(-50%);
 }
 
-.node-1 { top: 31px; left: 30px; }
-.node-3 { top: 42px; right: 28px; }
-.node-4 { bottom: 31px; left: 30px; }
-.node-5 { bottom: 43px; right: 28px; }
+.node-start { left: 18px; }
+.node-end { right: 18px; }
 
 .hub-network img {
   position: absolute;
   z-index: 3;
-  top: 93px;
+  top: 142px;
   left: 50%;
   padding: 6px;
   transform: translateX(-50%);
@@ -402,17 +404,16 @@ a { color: inherit; }
   .hub-back { padding: 8px 10px; font-size: 10px; }
   .hub-shell { padding-top: 6px; }
   .hub-hero { gap: 22px; padding: 26px 20px; border-radius: 24px; }
-  .hub-hero h1 { font-size: clamp(39px, 11vw, 50px); }
+  .hub-hero h1 { font-size: clamp(36px, 10vw, 44px); line-height: 1.32; }
   .hub-network { height: 164px; border-radius: 18px; }
-  .hub-network-line { left: 28px; right: 28px; }
-  .hub-network-line-a { top: 52px; }
-  .hub-network-line-b { top: 108px; }
-  .hub-network img { top: 57px; width: 48px; height: 48px; }
-  .hub-network-node { padding: 5px 7px; font-size: 9px; }
-  .node-1 { top: 16px; left: 14px; }
-  .node-3 { top: 21px; right: 13px; }
-  .node-4 { bottom: 15px; left: 14px; }
-  .node-5 { bottom: 22px; right: 13px; }
+  .hub-network-route { top: 22px; left: 42px; width: calc(100% - 84px); height: 100px; }
+  .hub-network-route path { stroke-width: 6; }
+  .hub-network-route circle { stroke-width: 3.5; }
+  .hub-network-route circle.is-endpoint { stroke-width: 4; }
+  .hub-network img { top: 96px; width: 48px; height: 48px; }
+  .hub-network-node { top: 62px; min-width: 44px; padding: 5px 7px; font-size: 9px; }
+  .node-start { left: 8px; }
+  .node-end { right: 8px; }
   .hub-summary { margin: 10px 0 28px; border-radius: 16px; }
   .hub-summary div { padding: 11px 9px; }
   .hub-summary span { font-size: 8px; }

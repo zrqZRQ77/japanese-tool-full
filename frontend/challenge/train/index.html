@@ -21,13 +21,19 @@
         <p class="hub-eyebrow">YOMERU TRAIN TYPING</p>
         <h1 id="hubTitle">选择一条路线，<br>用日语开到终点。</h1>
       </div>
-      <div class="hub-network" aria-label="两条路线起终点的原创简化示意图">
-        <div class="hub-network-line hub-network-line-a"></div>
-        <div class="hub-network-line hub-network-line-b"></div>
-        <span class="hub-network-node node-1">新宿</span>
-        <span class="hub-network-node node-3">品川</span>
-        <span class="hub-network-node node-4">浅草</span>
-        <span class="hub-network-node node-5">银座</span>
+      <div class="hub-network" aria-label="新宿到上野的山手线短程原创简化示意图">
+        <span class="hub-network-node node-start">新宿</span>
+        <svg class="hub-network-route" viewBox="0 0 600 120" aria-hidden="true" focusable="false">
+          <path d="M108 64 C220 46 380 46 492 64"></path>
+          <circle class="is-endpoint" cx="108" cy="64" r="9"></circle>
+          <circle cx="174" cy="55" r="7"></circle>
+          <circle cx="238" cy="50" r="7"></circle>
+          <circle cx="300" cy="48" r="7"></circle>
+          <circle cx="362" cy="50" r="7"></circle>
+          <circle cx="426" cy="55" r="7"></circle>
+          <circle class="is-endpoint" cx="492" cy="64" r="9"></circle>
+        </svg>
+        <span class="hub-network-node node-end">上野</span>
         <img src="/challenge/train/assets/train.svg" alt="原创列车图标" width="58" height="58">
       </div>
     </section>
