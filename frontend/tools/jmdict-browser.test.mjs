@@ -76,7 +76,7 @@ try {
     enterReadingFromHero();
     await loadSample('life');
     await toggleReaderSmartSegmentation();
-    document.getElementById('inputText').value = '三菱UFJフィナンシャル・グループの時価総額が上昇した。\n金融機関が首位に浮上した。\n半導体メモリー大手を上回った。\n図書館で読書をする。';
+    document.getElementById('inputText').value = '三菱UFJフィナンシャル・グループの時価総額が上昇した。\n金融機関が首位に浮上した。\n半導体メモリー大手を上回った。\n図書館で読書をする。賢い学生だ。';
     await renderText();
   });
 
@@ -202,6 +202,14 @@ try {
   await chineseWordNode.click();
   assert.match((await detail.textContent()) || '', /中文释义：读书、阅读/);
   assert.match((await detail.textContent()) || '', /释义来源：Yomeru 离线中文词库/);
+
+  const wiseWordNode = page.locator('#output ruby.w-kuromoji').filter({ hasText: '賢い' }).first();
+  await wiseWordNode.waitFor({ state: 'visible', timeout: 15000 });
+  await wiseWordNode.click();
+  await detail.getByText('かしこい', { exact: true }).waitFor({ state: 'visible', timeout: 10000 });
+  const wiseDetail = (await detail.textContent()) || '';
+  assert.match(wiseDetail, /かしこい/, '賢い must show its kana in the default detail view.');
+  assert.match(wiseDetail, /JLPT 参考等级：N3/, '賢い must show its JLPT level without another action.');
 
   assert.equal(requests.some(url => /jisho\.org|api\/v1\/search\/words/i.test(url)), false, 'Online dictionary API request detected.');
   process.stdout.write('Offline dictionary browser flow passed: Chinese priority, JMdict fallback, queued saves, reference levels, stable attribution, no online API.\n');

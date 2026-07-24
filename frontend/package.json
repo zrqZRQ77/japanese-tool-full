@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "node tools/check.mjs && npm run test:content-feed && npm run test:language-corpus && node tools/ui-audit.mjs && node tools/verify-visual.mjs",
+    "test": "node tools/check.mjs && npm run test:content-feed && npm run test:train-static && npm run test:language-corpus && node tools/ui-audit.mjs && node tools/verify-visual.mjs",
     "audit:ui": "UI_AUDIT_FUNCTIONAL_ONLY=1 node tools/ui-audit.mjs && UI_AUDIT_RESPONSIVE_ONLY=1 node tools/ui-audit.mjs",
     "audit:language": "node tools/language-audit.mjs",
     "audit:articles": "node tools/article-stress-audit.mjs",
@@ -8,6 +8,7 @@
     "verify:fast": "node tools/check.mjs",
     "verify:flows": "node tools/ui-audit.mjs",
     "verify:visual": "node tools/verify-visual.mjs",
+    "visual:train": "node tools/train-challenge-visual-review.mjs",
     "verify:stage4": "node tools/stage4-audit.mjs",
     "verify:all": "node tools/verify-all.mjs",
     "bump-cache": "node tools/bump-cache.mjs",
@@ -18,6 +19,7 @@
     "test:language-corpus": "node tools/language-corpus.test.mjs && node tools/language-corpus-browser.test.mjs && node tools/contextual-reading.test.mjs",
     "test:contextual-reading": "node tools/contextual-reading.test.mjs",
     "test:content-feed": "node tools/content-feed-browser.test.mjs",
+    "test:train-static": "node tools/train-challenge-static.test.mjs",
     "visual:snapshot": "node tools/visual-snapshot.mjs",
     "visual:snapshot:states": "node tools/visual-snapshot-states.mjs",
     "visual:prune": "node tools/prune-visual-snapshots.mjs",
