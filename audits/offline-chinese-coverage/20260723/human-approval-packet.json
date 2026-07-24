@@ -1,0 +1,1668 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-24T00:00:00.000Z",
+  "sourceQueue": "audits/offline-chinese-coverage/20260723/review-queue.json",
+  "policy": {
+    "automaticApprovalAllowed": false,
+    "requiredHumanDecision": true,
+    "allowedDecisions": [
+      "approve",
+      "revise",
+      "reject"
+    ],
+    "approvalRequiresReviewer": true,
+    "approvalRequiresReviewedAt": true,
+    "approvalRequiresEvidenceCheck": true
+  },
+  "summary": {
+    "awaitingHumanReview": 94,
+    "blockedExcluded": 2,
+    "approved": 0,
+    "revised": 0,
+    "rejected": 0
+  },
+  "items": [
+    {
+      "queueId": "zh-review-001",
+      "priority": "P0",
+      "word": "帰る",
+      "reading": "かえる",
+      "candidateChinese": "回去；回家；返回原处",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1221270"
+      ],
+      "notes": "基本形：帰る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为回去、回家、返回原处，不纳入棒球等专门义。多义与混淆：同音名词「蛙（かえる）」必须按日文表记隔离。证据：JLPT N5；JMdict 1221270，CC BY-SA 4.0，仅作词形、读音、词性和语义范围证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-002",
+      "priority": "P0",
+      "word": "書く",
+      "reading": "かく",
+      "candidateChinese": "写；书写；创作（文章等）",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1343950"
+      ],
+      "notes": "基本形：書く；词性：五段カ行动词、他动词（JMdict v5k/vt）。核心义限定为写、书写和创作文字内容。多义与混淆：同音的「描く」「掻く」以及其他「かく」词条不得由读音覆盖；本草稿不纳入绘画义。证据：JLPT N5；JMdict 1343950，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-003",
+      "priority": "P0",
+      "word": "静か",
+      "reading": "しずか",
+      "candidateChinese": "安静；寂静；平静",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1381820"
+      ],
+      "notes": "基本形：静か；词性：ナ形容词/形容动词（JMdict adj-na；当前语料解析器表面词性显示为名词）。核心义覆盖环境安静、寂静及状态平静，不扩展为所有“缓慢、从容”语境。多义与混淆：无需要合并的同形异读词。证据：JLPT N5；JMdict 1381820，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-004",
+      "priority": "P0",
+      "word": "待つ",
+      "reading": "まつ",
+      "candidateChinese": "等；等待；期待",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1410590"
+      ],
+      "notes": "基本形：待つ；词性：五段タ行动词，可作自动词或他动词（JMdict v5t/vi/vt）。核心义覆盖等待、等候和期待；不把“依赖、需要”等低频结构直接并入核心释义。多义与混淆：与同音名词「松（まつ）」按表记隔离。证据：JLPT N5；JMdict 1410590，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-005",
+      "priority": "P0",
+      "word": "来る",
+      "reading": "くる",
+      "candidateChinese": "来；到来；来到",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1547720"
+      ],
+      "notes": "基本形：来る；词性：カ变自动词（JMdict vk/vi，另有助动词用法）。核心释义只覆盖独立动词“来、到来、来到”，不把「〜てくる」等补助动词语法义混入词条核心义。多义与混淆：表记和读音对应明确，无需按同音词扩展。证据：本地 JLPT 参考未提供等级；JMdict 1547720，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-006",
+      "priority": "P1",
+      "word": "飲む",
+      "reading": "のむ",
+      "candidateChinese": "喝；吞服（药物）",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1169870"
+      ],
+      "notes": "基本形：飲む；词性：五段マ行动词、他动词（JMdict v5m/vt）。核心义覆盖喝饮料及吞服药物；不把吸烟、吞没或压抑情绪等引申义并入基础释义。多义与混淆：无需要合并的同形异读词。证据：JLPT N5；JMdict 1169870，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-007",
+      "priority": "P1",
+      "word": "古い",
+      "reading": "ふるい",
+      "candidateChinese": "旧的；古老的；陈旧的",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1265070"
+      ],
+      "notes": "基本形：古い；词性：イ形容词（JMdict adj-i）。核心义覆盖年代久、使用时间长或观念陈旧；不扩展为与词形无关的“长时间”副词义。多义与混淆：表记和读音对应明确。证据：JLPT N5；JMdict 1265070，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-008",
+      "priority": "P1",
+      "word": "呼ぶ",
+      "reading": "よぶ",
+      "candidateChinese": "叫；呼喊；叫来；称呼",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1266440"
+      ],
+      "notes": "基本形：呼ぶ；词性：五段バ行动词、他动词（JMdict v5b/vt）。核心义覆盖出声叫、召来某人以及称呼或命名；不将品牌化等低频引申义扩大为核心义。多义与混淆：表记和读音对应明确。证据：JLPT N5；JMdict 1266440，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-009",
+      "priority": "P1",
+      "word": "降る",
+      "reading": "ふる",
+      "candidateChinese": "下（雨、雪等）",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1282790"
+      ],
+      "notes": "基本形：降る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为雨、雪、灰等从空中落下，符合当前语料；阳光照射、幸运降临等引申义不并入基础释义。多义与混淆：与同音「振る（ふる）」及其他同音词按表记隔离。证据：JLPT N5；JMdict 1282790，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-010",
+      "priority": "P1",
+      "word": "座る",
+      "reading": "すわる",
+      "candidateChinese": "坐；坐下",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1291800"
+      ],
+      "notes": "基本形：座る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为坐、坐下或就座；任职、占据职位等引申义不并入基础释义。多义与混淆：表记和读音对应明确。证据：JLPT N5；JMdict 1291800，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-011",
+      "priority": "P1",
+      "word": "撮る",
+      "reading": "とる",
+      "candidateChinese": "拍摄；录制",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1298790"
+      ],
+      "notes": "基本形：撮る；词性：五段ラ行动词、他动词（JMdict v5r/vt）。核心义覆盖拍照、摄影以及录制音频或视频。多义与混淆：同音的「取る」「採る」「捕る」等必须按表记隔离，不能由读音查询覆盖。证据：JLPT N5；JMdict 1298790，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-012",
+      "priority": "P1",
+      "word": "持つ",
+      "reading": "もつ",
+      "candidateChinese": "拿；携带；拥有",
+      "confidence": "中高",
+      "evidenceSummary": [
+        "JMdict exact: 1315720"
+      ],
+      "notes": "基本形：持つ；词性：五段タ行动词，可作自动词或他动词（JMdict v5t/vi/vt）。核心义覆盖手持、携带和拥有；维持、耐久、承担等扩展义暂不并入基础释义。多义与混淆：语义范围较宽，但表记和读音对应明确。证据：JLPT N5；JMdict 1315720，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-013",
+      "priority": "P1",
+      "word": "暑い",
+      "reading": "あつい",
+      "candidateChinese": "（天气、环境）炎热的",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1343460"
+      ],
+      "notes": "基本形：暑い；词性：イ形容词（JMdict adj-i）。核心义严格限定天气、气温或环境炎热，不覆盖「熱い」的物体温度、感情热烈，也不覆盖「厚い」。多义与混淆：与同音「熱い」「厚い」按日文表记隔离。证据：JLPT N5；JMdict 1343460，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-014",
+      "priority": "P1",
+      "word": "乗る",
+      "reading": "のる",
+      "candidateChinese": "乘坐；上（车、船等）",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1355120"
+      ],
+      "notes": "基本形：乗る；词性：五段ラ行自动词（JMdict v5r/vi）。核心义限定为登上并乘坐交通工具，符合当前语料；踩上物体、顺势、参与等引申义不并入基础释义。多义与混淆：同音「載る（のる）」等按表记隔离。证据：JLPT N5；JMdict 1355120，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-015",
+      "priority": "P1",
+      "word": "青い",
+      "reading": "あおい",
+      "candidateChinese": "蓝色的；青绿色的；青涩的",
+      "confidence": "中高",
+      "evidenceSummary": [
+        "JMdict exact: 1381390"
+      ],
+      "notes": "基本形：青い；词性：イ形容词（JMdict adj-i）。核心义覆盖蓝色、日语传统色彩范围中的青绿色，以及果实未熟或经验不足的“青涩”；脸色苍白等语境属于次级义，不扩大为所有灰色表达。多义与混淆：颜色范围与中文“蓝/绿”不能机械一一对应，需保留语境限制。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-016",
+      "priority": "P1",
+      "word": "聞く",
+      "reading": "きく",
+      "candidateChinese": "听；听说；询问",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1591110"
+      ],
+      "notes": "基本形：聞く；词性：五段カ行动词、他动词（JMdict v5k/vt）。核心义覆盖听声音、听说消息和向他人询问。多义与混淆：必须与同音「効く（起作用）」「利く（灵验、好用）」等按表记隔离，不允许只凭读音覆盖。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-017",
+      "priority": "P1",
+      "word": "便利",
+      "reading": "べんり",
+      "candidateChinese": "方便；便利；实用",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1512610"
+      ],
+      "notes": "基本形：便利；词性：ナ形容词（JMdict adj-na）。核心义覆盖使用方便、便利和实用，不扩大为抽象的“有利”。多义与混淆：词形、读音和语义范围明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-018",
+      "priority": "P1",
+      "word": "冷たい",
+      "reading": "つめたい",
+      "candidateChinese": "冰凉的；冷淡的",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1556730"
+      ],
+      "notes": "基本形：冷たい；词性：イ形容词（JMdict adj-i）。核心义区分接触温度低的“冰凉”和态度、感情上的“冷淡”，不与天气寒冷的「寒い」混用。多义与混淆：语义有物理与情感两类，但均由同一词形和读音承载。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-019",
+      "priority": "P1",
+      "word": "話す",
+      "reading": "はなす",
+      "candidateChinese": "说；说话；交谈；讲述",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1562350"
+      ],
+      "notes": "基本形：話す；词性：五段サ行动词、他动词（JMdict v5s/vt）。核心义覆盖说话、交谈、讲述或说明内容。多义与混淆：与同音「放す（放开）」「離す（分开）」必须按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-020",
+      "priority": "P1",
+      "word": "会う",
+      "reading": "あう",
+      "candidateChinese": "见面；遇见",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1198180"
+      ],
+      "notes": "基本形：会う；词性：五段ワ行动词、自动词（JMdict v5u/vi）。核心义限定为人与人见面或遇见，不纳入事故、坏事等通常由「遭う」承担的语义。多义与混淆：必须与同音「合う（符合、合适）」「遭う（遭遇）」按表记隔离。证据：本地 JLPT 参考未提供等级；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-021",
+      "priority": "P1",
+      "word": "開く",
+      "reading": "あく",
+      "candidateChinese": "（门、店等）开；空出来、有空位",
+      "confidence": "中高",
+      "evidenceSummary": [
+        "JMdict exact: 1586270"
+      ],
+      "notes": "基本形：開く；目标读音：あく；词性：五段カ行动词，本审核限定自动词用法（JMdict v5k/vi；证据记录同时含 vt 标签）。核心义覆盖门打开、店开门营业，以及时间、空间或座位空出来。多义与混淆：同一表记的「開く（ひらく）」必须拆分为独立词条；不得用本草稿覆盖“打开书本、召开”等 ひらく 用法，也不得仅凭读音覆盖「空く」。语料 LQ-175 属于 ひらく，修正分组后已移出本词条。证据：本地 JLPT 参考未提供等级；JMdict 1586270，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-022",
+      "priority": "P1",
+      "word": "終わる",
+      "reading": "おわる",
+      "candidateChinese": "结束；完毕",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1589600"
+      ],
+      "notes": "基本形：終わる；词性：五段ラ行动词，主要作自动词，也存在他动词及接尾用法（JMdict v5r/vi/vt/suf）。核心义限定为事情、工作或时间结束、完毕；不与「終える」的主动完成用法混同。多义与混淆：当前语料均为自动词结束义。证据：本地 JLPT 参考未提供等级；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-023",
+      "priority": "P1",
+      "word": "買う",
+      "reading": "かう",
+      "candidateChinese": "买；购买",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1473740"
+      ],
+      "notes": "基本形：買う；词性：五段ワ行动词、他动词（JMdict v5u/vt）。核心义限定为用金钱购买商品或服务；“高度评价”“招致不满”等引申义不并入基础释义。多义与混淆：必须与同音「飼う（饲养）」按表记隔离。证据：本地 JLPT 参考未提供等级；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-024",
+      "priority": "P1",
+      "word": "一日",
+      "reading": "いちにち",
+      "candidateChinese": "一天；一整天",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1576260"
+      ],
+      "notes": "基本形：一日；目标读音：いちにち；词性：名词、副词（JMdict n/adv）。核心义限定为一天或一整天。多义与混淆：同一表记的「一日（ついたち，每月一日）」必须保持独立记录，不得由表记查询混合返回。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-025",
+      "priority": "P1",
+      "word": "雨",
+      "reading": "あめ",
+      "candidateChinese": "雨；雨天",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1171900"
+      ],
+      "notes": "基本形：雨；词性：名词（JMdict n）。核心义覆盖雨和下雨的天气，不纳入花札牌组等专门义。多义与混淆：必须与同音「飴（糖果）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-026",
+      "priority": "P1",
+      "word": "駅",
+      "reading": "えき",
+      "candidateChinese": "车站；火车站",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1175140"
+      ],
+      "notes": "基本形：駅；词性：名词，另有计数用法（JMdict n/ctr）。核心义限定为铁路或电车车站，不纳入古代驿站与计数词用法。多义与混淆：现代基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-027",
+      "priority": "P1",
+      "word": "音楽",
+      "reading": "おんがく",
+      "candidateChinese": "音乐",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1183720"
+      ],
+      "notes": "基本形：音楽；词性：名词（JMdict n）。核心义为音乐，词形、读音和语义范围明确。多义与混淆：未发现需要隔离的同形或同音词。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-028",
+      "priority": "P1",
+      "word": "家",
+      "reading": "いえ",
+      "candidateChinese": "房子；家；住所",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1191730"
+      ],
+      "notes": "基本形：家；目标读音：いえ；词性：名词（JMdict n）。核心义限定为房屋、住所和作为生活场所的家，不纳入家族、血统、姓氏等扩展义。多义与混淆：同一汉字还可能读作「うち」「け」并承载不同语义，必须按读音与语境隔离。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-029",
+      "priority": "P1",
+      "word": "花",
+      "reading": "はな",
+      "candidateChinese": "花；花朵",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1194500"
+      ],
+      "notes": "基本形：花；词性：名词，也可作「の」形容修饰（JMdict n/adj-no）。核心义限定为花、花朵或花开，不纳入美人、精华、插花等引申或专门义。多义与混淆：必须与同音「鼻（はな）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-030",
+      "priority": "P1",
+      "word": "机",
+      "reading": "つくえ",
+      "candidateChinese": "桌子；书桌",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1220210"
+      ],
+      "notes": "基本形：机；词性：名词（JMdict n）。核心义为桌子，基础学习语境中通常指书桌。多义与混淆：词形、读音和语义明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-031",
+      "priority": "P1",
+      "word": "橋",
+      "reading": "はし",
+      "candidateChinese": "桥；桥梁",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1237410"
+      ],
+      "notes": "基本形：橋；词性：名词（JMdict n）。核心义为桥或桥梁。多义与混淆：必须与同音「箸（筷子）」「端（边、端）」按表记隔离，不能只凭读音返回。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-032",
+      "priority": "P1",
+      "word": "犬",
+      "reading": "いぬ",
+      "candidateChinese": "狗；犬",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1258330"
+      ],
+      "notes": "基本形：犬；词性：名词及名词前缀（JMdict n/n-pref）。核心义限定为动物“狗、犬”，不纳入告密者、间谍等贬义引申。多义与混淆：基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-033",
+      "priority": "P1",
+      "word": "公園",
+      "reading": "こうえん",
+      "candidateChinese": "公园",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1273270"
+      ],
+      "notes": "基本形：公園；词性：名词（JMdict n）。核心义为公共公园，词形、读音和语义范围明确。多义与混淆：与同音「講演」「公演」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-034",
+      "priority": "P1",
+      "word": "昨日",
+      "reading": "きのう",
+      "candidateChinese": "昨天",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1579260"
+      ],
+      "notes": "基本形：昨日；目标读音：きのう；词性：名词、副词（JMdict n/adv）。核心义为昨天。多义与混淆：同一表记还存在书面读音「さくじつ」，必须按读音与语体隔离；本记录只处理基础口语读音。证据：JLPT N5；JMdict 精确词形与目标读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-035",
+      "priority": "P1",
+      "word": "仕事",
+      "reading": "しごと",
+      "candidateChinese": "工作；职业；任务",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1304970"
+      ],
+      "notes": "基本形：仕事；词性：名词，也可与「する」构成动词表达（JMdict n/vi/vs）。核心义覆盖工作、职业和具体任务，不扩大为所有商业活动。多义与混淆：语义范围较宽但核心边界明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-036",
+      "priority": "P2",
+      "word": "施行",
+      "reading": "しこう",
+      "candidateChinese": "施行；实施；执行（法律、政策等）",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1579510"
+      ],
+      "notes": "基本形：施行；词性：名词及サ变他动词（JMdict n/vs/vt）。核心义覆盖法律生效施行、政策或计划实施执行。多义与混淆：必须与同音「試行（试行、尝试）」按表记隔离。证据：JLPT N1；JMdict 1579510，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-037",
+      "priority": "P1",
+      "word": "紙",
+      "reading": "かみ",
+      "candidateChinese": "纸；纸张",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1311530"
+      ],
+      "notes": "基本形：紙；词性：名词（JMdict n）。核心义为纸或纸张。多义与混淆：必须与同音「髪（头发）」「神（神）」按表记隔离，不能只凭读音覆盖。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-038",
+      "priority": "P1",
+      "word": "写真",
+      "reading": "しゃしん",
+      "candidateChinese": "照片；摄影",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1321900"
+      ],
+      "notes": "基本形：写真；词性：名词（JMdict n）。核心义覆盖照片以及摄影这一活动或领域；电影、活动影像等历史或扩展义不并入基础释义。多义与混淆：现代学习语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-039",
+      "priority": "P2",
+      "word": "審議",
+      "reading": "しんぎ",
+      "candidateChinese": "审议；讨论研究",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1360360"
+      ],
+      "notes": "基本形：審議；词性：名词及サ变他动词（JMdict n/vs/vt）。核心义为对议案、政策等进行审议、讨论和研究。多义与混淆：词形、读音及语义范围明确。证据：JLPT N1；JMdict 1360360，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-040",
+      "priority": "P1",
+      "word": "水",
+      "reading": "みず",
+      "candidateChinese": "水；凉水",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1371260"
+      ],
+      "notes": "基本形：水；词性：名词（JMdict n）。核心义限定为水，尤其与热水「湯」相对的常温或凉水；体液、洪水、相扑用水等扩展义不并入基础释义。多义与混淆：基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-041",
+      "priority": "P2",
+      "word": "政府",
+      "reading": "せいふ",
+      "candidateChinese": "政府；政府机构",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1376070"
+      ],
+      "notes": "基本形：政府；词性：名词（JMdict n）。核心义覆盖国家或地区政府及其行政机构，不扩大为单一部门的专名。多义与混淆：现代新闻语境明确。证据：JLPT N3；JMdict 1376070，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-042",
+      "priority": "P1",
+      "word": "切る",
+      "reading": "きる",
+      "candidateChinese": "切；剪；关闭（电源等）",
+      "confidence": "中高",
+      "evidenceSummary": [
+        "JMdict exact: 1384830"
+      ],
+      "notes": "基本形：切る；词性：五段ラ行动词、他动词，另有接尾用法（JMdict v5r/vt/suf）。核心义覆盖切断、剪切，以及关闭电源或中断连接等常见引申；手术、断交、期限等细分义不全部展开。多义与混淆：必须与同音「着る（穿）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-043",
+      "priority": "P1",
+      "word": "窓",
+      "reading": "まど",
+      "candidateChinese": "窗；窗户",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1401400"
+      ],
+      "notes": "基本形：窓；词性：名词（JMdict n）。核心义为窗或窗户，词形、读音和语义范围明确。多义与混淆：无需要合并的同形异读词。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-044",
+      "priority": "P1",
+      "word": "着る",
+      "reading": "きる",
+      "candidateChinese": "穿；穿上（衣服）",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1423000"
+      ],
+      "notes": "基本形：着る；词性：一段动词、他动词（JMdict v1/vt）。核心义限定为穿上衣服，尤其是上半身或覆盖身体的服装；承担责任、背黑锅等引申义不并入基础释义。多义与混淆：必须与同音「切る（切、剪）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-045",
+      "priority": "P1",
+      "word": "電車",
+      "reading": "でんしゃ",
+      "candidateChinese": "电车；列车",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1443530"
+      ],
+      "notes": "基本形：電車；词性：名词（JMdict n）。核心义为以电力驱动的铁路列车，基础语境可译为电车或列车。多义与混淆：词形和读音明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-046",
+      "priority": "P1",
+      "word": "猫",
+      "reading": "ねこ",
+      "candidateChinese": "猫",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1467640"
+      ],
+      "notes": "基本形：猫；词性：名词（JMdict n）。核心义限定为动物“猫”，不纳入三味线、艺伎、手推车等俗语或历史扩展义。多义与混淆：基础语境明确。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-047",
+      "priority": "P1",
+      "word": "箸",
+      "reading": "はし",
+      "candidateChinese": "筷子",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1476410"
+      ],
+      "notes": "基本形：箸；词性：名词（JMdict n）。核心义为筷子。多义与混淆：必须与同音「橋（桥）」「端（边、端）」按表记隔离，不能只凭读音返回。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-048",
+      "priority": "P1",
+      "word": "髪",
+      "reading": "かみ",
+      "candidateChinese": "头发",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1477950"
+      ],
+      "notes": "基本形：髪；词性：名词（JMdict n）。核心义限定为头发。多义与混淆：必须与同音「紙（纸）」「神（神）」按表记隔离。证据：JLPT N4；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-049",
+      "priority": "P2",
+      "word": "比率",
+      "reading": "ひりつ",
+      "candidateChinese": "比率；比例；百分比",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1483680"
+      ],
+      "notes": "基本形：比率；词性：名词（JMdict n）。核心义覆盖两个数量之间的比率、比例，以及以百分数表达的比率。多义与混淆：不得在没有百分号语境时强制译为百分比。证据：JLPT N1；JMdict 1483680，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-050",
+      "priority": "P2",
+      "word": "被害",
+      "reading": "ひがい",
+      "candidateChinese": "损害；受害情况",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1484350"
+      ],
+      "notes": "基本形：被害；词性：名词（JMdict n）。核心义覆盖因事故、灾害或犯罪造成的损害、伤害及受害情况。多义与混淆：不等同于具体受害者「被害者」。证据：JLPT N3；JMdict 1484350，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-051",
+      "priority": "P1",
+      "word": "鼻",
+      "reading": "はな",
+      "candidateChinese": "鼻子",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1486720"
+      ],
+      "notes": "基本形：鼻；词性：名词（JMdict n）。核心义为鼻子。多义与混淆：必须与同音「花（花朵）」按表记隔离。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-052",
+      "priority": "P1",
+      "word": "料理",
+      "reading": "りょうり",
+      "candidateChinese": "烹饪；菜肴；料理",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1554310"
+      ],
+      "notes": "基本形：料理；词性：名词，也可与「する」构成他动词表达（JMdict n/vs/vt）。核心义覆盖烹饪行为、菜肴和料理类别；处理事务、管理等引申义不并入基础释义。多义与混淆：语义范围明确且符合当前语料。证据：JLPT N5；JMdict 精确词形与读音证据，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-054",
+      "priority": "P2",
+      "word": "飴",
+      "reading": "あめ",
+      "candidateChinese": "糖果；糖稀",
+      "confidence": "中高",
+      "evidenceSummary": [
+        "JMdict exact: 1153520"
+      ],
+      "notes": "基本形：飴；词性：名词（JMdict n）。核心义覆盖硬糖、太妃糖等糖果，以及由淀粉制成的糖稀；琥珀色等颜色义不并入基础释义。多义与混淆：必须与同音「雨（あめ）」按表记隔离。证据：JMdict 1153520，CC BY-SA 4.0；本地 JLPT 参考未提供等级。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-055",
+      "priority": "P2",
+      "word": "易しい",
+      "reading": "やさしい",
+      "candidateChinese": "容易的；简单的",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1157000"
+      ],
+      "notes": "基本形：易しい；词性：イ形容词（JMdict adj-i）。核心义为容易、简单、易懂。多义与混淆：必须与同音「優しい（温柔、亲切）」按表记隔离。证据：JMdict 1157000，CC BY-SA 4.0；本地 JLPT 参考未提供等级。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-056",
+      "priority": "P2",
+      "word": "運行",
+      "reading": "うんこう",
+      "candidateChinese": "运行；行驶（交通工具）",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1172750"
+      ],
+      "notes": "基本形：運行；词性：名词及サ变动词，可作自动或他动表达（JMdict n/vi/vs/vt）。核心义限定为公交、列车等交通服务的运行、行驶；天体运行等义不并入本阶段核心释义。多义与混淆：新闻交通语境明确。证据：JMdict 1172750，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-057",
+      "priority": "P2",
+      "word": "開く",
+      "reading": "ひらく",
+      "candidateChinese": "打开；展开；开设；举行",
+      "confidence": "中高",
+      "evidenceSummary": [
+        "JMdict exact: 1202440"
+      ],
+      "notes": "基本形：開く；目标读音：ひらく；词性：五段カ行动词，可作自动词或他动词（JMdict v5k/vi/vt）。核心义覆盖打开书本或容器、展开，以及开设店铺或举行活动等常见义。多义与混淆：必须与同形异读「開く（あく，自动打开或空出）」分开处理。证据：JMdict 1202440，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-058",
+      "priority": "P2",
+      "word": "開ける",
+      "reading": "あける",
+      "candidateChinese": "打开；开启；腾出（空间）",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1202450"
+      ],
+      "notes": "基本形：開ける；词性：一段动词，可作他动词或自动词（JMdict v1/vi/vt）。核心义覆盖主动打开门窗或包装、解锁，以及腾出空间。多义与混淆：需与同音「明ける（天亮、期限结束）」按表记隔离，也不得与自动词「開く（あく）」混同。证据：JMdict 1202450，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-059",
+      "priority": "P2",
+      "word": "蛙",
+      "reading": "かえる",
+      "candidateChinese": "青蛙；蛙",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1577460"
+      ],
+      "notes": "基本形：蛙；词性：名词（JMdict n）。核心义为青蛙或蛙类。多义与混淆：必须与同音动词「帰る（回去、回家）」按表记隔离。证据：JMdict 1577460，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-060",
+      "priority": "P2",
+      "word": "携帯電話",
+      "reading": "けいたいでんわ",
+      "candidateChinese": "手机；移动电话",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1250690"
+      ],
+      "notes": "基本形：携帯電話；词性：名词（JMdict n）。核心义为移动电话或手机。多义与混淆：不将简称「携帯」自动等同于所有便携物品。证据：JMdict 1250690，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-061",
+      "priority": "P2",
+      "word": "見合わせる",
+      "reading": "みあわせる",
+      "candidateChinese": "暂停；暂缓；推迟",
+      "confidence": "中高",
+      "evidenceSummary": [
+        "JMdict exact: 1259570"
+      ],
+      "notes": "基本形：見合わせる；词性：一段他动词（JMdict v1/vt）。当前新闻语料核心义为暂停运行、暂缓或推迟实施；“互相对视”“比较”属于其他义项，不并入本阶段核心释义。多义与混淆：必须依赖上下文，尤其交通新闻中的「運転を見合わせる」。证据：JMdict 1259570，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-062",
+      "priority": "P2",
+      "word": "高速道路",
+      "reading": "こうそくどうろ",
+      "candidateChinese": "高速公路",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1283720"
+      ],
+      "notes": "基本形：高速道路；词性：名词（JMdict n）。核心义为高速公路、快速道路或高速路。多义与混淆：词形、读音和现代交通语义明确。证据：JMdict 1283720，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-063",
+      "priority": "P2",
+      "word": "神",
+      "reading": "かみ",
+      "candidateChinese": "神；神明",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1364440"
+      ],
+      "notes": "基本形：神；目标读音：かみ；词性：名词、名词前缀，亦有形容动词化网络用法（JMdict n/n-pref/adj-na）。核心义限定为神、神明或神灵；“神级、太棒了”等网络引申不并入基础释义。多义与混淆：必须与同音「紙（纸）」「髪（头发）」按表记隔离。证据：JMdict 1364440，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-064",
+      "priority": "P2",
+      "word": "人気",
+      "reading": "にんき",
+      "candidateChinese": "人气；受欢迎程度",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1367010"
+      ],
+      "notes": "基本形：人気；目标读音：にんき；词性：名词及「の」形容修饰（JMdict n/adj-no）。核心义限定为人气、受欢迎程度或公众喜爱。多义与混淆：必须与同形异读「人気（ひとけ，人的气息或有人存在的迹象）」分开处理；后者当前因证据不足保持 blocked。证据：JMdict 1367010，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-065",
+      "priority": "P2",
+      "word": "生",
+      "reading": "なま",
+      "candidateChinese": "生的；未加工的；新鲜的",
+      "confidence": "中高",
+      "evidenceSummary": [
+        "JMdict exact: 1378450"
+      ],
+      "notes": "基本形：生；目标读音：なま；词性：名词、前缀及「の」形容修饰（JMdict n/pref/adj-no）。核心义覆盖食物未烹饪、材料未加工，以及现场或未经编辑处理的状态；成人语境等其他义项不并入基础释义。多义与混淆：同一表记「生」有「せい」「しょう」等多种读音，必须按读音和上下文隔离。证据：JMdict 1378450，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：中高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-066",
+      "priority": "P2",
+      "word": "大学院生",
+      "reading": "だいがくいんせい",
+      "candidateChinese": "研究生；大学院学生",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 2077500"
+      ],
+      "notes": "基本形：大学院生；词性：名词（JMdict n）。核心义为在日本大学院攻读硕士或博士阶段课程的学生，中文通常称研究生。多义与混淆：注意中文“研究生”与日语「研究生」制度含义不同，本词对应正式大学院在籍学生。证据：JMdict 2077500，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-067",
+      "priority": "P2",
+      "word": "地球温暖化",
+      "reading": "ちきゅうおんだんか",
+      "candidateChinese": "全球变暖",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1420980"
+      ],
+      "notes": "基本形：地球温暖化；词性：名词（JMdict n）。核心义为全球变暖或地球气候变暖。多义与混淆：术语含义明确，不扩大为整个气候变化概念。证据：JMdict 1420980，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-068",
+      "priority": "P2",
+      "word": "地方自治体",
+      "reading": "ちほうじちたい",
+      "candidateChinese": "地方政府；地方自治体",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 1763330"
+      ],
+      "notes": "基本形：地方自治体；词性：名词（JMdict n）。核心义为依法实行地方自治的地方政府或地方公共团体。多义与混淆：在日本行政语境中可涵盖都道府县和市区町村，不应仅译为单一“市政府”。证据：JMdict 1763330，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-069",
+      "priority": "P2",
+      "word": "電子部品",
+      "reading": "でんしぶひん",
+      "candidateChinese": "电子元件；电子零部件",
+      "confidence": "高",
+      "evidenceSummary": [
+        "JMdict exact: 2132850"
+      ],
+      "notes": "基本形：電子部品；词性：名词（JMdict n）。核心义为电子设备使用的电子元件或电子零部件。多义与混淆：词形、读音和专业语义明确。证据：JMdict 2132850，CC BY-SA 4.0。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only，不复制商业词典；需人工复核后方可进入正式中文层。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-070",
+      "priority": "P3",
+      "word": "サイバー攻撃",
+      "reading": "さいばーこうげき",
+      "candidateChinese": "网络攻击；网络系统攻击",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-254",
+        "wikidata: https://www.wikidata.org/wiki/Q4071928"
+      ],
+      "notes": "基本形：サイバー攻撃；读音：さいばーこうげき；词性：名词（项目语料）。核心释义：网络攻击；网络系统攻击。多义与混淆：指针对计算机、网络或数字系统实施的未授权访问、破坏、窃取或干扰行为，不扩大为一般舆论攻击。证据：Yomeru 语料确认完整词形、读音与上下文；wikidata 提供隔离的外部语义证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-071",
+      "priority": "P3",
+      "word": "医療機関",
+      "reading": "いりょうきかん",
+      "candidateChinese": "医疗机构",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-250",
+        "JMdict components: 医療(いりょう)#1160140 + 機関(きかん)#1220870"
+      ],
+      "notes": "基本形：医療機関；读音：いりょうきかん；词性：名词（项目语料）。核心释义：医疗机构。多义与混淆：指提供医疗服务的医院、诊所等机构；不等同于单一医院。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-072",
+      "priority": "P3",
+      "word": "医療保険制度",
+      "reading": "いりょうほけんせいど",
+      "candidateChinese": "医疗保险制度",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-202",
+        "JMdict components: 医療(いりょう)#1160140 + 保険(ほけん)#1513440 + 制度(せいど)#1374880"
+      ],
+      "notes": "基本形：医療保険制度；读音：いりょうほけんせいど；词性：名词（项目语料）。核心释义：医疗保险制度。多义与混淆：指以保险方式分担医疗费用的制度，不扩大为全部社会保障制度。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-073",
+      "priority": "P3",
+      "word": "海外市場",
+      "reading": "かいがいしじょう",
+      "candidateChinese": "海外市场",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-259",
+        "JMdict components: 海外(かいがい)#1201260 + 市場(しじょう)#1308305"
+      ],
+      "notes": "基本形：海外市場；读音：かいがいしじょう；词性：名词（项目语料）。核心释义：海外市场。多义与混淆：指本国以外的商品、金融或商业市场；市場在本词中读作しじょう。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-074",
+      "priority": "P3",
+      "word": "外国人観光客",
+      "reading": "がいこくじんかんこうきゃく",
+      "candidateChinese": "外国游客；外国观光客",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-208",
+        "JMdict components: 外国人(がいこくじん)#1203650 + 観光客(かんこうきゃく)#1214870"
+      ],
+      "notes": "基本形：外国人観光客；读音：がいこくじんかんこうきゃく；词性：名词（项目语料）。核心释义：外国游客；外国观光客。多义与混淆：指来自外国、以旅游为目的的游客，不等同于所有外国居民。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-075",
+      "priority": "P3",
+      "word": "共同研究",
+      "reading": "きょうどうけんきゅう",
+      "candidateChinese": "共同研究；合作研究",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-236",
+        "JMdict components: 共同(きょうどう)#1591660 + 研究(けんきゅう)#1258520"
+      ],
+      "notes": "基本形：共同研究；读音：きょうどうけんきゅう；词性：名词（项目语料）。核心释义：共同研究；合作研究。多义与混淆：指两个或多个个人、机构共同开展的研究。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-076",
+      "priority": "P3",
+      "word": "経済成長",
+      "reading": "けいざいせいちょう",
+      "candidateChinese": "经济增长",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-198",
+        "JMdict components: 経済(けいざい)#1251320 + 成長(せいちょう)#1375790"
+      ],
+      "notes": "基本形：経済成長；读音：けいざいせいちょう；词性：名词（项目语料）。核心释义：经济增长。多义与混淆：指经济规模、产出或经济活动增长，不等同于所有经济发展指标。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-077",
+      "priority": "P3",
+      "word": "研究チーム",
+      "reading": "けんきゅうちーむ",
+      "candidateChinese": "研究团队",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-251",
+        "JMdict components: 研究(けんきゅう)#1258520 + チーム(チーム)#1077360"
+      ],
+      "notes": "基本形：研究チーム；读音：けんきゅうちーむ；词性：名词（项目语料）。核心释义：研究团队。多义与混淆：指共同从事研究工作的团队。外来语チーム的组件读音在 JMdict 中使用片假名。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-078",
+      "priority": "P3",
+      "word": "研究開発費",
+      "reading": "けんきゅうかいはつひ",
+      "candidateChinese": "研发费用；研究开发费",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-201",
+        "JMdict components: 研究(けんきゅう)#1258520 + 開発(かいはつ)#1202880 + 費(ひ)#1484590"
+      ],
+      "notes": "基本形：研究開発費；读音：けんきゅうかいはつひ；词性：名词（项目语料）。核心释义：研发费用；研究开发费。多义与混淆：指研究与开发活动所发生的费用，不等同于全部企业投资。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-079",
+      "priority": "P3",
+      "word": "個人情報",
+      "reading": "こじんじょうほう",
+      "candidateChinese": "个人信息",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-253",
+        "JMdict components: 個人(こじん)#1264770 + 情報(じょうほう)#1356370"
+      ],
+      "notes": "基本形：個人情報；读音：こじんじょうほう；词性：名词（项目语料）。核心释义：个人信息。多义与混淆：指与个人有关的信息；法律语境中的具体范围由适用法律决定，本释义不自行扩大法律定义。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-080",
+      "priority": "P3",
+      "word": "雇用情勢",
+      "reading": "こようじょうせい",
+      "candidateChinese": "就业形势；就业状况",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-240",
+        "JMdict components: 雇用(こよう)#1267860 + 情勢(じょうせい)#1356320"
+      ],
+      "notes": "基本形：雇用情勢；读音：こようじょうせい；词性：名词（项目语料）。核心释义：就业形势；就业状况。多义与混淆：指某时期或地区的就业、招聘和失业等整体状况。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-081",
+      "priority": "P3",
+      "word": "公共交通機関",
+      "reading": "こうきょうこうつうきかん",
+      "candidateChinese": "公共交通工具；公共交通系统",
+      "confidence": "中高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-200",
+        "JMdict components: 公共(こうきょう)#1273510 + 交通(こうつう)#1272280 + 機関(きかん)#1220870"
+      ],
+      "notes": "基本形：公共交通機関；读音：こうきょうこうつうきかん；词性：名词（项目语料）。核心释义：公共交通工具；公共交通系统。多义与混淆：指面向公众运营的铁路、公交等交通方式或系统；機関在该复合词中不是政府机关。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：中高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-082",
+      "priority": "P3",
+      "word": "今日中",
+      "reading": "きょうじゅう",
+      "candidateChinese": "今天之内；今天结束前",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-184",
+        "wiktionary-text: https://en.wiktionary.org/wiki/今日中に"
+      ],
+      "notes": "基本形：今日中；读音：きょうじゅう；词性：名词（项目语料）。核心释义：今天之内；今天结束前。多义与混淆：表示截止到今天结束之前；不与今日（こんにち，现今）混淆。证据：Yomeru 语料确认完整词形、读音与上下文；wiktionary-text 提供隔离的外部语义证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-083",
+      "priority": "P3",
+      "word": "再生可能エネルギー",
+      "reading": "さいせいかのうえねるぎー",
+      "candidateChinese": "可再生能源",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-204",
+        "wikidata: https://www.wikidata.org/wiki/Q12705"
+      ],
+      "notes": "基本形：再生可能エネルギー；读音：さいせいかのうえねるぎー；词性：名词（项目语料）。核心释义：可再生能源。多义与混淆：指从可自然补充的资源中获得的能源，不等同于所有替代能源。证据：Yomeru 语料确认完整词形、读音与上下文；wikidata 提供隔离的外部语义证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-084",
+      "priority": "P3",
+      "word": "自然災害",
+      "reading": "しぜんさいがい",
+      "candidateChinese": "自然灾害",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-203",
+        "JMdict components: 自然(しぜん)#1318090 + 災害(さいがい)#1295100"
+      ],
+      "notes": "基本形：自然災害；读音：しぜんさいがい；词性：名词（项目语料）。核心释义：自然灾害。多义与混淆：指由自然现象引发并造成损害的灾害，不包括人为事故。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-085",
+      "priority": "P3",
+      "word": "少子高齢化",
+      "reading": "しょうしこうれいか",
+      "candidateChinese": "少子老龄化；低出生率与人口老龄化",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-196",
+        "japan-government-pdl1: https://www.mhlw.go.jp/nenkinkenshou/glossary/index.html"
+      ],
+      "notes": "基本形：少子高齢化；读音：しょうしこうれいか；词性：名词（项目语料）。核心释义：少子老龄化；低出生率与人口老龄化。多义与混淆：指儿童或出生人口占比下降，同时老年人口占比上升的社会人口现象。证据：Yomeru 语料确认完整词形、读音与上下文；japan-government-pdl1 提供隔离的外部语义证据。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-086",
+      "priority": "P3",
+      "word": "上昇率",
+      "reading": "じょうしょうりつ",
+      "candidateChinese": "上升率；增长率",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-239",
+        "JMdict components: 上昇(じょうしょう)#1353450 + 率(りつ)#1551200"
+      ],
+      "notes": "基本形：上昇率；读音：じょうしょうりつ；词性：名词（项目语料）。核心释义：上升率；增长率。多义与混淆：指某数值上升的比率；具体采用上升率或增长率取决于统计语境。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-087",
+      "priority": "P3",
+      "word": "情報通信技術",
+      "reading": "じょうほうつうしんぎじゅつ",
+      "candidateChinese": "信息通信技术（ICT）",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-195",
+        "JMdict components: 情報(じょうほう)#1356370 + 通信(つうしん)#1433330 + 技術(ぎじゅつ)#1225130"
+      ],
+      "notes": "基本形：情報通信技術；读音：じょうほうつうしんぎじゅつ；词性：名词（项目语料）。核心释义：信息通信技术（ICT）。多义与混淆：指信息处理与通信相关的技术总体，常对应 ICT。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-089",
+      "priority": "P3",
+      "word": "中央銀行",
+      "reading": "ちゅうおうぎんこう",
+      "candidateChinese": "中央银行",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-241",
+        "JMdict components: 中央(ちゅうおう)#1423430 + 銀行(ぎんこう)#1243490"
+      ],
+      "notes": "基本形：中央銀行；读音：ちゅうおうぎんこう；词性：名词（项目语料）。核心释义：中央银行。多义与混淆：指负责货币发行、货币政策等中央银行职能的机构，不等同于一般商业银行。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-090",
+      "priority": "P3",
+      "word": "投票率",
+      "reading": "とうひょうりつ",
+      "candidateChinese": "投票率；选民投票率",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-258",
+        "JMdict components: 投票(とうひょう)#1447320 + 率(りつ)#1551200"
+      ],
+      "notes": "基本形：投票率；读音：とうひょうりつ；词性：名词（项目语料）。核心释义：投票率；选民投票率。多义与混淆：指实际投票人数相对于有资格投票人数等基数的比例；具体分母依统计定义确定。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-091",
+      "priority": "P3",
+      "word": "排出量",
+      "reading": "はいしゅつりょう",
+      "candidateChinese": "排放量；排出量",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-256",
+        "JMdict components: 排出(はいしゅつ)#1472360 + 量(りょう)#1554640"
+      ],
+      "notes": "基本形：排出量；读音：はいしゅつりょう；词性：名词（项目语料）。核心释义：排放量；排出量。多义与混淆：指气体、物质等被排放出去的数量；当前语料为温室气体排放量。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-092",
+      "priority": "P3",
+      "word": "半導体メモリー",
+      "reading": "はんどうたいめもりー",
+      "candidateChinese": "半导体存储器；半导体内存",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-190",
+        "JMdict components: 半導体(はんどうたい)#1479790 + メモリー(メモリー)#1133860"
+      ],
+      "notes": "基本形：半導体メモリー；读音：はんどうたいめもりー；词性：名词（项目语料）。核心释义：半导体存储器；半导体内存。多义与混淆：指利用半导体器件存储数据的存储器；メモリー在本词中是计算机存储器，不是人的回忆。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-093",
+      "priority": "P3",
+      "word": "避難所",
+      "reading": "ひなんじょ",
+      "candidateChinese": "避难所；临时安置点",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-245",
+        "JMdict components: 避難(ひなん)#1484660 + 所(ところ)#1343100"
+      ],
+      "notes": "基本形：避難所；读音：ひなんじょ；词性：名词（项目语料）。核心释义：避难所；临时安置点。多义与混淆：指灾害或危险发生时供人员避难、暂时安置的场所。组件所的独立词典读音为ところ，复合词读音じょ由完整语料确认。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-094",
+      "priority": "P3",
+      "word": "訪日客数",
+      "reading": "ほうにちきゃくすう",
+      "candidateChinese": "访日游客人数；入境日本游客数量",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-243",
+        "JMdict components: 訪日(ほうにち)#1518100 + 客(きゃく)#1226630 + 数(すう)#1580825"
+      ],
+      "notes": "基本形：訪日客数；读音：ほうにちきゃくすう；词性：名词（项目语料）。核心释义：访日游客人数；入境日本游客数量。多义与混淆：指访问日本的游客人数；客数在此为人数统计，不是客户交易次数。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-095",
+      "priority": "P3",
+      "word": "輸出額",
+      "reading": "ゆしゅつがく",
+      "candidateChinese": "出口额",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-242",
+        "JMdict components: 輸出(ゆしゅつ)#1538820 + 額(がく)#1207500"
+      ],
+      "notes": "基本形：輸出額；读音：ゆしゅつがく；词性：名词（项目语料）。核心释义：出口额。多义与混淆：指出口商品或服务的金额，不等同于出口数量。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    },
+    {
+      "queueId": "zh-review-096",
+      "priority": "P3",
+      "word": "労働市場",
+      "reading": "ろうどうしじょう",
+      "candidateChinese": "劳动力市场；劳动市场",
+      "confidence": "高",
+      "evidenceSummary": [
+        "Yomeru corpus: LQ-199",
+        "JMdict components: 労働(ろうどう)#1606450 + 市場(しじょう)#1308305"
+      ],
+      "notes": "基本形：労働市場；读音：ろうどうしじょう；词性：名词（项目语料）。核心释义：劳动力市场；劳动市场。多义与混淆：指劳动力供给与用工需求形成的市场；市場在本词中读作しじょう。证据：Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：高。",
+      "humanDecision": null,
+      "approvedChinese": null,
+      "humanReviewer": null,
+      "humanReviewedAt": null,
+      "humanNotes": null
+    }
+  ],
+  "blockedItems": [
+    {
+      "queueId": "zh-review-053",
+      "priority": "P1",
+      "word": "一日",
+      "reading": "ついたち",
+      "rejectionReason": "JMdict common 子集没有「一日（ついたち）」的精确词形＋读音记录，当前证据错误指向「一日（いちにち）」。",
+      "nextEvidence": "已核验日文表记与目标读音，但当前 JMdict common 证据不包含「ついたち」。不能使用同表记另一读音的义项替代，也不能仅凭 JLPT N5 参考直接批准。下一步需要引入许可明确且包含该读音的独立词典证据，或在更新后的 JMdict 数据中找到精确记录。审核结论：blocked；置信度：高。"
+    },
+    {
+      "queueId": "zh-review-088",
+      "priority": "P3",
+      "word": "人気",
+      "reading": "ひとけ",
+      "rejectionReason": "JMdict common 子集没有「人気（ひとけ）」的精确词形＋读音记录，当前证据错误指向「人気（にんき）」。",
+      "nextEvidence": "语料目标为「ひとけ」，通常涉及人的气息或有人存在的迹象，但当前证据只支持「にんき（人气、受欢迎程度）」。为避免同形异读错误覆盖，不生成中文候选。下一步需要许可明确的精确读音与义项证据。审核结论：blocked；置信度：高。"
+    }
+  ]
+}

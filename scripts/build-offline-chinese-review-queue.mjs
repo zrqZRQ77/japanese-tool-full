@@ -8,7 +8,9 @@ const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(SCRIPT_DIR, '..');
 const AUDIT_DIR = resolve(ROOT, 'audits/offline-chinese-coverage/20260723');
 const JMDICT_DIR = resolve(ROOT, 'frontend/data/jmdict-common/20260713');
+const CORPUS_PATH = resolve(ROOT, 'frontend/test-data/language-corpus/20260717-01/cases.json');
 const GAPS_PATH = resolve(AUDIT_DIR, 'high-priority-gaps.json');
+const P3_REVIEW_PATH = resolve(AUDIT_DIR, 'p3-independent-review.json');
 const GENERATED_AT = '2026-07-23T00:00:00.000Z';
 const REVIEWED_AT = '2026-07-24';
 const REVIEWER = 'OpenAI ChatGPT / CodexPro assisted lexical review';
@@ -405,6 +407,74 @@ function matchingEntries(gap, index) {
   return exact.sort((a, b) => String(a.id).localeCompare(String(b.id)));
 }
 
+function exactComponentEntry(component, index) {
+  return (index.get(component.word) || []).find(entry => (
+    entry.w === component.word && entry.r === component.reading
+  )) || null;
+}
+
+function buildCorpusEvidence(gap, corpusById) {
+  const cases = gap.examples.map(id => corpusById.get(id)).filter(Boolean);
+  return {
+    sourceId: 'yomeru-language-corpus',
+    license: 'project-curated',
+    matchType: 'exact-corpus',
+    corpusVersion: '20260717-01',
+    caseIds: cases.map(item => item.id),
+    headwords: [gap.word],
+    readings: gap.reading ? [gap.reading] : [],
+    partsOfSpeech: unique(cases.map(item => item.expectedPartOfSpeech)),
+    sentences: unique(cases.map(item => item.sentence)),
+    sourcePath: 'frontend/test-data/language-corpus/20260717-01/cases.json',
+    retrievedAt: REVIEWED_AT
+  };
+}
+
+function buildCompositionalEvidence(review, index) {
+  const components = review.components.map(component => {
+    const entry = exactComponentEntry(component, index);
+    if (!entry) return null;
+    return {
+      entryId: String(entry.id),
+      word: entry.w,
+      reading: entry.r,
+      partsOfSpeech: unique(entry.p || []).sort(),
+      englishGlosses: unique(entry.g || []).slice(0, 8)
+    };
+  });
+  if (components.some(component => !component)) return null;
+  return {
+    sourceId: 'jmdict-edrdg',
+    license: 'CC-BY-SA-4.0',
+    matchType: 'compositional',
+    components,
+    sourceUrl: 'https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project',
+    retrievedAt: REVIEWED_AT
+  };
+}
+
+function buildP3Evidence(gap, review, index, corpusById) {
+  const corpusEvidence = buildCorpusEvidence(gap, corpusById);
+  if (review.evidenceMode === 'jmdict-compositional') {
+    const componentEvidence = buildCompositionalEvidence(review, index);
+    return componentEvidence ? [corpusEvidence, componentEvidence] : null;
+  }
+  if (review.externalEvidence) {
+    return [corpusEvidence, {
+      ...review.externalEvidence,
+      matchType: 'semantic-external'
+    }];
+  }
+  return null;
+}
+
+function buildP3Notes(gap, review) {
+  const evidenceLabel = review.evidenceMode === 'jmdict-compositional'
+    ? 'Yomeru 语料确认完整词形、读音与上下文；JMdict 组件级记录确认复合词的语义构成。'
+    : `Yomeru 语料确认完整词形、读音与上下文；${review.externalEvidence.sourceId} 提供隔离的外部语义证据。`;
+  return `基本形：${gap.word}；读音：${gap.reading || '—'}；词性：名词（项目语料）。核心释义：${review.candidateChinese}。多义与混淆：${review.scope}证据：${evidenceLabel}中文来源与许可证边界：Yomeru 独立中文草稿，AI 辅助 draft-only；外部内容只作可追溯证据，不复制商业词典定义。审核结论：建议批准；置信度：${review.confidence}。`;
+}
+
 function priorityTier(gap) {
   if (gap.count >= 3) return 'P0';
   if (gap.count >= 2 || gap.jlptLevels.some(level => ['N5', 'N4'].includes(level))) return 'P1';
@@ -434,13 +504,14 @@ function reviewType(gap, entries, flags) {
   return 'standard-lexical';
 }
 
-function queueItem(gap, index, position) {
+function queueItem(gap, index, position, p3Reviews, corpusById) {
   const entries = matchingEntries(gap, index);
   const flags = riskFlags(gap, entries);
   const englishGlosses = unique(entries.flatMap(entry => entry.g || [])).slice(0, 16);
   const partsOfSpeech = unique(entries.flatMap(entry => entry.p || [])).sort();
   const reviewKey = `${gap.word}\u0000${gap.reading || ''}`;
   const review = MANUAL_REVIEW_DRAFTS[reviewKey];
+  const p3Review = p3Reviews[reviewKey];
   const blocked = BLOCKED_REVIEW_ITEMS[reviewKey];
   const base = {
     queueId: `zh-review-${String(position + 1).padStart(3, '0')}`,
@@ -486,6 +557,30 @@ function queueItem(gap, index, position) {
       notes: blocked.notes
     };
   }
+  if (p3Review) {
+    const p3Evidence = buildP3Evidence(gap, p3Review, index, corpusById);
+    if (!p3Evidence) {
+      return {
+        ...base,
+        reviewerStatus: 'blocked',
+        reviewer: REVIEWER,
+        reviewedAt: REVIEWED_AT,
+        decision: 'block',
+        rejectionReason: '独立调查配置缺少可验证的组件或外部证据。',
+        notes: '未生成中文候选。下一步需要补齐许可明确、可追溯且能支持目标词义的证据。审核结论：blocked；置信度：高。'
+      };
+    }
+    return {
+      ...base,
+      evidence: p3Evidence,
+      candidateChinese: p3Review.candidateChinese,
+      reviewerStatus: 'drafted',
+      reviewer: REVIEWER,
+      reviewedAt: REVIEWED_AT,
+      decision: 'recommend-approve',
+      notes: buildP3Notes(gap, p3Review)
+    };
+  }
   if (!review || !entries.length) return base;
   return {
     ...base,
@@ -507,8 +602,15 @@ function countBy(items, key) {
   return Object.fromEntries([...counts.entries()].sort((a, b) => String(a[0]).localeCompare(String(b[0]))));
 }
 
-const [gapPayload, jmdictIndex] = await Promise.all([readJson(GAPS_PATH), loadJmdictIndex()]);
-const items = gapPayload.items.map((gap, index) => queueItem(gap, jmdictIndex, index));
+const [gapPayload, jmdictIndex, corpus, p3ReviewPayload] = await Promise.all([
+  readJson(GAPS_PATH),
+  loadJmdictIndex(),
+  readJson(CORPUS_PATH),
+  readJson(P3_REVIEW_PATH)
+]);
+const corpusById = new Map(corpus.map(item => [item.id, item]));
+const p3Reviews = p3ReviewPayload.items || {};
+const items = gapPayload.items.map((gap, index) => queueItem(gap, jmdictIndex, index, p3Reviews, corpusById));
 const readingsByWord = new Map();
 for (const item of items) {
   const readings = readingsByWord.get(item.word) || new Set();
@@ -561,8 +663,13 @@ const queue = {
     approvedItems: approvedItems.length,
     rejectedItems: rejectedItems.length,
     blockedItems: blockedItems.length,
-    withJmdictEvidence: items.filter(item => item.evidence.length).length,
-    manualResearchRequired: items.filter(item => !item.evidence.length).length,
+    withExactJmdictEvidence: items.filter(item => item.evidence.some(evidence => (evidence.matchType || 'exact-jmdict') === 'exact-jmdict')).length,
+    withCompositionalJmdictEvidence: items.filter(item => item.evidence.some(evidence => evidence.matchType === 'compositional')).length,
+    withJmdictEvidence: items.filter(item => item.evidence.some(evidence => evidence.sourceId === 'jmdict-edrdg')).length,
+    withExternalSemanticEvidence: items.filter(item => item.evidence.some(evidence => evidence.matchType === 'semantic-external')).length,
+    manualResearchRequired: items.filter(item => item.reviewType === 'manual-research-required').length,
+    manualResearchCompleted: items.filter(item => item.reviewType === 'manual-research-required' && item.reviewerStatus === 'drafted').length,
+    manualResearchBlocked: items.filter(item => item.reviewType === 'manual-research-required' && item.reviewerStatus === 'blocked').length,
     ambiguityReview: items.filter(item => item.reviewType === 'sense-disambiguation').length,
     sameWrittenFormGroups: sameWrittenFormGroups.length,
     candidateChineseFilled: items.filter(item => item.candidateChinese).length
@@ -599,8 +706,10 @@ const markdown = [
   `- pending：${queue.summary.pendingItems}`,
   `- blocked：${queue.summary.blockedItems}`,
   `- 待处理 P0/P1/P2/P3：${queue.summary.remainingPriorityCounts.P0 || 0}/${queue.summary.remainingPriorityCounts.P1 || 0}/${queue.summary.remainingPriorityCounts.P2 || 0}/${queue.summary.remainingPriorityCounts.P3 || 0}`,
-  `- 有 JMdict 证据：${queue.summary.withJmdictEvidence}`,
-  `- 需独立人工调查：${queue.summary.manualResearchRequired}`,
+  `- 精确 JMdict 证据：${queue.summary.withExactJmdictEvidence}`,
+  `- JMdict 组件级证据：${queue.summary.withCompositionalJmdictEvidence}`,
+  `- 外部独立语义证据：${queue.summary.withExternalSemanticEvidence}`,
+  `- 需独立人工调查：${queue.summary.manualResearchRequired}（完成 ${queue.summary.manualResearchCompleted}，阻断 ${queue.summary.manualResearchBlocked}）`,
   `- 歧义审核：${queue.summary.ambiguityReview}`,
   `- 同形异读组：${queue.summary.sameWrittenFormGroups}`,
   '',

@@ -10,8 +10,10 @@
     "dictionary": "69b343c085de93e14e32ee3508509a2971944168acf3e34e53eb07cafb45e45a",
     "supplement": "e221bfc6e261f355ad47d1689c744a067e95a801dbf467ca959e75b006bf76a1",
     "chineseMetadata": "63aaedb8a1265a7b66d119007dbcde3e705e48fb51bcdd104ad8635887be245f",
-    "reviewQueue": "97173d0f52fd134e4c1c95db8f7e4f38e971d84df945ff330c8e92e59aecbc78",
-    "sourceRegistry": "22e6a4862f0392566a77fc6c9ba6f6c9d788ede4426b59eaecf7ad0f97446fdb"
+    "reviewQueue": "07eab68a5a1c7e8c11ef670b86e22f0703ad70750c41b445572c0eba1b08f95b",
+    "p3IndependentReview": "d6a91bb9ea5fcc20da6cdb6e5253401fa3ce90bf1dd4a2a2b216ab1605c44b25",
+    "sourceRegistry": "e5393281f88e79e6a715331747f39e916ddde62b9b63cdd4cc1bafb01ae32581",
+    "languageCorpus": "03e245c61c1b5fef715cee5dfc0ac632e04e88e59f73418af49fe8dea389aeae"
   },
   "summary": {
     "valid": true,
@@ -24,9 +26,9 @@
     "indexedEntries": 158,
     "indexedForms": 285,
     "reviewQueueItems": 96,
-    "reviewedItems": 70,
-    "pendingItems": 26,
-    "draftedItems": 68,
+    "reviewedItems": 96,
+    "pendingItems": 0,
+    "draftedItems": 94,
     "approvedItems": 0,
     "rejectedItems": 0,
     "blockedItems": 2,

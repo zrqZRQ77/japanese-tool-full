@@ -8,7 +8,7 @@ Generated: 2026-07-23T00:00:00.000Z
 - 错误：0
 - 警告：1
 - 信息项：3
-- 当前审核队列：96 项；逐项审核 70 项，其中 drafted 68、approved 0、blocked 2、pending 26。
+- 当前审核队列：96 项；逐项审核 96 项，其中 drafted 94、approved 0、blocked 2、pending 0。
 - 中文索引：158 条、285 个检索形式。
 
 ## 警告

@@ -9,8 +9,8 @@ const registry = JSON.parse(readFileSync(resolve(ROOT, 'audits/offline-chinese-c
 const plan = readFileSync(resolve(ROOT, 'audits/offline-chinese-coverage/20260723/SOURCE_AND_LICENSE_PLAN.md'), 'utf8');
 
 assert.equal(registry.schemaVersion, 1);
-assert.equal(registry.reviewedAt, '2026-07-23');
-assert.equal(registry.sources.length, 7);
+assert.equal(registry.reviewedAt, '2026-07-24');
+assert.equal(registry.sources.length, 9);
 assert.equal(new Set(registry.sources.map(source => source.id)).size, registry.sources.length);
 
 const byId = Object.fromEntries(registry.sources.map(source => [source.id, source]));
@@ -21,6 +21,10 @@ assert.match(byId['jmdict-edrdg'].requirements.join('\n'), /About\/Sources/);
 assert.equal(byId.wikidata.licenseClass, 'CC0-1.0');
 assert.equal(byId['wiktionary-text'].status, 'conditional-isolated-evidence');
 assert.equal(byId.tatoeba.licenseClass, 'CC-BY-2.0-FR-or-CC0-per-record');
+assert.equal(byId['yomeru-language-corpus'].licenseClass, 'project-curated');
+assert.match(byId['yomeru-language-corpus'].requirements.join('\n'), /不单独作为正式中文词义来源/);
+assert.equal(byId['japan-government-pdl1'].licenseClass, 'PDL-1.0-CC-BY-4.0-compatible');
+assert.match(byId['japan-government-pdl1'].requirements.join('\n'), /逐页确认/);
 assert.equal(byId['ai-draft'].status, 'draft-only');
 assert.equal(byId['unknown-or-commercial-dictionaries'].status, 'prohibited');
 assert.equal(byId['unknown-or-commercial-dictionaries'].commercialUse, false);
@@ -30,6 +34,8 @@ assert.match(plan, /正式中文释义继续以 Yomeru 人工审核数据为唯�
 assert.match(plan, /Wikidata 结构化数据/);
 assert.match(plan, /Wiktionary \/ Wikimedia 文字/);
 assert.match(plan, /Tatoeba 例句/);
+assert.match(plan, /Yomeru 项目语料/);
+assert.match(plan, /日本政府 PDL1\.0 内容/);
 assert.match(plan, /AI 只能生成待审核草稿/);
 assert.match(plan, /未明确授权的商业词典/);
 assert.match(plan, /每条候选的最低审计字段/);

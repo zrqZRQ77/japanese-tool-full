@@ -17,7 +17,9 @@ const paths = {
   supplement: resolve(FRONTEND, 'data/chinese-definitions-source.json'),
   chineseMetadata: resolve(CHINESE_DIR, 'metadata.json'),
   reviewQueue: resolve(AUDIT_DIR, 'review-queue.json'),
-  sourceRegistry: resolve(AUDIT_DIR, 'source-registry.json')
+  p3IndependentReview: resolve(AUDIT_DIR, 'p3-independent-review.json'),
+  sourceRegistry: resolve(AUDIT_DIR, 'source-registry.json'),
+  languageCorpus: resolve(FRONTEND, 'test-data/language-corpus/20260717-01/cases.json')
 };
 
 async function readJson(path) {
@@ -135,14 +137,39 @@ for (const item of queue.items) {
   for (const evidence of item.evidence || []) {
     if (!sourceIdSet.has(evidence.sourceId)) addFinding(errors, 'unknown-evidence-source', '审核证据引用未注册来源。', { queueId: item.queueId, sourceId: evidence.sourceId });
     if (!nonEmptyString(evidence.license)) addFinding(errors, 'evidence-missing-license', '审核证据缺少许可。', { queueId: item.queueId, sourceId: evidence.sourceId });
-    if (!Array.isArray(evidence.englishGlosses) || !evidence.englishGlosses.length) addFinding(errors, 'evidence-empty-glosses', 'JMdict 审核证据缺少英文释义。', { queueId: item.queueId });
-    if (!(evidence.headwords || []).includes(item.word)) addFinding(errors, 'evidence-headword-mismatch', 'JMdict 审核证据与目标日文表记不一致。', { queueId: item.queueId, word: item.word, headwords: evidence.headwords || [] });
-    if (item.reading && !(evidence.readings || []).includes(item.reading)) addFinding(errors, 'evidence-reading-mismatch', 'JMdict 审核证据与目标读音不一致。', { queueId: item.queueId, reading: item.reading, evidenceReadings: evidence.readings || [] });
-    if ((evidence.partsOfSpeech || []).length > 1) multiPosEvidence += 1;
+
+    const matchType = evidence.matchType || 'exact-jmdict';
+    if (matchType === 'exact-jmdict') {
+      if (!Array.isArray(evidence.englishGlosses) || !evidence.englishGlosses.length) addFinding(errors, 'evidence-empty-glosses', 'JMdict 精确审核证据缺少英文释义。', { queueId: item.queueId });
+      if (!(evidence.headwords || []).includes(item.word)) addFinding(errors, 'evidence-headword-mismatch', 'JMdict 精确审核证据与目标日文表记不一致。', { queueId: item.queueId, word: item.word, headwords: evidence.headwords || [] });
+      if (item.reading && !(evidence.readings || []).includes(item.reading)) addFinding(errors, 'evidence-reading-mismatch', 'JMdict 精确审核证据与目标读音不一致。', { queueId: item.queueId, reading: item.reading, evidenceReadings: evidence.readings || [] });
+      if ((evidence.partsOfSpeech || []).length > 1) multiPosEvidence += 1;
+    } else if (matchType === 'exact-corpus') {
+      if (!(evidence.headwords || []).includes(item.word)) addFinding(errors, 'corpus-headword-mismatch', '语料证据与目标日文表记不一致。', { queueId: item.queueId });
+      if (item.reading && !(evidence.readings || []).includes(item.reading)) addFinding(errors, 'corpus-reading-mismatch', '语料证据与目标读音不一致。', { queueId: item.queueId });
+      if (!Array.isArray(evidence.caseIds) || !evidence.caseIds.length || !Array.isArray(evidence.sentences) || !evidence.sentences.length) addFinding(errors, 'corpus-evidence-incomplete', '语料证据缺少案例 ID 或句子。', { queueId: item.queueId });
+    } else if (matchType === 'compositional') {
+      if (!Array.isArray(evidence.components) || evidence.components.length < 2) addFinding(errors, 'compositional-evidence-incomplete', '复合词证据至少需要两个可验证组件。', { queueId: item.queueId });
+      for (const component of evidence.components || []) {
+        if (!nonEmptyString(component.word) || !nonEmptyString(component.reading) || !nonEmptyString(component.entryId) || !Array.isArray(component.englishGlosses) || !component.englishGlosses.length) {
+          addFinding(errors, 'invalid-component-evidence', '复合词组件证据缺少词形、读音、JMdict ID 或英文义项。', { queueId: item.queueId, component });
+        }
+      }
+    } else if (matchType === 'semantic-external') {
+      const hasSemanticPayload = Boolean(
+        evidence.entityIds?.length
+        || evidence.labels && Object.keys(evidence.labels).length
+        || evidence.englishGlosses?.length
+        || evidence.headwords?.length
+      );
+      if (!nonEmptyString(evidence.sourceUrl) || !hasSemanticPayload) addFinding(errors, 'external-evidence-incomplete', '外部语义证据缺少 URL 或可验证的标签/义项。', { queueId: item.queueId, sourceId: evidence.sourceId });
+    } else {
+      addFinding(errors, 'unknown-evidence-match-type', '审核证据包含未知 matchType。', { queueId: item.queueId, matchType });
+    }
   }
 
   if (!item.evidence?.length && item.reviewType !== 'manual-research-required') addFinding(errors, 'missing-evidence-without-manual-flag', '无证据项目没有标记为人工调查。', { queueId: item.queueId });
-  if (item.reviewType === 'manual-research-required' && item.evidence?.length) addFinding(errors, 'manual-research-has-evidence', '人工调查项目意外包含标准证据。', { queueId: item.queueId });
+  if (item.reviewType === 'manual-research-required' && item.reviewerStatus === 'drafted' && (item.evidence || []).length < 2) addFinding(errors, 'manual-research-insufficient-evidence', '人工调查 drafted 项目必须同时包含完整词形语料证据和独立语义证据。', { queueId: item.queueId });
 
   if (item.reviewerStatus === 'pending') {
     if (item.candidateChinese !== null) addFinding(errors, 'pending-has-candidate', 'pending 项目不应包含正式中文候选。', { queueId: item.queueId });
