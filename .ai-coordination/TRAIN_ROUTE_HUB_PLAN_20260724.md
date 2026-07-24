@@ -9,7 +9,7 @@ Owner: Codex / ChatGPT
 - Phase 0–8：100%
 - 总体完成度：100%
 - 分支：`feat/train-route-hub`
-- 最新提交：`1943d84`
+- 最新功能提交：`1943d84`
 - 远端分支：已推送
 - Preview：`https://japanese-tool-pfjqm73jq-zrq-projects1.vercel.app`
 - Preview Deployment：`dpl_9A2gt9xtxBkN7FSP2e2CasSsZVWJ` / Ready
