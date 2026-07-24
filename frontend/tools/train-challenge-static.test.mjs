@@ -27,6 +27,10 @@ route.stations.forEach((station, index) => {
   assert.ok(station.acceptedKana.includes(station.reading));
   assert.ok(station.acceptedKanji.includes(station.display));
 });
+assert.ok(route.stations.find(item => item.display === '高田馬場').acceptedKanji.includes('高田马场'));
+assert.ok(route.stations.find(item => item.display === '巣鴨').acceptedKanji.includes('巢鸭'));
+assert.ok(route.stations.find(item => item.display === '駒込').acceptedKanji.includes('驹込'));
+assert.ok(route.stations.find(item => item.display === '鶯谷').acceptedKanji.includes('莺谷'));
 assert.equal((html.match(/data-challenge-view=/g) || []).length, 3);
 assert.match(html, /id="trainStartButton"/);
 assert.match(html, /class="start-controls"/);
@@ -75,6 +79,9 @@ assert.match(js, /stationProgressLabel/);
 assert.match(js, /lastShowHints = false/);
 assert.match(js, /elapsedMs \/ routeData\.stations\.length/);
 assert.match(js, /Number\.NEGATIVE_INFINITY/);
+assert.match(js, /日文标准站名写作/);
+assert.match(js, /我完成了山手线站名练习/);
+assert.match(js, /result-hint-usage.*is-assisted/s);
 assert.doesNotMatch(js, /<title id="routeLoopTitle">/);
 assert.match(readme, /最后一站只能触发一次结算/);
 assert.match(css, /route-loop-line/);
@@ -88,7 +95,8 @@ assert.match(css, /answer button/);
 assert.match(css, /start-controls/);
 assert.match(css, /start-view h1/);
 assert.match(css, /question-tools/);
-assert.match(css, /grid-template-columns:minmax\(0,1fr\) 190px/);
+assert.match(css, /result-hint-usage\.is-assisted/);
+assert.match(css, /grid-template-columns:repeat\(13,minmax\(0,1fr\)\)/);
 assert.match(css, /body\[data-game-state="play"\] \.page-footer\{display:none\}/);
 assert.match(css, /white-space:nowrap/);
 assert.match(css, /env\(safe-area-inset-top\)/);
@@ -171,6 +179,12 @@ try {
     assert.ok(await page.locator('#startRouteMap tspan').count() > 13, 'long station names were not split across lines');
     const endpointPositions = await page.locator('#startRouteMap .route-loop-station.is-endpoint circle').evaluateAll(nodes => nodes.map(node => Number(node.getAttribute('cx'))));
     assert.deepEqual(endpointPositions, [104, 796]);
+    const labelOffsets = await page.locator('#startRouteMap .route-loop-station').evaluateAll(nodes => nodes.map(node => {
+      const circle = node.querySelector('circle');
+      const text = node.querySelector('text');
+      return Math.round(Number(text.getAttribute('y')) - Number(circle.getAttribute('cy')));
+    }));
+    assert.deepEqual([...new Set(labelOffsets)], [32], `route labels have inconsistent offsets: ${labelOffsets.join(',')}`);
     assert.equal(await page.locator('#trainHintToggleStart').isChecked(), false);
     assert.equal(await page.locator('#trainStartButton').isEnabled(), true);
     assert.equal(await page.locator('#startStatus').isHidden(), true);
@@ -197,6 +211,7 @@ try {
       metricsHeight: Math.round(document.querySelector('.metrics').getBoundingClientRect().height),
       railHeight: Math.round(document.getElementById('railMap').getBoundingClientRect().height),
       nearbyStops: document.querySelectorAll('.rail-stop.is-near').length,
+      visibleStops: [...document.querySelectorAll('.rail-stop')].filter(node => getComputedStyle(node).display !== 'none').length,
       promptSize: document.getElementById('questionPrompt').dataset.promptSize,
       promptFontSize: Number.parseFloat(getComputedStyle(document.getElementById('questionPrompt')).fontSize),
       answerBottom: Math.round(document.getElementById('trainAnswerForm').getBoundingClientRect().bottom),
@@ -208,8 +223,9 @@ try {
     assert.ok(initialFocusState.outlineWidth <= 2, JSON.stringify(initialFocusState));
     assert.equal(initialFocusState.metricsPosition, 'sticky');
     assert.ok(initialFocusState.metricsHeight <= 60, JSON.stringify(initialFocusState));
-    assert.ok(initialFocusState.railHeight <= 70, JSON.stringify(initialFocusState));
+    assert.ok(initialFocusState.railHeight <= 60, JSON.stringify(initialFocusState));
     assert.ok(initialFocusState.nearbyStops >= 3 && initialFocusState.nearbyStops <= 5, JSON.stringify(initialFocusState));
+    assert.equal(initialFocusState.visibleStops, 13, JSON.stringify(initialFocusState));
     assert.equal(initialFocusState.promptSize, 'short');
     assert.ok(initialFocusState.promptFontSize <= 46, JSON.stringify(initialFocusState));
     assert.ok(initialFocusState.answerBottom <= initialFocusState.viewportHeight, JSON.stringify(initialFocusState));
@@ -363,8 +379,10 @@ try {
     await page.goto(appUrl, {waitUntil:'networkidle'});
     await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE?.route()?.stations?.length === 13);
     await page.locator('input[value="kana-to-kanji"]').check();
-    await page.waitForFunction(() => document.getElementById('startRouteMap')?.textContent?.includes('しんじゅく'));
-    assert.equal((await page.locator('#startRouteMap').textContent()).includes('新宿'), false, 'kanji answers leak on the kana-to-kanji start route');
+    await page.waitForFunction(() => document.getElementById('startRouteMap')?.textContent?.includes('01'));
+    const numberedRouteText = await page.locator('#startRouteMap').textContent();
+    assert.equal(numberedRouteText.includes('しんじゅく'), false, 'dense kana labels remain on the kana-to-kanji start route');
+    assert.equal(numberedRouteText.includes('新宿'), false, 'kanji answers leak on the kana-to-kanji start route');
     await page.locator('label[for="trainHintToggleStart"]').click();
     assert.equal(await page.locator('#trainHintToggleStart').isChecked(), true);
     await page.locator('#trainStartButton').click();
@@ -397,9 +415,18 @@ try {
     assert.equal(await page.locator('.rail-stop.completed').first().textContent(), '新宿');
     assert.equal(await page.locator('.rail-stop.current').textContent(), '02');
     await submit(page, 'シンオオクボ');
-    const state = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
+    let state = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
     assert.equal(state.index, 1);
     assert.equal(state.wrongSubmissions, 1, 'katakana was accepted by strict kanji mode');
+    await page.waitForTimeout(140);
+    await submit(page, '新大久保');
+    await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE.snapshot().index === 2);
+    await page.locator('#trainAnswerInput').fill('高田马场');
+    await page.locator('#trainAnswerSubmitButton').click();
+    assert.match(await page.locator('#trainAnswerFeedback').textContent(), /日文标准站名写作「高田馬場」/);
+    await page.waitForFunction(() => window.YOMERU_TRAIN_CHALLENGE.snapshot().index === 3);
+    state = await page.evaluate(() => window.YOMERU_TRAIN_CHALLENGE.snapshot());
+    assert.equal(state.wrongSubmissions, 1, 'accepted Chinese glyph variant changed the error count');
     assert.equal(await hasOverflow(page), false, 'mobile-430 play view overflows');
     await context.close();
   }

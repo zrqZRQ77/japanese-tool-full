@@ -14,16 +14,16 @@
   "stations": [
     {"id":"station-shinjuku","display":"新宿","reading":"しんじゅく","romaji":"Shinjuku","acceptedKana":["しんじゅく"],"acceptedKanji":["新宿"],"order":1},
     {"id":"station-shin-okubo","display":"新大久保","reading":"しんおおくぼ","romaji":"Shin-Okubo","acceptedKana":["しんおおくぼ"],"acceptedKanji":["新大久保"],"order":2},
-    {"id":"station-takadanobaba","display":"高田馬場","reading":"たかだのばば","romaji":"Takadanobaba","acceptedKana":["たかだのばば"],"acceptedKanji":["高田馬場"],"order":3},
+    {"id":"station-takadanobaba","display":"高田馬場","reading":"たかだのばば","romaji":"Takadanobaba","acceptedKana":["たかだのばば"],"acceptedKanji":["高田馬場","高田马场"],"order":3},
     {"id":"station-mejiro","display":"目白","reading":"めじろ","romaji":"Mejiro","acceptedKana":["めじろ"],"acceptedKanji":["目白"],"order":4},
     {"id":"station-ikebukuro","display":"池袋","reading":"いけぶくろ","romaji":"Ikebukuro","acceptedKana":["いけぶくろ"],"acceptedKanji":["池袋"],"order":5},
     {"id":"station-otsuka","display":"大塚","reading":"おおつか","romaji":"Otsuka","acceptedKana":["おおつか"],"acceptedKanji":["大塚"],"order":6},
-    {"id":"station-sugamo","display":"巣鴨","reading":"すがも","romaji":"Sugamo","acceptedKana":["すがも"],"acceptedKanji":["巣鴨"],"order":7},
-    {"id":"station-komagome","display":"駒込","reading":"こまごめ","romaji":"Komagome","acceptedKana":["こまごめ"],"acceptedKanji":["駒込"],"order":8},
+    {"id":"station-sugamo","display":"巣鴨","reading":"すがも","romaji":"Sugamo","acceptedKana":["すがも"],"acceptedKanji":["巣鴨","巢鴨","巢鸭"],"order":7},
+    {"id":"station-komagome","display":"駒込","reading":"こまごめ","romaji":"Komagome","acceptedKana":["こまごめ"],"acceptedKanji":["駒込","驹込"],"order":8},
     {"id":"station-tabata","display":"田端","reading":"たばた","romaji":"Tabata","acceptedKana":["たばた"],"acceptedKanji":["田端"],"order":9},
     {"id":"station-nishi-nippori","display":"西日暮里","reading":"にしにっぽり","romaji":"Nishi-Nippori","acceptedKana":["にしにっぽり"],"acceptedKanji":["西日暮里"],"order":10},
     {"id":"station-nippori","display":"日暮里","reading":"にっぽり","romaji":"Nippori","acceptedKana":["にっぽり"],"acceptedKanji":["日暮里"],"order":11},
-    {"id":"station-uguisudani","display":"鶯谷","reading":"うぐいすだに","romaji":"Uguisudani","acceptedKana":["うぐいすだに"],"acceptedKanji":["鶯谷"],"order":12},
+    {"id":"station-uguisudani","display":"鶯谷","reading":"うぐいすだに","romaji":"Uguisudani","acceptedKana":["うぐいすだに"],"acceptedKanji":["鶯谷","鴬谷","莺谷"],"order":12},
     {"id":"station-ueno","display":"上野","reading":"うえの","romaji":"Ueno","acceptedKana":["うえの"],"acceptedKanji":["上野"],"order":13}
   ]
 }

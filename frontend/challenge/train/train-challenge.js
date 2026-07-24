@@ -173,8 +173,10 @@
     return [chars.slice(0, splitAt).join(''), chars.slice(splitAt).join('')];
   }
 
-  function startRouteLabel(station, mode) {
-    return mode === 'kana-to-kanji' ? station.reading : station.display;
+  function startRouteLabel(station, index, mode) {
+    return mode === 'kana-to-kanji'
+      ? String(index + 1).padStart(2, '0')
+      : station.display;
   }
 
   function renderStartRoute(stations, mode = selectedMode()) {
@@ -186,10 +188,10 @@
     const end = { x: 796, y: 158 };
     const stationMarkup = stations.map((station, index) => {
       const point = cubicPoint(index / (stations.length - 1), start, controlA, controlB, end);
-      const labelY = point.y + (index % 2 ? 44 : 28);
-      const label = startRouteLabel(station, mode);
+      const labelY = point.y + 32;
+      const label = startRouteLabel(station, index, mode);
       const labelLines = stationLabelLines(label);
-      const tspans = labelLines.map((line, lineIndex) => `<tspan x="${point.x.toFixed(1)}" dy="${lineIndex ? 16 : 0}">${line}</tspan>`).join('');
+      const tspans = labelLines.map((line, lineIndex) => `<tspan x="${point.x.toFixed(1)}" dy="${lineIndex ? 14 : 0}">${line}</tspan>`).join('');
       const endpointClass = index === 0 || index === stations.length - 1 ? ' is-endpoint' : '';
       const longClass = [...label].length >= 4 ? ' is-long' : '';
       return `<g class="route-loop-station${endpointClass}${longClass}" data-station-id="${station.id}"><circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="13"></circle><text x="${point.x.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="middle">${tspans}</text></g>`;
@@ -211,12 +213,12 @@
       const label = stationProgressLabel(station, index);
       const longClass = [...label].length >= 4 ? ' is-long' : '';
       const nearClass = Math.abs(index - game.index) <= 2 ? ' is-near' : '';
-      return `<span class="rail-stop${className}${longClass}${nearClass}" data-station-index="${index}" aria-current="${index === game.index ? 'step' : 'false'}">${label}</span>`;
+      return `<span class="rail-stop${className}${longClass}${nearClass}" data-station-index="${index}" aria-current="${index === game.index ? 'step' : 'false'}"><span class="rail-stop-label">${label}</span></span>`;
     }).join('');
     const progress = routeData.stations.length > 1 ? game.index / (routeData.stations.length - 1) : 0;
     target.parentElement?.style.setProperty('--route-progress-ratio', String(progress));
     if (marker) {
-      marker.style.setProperty('--train-position', `${4 + progress * 84}%`);
+      marker.style.setProperty('--train-position', `${8 + progress * 76}%`);
       marker.alt = `列车当前位于${routeData.stations[game.index]?.display || '终点'}`;
     }
   }
@@ -406,7 +408,13 @@
     game.stationTimes.push(Math.max(0, now - game.stationStartedAt));
     game.locked = true;
     document.getElementById('trainAnswerSubmitButton').disabled = true;
-    setFeedback(`正确：${station.display}（${station.reading}）`, 'correct');
+    const usedKanjiVariant = game.mode === 'kana-to-kanji' && answer !== normalizeAnswer(station.display);
+    setFeedback(
+      usedKanjiVariant
+        ? `已接受。日文标准站名写作「${station.display}」。`
+        : `正确：${station.display}（${station.reading}）`,
+      'correct'
+    );
     renderMetrics();
 
     const completedIndex = game.index;
@@ -492,7 +500,9 @@
     document.getElementById('resultAverage').textContent = formatSeconds(result.averageStationMs);
     document.getElementById('resultErrors').textContent = String(result.wrongSubmissions);
     document.getElementById('resultStreak').textContent = String(result.bestStreak);
-    document.getElementById('resultHintUsage').textContent = resultPracticeLabel(result);
+    const hintUsage = document.getElementById('resultHintUsage');
+    hintUsage.textContent = resultPracticeLabel(result);
+    hintUsage.className = `result-hint-usage${result.hintCount > 0 ? ' is-assisted' : ''}`;
     const best = storage.bestByMode[resultRecordKey(result)];
     const recordLabel = result.hintCount > 0 ? '练习模式最佳纪录' : '纯挑战最佳纪录';
     document.getElementById('resultBest').textContent = best
@@ -616,10 +626,21 @@
     context.fillStyle = ink;
     context.font = '800 74px "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif';
     context.fillText('抵达终点。', 118, 535);
+    const assisted = result.hintCount > 0;
+    const practiceLabel = resultPracticeLabel(result);
+    context.font = '700 21px "PingFang SC", sans-serif';
+    const badgeWidth = Math.min(760, context.measureText(practiceLabel).width + 42);
+    roundedRectPath(context, 118, 548, badgeWidth, 46, 23);
+    context.fillStyle = assisted ? '#edf4dd' : paper;
+    context.fill();
+    context.strokeStyle = assisted ? '#789d35' : '#d2d7d1';
+    context.lineWidth = 2;
+    context.stroke();
+    context.fillStyle = assisted ? '#789d35' : soft;
+    context.fillText(practiceLabel, 140, 579);
     context.fillStyle = soft;
-    context.font = '600 24px "PingFang SC", sans-serif';
-    const cardModeLabel = `${resultModeName(result.mode)} · ${resultPracticeLabel(result)}`;
-    context.fillText(cardModeLabel, 122, 582);
+    context.font = '600 22px "PingFang SC", sans-serif';
+    context.fillText(resultModeName(result.mode), 122, 626);
 
     context.fillStyle = ink;
     context.font = '800 142px "Hiragino Kaku Gothic ProN", Inter, sans-serif';
@@ -649,7 +670,11 @@
 
     context.fillStyle = paper;
     context.font = '600 24px "PingFang SC", sans-serif';
-    context.fillText('你能用日语开完这条线吗？', 82, 1214);
+    context.fillText(
+      result.hintCount > 0 ? '我完成了山手线站名练习。' : '你能用日语开完这条线吗？',
+      82,
+      1214
+    );
     context.fillStyle = signal;
     context.font = '700 20px Inter, sans-serif';
     context.fillText(challengeUrl(), 82, 1260);
@@ -720,8 +745,9 @@
     if (!game.result) return false;
     const result = game.result;
     const title = 'Yomeru 电车日语输入挑战';
-    const assistText = result.hintCount > 0 ? `，使用提示 ${result.hintCount} 站` : '，纯挑战';
-    const text = `我用 ${formatElapsed(result.elapsedMs)} 完成新宿到上野挑战，正确率 ${Math.round(result.accuracy * 100)}%${assistText}。`;
+    const text = result.hintCount > 0
+      ? `我完成了山手线站名练习，用时 ${formatElapsed(result.elapsedMs)}，使用提示 ${result.hintCount} 站，正确率 ${Math.round(result.accuracy * 100)}%。`
+      : `我用 ${formatElapsed(result.elapsedMs)} 完成新宿到上野纯挑战，正确率 ${Math.round(result.accuracy * 100)}%。`;
     setShareButtonsBusy(true);
     setShareFeedback('正在准备分享…');
     try {
