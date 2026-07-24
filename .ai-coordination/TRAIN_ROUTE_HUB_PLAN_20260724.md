@@ -1,8 +1,21 @@
 # Yomeru 电车路线主页与多路线扩展计划
 
 Updated: 2026-07-24
-Status: implementation_complete_preview_pending
+Status: preview_ready_draft_pr_tool_blocked
 Owner: Codex / ChatGPT
+
+## 当前执行快照
+
+- Phase 0–7：100%
+- Phase 8：85%
+- 总体完成度：98%
+- 分支：`feat/train-route-hub`
+- 最新提交：`19e3041`
+- 远端分支：已推送
+- Preview：`https://japanese-tool-km6xvk6uq-zrq-projects1.vercel.app`
+- Preview Deployment：`dpl_GXVba8RD5C9jDyA1zhNd33Ru2tVV` / Ready
+- Draft PR：未创建；当前环境无 GitHub 受控写入工具且未安装 `gh`，直接凭据调用被安全策略拦截
+- Production：未修改
 
 ## 1. 项目目标
 
@@ -267,7 +280,7 @@ Owner: Codex / ChatGPT
 
 ### Phase 8：Draft PR 与 Preview
 
-状态：0%
+状态：85%
 
 任务：
 
