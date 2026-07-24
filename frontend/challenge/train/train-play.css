@@ -1,0 +1,80 @@
+.route-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.route-home-link {
+  padding: 9px 13px;
+  color: var(--ink);
+  border: 1px solid rgb(23 36 45 / 18%);
+  border-radius: 999px;
+  background: rgb(255 253 248 / 76%);
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.route-home-link:hover {
+  border-color: var(--ink);
+}
+
+.route-error-view {
+  display: block;
+}
+
+.route-error-card {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.route-error-card h1 {
+  max-width: 680px;
+  font-size: clamp(40px, 7vw, 72px);
+}
+
+.route-error-action {
+  max-width: 230px;
+  margin-top: 28px;
+  text-decoration: none;
+}
+
+body[data-route-id="ginza-east-short"] .route-chip i {
+  background: var(--signal);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--signal) 28%, transparent);
+}
+
+.rail-stops {
+  grid-template-rows: repeat(var(--station-count, 13), minmax(0, 1fr));
+}
+
+@media (max-width: 600px) {
+  .rail-stops {
+    grid-template-columns: repeat(var(--station-count, 13), minmax(0, 1fr));
+    grid-template-rows: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .route-header-actions {
+    gap: 6px;
+  }
+
+  .route-home-link {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+
+  .route-header-actions .route-chip {
+    max-width: 154px;
+  }
+
+  .route-error-card {
+    padding: 26px 20px;
+  }
+
+  .route-error-card h1 {
+    font-size: 40px;
+  }
+}
